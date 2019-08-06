@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Service\ArtistServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,46 +18,34 @@ class ArtistController extends AbstractController
 
     /**
      * @Route("/createArtist", name="createArtist")
+     * @param Request $request
      */
     public function create(Request $request)
     {
-        $result = $this->artistService->createPainting($request, "Artist");
-
-        //$response = new JsonResponse($result, $result['status_code']);
-
-        // For Local Server Accessibility
-       // $response->headers->set('Access-Control-Allow-Origin', '*');
+        $result = $this->artistService->createArtist($request, "Artist");
 
         return $result;
     }
 
     /**
      * @Route("/updateArtist", name="updateArtist")
+     * @param Request $request
      */
     public function update(Request $request)
     {
-        $result = $this->artistService->updatePainting($request, "Artist");
+        $result = $this->artistService->updateArtist($request, "Artist");
 
-        $response = new JsonResponse($result, $result['status_code']);
-
-        // For Local Server Accessibility
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $result;
     }
 
     /**
      * @Route("/deleteArtist", name="deleteArtist")
+     * @param Request $request
      */
     public function delete(Request $request)
     {
-        $result = $this->artistService->deletePainting($request, "Artist");
+        $result = $this->artistService->deleteArtist($request, "Artist");
 
-        $response = new JsonResponse($result, $result['status_code']);
-
-        // For Local Server Accessibility
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $result;
     }
 }

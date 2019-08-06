@@ -6,9 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface ArtistServiceInterface
 {
-    public function createPainting(Request $request, $entity);
+    public function createArtist(Request $request, $entity);
 
-    public function updatePainting(Request $request, $entity);
+    public function updateArtist(Request $request, $entity);
 
-    public function deletePainting(Request $request, $entity);
+    public function deleteArtist(Request $request, $entity);
 }

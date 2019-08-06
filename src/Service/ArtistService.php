@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\Manager\ArtistManagerInterface;
+use App\Manager\CreateUpdateDeleteManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,44 +15,55 @@ class ArtistService implements ArtistServiceInterface
     private $artistManager;
     private $serializer;
 
-    public function __construct(ArtistManagerInterface $artistManager, SerializerInterface $serializer)
+    public function __construct(CreateUpdateDeleteManagerInterface $artistManager, SerializerInterface $serializer)
     {
         $this->artistManager = $artistManager;
         $this->serializer = $serializer;
     }
 
-    public function createPainting(Request $request, $entity)
+    public function createArtist(Request $request, $entity)
     {
         $result = $this->artistManager->create($request, $entity);
 
-        $result =  $this->serializer->serialize($result, "json");
-        //$response = json_decode($result, true);
-
-        //return response object
-        return new jsonResponse([
-            "status_code" => "200",
-            "msg" => "Artist Created Successfully.",
-            "artist" => json_encode($result)
-        ]
-            , Response::HTTP_OK);
+        return $this->response($result, "Created");
     }
 
-    public function updatePainting(Request $request, $entity)
+    public function updateArtist(Request $request, $entity)
     {
         $result = $this->artistManager->update($request, $entity);
-        return [
-            "status_code" => "200",
-            "msg" => "Painting Updated Successfully.".$result
-        ];
+
+        return $this->response($result, "Updated");
     }
 
-    public function deletePainting(Request $request, $entity)
+    public function deleteArtist(Request $request, $entity)
     {
-        $result = $this->artistManager->delete($request, $entity);
-        return [
-            "status_code" => "200",
-            "msg" => "Painting deleted Successfully.".$result
-        ];
+        $this->artistManager->delete($request, $entity);
+
+        $response = new jsonResponse([
+                "status_code" => "200",
+                "msg" => "Artist deleted Successfully."
+            ]
+            , Response::HTTP_OK);
+
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
+    }
+
+    public function response($result, $status) :jsonResponse
+    {
+        $result =  $this->serializer->serialize($result, "json");
+
+        $response = new jsonResponse([
+                "status_code" => "200",
+                "msg" => "Artist ".$status."Successfully.",
+                "artist" => json_encode($result)
+            ]
+            , Response::HTTP_OK);
+
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
     }
 
 }

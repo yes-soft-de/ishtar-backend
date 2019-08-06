@@ -4,7 +4,7 @@ namespace App\Manager;
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface ArtistManagerInterface
+interface CreateUpdateDeleteManagerInterface
 {
 
     public function create(Request $request, $entity);
