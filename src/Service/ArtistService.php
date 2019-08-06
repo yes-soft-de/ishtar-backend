@@ -12,32 +12,34 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ArtistService implements ArtistServiceInterface
 {
-    private $artistManager;
+    //ToDo use BaseController for response things
+
+    private $manager;
     private $serializer;
 
-    public function __construct(CreateUpdateDeleteManagerInterface $artistManager, SerializerInterface $serializer)
+    public function __construct(CreateUpdateDeleteManagerInterface $manager, SerializerInterface $serializer)
     {
-        $this->artistManager = $artistManager;
+        $this->manager = $manager;
         $this->serializer = $serializer;
     }
 
     public function createArtist(Request $request, $entity)
     {
-        $result = $this->artistManager->create($request, $entity);
+        $result = $this->manager->create($request, $entity);
 
         return $this->response($result, "Created");
     }
 
     public function updateArtist(Request $request, $entity)
     {
-        $result = $this->artistManager->update($request, $entity);
+        $result = $this->manager->update($request, $entity);
 
         return $this->response($result, "Updated");
     }
 
     public function deleteArtist(Request $request, $entity)
     {
-        $this->artistManager->delete($request, $entity);
+        $this->manager->delete($request, $entity);
 
         $response = new jsonResponse([
                 "status_code" => "200",

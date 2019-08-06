@@ -22,8 +22,9 @@ class ArtistController extends AbstractController
      */
     public function create(Request $request)
     {
-        $result = $this->artistService->createArtist($request, "Artist");
+        //ToDo Call artistValidator
 
+        $result = $this->artistService->createArtist($request, "Artist");
         return $result;
     }
 
@@ -33,8 +34,9 @@ class ArtistController extends AbstractController
      */
     public function update(Request $request)
     {
-        $result = $this->artistService->updateArtist($request, "Artist");
+        //ToDo Call artistValidator
 
+        $result = $this->artistService->updateArtist($request, "Artist");
         return $result;
     }
 
@@ -44,8 +46,9 @@ class ArtistController extends AbstractController
      */
     public function delete(Request $request)
     {
-        $result = $this->artistService->deleteArtist($request, "Artist");
+        //ToDo Call artistValidator
 
+        $result = $this->artistService->deleteArtist($request, "Artist");
         return $result;
     }
 }

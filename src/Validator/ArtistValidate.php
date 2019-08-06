@@ -4,6 +4,7 @@
 namespace App\Validator;
 
 
+use App\Entity\ArtistEntity;
 use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ class ArtistValidate
         $this->entityManager = $entityManagerInterface;
     }
 
-    public function pantingValidator(Request $request, $type)
+    public function artistValidator(Request $request, $type)
     {
         $input = json_decode($request->getContent(), true);
 
@@ -33,26 +34,51 @@ class ArtistValidate
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'image_url' => [
+            'nationality' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'description' => [
+            'residence' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'size' => [
+            'birthDate' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'medium' => [
+            'story' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'category' => [
+            'details' => [
                 new Required(),
                 new Assert\NotBlank(),
-            ]
+            ],
+            'image' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'video' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'facebook' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'instagram' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'twitter' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'linkedin' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+
         ]);
 
         if ($type == 'create') {
@@ -60,11 +86,17 @@ class ArtistValidate
         }
         if ($type == "delete") {
             unset($constraints->fields['name']);
-            unset($constraints->fields['image_url']);
-            unset($constraints->fields['description']);
-            unset($constraints->fields['size']);
-            unset($constraints->fields['medium']);
-            unset($constraints->fields['category']);
+            unset($constraints->fields['nationality']);
+            unset($constraints->fields['residence']);
+            unset($constraints->fields['birthDate']);
+            unset($constraints->fields['story']);
+            unset($constraints->fields['details']);
+            unset($constraints->fields['image']);
+            unset($constraints->fields['video']);
+            unset($constraints->fields['facebook']);
+            unset($constraints->fields['instagram']);
+            unset($constraints->fields['twitter']);
+            unset($constraints->fields['linkedin']);
         }
 
         $violations = $this->validator->validate($input, $constraints);
@@ -86,8 +118,8 @@ class ArtistValidate
         }
 
         if ($type != "create") {
-            if (!$this->entityManager->getRepository(Painting::class)->find($input["id"])) {
-                return "No panting with this id!";
+            if (!$this->entityManager->getRepository(ArtistEntity::class)->find($input["id"])) {
+                return "No Artist with this id!";
             }
         }
         return null;
