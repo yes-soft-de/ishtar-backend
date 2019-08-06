@@ -9,11 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArtistController extends AbstractController
 {
-    private $artistService;
+    private $CUDService;
 
-    public function __construct(CreateUpdateDeleteServiceInterface $artistService)
+    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
     {
-        $this->artistService = $artistService;
+        $this->CUDService = $CUDService;
     }
 
     /**
@@ -22,9 +22,9 @@ class ArtistController extends AbstractController
      */
     public function create(Request $request)
     {
-        //ToDo Call artistValidator
+        //ToDo Call Validator
 
-        $result = $this->artistService->createArtist($request, "Artist");
+        $result = $this->CUDService->createArtist($request, "Artist");
         return $result;
     }
 
@@ -34,9 +34,9 @@ class ArtistController extends AbstractController
      */
     public function update(Request $request)
     {
-        //ToDo Call artistValidator
+        //ToDo Call Validator
 
-        $result = $this->artistService->updateArtist($request, "Artist");
+        $result = $this->CUDService->updateArtist($request, "Artist");
         return $result;
     }
 
@@ -46,9 +46,9 @@ class ArtistController extends AbstractController
      */
     public function delete(Request $request)
     {
-        //ToDo Call artistValidator
+        //ToDo Call Validator
 
-        $result = $this->artistService->deleteArtist($request, "Artist");
+        $result = $this->CUDService->deleteArtist($request, "Artist");
         return $result;
     }
 }
