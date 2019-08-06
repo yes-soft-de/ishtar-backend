@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\ArtistServiceInterface;
+use App\Service\CreateUpdateDeleteServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,7 +11,7 @@ class ArtistController extends AbstractController
 {
     private $artistService;
 
-    public function __construct(ArtistServiceInterface $artistService)
+    public function __construct(CreateUpdateDeleteServiceInterface $artistService)
     {
         $this->artistService = $artistService;
     }

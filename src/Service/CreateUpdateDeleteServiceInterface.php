@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface ArtistServiceInterface
+interface CreateUpdateDeleteServiceInterface
 {
     public function createArtist(Request $request, $entity);
 

@@ -2,19 +2,52 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\CreateUpdateDeleteServiceInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ArtTypeController extends AbstractController
+class ArtTypeController
 {
-    /**
-     * @Route("/art/type", name="art_type")
-     */
-    public function index()
+    private $CUDService;
+
+    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ArtTypeController.php',
-        ]);
+        $this->CUDService = $CUDService;
+    }
+
+    /**
+     * @Route("/createArtType", name="createArtType")
+     * @param Request $request
+     */
+    public function create(Request $request)
+    {
+        //ToDo Call artistValidator
+
+        $result = $this->CUDService->createArtist($request, "ArtType");
+        return $result;
+    }
+
+    /**
+     * @Route("/updateArtType", name="updateArtType")
+     * @param Request $request
+     */
+    public function update(Request $request)
+    {
+        //ToDo Call artistValidator
+
+        $result = $this->CUDService->updateArtist($request, "ArtType");
+        return $result;
+    }
+
+    /**
+     * @Route("/deleteArtType", name="deleteArtType")
+     * @param Request $request
+     */
+    public function delete(Request $request)
+    {
+        //ToDo Call artistValidator
+
+        $result = $this->CUDService->deleteArtist($request, "ArtType");
+        return $result;
     }
 }

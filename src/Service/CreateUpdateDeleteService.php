@@ -10,9 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class ArtistService implements ArtistServiceInterface
+class CreateUpdateDeleteService implements CreateUpdateDeleteServiceInterface
 {
     //ToDo use BaseController for response things
+    //ToDo mapping the correct response based on the entity
 
     private $manager;
     private $serializer;

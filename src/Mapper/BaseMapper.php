@@ -5,8 +5,8 @@ namespace App\Mapper;
 
 
 use App\Entity\ArtistEntity;
+use App\Entity\ArtType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\HttpFoundation\Request;
 
 class BaseMapper implements BaseMapperInterface
@@ -29,6 +29,12 @@ class BaseMapper implements BaseMapperInterface
                 $artistEntity = new ArtistEntity();
                 return $artistMapper->artistData($data, $artistEntity);
                 break;
+
+            case "ArtType":
+                $artTypeMapper = new ArtTypeMapper();
+                $artTypeEntity = new ArtType();
+                return $artTypeMapper->artTypeData($data, $artTypeEntity);
+                break;
         }
     }
 
@@ -43,6 +49,12 @@ class BaseMapper implements BaseMapperInterface
                 return $artistMapper->artistData($data,
                     $this->entityManager->getRepository(ArtistEntity::class)->findOneById($data["id"]));
                 break;
+
+            case "ArtType":
+                $artTypeMapper = new ArtTypeMapper();
+                return $artTypeMapper->artTypeData($data,
+                    $this->entityManager->getRepository(ArtType::class)->findOneById($data["id"]));
+                break;
         }
     }
 
@@ -54,6 +66,10 @@ class BaseMapper implements BaseMapperInterface
         {
             case "Artist":
                 return $this->entityManager->getRepository(ArtistEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "ArtType":
+                return $this->entityManager->getRepository(ArtType::class)->findOneById($data["id"]);
                 break;
         }
     }
