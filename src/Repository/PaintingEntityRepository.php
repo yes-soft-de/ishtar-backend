@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Painting;
+use App\Entity\PaintingEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Painting|null find($id, $lockMode = null, $lockVersion = null)
- * @method Painting|null findOneBy(array $criteria, array $orderBy = null)
- * @method Painting[]    findAll()
- * @method Painting[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PaintingEntity|null find($id, $lockMode = null, $lockVersion = null)
+ * @method PaintingEntity|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PaintingEntity[]    findAll()
+ * @method PaintingEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PaintingRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Painting::class);
+        parent::__construct($registry, PaintingEntity::class);
     }
 
     // /**
-    //  * @return Painting[] Returns an array of Painting objects
+    //  * @return PaintingEntity[] Returns an array of PaintingEntity objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class PaintingRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Painting
+    public function findOneBySomeField($value): ?PaintingEntity
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')

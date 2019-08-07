@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Video;
+use App\Entity\VideoEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Video|null find($id, $lockMode = null, $lockVersion = null)
- * @method Video|null findOneBy(array $criteria, array $orderBy = null)
- * @method Video[]    findAll()
- * @method Video[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method VideoEntity|null find($id, $lockMode = null, $lockVersion = null)
+ * @method VideoEntity|null findOneBy(array $criteria, array $orderBy = null)
+ * @method VideoEntity[]    findAll()
+ * @method VideoEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class VideoRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Video::class);
+        parent::__construct($registry, VideoEntity::class);
     }
 
     // /**
-    //  * @return Video[] Returns an array of Video objects
+    //  * @return VideoEntity[] Returns an array of VideoEntity objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class VideoRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Video
+    public function findOneBySomeField($value): ?VideoEntity
     {
         return $this->createQueryBuilder('v')
             ->andWhere('v.exampleField = :val')

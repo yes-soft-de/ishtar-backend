@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  */
-class Image
+class ImageEntity
 {
     /**
      * @ORM\Id()
@@ -27,7 +27,7 @@ class Image
     private $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\painting")
+     * @ORM\ManyToOne(targetEntity="PaintingEntity.php")
      * @ORM\JoinColumn(nullable=false)
      */
     private $painting_id;
@@ -66,12 +66,12 @@ class Image
         return $this;
     }
 
-    public function getPaintingId(): ?painting
+    public function getPaintingId(): ?PaintingEntity
     {
         return $this->painting_id;
     }
 
-    public function setPaintingId(?painting $painting_id): self
+    public function setPaintingId(?PaintingEntity $painting_id): self
     {
         $this->painting_id = $painting_id;
 
