@@ -5,7 +5,8 @@ namespace App\Mapper;
 
 
 use App\Entity\ArtistEntity;
-use App\Entity\ArtType;
+use App\Entity\ArtTypeEntity;
+use App\Entity\PantingImageEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -32,9 +33,17 @@ class BaseMapper implements BaseMapperInterface
 
             case "ArtType":
                 $artTypeMapper = new ArtTypeMapper();
-                $artTypeEntity = new ArtType();
+                $artTypeEntity = new ArtTypeEntity();
                 return $artTypeMapper->artTypeData($data, $artTypeEntity);
                 break;
+
+            case "PantingImage":
+                $pantingImageMapper = new PantingImageMapper();
+                $pantingImageEntity = new PantingImageEntity();
+                return $pantingImageMapper->PantingImageData($data, $pantingImageEntity);
+                break;
+
+
         }
     }
 
@@ -53,7 +62,13 @@ class BaseMapper implements BaseMapperInterface
             case "ArtType":
                 $artTypeMapper = new ArtTypeMapper();
                 return $artTypeMapper->artTypeData($data,
-                    $this->entityManager->getRepository(ArtType::class)->findOneById($data["id"]));
+                    $this->entityManager->getRepository(ArtTypeEntity::class)->findOneById($data["id"]));
+                break;
+
+            case "PantingImage":
+                $pantingImageMapper = new PantingImageMapper();
+                return $pantingImageMapper->PantingImageData($data,
+                    $this->entityManager->getRepository(PantingImageEntity::class)->findOneById($data["id"]));
                 break;
         }
     }
@@ -69,7 +84,11 @@ class BaseMapper implements BaseMapperInterface
                 break;
 
             case "ArtType":
-                return $this->entityManager->getRepository(ArtType::class)->findOneById($data["id"]);
+                return $this->entityManager->getRepository(ArtTypeEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "PantingImage":
+                return $this->entityManager->getRepository(PantingImageEntity::class)->findOneById($data["id"]);
                 break;
         }
     }

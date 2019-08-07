@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method PaintingEntity[]    findAll()
  * @method PaintingEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PaintingRepository extends ServiceEntityRepository
+class PaintingEntityRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

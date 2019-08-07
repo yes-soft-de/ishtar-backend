@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method PantingImageEntity[]    findAll()
  * @method PantingImageEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PantingImageRepository extends ServiceEntityRepository
+class PantingImageEntityRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -36,8 +36,7 @@ class PantingImageRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?PantingImageEntity
+    public function findOneById($value): ?PantingImageEntity
     {
         return $this->createQueryBuilder('i')
             ->andWhere('i.exampleField = :val')
@@ -46,5 +45,4 @@ class PantingImageRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
 }

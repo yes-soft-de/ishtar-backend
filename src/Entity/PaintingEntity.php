@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PaintingRepository")
+ * @ORM\Entity(repositoryClass="PaintingEntityRepository")
  */
-class Painting
+class PaintingEntity
 {
     /**
      * @ORM\Id()
@@ -27,7 +27,7 @@ class Painting
     private $artist;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ArtType")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ArtTypeEntity")
      */
     private $art_type;
 
@@ -97,12 +97,12 @@ class Painting
         return $this;
     }
 
-    public function getArtType(): ?ArtType
+    public function getArtType(): ?ArtTypeEntity
     {
         return $this->art_type;
     }
 
-    public function setArtType(?ArtType $art_type): self
+    public function setArtType(?ArtTypeEntity $art_type): self
     {
         $this->art_type = $art_type;
 

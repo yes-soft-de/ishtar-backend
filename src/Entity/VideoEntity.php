@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
+ * @ORM\Entity(repositoryClass="VideoEntityRepository")
  */
-class Video
+class VideoEntity
 {
     /**
      * @ORM\Id()
@@ -27,7 +27,7 @@ class Video
     private $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\painting")
+     * @ORM\ManyToOne(targetEntity="App\Entity\PaintingEntity")
      * @ORM\JoinColumn(nullable=false)
      */
     private $painting_id;
@@ -67,12 +67,12 @@ class Video
         return $this;
     }
 
-    public function getPaintingId(): ?painting
+    public function getPaintingId(): ?PaintingEntity
     {
         return $this->painting_id;
     }
 
-    public function setPaintingId(?painting $painting_id): self
+    public function setPaintingId(?PaintingEntity $painting_id): self
     {
         $this->painting_id = $painting_id;
 

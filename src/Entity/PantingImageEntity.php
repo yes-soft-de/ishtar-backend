@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PantingImageEntityRepository")
  */
-class ImageEntity
+class PantingImageEntity
 {
     /**
      * @ORM\Id()
@@ -27,7 +27,7 @@ class ImageEntity
     private $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="PaintingEntity.php")
+     * @ORM\ManyToOne(targetEntity="App\Entity\PaintingEntity")
      * @ORM\JoinColumn(nullable=false)
      */
     private $painting_id;
