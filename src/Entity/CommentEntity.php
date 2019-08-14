@@ -17,20 +17,20 @@ class CommentEntity
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\clientEntity")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ClientEntity")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $client_id;
+    private $client;
 
     /**
      * @ORM\Column(type="string", length=25)
      */
-    private $page_name;
+    private $pageName;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $row_num;
+    private $rowNum;
 
     /**
      * @ORM\Column(type="text")
@@ -43,47 +43,47 @@ class CommentEntity
     private $date;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
-    private $last_update;
+    private $lastEdit;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getClientId(): ?clientEntity
+    public function getClient(): ?ClientEntity
     {
-        return $this->client_id;
+        return $this->client;
     }
 
-    public function setClientId(?clientEntity $client_id): self
+    public function setClient(?ClientEntity $client): self
     {
-        $this->client_id = $client_id;
+        $this->client = $client;
 
         return $this;
     }
 
     public function getPageName(): ?string
     {
-        return $this->page_name;
+        return $this->pageName;
     }
 
-    public function setPageName(string $page_name): self
+    public function setPageName(string $pageName): self
     {
-        $this->page_name = $page_name;
+        $this->pageName = $pageName;
 
         return $this;
     }
 
     public function getRowNum(): ?int
     {
-        return $this->row_num;
+        return $this->rowNum;
     }
 
-    public function setRowNum(int $row_num): self
+    public function setRowNum(int $rowNum): self
     {
-        $this->row_num = $row_num;
+        $this->rowNum = $rowNum;
 
         return $this;
     }
@@ -112,14 +112,14 @@ class CommentEntity
         return $this;
     }
 
-    public function getLastUpdate(): ?\DateTimeInterface
+    public function getLastEdit(): ?\DateTimeInterface
     {
-        return $this->last_update;
+        return $this->lastEdit;
     }
 
-    public function setLastUpdate(?\DateTimeInterface $last_update): self
+    public function setLastEdit(\DateTimeInterface $lastEdit): self
     {
-        $this->last_update = $last_update;
+        $this->lastEdit = $lastEdit;
 
         return $this;
     }

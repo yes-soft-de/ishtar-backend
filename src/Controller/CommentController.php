@@ -1,5 +1,9 @@
 <?php
 
+
+
+
+
 namespace App\Controller;
 
 use App\Service\CreateUpdateDeleteServiceInterface;
@@ -7,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PantingImageController extends AbstractController
+class CommentController extends AbstractController
 {
     private $CUDService;
 
@@ -17,38 +21,38 @@ class PantingImageController extends AbstractController
     }
 
     /**
-     * @Route("/createPantingImage", name="createPantingImage")
+     * @Route("/createComment", name="createComment")
      * @param Request $request
      */
     public function create(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->createArtist($request, "PantingImage");
+        $result = $this->CUDService->create($request, "Comment");
         return $result;
     }
 
     /**
-     * @Route("/updatePantingImage", name="updatePantingImage")
+     * @Route("/updateComment", name="updateComment")
      * @param Request $request
      */
     public function update(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->updateArtist($request, "PantingImage");
+        $result = $this->CUDService->update($request, "Comment");
         return $result;
     }
 
     /**
-     * @Route("/deletePantingImage", name="deletePantingImage")
+     * @Route("/deleteComment", name="deleteComment")
      * @param Request $request
      */
     public function delete(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->deleteArtist($request, "PantingImage");
+        $result = $this->CUDService->delete($request, "Comment");
         return $result;
     }
 }

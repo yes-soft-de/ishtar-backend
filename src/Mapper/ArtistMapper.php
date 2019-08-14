@@ -10,6 +10,7 @@ class ArtistMapper
 {
     public function artistData($data, ArtistEntity $artist)
     {
+
         $name        = $data["name"];
         $nationality = $data["nationality"];
         $residence   = $data["residence"];

@@ -17,16 +17,16 @@ class PaintingTransactionEntity
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\paintingEntity")
+     * @ORM\ManyToOne(targetEntity="App\Entity\PaintingEntity")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $painting_id;
+    private $painting;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\clientEntity")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ClientEntity")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $client_id;
+    private $client;
 
     /**
      * @ORM\Column(type="datetime")
@@ -34,7 +34,7 @@ class PaintingTransactionEntity
     private $date;
 
     /**
-     * @ORM\Column(type="decimal", precision=8, scale=5)
+     * @ORM\Column(type="decimal", precision=10, scale=0)
      */
     private $price;
 
@@ -43,26 +43,26 @@ class PaintingTransactionEntity
         return $this->id;
     }
 
-    public function getPaintingId(): ?paintingEntity
+    public function getPainting(): ?PaintingEntity
     {
-        return $this->painting_id;
+        return $this->painting;
     }
 
-    public function setPaintingId(?paintingEntity $painting_id): self
+    public function setPainting(?PaintingEntity $painting): self
     {
-        $this->painting_id = $painting_id;
+        $this->painting = $painting;
 
         return $this;
     }
 
-    public function getClientId(): ?clientEntity
+    public function getClient(): ?ClientEntity
     {
-        return $this->client_id;
+        return $this->client;
     }
 
-    public function setClientId(?clientEntity $client_id): self
+    public function setClient(?ClientEntity $client): self
     {
-        $this->client_id = $client_id;
+        $this->client = $client;
 
         return $this;
     }

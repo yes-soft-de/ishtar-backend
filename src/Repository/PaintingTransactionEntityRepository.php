@@ -22,11 +22,11 @@ class PaintingTransactionEntityRepository extends ServiceEntityRepository
     // /**
     //  * @return PaintingTransactionEntity[] Returns an array of PaintingTransactionEntity objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findOneById($value)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
+            ->andWhere('p.id = :val')
             ->setParameter('val', $value)
             ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
@@ -34,7 +34,7 @@ class PaintingTransactionEntityRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?PaintingTransactionEntity

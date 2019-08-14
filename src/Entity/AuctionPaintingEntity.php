@@ -17,62 +17,76 @@ class AuctionPaintingEntity
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\paintingEntity")
+     * @ORM\OneToOne(targetEntity="App\Entity\PaintingEntity", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $painting_id;
+    private $painting;
 
     /**
-     * @ORM\Column(type="decimal", precision=8, scale=5)
+     * @ORM\Column(type="decimal", precision=10, scale=0)
      */
-    private $start_price;
-
-
+    private $startPrice;
 
     /**
-     * @ORM\Column(type="decimal", precision=8, scale=5)
+     * @ORM\Column(type="decimal", precision=10, scale=0)
      */
-    private $final_price;
+    private $finalPrice;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\AuctionEntity", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $auction;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPaintingId(): ?paintingEntity
+    public function getPainting(): ?PaintingEntity
     {
-        return $this->painting_id;
+        return $this->painting;
     }
 
-    public function setPaintingId(?paintingEntity $painting_id): self
+    public function setPainting(PaintingEntity $painting): self
     {
-        $this->painting_id = $painting_id;
+        $this->painting = $painting;
 
         return $this;
     }
 
     public function getStartPrice()
     {
-        return $this->start_price;
+        return $this->startPrice;
     }
 
-    public function setStartPrice($start_price): self
+    public function setStartPrice($startPrice): self
     {
-        $this->start_price = $start_price;
+        $this->startPrice = $startPrice;
 
         return $this;
     }
 
-
-
     public function getFinalPrice()
     {
-        return $this->final_price;
+        return $this->finalPrice;
     }
 
-    public function setFinalPrice($final_price): self
+    public function setFinalPrice($finalPrice): self
     {
-        $this->final_price = $final_price;
+        $this->finalPrice = $finalPrice;
+
+        return $this;
+    }
+
+    public function getAuction(): ?AuctionEntity
+    {
+        return $this->auction;
+    }
+
+    public function setAuction(AuctionEntity $auction): self
+    {
+        $this->auction = $auction;
 
         return $this;
     }

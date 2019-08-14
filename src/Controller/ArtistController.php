@@ -24,7 +24,7 @@ class ArtistController extends AbstractController
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->createArtist($request, "Artist");
+        $result = $this->CUDService->create($request, "Artist");
         return $result;
     }
 
@@ -36,7 +36,7 @@ class ArtistController extends AbstractController
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->updateArtist($request, "Artist");
+        $result = $this->CUDService->update($request, "Artist");
         return $result;
     }
 
@@ -48,7 +48,7 @@ class ArtistController extends AbstractController
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->deleteArtist($request, "Artist");
+        $result = $this->CUDService->delete($request, "Artist");
         return $result;
     }
 }

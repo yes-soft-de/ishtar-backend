@@ -17,42 +17,42 @@ class ArtistArtTypeEntity
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\artistEntity")
+     * @ORM\OneToOne(targetEntity="App\Entity\ArtistEntity", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $artist_id;
+    private $artist;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\arttypeEntity")
+     * @ORM\OneToOne(targetEntity="App\Entity\ArtTypeEntity", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $art_type_id;
+    private $artType;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getArtistId(): ?artistEntity
+    public function getArtist(): ?ArtistEntity
     {
-        return $this->artist_id;
+        return $this->artist;
     }
 
-    public function setArtistId(?artistEntity $artist_id): self
+    public function setArtist(ArtistEntity $artist): self
     {
-        $this->artist_id = $artist_id;
+        $this->artist = $artist;
 
         return $this;
     }
 
-    public function getArtTypeId(): ?arttypeEntity
+    public function getArtType(): ?ArtTypeEntity
     {
-        return $this->art_type_id;
+        return $this->artType;
     }
 
-    public function setArtTypeId(?arttypeEntity $art_type_id): self
+    public function setArtType(ArtTypeEntity $artType): self
     {
-        $this->art_type_id = $art_type_id;
+        $this->artType = $artType;
 
         return $this;
     }

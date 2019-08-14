@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ArtTypeEntity[]    findAll()
  * @method ArtTypeEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ArtTypeEntityRepository extends ServiceEntityRepository
+class ArtTypeRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -20,7 +20,7 @@ class ArtTypeEntityRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return ArtTypeEntity[] Returns an array of ArtTypeEntity objects
+    //  * @return ArtType[] Returns an array of ArtType objects
     //  */
     /*
     public function findByExampleField($value)

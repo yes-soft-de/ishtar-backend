@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="PaintingEntityRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PaintingEntityRepository")
  */
 class PaintingEntity
 {
@@ -22,14 +22,16 @@ class PaintingEntity
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ArtistEntity")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ArtistEntity", inversedBy="painting")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $artist;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ArtTypeEntity")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ArtTypeEntity", inversedBy="painting")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $art_type;
+    private $artType;
 
     /**
      * @ORM\Column(type="boolean")
@@ -39,15 +41,15 @@ class PaintingEntity
     /**
      * @ORM\Column(type="string", length=45)
      */
-    private $dimensions;
+    private $deminsions;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="string", length=45)
      */
-    private $colors_type;
+    private $colorsType;
 
     /**
-     * @ORM\Column(type="decimal", precision=8, scale=6)
+     * @ORM\Column(type="decimal", precision=10, scale=0)
      */
     private $price;
 
@@ -57,16 +59,9 @@ class PaintingEntity
     private $story;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
-    private $adding_date;
-
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\artistentity")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $relation;
+    private $addingDate;
 
     public function getId(): ?int
     {
@@ -99,12 +94,12 @@ class PaintingEntity
 
     public function getArtType(): ?ArtTypeEntity
     {
-        return $this->art_type;
+        return $this->artType;
     }
 
-    public function setArtType(?ArtTypeEntity $art_type): self
+    public function setArtType(?ArtTypeEntity $artType): self
     {
-        $this->art_type = $art_type;
+        $this->artType = $artType;
 
         return $this;
     }
@@ -121,26 +116,26 @@ class PaintingEntity
         return $this;
     }
 
-    public function getDimensions(): ?string
+    public function getDeminsions(): ?string
     {
-        return $this->dimensions;
+        return $this->deminsions;
     }
 
-    public function setDimensions(string $dimensions): self
+    public function setDeminsions(string $deminsions): self
     {
-        $this->dimensions = $dimensions;
+        $this->deminsions = $deminsions;
 
         return $this;
     }
 
     public function getColorsType(): ?string
     {
-        return $this->colors_type;
+        return $this->colorsType;
     }
 
-    public function setColorsType(?string $colors_type): self
+    public function setColorsType(string $colorsType): self
     {
-        $this->colors_type = $colors_type;
+        $this->colorsType = $colorsType;
 
         return $this;
     }
@@ -171,25 +166,12 @@ class PaintingEntity
 
     public function getAddingDate(): ?\DateTimeInterface
     {
-        return $this->adding_date;
+        return $this->addingDate;
     }
 
-    public function setAddingDate(?\DateTimeInterface $adding_date): self
+    public function setAddingDate(\DateTimeInterface $addingDate): self
     {
-        $this->adding_date = $adding_date;
-
-        return $this;
-    }
-
-
-    public function getRelation(): ?artistentity
-    {
-        return $this->relation;
-    }
-
-    public function setRelation(?artistentity $relation): self
-    {
-        $this->relation = $relation;
+        $this->addingDate = $addingDate;
 
         return $this;
     }

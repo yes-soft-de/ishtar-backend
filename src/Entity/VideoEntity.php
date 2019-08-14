@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="VideoEntityRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\VideoEntityRepository")
  */
 class VideoEntity
 {
@@ -17,6 +17,17 @@ class VideoEntity
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\PaintingEntity")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $painting;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ArtistEntity")
+     */
+    private $artist;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $url;
@@ -24,23 +35,35 @@ class VideoEntity
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PaintingEntity")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $painting_id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\artistEntity")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $artist_id;
+    private $addingDate;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getPainting(): ?PaintingEntity
+    {
+        return $this->painting;
+    }
+
+    public function setPainting(?PaintingEntity $painting): self
+    {
+        $this->painting = $painting;
+
+        return $this;
+    }
+
+    public function getArtist(): ?ArtistEntity
+    {
+        return $this->artist;
+    }
+
+    public function setArtist(?ArtistEntity $artist): self
+    {
+        $this->artist = $artist;
+
+        return $this;
     }
 
     public function getUrl(): ?string
@@ -55,38 +78,14 @@ class VideoEntity
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getAddingDate(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->addingDate;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setAddingDate(\DateTimeInterface $addingDate): self
     {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getPaintingId(): ?PaintingEntity
-    {
-        return $this->painting_id;
-    }
-
-    public function setPaintingId(?PaintingEntity $painting_id): self
-    {
-        $this->painting_id = $painting_id;
-
-        return $this;
-    }
-
-    public function getArtistId(): ?artistEntity
-    {
-        return $this->artist_id;
-    }
-
-    public function setArtistId(?artistEntity $artist_id): self
-    {
-        $this->artist_id = $artist_id;
+        $this->addingDate = $addingDate;
 
         return $this;
     }

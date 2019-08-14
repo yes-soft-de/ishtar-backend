@@ -23,7 +23,7 @@ class ArtTypeController
     {
         //ToDo Call artistValidator
 
-        $result = $this->CUDService->createArtist($request, "ArtType");
+        $result = $this->CUDService->create($request, "ArtType");
         return $result;
     }
 
@@ -35,7 +35,7 @@ class ArtTypeController
     {
         //ToDo Call artistValidator
 
-        $result = $this->CUDService->updateArtist($request, "ArtType");
+        $result = $this->CUDService->update($request, "ArtType");
         return $result;
     }
 
@@ -47,7 +47,7 @@ class ArtTypeController
     {
         //ToDo Call artistValidator
 
-        $result = $this->CUDService->deleteArtist($request, "ArtType");
+        $result = $this->CUDService->delete($request, "ArtType");
         return $result;
     }
 }

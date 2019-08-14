@@ -17,38 +17,38 @@ class VideoController extends AbstractController
     }
 
     /**
-     * @Route("/createArtist", name="createArtist")
+     * @Route("/createVideo", name="createVideo")
      * @param Request $request
      */
     public function create(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->createArtist($request, "Artist");
+        $result = $this->CUDService->create($request, "Video");
         return $result;
     }
 
     /**
-     * @Route("/updateArtist", name="updateArtist")
+     * @Route("/updateVideo", name="updateVideo")
      * @param Request $request
      */
     public function update(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->updateArtist($request, "Artist");
+        $result = $this->CUDService->update($request, "Video");
         return $result;
     }
 
     /**
-     * @Route("/deleteArtist", name="deleteArtist")
+     * @Route("/deleteVideo", name="deleteVideo")
      * @param Request $request
      */
     public function delete(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->deleteArtist($request, "Artist");
+        $result = $this->CUDService->delete($request, "Video");
         return $result;
     }
 }

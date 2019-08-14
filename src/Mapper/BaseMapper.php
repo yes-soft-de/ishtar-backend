@@ -6,9 +6,20 @@ namespace App\Mapper;
 
 use App\Entity\ArtistEntity;
 use App\Entity\ArtTypeEntity;
-use App\Entity\PantingImageEntity;
+use App\Entity\ClientEntity;
+use App\Entity\PaintingEntity;
+use App\Entity\InteractionEntity;
+use App\Entity\AuctionEntity;
+use App\Entity\AuctionPaintingEntity;
+use App\Entity\ArtistArtTypeEntity;
+use App\Entity\PaintingTransactionEntity;
+use App\Entity\ImageEntity;
+use App\Entity\VideoEntity;
+use App\Entity\ClapEntity;
+use App\Entity\CommentEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\ArtistEntityRepository;
 
 class BaseMapper implements BaseMapperInterface
 {
@@ -22,7 +33,7 @@ class BaseMapper implements BaseMapperInterface
     public function createMapper(Request $request, $entity)
     {
         $data = json_decode($request->getContent(), true);
-
+        $data1=json_decode(true);
         switch ($entity)
         {
             case "Artist":
@@ -37,13 +48,72 @@ class BaseMapper implements BaseMapperInterface
                 return $artTypeMapper->artTypeData($data, $artTypeEntity);
                 break;
 
-            case "PantingImage":
-                $pantingImageMapper = new PantingImageMapper();
-                $pantingImageEntity = new PantingImageEntity();
-                return $pantingImageMapper->PantingImageData($data, $pantingImageEntity);
+            case "Painting":
+
+                $paintingMapper = new PaintingMapper();
+                $paintingEntity = new PaintingEntity();
+                return $paintingMapper->PaintingData($data, $paintingEntity,$this->entityManager);
                 break;
 
+            case "Client":
+                $clientMapper = new ClientMapper();
+                $clientEntity = new ClientEntity();
+                return $clientMapper->clientData($data, $clientEntity);
+                break;
 
+                case "Interaction":
+                $interactionMapper = new InteractionMapper();
+                $interactionEntity = new InteractionEntity();
+                return $interactionMapper->interactionData($data,$interactionEntity,$this->entityManager);
+                break;
+
+            case "Auction":
+                $auctionMapper = new AuctionMapper();
+                $auctionEntity = new AuctionEntity();
+                return $auctionMapper->auctionData($data, $auctionEntity);
+                break;
+
+            case "AuctionPainting":
+                $auctionPaintingMapper = new AuctionPaintingMapper();
+                $auctionPaintingEntity = new AuctionPaintingEntity();
+                return $auctionPaintingMapper->auctionPaintingData($data, $auctionPaintingEntity,$this->entityManager);
+                break;
+
+                case "ArtistArtType":
+                $artistArtTypeMapper = new ArtistArtTypeMapper();
+                $artistArtTypeEntity = new ArtistArtTypeEntity();
+                return $artistArtTypeMapper->artistArtTypeData($data, $artistArtTypeEntity,$this->entityManager);
+                break;
+
+            case "PaintingTransaction":
+                $paintingTransactionMapper = new PaintingTransactionMapper();
+                $paintingTransactionEntity = new PaintingTransactionEntity();
+                return $paintingTransactionMapper->paintingTransactionData($data,$paintingTransactionEntity,$this->entityManager);
+                break;
+
+            case "Image":
+                $imageMapper = new ImageMapper();
+                $imageEntity = new ImageEntity();
+                return $imageMapper->ImageData($data, $imageEntity,$this->entityManager);
+                break;
+
+            case "Video":
+                $videoMapper = new VideoMapper();
+                $videoEntity = new VideoEntity();
+                return $videoMapper->VideoData($data, $videoEntity,$this->entityManager);
+                break;
+
+            case "Clap":
+                $clapMapper = new ClapMapper();
+                $clapEntity = new ClapEntity();
+                return $clapMapper->ClapData($data, $clapEntity,$this->entityManager);
+                break;
+
+            case "Comment":
+                $commentMapper = new CommentMapper();
+                $commentEntity = new CommentEntity();
+                return $commentMapper->CommentData($data, $commentEntity,$this->entityManager);
+                break;
         }
     }
 
@@ -64,12 +134,6 @@ class BaseMapper implements BaseMapperInterface
                 return $artTypeMapper->artTypeData($data,
                     $this->entityManager->getRepository(ArtTypeEntity::class)->findOneById($data["id"]));
                 break;
-
-            case "PantingImage":
-                $pantingImageMapper = new PantingImageMapper();
-                return $pantingImageMapper->PantingImageData($data,
-                    $this->entityManager->getRepository(PantingImageEntity::class)->findOneById($data["id"]));
-                break;
         }
     }
 
@@ -85,10 +149,6 @@ class BaseMapper implements BaseMapperInterface
 
             case "ArtType":
                 return $this->entityManager->getRepository(ArtTypeEntity::class)->findOneById($data["id"]);
-                break;
-
-            case "PantingImage":
-                return $this->entityManager->getRepository(PantingImageEntity::class)->findOneById($data["id"]);
                 break;
         }
     }

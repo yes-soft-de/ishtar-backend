@@ -1,5 +1,9 @@
 <?php
 
+
+
+
+
 namespace App\Controller;
 
 use App\Service\CreateUpdateDeleteServiceInterface;
@@ -7,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PantingController extends AbstractController
+class PaintingTransactionController extends AbstractController
 {
     private $CUDService;
 
@@ -17,38 +21,38 @@ class PantingController extends AbstractController
     }
 
     /**
-     * @Route("/createArtist", name="createArtist")
+     * @Route("/createPaintingTransaction", name="createPaintingTransaction")
      * @param Request $request
      */
     public function create(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->createArtist($request, "Artist");
+        $result = $this->CUDService->create($request, "PaintingTransaction");
         return $result;
     }
 
     /**
-     * @Route("/updateArtist", name="updateArtist")
+     * @Route("/updatePaintingTransaction", name="updatePaintingTransaction")
      * @param Request $request
      */
     public function update(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->updateArtist($request, "Artist");
+        $result = $this->CUDService->update($request, "PaintingTransaction");
         return $result;
     }
 
     /**
-     * @Route("/deleteArtist", name="deleteArtist")
+     * @Route("/deletePaintingTransaction", name="deletePaintingTransaction")
      * @param Request $request
      */
     public function delete(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->deleteArtist($request, "Artist");
+        $result = $this->CUDService->delete($request, "PaintingTransaction");
         return $result;
     }
 }

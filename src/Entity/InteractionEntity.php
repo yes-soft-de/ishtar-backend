@@ -17,75 +17,75 @@ class InteractionEntity
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\clientEntity")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ClientEntity")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $client_id;
+    private $client;
 
     /**
      * @ORM\Column(type="string", length=25)
      */
-    private $page_name;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $row_num;
+    private $pageName;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $interaction_type;
+    private $interactionType;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $rowNum;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getClientId(): ?clientEntity
+    public function getClient(): ?ClientEntity
     {
-        return $this->client_id;
+        return $this->client;
     }
 
-    public function setClientId(?clientEntity $client_id): self
+    public function setClient(?ClientEntity $client): self
     {
-        $this->client_id = $client_id;
+        $this->client = $client;
 
         return $this;
     }
 
     public function getPageName(): ?string
     {
-        return $this->page_name;
+        return $this->pageName;
     }
 
-    public function setPageName(string $page_name): self
+    public function setPageName(string $pageName): self
     {
-        $this->page_name = $page_name;
-
-        return $this;
-    }
-
-    public function getRowNum(): ?int
-    {
-        return $this->row_num;
-    }
-
-    public function setRowNum(int $row_num): self
-    {
-        $this->row_num = $row_num;
+        $this->pageName = $pageName;
 
         return $this;
     }
 
     public function getInteractionType(): ?string
     {
-        return $this->interaction_type;
+        return $this->interactionType;
     }
 
-    public function setInteractionType(string $interaction_type): self
+    public function setInteractionType(string $interactionType): self
     {
-        $this->interaction_type = $interaction_type;
+        $this->interactionType = $interactionType;
+
+        return $this;
+    }
+
+    public function getRowNum(): ?int
+    {
+        return $this->rowNum;
+    }
+
+    public function setRowNum(int $rowNum): self
+    {
+        $this->rowNum = $rowNum;
 
         return $this;
     }

@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ArtTypeEntityRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ArtTypeRepository")
  */
 class ArtTypeEntity
 {
@@ -40,6 +42,7 @@ class ArtTypeEntity
      * @ORM\Column(type="string", length=45, nullable=true)
      */
     private $video;
+
 
     public function getId(): ?int
     {
@@ -105,4 +108,6 @@ class ArtTypeEntity
 
         return $this;
     }
+
+
 }

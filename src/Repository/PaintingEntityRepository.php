@@ -22,7 +22,7 @@ class PaintingEntityRepository extends ServiceEntityRepository
     // /**
     //  * @return PaintingEntity[] Returns an array of PaintingEntity objects
     //  */
-    /*
+
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('p')
@@ -34,17 +34,17 @@ class PaintingEntityRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?PaintingEntity
+
+
+    public function findOneById($value): ?PaintingEntity
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
+            ->andWhere('p.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }

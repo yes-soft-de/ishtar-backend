@@ -24,7 +24,7 @@ class ClientEntity
     /**
      * @ORM\Column(type="string", length=45)
      */
-    private $user_name;
+    private $userName;
 
     /**
      * @ORM\Column(type="string", length=32)
@@ -55,12 +55,12 @@ class ClientEntity
 
     public function getUserName(): ?string
     {
-        return $this->user_name;
+        return $this->userName;
     }
 
-    public function setUserName(string $user_name): self
+    public function setUserName(string $userName): self
     {
-        $this->user_name = $user_name;
+        $this->userName = $userName;
 
         return $this;
     }

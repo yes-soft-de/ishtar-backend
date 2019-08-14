@@ -36,15 +36,12 @@ class VideoEntityRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?VideoEntity
+    public function findOneById($value): ?VideoEntity
     {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.id =:val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
 }
