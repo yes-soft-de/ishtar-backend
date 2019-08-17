@@ -114,6 +114,8 @@ class BaseMapper implements BaseMapperInterface
                 $commentEntity = new CommentEntity();
                 return $commentMapper->CommentData($data, $commentEntity,$this->entityManager);
                 break;
+
+
         }
     }
 
@@ -134,6 +136,74 @@ class BaseMapper implements BaseMapperInterface
                 return $artTypeMapper->artTypeData($data,
                     $this->entityManager->getRepository(ArtTypeEntity::class)->findOneById($data["id"]));
                 break;
+
+            case "Painting":
+                $paintingMapper = new PaintingMapper();
+                return $paintingMapper->paintingData($data,
+                    $this->entityManager->getRepository(PaintingEntity::class)->findOneById($data["id"]),$this->entityManager);
+                break;
+
+            case "Client":
+                $clientMapper = new ClientMapper();
+                return $clientMapper->clientData($data,
+                    $this->entityManager->getRepository(ClientEntity::class)->findOneById($data["id"]));
+                break;
+
+            case "Interaction":
+                $interactionMapper = new InteractionMapper();
+                return $interactionMapper->interactionData($data,
+                    $this->entityManager->getRepository(InteractionEntity::class)->findOneById($data["id"]),$this->entityManager);
+                break;
+
+            case "Auction":
+                $auctionMapper = new AuctionMapper();
+                return $auctionMapper->auctionData($data,
+                    $this->entityManager->getRepository(AuctionEntity::class)->findOneById($data["id"]));
+                break;
+
+            case "AuctionPainting":
+                $auctionPaintingMapper = new AuctionPaintingMapper();
+                return $auctionPaintingMapper->auctionPaintingData($data,
+                    $this->entityManager->getRepository(AuctionPaintingEntity::class)->findOneById($data["id"]),$this->entityManager);
+                break;
+
+            case "ArtistArtType":
+                $artistArtTypeMapper = new ArtistArtTypeMapper();
+                return $artistArtTypeMapper->artistArttypeData($data,
+                    $this->entityManager->getRepository(ArtistArtTypeEntity::class)->findOneById($data["id"]),$this->entityManager);
+                break;
+
+            case "PaintingTransaction":
+                $paintingTransactionMapper = new PaintingTransactionMapper();
+                return $paintingTransactionMapper->paintingTransactionData($data,
+                    $this->entityManager->getRepository(PaintingTransactionEntity::class)->findOneById($data["id"]),$this->entityManager);
+                break;
+
+            case "Image":
+                $imageMapper = new ImageMapper();
+                return $imageMapper->ImageData($data,
+                    $this->entityManager->getRepository(ImageEntity::class)->findOneById($data["id"]),$this->entityManager);
+                break;
+
+            case "Video":
+                $videoMapper = new VideoMapper();
+                return $videoMapper->VideoData($data,
+                    $this->entityManager->getRepository(VideoEntity::class)->findOneById($data["id"]),$this->entityManager);
+                break;
+
+            case "Clap":
+                $clapMapper = new ClapMapper();
+                return $clapMapper->ClapData($data,
+                    $this->entityManager->getRepository(ClapEntity::class)->findOneById($data["id"]),$this->entityManager);
+                break;
+
+            case "Comment":
+                $commentMapper = new CommentMapper();
+                return $commentMapper->CommentData($data,
+                    $this->entityManager->getRepository(CommentEntity::class)->findOneById($data["id"]),$this->entityManager);
+                break;
+
+
         }
     }
 
@@ -149,6 +219,50 @@ class BaseMapper implements BaseMapperInterface
 
             case "ArtType":
                 return $this->entityManager->getRepository(ArtTypeEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "Painting":
+                return $this->entityManager->getRepository(PaintingEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "Client":
+                return $this->entityManager->getRepository(ClientEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "Interaction":
+                return $this->entityManager->getRepository(InteractionEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "Auction":
+                return $this->entityManager->getRepository(AuctionEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "AuctionPainting":
+                return $this->entityManager->getRepository(AuctionPaintingEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "ArtistArtType":
+                return $this->entityManager->getRepository(ArtistArtTypeEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "PaintingTransaction":
+                return $this->entityManager->getRepository(PaintingTransactionEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "Image":
+                return $this->entityManager->getRepository(ImageEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "Video":
+                return $this->entityManager->getRepository(VideoEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "Clap":
+                return $this->entityManager->getRepository(ClapEntity::class)->findOneById($data["id"]);
+                break;
+
+            case "Comment":
+                return $this->entityManager->getRepository(CommentEntity::class)->findOneById($data["id"]);
                 break;
         }
     }
