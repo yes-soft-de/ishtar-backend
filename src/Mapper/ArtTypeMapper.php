@@ -4,11 +4,11 @@
 namespace App\Mapper;
 
 
-use App\Entity\ArtType;
+use App\Entity\ArtTypeEntity;
 
 class ArtTypeMapper
 {
-    public function artTypeData($data, ArtType $artType)
+    public function artTypeData($data, ArtTypeEntity $artType)
     {
         $name    = $data["name"];
         $history = $data["history"];

@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\ArtTypeEntity;
+use App\Entity\ArtistArtTypeEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method ArtTypeEntity|null find($id, $lockMode = null, $lockVersion = null)
- * @method ArtTypeEntity|null findOneBy(array $criteria, array $orderBy = null)
- * @method ArtTypeEntity[]    findAll()
- * @method ArtTypeEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ArtistArtTypeEntity|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ArtistArtTypeEntity|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ArtistArtTypeEntity[]    findAll()
+ * @method ArtistArtTypeEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ArtTypeRepository extends ServiceEntityRepository
+class ArtistArtTypeEntityRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, ArtTypeEntity::class);
+        parent::__construct($registry, ArtistArtTypeEntity::class);
     }
 
     // /**
-    //  * @return ArtType[] Returns an array of ArtType objects
+    //  * @return ArtistArtTypeEntity[] Returns an array of ArtistArtTypeEntity objects
     //  */
     /*
     public function findByExampleField($value)
@@ -36,13 +36,12 @@ class ArtTypeRepository extends ServiceEntityRepository
     }
     */
 
-    public function findOneById($value): ?ArtTypeEntity
+    public function findOneById($value): ?ArtistArtTypeEntity
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.id = :val')
+            ->andWhere('a.id =:val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-            ;
+            ->getOneOrNullResult();
     }
 }

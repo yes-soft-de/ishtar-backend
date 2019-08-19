@@ -24,27 +24,27 @@ class CreateUpdateDeleteService implements CreateUpdateDeleteServiceInterface
         $this->serializer = $serializer;
     }
 
-    public function createArtist(Request $request, $entity)
+    public function create(Request $request, $entity)
     {
         $result = $this->manager->create($request, $entity);
 
         return $this->response($result, "Created");
     }
 
-    public function updateArtist(Request $request, $entity)
+    public function update(Request $request, $entity)
     {
         $result = $this->manager->update($request, $entity);
 
         return $this->response($result, "Updated");
     }
 
-    public function deleteArtist(Request $request, $entity)
+    public function delete(Request $request, $entity)
     {
         $this->manager->delete($request, $entity);
 
         $response = new jsonResponse([
                 "status_code" => "200",
-                "msg" => "Artist deleted Successfully."
+                "msg" => "  deleted Successfully."
             ]
             , Response::HTTP_OK);
 
@@ -59,7 +59,7 @@ class CreateUpdateDeleteService implements CreateUpdateDeleteServiceInterface
 
         $response = new jsonResponse([
                 "status_code" => "200",
-                "msg" => "Artist ".$status."Successfully.",
+                "msg" => "  ".$status."Successfully.",
                 "artist" => json_encode($result)
             ]
             , Response::HTTP_OK);

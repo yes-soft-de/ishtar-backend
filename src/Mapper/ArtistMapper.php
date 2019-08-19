@@ -6,7 +6,7 @@ use App\Entity\ArtistEntity;
 use DateTime;
 use Exception;
 
-class ArtistMapper implements ArtistMapperInterface
+class ArtistMapper
 {
     public function artistData($data, ArtistEntity $artist)
     {
