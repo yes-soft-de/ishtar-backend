@@ -2,41 +2,32 @@
 
 namespace App\Controller;
 
+use App\Entity\ArtTypeEntity;
+use App\Service\CreateUpdateDeleteServiceInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class BaseController extends AbstractController
 {
-    //ToDo not using variables in controller
-
+    private $serializer;
+    public $CUDService;
     /**
-     * @var integer HTTP status code - 200 (OK) by default
+     * @var EntityManagerInterface
      */
-    protected $statusCode = 200;
+    private $em;
 
-    /**
-     * Gets the value of statusCode.
-     *
-     * @return integer
-     */
-    public function getStatusCode()
+    public function __construct(CreateUpdateDeleteServiceInterface $CUDService, SerializerInterface $serializer, EntityManagerInterface $em)
     {
-        return $this->statusCode;
+        $this->serializer = $serializer;
+        $this->CUDService = $CUDService;
+        $this->em = $em;
     }
 
-    /**
-     * Sets the value of statusCode.
-     *
-     * @param integer $statusCode the status code
-     *
-     * @return self
-     */
-    protected function setStatusCode($statusCode)
-    {
-        $this->statusCode = $statusCode;
-
-        return $this;
-    }
+    const STATE_OK = 200;
+    const CREATE = "created";
 
     /**
      * Returns a JSON response
@@ -48,7 +39,7 @@ class BaseController extends AbstractController
      */
     public function respond($data, $headers = [])
     {
-        return new JsonResponse($data, $this->getStatusCode(), $headers);
+        return new JsonResponse($data, self::STATE_OK, $headers);
     }
 
     /**
@@ -78,5 +69,21 @@ class BaseController extends AbstractController
     public function respondUnauthorized($message = 'Not authorized!')
     {
         return $this->setStatusCode(401)->respondWithErrors($message);
+    }
+
+    public function response($result, $status) :jsonResponse
+    {
+        $result =  $this->serializer->serialize($result, "json");
+
+        $response = new jsonResponse([
+                "status_code" => "200",
+                "msg" =>$status. " "."Successfully.",
+                "Data" => json_decode($result)
+            ]
+            , Response::HTTP_OK);
+
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
     }
 }

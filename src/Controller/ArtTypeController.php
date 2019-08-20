@@ -3,28 +3,34 @@
 namespace App\Controller;
 
 use App\Service\CreateUpdateDeleteServiceInterface;
+use App\Validator\ArtTypeValidate;
+use App\Validator\ArtTypeValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ArtTypeController
+class ArtTypeController extends BaseController
 {
-    private $CUDService;
-
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
-    {
-        $this->CUDService = $CUDService;
-    }
-
     /**
      * @Route("/createArtType", name="createArtType")
      * @param Request $request
+     * @return
      */
-    public function create(Request $request)
+    public function create(Request $request, ArtTypeValidateInterface $artTypeValidate)
     {
-        //ToDo Call artistValidator
+        //Validation
+        $validateResult = $artTypeValidate->artTypeValidator($request, 'create');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
+        //
 
         $result = $this->CUDService->create($request, "ArtType");
-        return $result;
+        return $this->response($result, self::CREATE);
     }
 
     /**
@@ -36,6 +42,7 @@ class ArtTypeController
         //ToDo Call artistValidator
 
         $result = $this->CUDService->update($request, "ArtType");
+
         return $result;
     }
 
