@@ -3,7 +3,6 @@
 
 namespace App\Service;
 
-
 use App\Manager\CreateUpdateDeleteManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,8 +11,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class CreateUpdateDeleteService implements CreateUpdateDeleteServiceInterface
 {
-    //ToDo use BaseController for response things
-    //ToDo mapping the correct response based on the entity
 
     private $manager;
     private $serializer;
@@ -26,9 +23,9 @@ class CreateUpdateDeleteService implements CreateUpdateDeleteServiceInterface
 
     public function create(Request $request, $entity)
     {
-        $result = $this->manager->create($request, $entity);
+        return $result = $this->manager->create($request, $entity);
 
-        return $this->response($result, "Created");
+        //return $this->response($result, "Created");
     }
 
     public function update(Request $request, $entity)
@@ -38,10 +35,12 @@ class CreateUpdateDeleteService implements CreateUpdateDeleteServiceInterface
         return $this->response($result, "Updated");
     }
 
+
     public function delete(Request $request, $entity)
     {
         $this->manager->delete($request, $entity);
 
+        //Todo move this response to base controller and call it from here
         $response = new jsonResponse([
                 "status_code" => "200",
                 "msg" => "  deleted Successfully."
@@ -53,6 +52,7 @@ class CreateUpdateDeleteService implements CreateUpdateDeleteServiceInterface
         return $response;
     }
 
+    //ToDo we do not need this function any more it has been replaced by using baseController
     public function response($result, $status) :jsonResponse
     {
         $result =  $this->serializer->serialize($result, "json");

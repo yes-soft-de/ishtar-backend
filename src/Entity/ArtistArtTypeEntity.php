@@ -23,7 +23,7 @@ class ArtistArtTypeEntity
     private $artist;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ArtTypeEntity", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="ArtTypeEntity", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $artType;

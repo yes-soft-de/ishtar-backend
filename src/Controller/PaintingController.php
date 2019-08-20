@@ -3,52 +3,70 @@
 namespace App\Controller;
 
 use App\Service\CreateUpdateDeleteServiceInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Validator\PaintingValidate;
+use App\Validator\PaintingValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PaintingController extends AbstractController
+class PaintingController extends BaseController
 {
-    private $CUDService;
-
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
-    {
-        $this->CUDService = $CUDService;
-    }
-
     /**
      * @Route("/createPainting", name="createPainting")
      * @param Request $request
+     * @return
      */
-    public function create(Request $request)
+    public function create(Request $request, PaintingValidateInterface $paintingValidate)
     {
-        //ToDo Call Validator
+        //Validation
+        $validateResult = $paintingValidate->paintingValidator($request, 'create');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
+        //
 
         $result = $this->CUDService->create($request, "Painting");
-        return $result;
+        return $this->response($result, self::CREATE);
     }
 
     /**
      * @Route("/updatePainting", name="updatePainting")
      * @param Request $request
+     * @return
      */
-    public function update(Request $request)
+    public function update(Request $request, PaintingValidateInterface $paintingValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $paintingValidate->paintingValidator($request, 'update');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->update($request, "Painting");
-        return $result;
+        return $this->response($result, self::UPDATE);
     }
 
     /**
      * @Route("/deletePainting", name="deletePainting")
      * @param Request $request
+     * @return
      */
-    public function delete(Request $request)
+    public function delete(Request $request, PaintingValidateInterface $paintingValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $paintingValidate->paintingValidator($request, 'delete');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->delete($request, "Painting");
-        return $result;
+        return $this->response($result, self::DELETE);
+
     }
 }

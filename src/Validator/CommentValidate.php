@@ -5,11 +5,14 @@ namespace App\Validator;
 
 
 use App\Entity\CommentEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
 
-class CommentValidate
+class CommentValidate implements CommentValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -19,6 +22,8 @@ class CommentValidate
         $this->validator = $validator;
         $this->entityManager = $entityManagerInterface;
     }
+
+
 
     public function commentValidator(Request $request, $type)
     {
@@ -41,7 +46,6 @@ class CommentValidate
             'body' => [
                 new Required(),
                 new Assert\NotBlank(),
-                new Assert\Rang(min(1),max(50)),
             ],
             'clientId' => [
                 new Required(),
@@ -49,11 +53,11 @@ class CommentValidate
             ],
             'date' => [
                 new Required(),
-                new Assert\NotBlnk(),
+            ],
             'lastEdit' => [
                 new Required(),
             ]
-            ]
+
         ]);
 
 

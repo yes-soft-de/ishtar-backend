@@ -5,13 +5,16 @@ namespace App\Validator;
 
 
 use App\Entity\ClientEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ClientValidate
+class ClientValidate implements ClientValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -21,6 +24,8 @@ class ClientValidate
         $this->validator = $validator;
         $this->entityManager = $entityManagerInterface;
     }
+
+
 
     public function clientValidator(Request $request, $type)
     {

@@ -3,54 +3,70 @@
 namespace App\Controller;
 
 use App\Service\CreateUpdateDeleteServiceInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Validator\AuctionValidate;
+use App\Validator\AuctionValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
-class AuctionController extends AbstractController
-
+class AuctionController extends BaseController
 {
-    private $CUDService;
-
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
-    {
-        $this->CUDService = $CUDService;
-    }
-
     /**
      * @Route("/createAuction", name="createAuction")
      * @param Request $request
+     * @return
      */
-    public function create(Request $request)
+    public function create(Request $request, AuctionValidateInterface $auctionValidate)
     {
-        //ToDo Call Validator
+        //Validation
+        $validateResult = $auctionValidate->auctionValidator($request, 'create');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
+        //
 
         $result = $this->CUDService->create($request, "Auction");
-        return $result;
+        return $this->response($result, self::CREATE);
     }
 
     /**
      * @Route("/updateAuction", name="updateAuction")
      * @param Request $request
+     * @return
      */
-    public function update(Request $request)
+    public function update(Request $request, AuctionValidateInterface $auctionValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $auctionValidate->auctionValidator($request, 'update');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->update($request, "Auction");
-        return $result;
+        return $this->response($result, self::UPDATE);
     }
 
     /**
      * @Route("/deleteAuction", name="deleteAuction")
      * @param Request $request
+     * @return
      */
-    public function delete(Request $request)
+    public function delete(Request $request, AuctionValidateInterface $auctionValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $auctionValidate->auctionValidator($request, 'delete');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->delete($request, "Auction");
-        return $result;
+        return $this->response($result, self::DELETE);
+
     }
 }

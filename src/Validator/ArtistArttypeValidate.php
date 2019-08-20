@@ -9,7 +9,7 @@ use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ArtistArttypeValidate
+class ArtistArttypeValidate implements ArtistArtTypeValidateInterface
 {
     private $validator;
     private $entityManager;

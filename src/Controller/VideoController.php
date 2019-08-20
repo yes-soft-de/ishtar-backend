@@ -3,52 +3,70 @@
 namespace App\Controller;
 
 use App\Service\CreateUpdateDeleteServiceInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Validator\VideoValidate;
+use App\Validator\VideoValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class VideoController extends AbstractController
+class VideoController extends BaseController
 {
-    private $CUDService;
-
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
-    {
-        $this->CUDService = $CUDService;
-    }
-
     /**
      * @Route("/createVideo", name="createVideo")
      * @param Request $request
+     * @return
      */
-    public function create(Request $request)
+    public function create(Request $request, VideoValidateInterface $videoValidate)
     {
-        //ToDo Call Validator
+        //Validation
+        $validateResult = $videoValidate->videoValidator($request, 'create');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
+        //
 
         $result = $this->CUDService->create($request, "Video");
-        return $result;
+        return $this->response($result, self::CREATE);
     }
 
     /**
      * @Route("/updateVideo", name="updateVideo")
      * @param Request $request
+     * @return
      */
-    public function update(Request $request)
+    public function update(Request $request, VideoValidateInterface $videoValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $videoValidate->videoValidator($request, 'update');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->update($request, "Video");
-        return $result;
+        return $this->response($result, self::UPDATE);
     }
 
     /**
      * @Route("/deleteVideo", name="deleteVideo")
      * @param Request $request
+     * @return
      */
-    public function delete(Request $request)
+    public function delete(Request $request, VideoValidateInterface $videoValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $videoValidate->videoValidator($request, 'delete');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->delete($request, "Video");
-        return $result;
+        return $this->response($result, self::DELETE);
+
     }
 }

@@ -5,11 +5,14 @@ namespace App\Validator;
 
 
 use App\Entity\ImageEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
 
-class ImageValidate
+class ImageValidate implements ImageValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -19,6 +22,8 @@ class ImageValidate
         $this->validator = $validator;
         $this->entityManager = $entityManagerInterface;
     }
+
+
 
     public function imageValidator(Request $request, $type)
     {
@@ -41,7 +46,6 @@ class ImageValidate
             'url' => [
                 new Required(),
                 new Assert\NotBlank(),
-                new url(),
             ],
             'date' => [
                 new Required(),

@@ -1,59 +1,72 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\Service\CreateUpdateDeleteServiceInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Validator\InteractionValidate;
+use App\Validator\InteractionValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class InteractionController extends AbstractController
+class InteractionController extends BaseController
 {
-    private $CUDService;
-
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
-    {
-        $this->CUDService = $CUDService;
-    }
-
     /**
      * @Route("/createInteraction", name="createInteraction")
      * @param Request $request
+     * @return
      */
-    public function create(Request $request)
+    public function create(Request $request, InteractionValidateInterface $interactionValidate)
     {
-        //ToDo Call Validator
+        //Validation
+        $validateResult = $interactionValidate->interactionValidator($request, 'create');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
+        //
 
         $result = $this->CUDService->create($request, "Interaction");
-        return $result;
+        return $this->response($result, self::CREATE);
     }
 
     /**
      * @Route("/updateInteraction", name="updateInteraction")
      * @param Request $request
+     * @return
      */
-    public function update(Request $request)
+    public function update(Request $request, InteractionValidateInterface $interactionValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $interactionValidate->interactionValidator($request, 'update');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->update($request, "Interaction");
-        return $result;
+        return $this->response($result, self::UPDATE);
     }
 
     /**
      * @Route("/deleteInteraction", name="deleteInteraction")
      * @param Request $request
+     * @return
      */
-    public function delete(Request $request)
+    public function delete(Request $request, InteractionValidateInterface $interactionValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $interactionValidate->interactionValidator($request, 'delete');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->delete($request, "Interaction");
-        return $result;
+        return $this->response($result, self::DELETE);
+
     }
 }
-
-
-
-

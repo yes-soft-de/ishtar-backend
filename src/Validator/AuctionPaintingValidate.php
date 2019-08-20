@@ -5,11 +5,12 @@ namespace App\Validator;
 
 
 use App\Entity\AuctionPaintingEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
 
-class AuctionPaintingValidate
+class AuctionPaintingValidate implements AuctionPaintingValidateInterface
 {
     private $validator;
     private $entityManager;

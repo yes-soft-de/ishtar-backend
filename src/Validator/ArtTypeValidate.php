@@ -4,12 +4,16 @@
 namespace App\Validator;
 
 
-use App\Entity\ArttypeEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
+use App\Entity\ArtTypeEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+//ToDo do not forget to use this
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
 
-class ArttypeValidate
+class ArtTypeValidate implements ArtTypeValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -20,7 +24,7 @@ class ArttypeValidate
         $this->entityManager = $entityManagerInterface;
     }
 
-    public function arttypeValidator(Request $request, $type)
+    public function artTypeValidator(Request $request, $type)
     {
         $input = json_decode($request->getContent(), true);
 
@@ -83,8 +87,8 @@ class ArttypeValidate
         }
 
         if ($type != "create") {
-            if (!$this->entityManager->getRepository(ArttypeEntity::class)->find($input["id"])) {
-                return "No Arttype with this id!";
+            if (!$this->entityManager->getRepository(ArtTypeEntity::class)->find($input["id"])) {
+                return "No ArtType with this id!";
             }
         }
         return null;

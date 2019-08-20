@@ -5,11 +5,13 @@ namespace App\Validator;
 
 
 use App\Entity\PaintingTransactionEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
 
-class PaintingTransactionValidate
+class PaintingTransactionValidate implements PaintingTransactionValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -19,6 +21,7 @@ class PaintingTransactionValidate
         $this->validator = $validator;
         $this->entityManager = $entityManagerInterface;
     }
+
 
     public function paintingTransactionValidator(Request $request, $type)
     {

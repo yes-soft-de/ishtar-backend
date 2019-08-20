@@ -28,7 +28,7 @@ class PaintingEntity
     private $artist;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ArtTypeEntity", inversedBy="painting")
+     * @ORM\ManyToOne(targetEntity="ArtTypeEntity", inversedBy="painting")
      * @ORM\JoinColumn(nullable=false)
      */
     private $artType;
