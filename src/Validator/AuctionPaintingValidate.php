@@ -7,8 +7,10 @@ namespace App\Validator;
 use App\Entity\AuctionPaintingEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Required;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AuctionPaintingValidate implements AuctionPaintingValidateInterface
 {
@@ -31,7 +33,12 @@ class AuctionPaintingValidate implements AuctionPaintingValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'paintingId' => [
+            'painting' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+
+            'auction' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -51,7 +58,7 @@ class AuctionPaintingValidate implements AuctionPaintingValidateInterface
             unset($constraints->fields['id']);
         }
         if ($type == "delete") {
-            unset($constraints->fields['paintingId']);
+            unset($constraints->fields['painting']);
             unset($constraints->fields['startPrice']);
             unset($constraints->fields['endPrice']);
 

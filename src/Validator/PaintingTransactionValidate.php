@@ -33,11 +33,11 @@ class PaintingTransactionValidate implements PaintingTransactionValidateInterfac
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'paintingId' => [
+            'painting' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'clientId' => [
+            'client' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -56,8 +56,8 @@ class PaintingTransactionValidate implements PaintingTransactionValidateInterfac
             unset($constraints->fields['id']);
         }
         if ($type == "delete") {
-            unset($constraints->fields['paintingId']);
-            unset($constraints->fields['clientId']);
+            unset($constraints->fields['painting']);
+            unset($constraints->fields['client']);
             unset($constraints->fields['date']);
             unset($constraints->fields['price']);
         }

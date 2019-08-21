@@ -46,7 +46,7 @@ class InteractionValidate implements InteractionValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'clientId' => [
+            'client' => [
                 new Required(),
                 new Assert\NotBlank(),
             ]
@@ -59,7 +59,7 @@ class InteractionValidate implements InteractionValidateInterface
             unset($constraints->fields['pageName']);
             unset($constraints->fields['rowNum']);
             unset($constraints->fields['interactionType']);
-            unset($constraints->fields['clientId']);
+            unset($constraints->fields['client']);
         }
 
         $violations = $this->validator->validate($input, $constraints);

@@ -47,7 +47,7 @@ class CommentValidate implements CommentValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'clientId' => [
+            'client' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],

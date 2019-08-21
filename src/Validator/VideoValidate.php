@@ -7,6 +7,7 @@ namespace App\Validator;
 use App\Entity\VideoEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Required;
@@ -23,6 +24,11 @@ class VideoValidate implements VideoValidateInterface
     }
 
 
+    /**
+     * @param Request $request
+     * @param $type
+     * @return false|string|null
+     */
     public function videoValidator(Request $request, $type)
     {
         $input = json_decode($request->getContent(), true);
@@ -33,20 +39,20 @@ class VideoValidate implements VideoValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'paintingId' => [
+            'painting' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'artistId' => [
+            'artist' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
             'url' => [
                 new Required(),
                 new Assert\NotBlank(),
-                new url(),
+
             ],
-            'date' => [
+            'addingDate' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -57,8 +63,8 @@ class VideoValidate implements VideoValidateInterface
             unset($constraints->fields['id']);
         }
         if ($type == "delete") {
-            unset($constraints->fields['paintingId']);
-            unset($constraints->fields['artistId']);
+            unset($constraints->fields['painting']);
+            unset($constraints->fields['artist']);
             unset($constraints->fields['url']);
             unset($constraints->fields['date']);
         }

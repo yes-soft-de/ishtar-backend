@@ -7,7 +7,6 @@ namespace App\Validator;
 use App\Entity\ClientEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -46,12 +45,12 @@ class ClientValidate implements ClientValidateInterface
                 new Assert\NotBlank(),
             ],
             'password' => [
-                new UserPassword(),
+                new Required(),
                 new Assert\NotBlank
             ],
             'email' => [
-                new Email(),
-                new Assert\Blank(),
+                new Required(),
+                new Assert\NotBlank(),
                 ]
         ]);
 

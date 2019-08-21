@@ -35,11 +35,11 @@ class ImageValidate implements ImageValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'paintingId' => [
+            'painting' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'artistId' => [
+            'artist' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -47,7 +47,7 @@ class ImageValidate implements ImageValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'date' => [
+            'addingDate' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -58,8 +58,8 @@ class ImageValidate implements ImageValidateInterface
             unset($constraints->fields['id']);
         }
         if ($type == "delete") {
-            unset($constraints->fields['paintingId']);
-            unset($constraints->fields['artistId']);
+            unset($constraints->fields['painting']);
+            unset($constraints->fields['artist']);
             unset($constraints->fields['url']);
             unset($constraints->fields['date']);
         }
