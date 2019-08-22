@@ -2,30 +2,22 @@
 
 namespace App\Controller;
 
-use App\Service\CreateUpdateDeleteServiceInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ArtistController extends AbstractController
+class ArtistController extends BaseController
 {
-    private $CUDService;
-
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
-    {
-        $this->CUDService = $CUDService;
-    }
-
     /**
      * @Route("/createArtist", name="createArtist")
      * @param Request $request
+     * @return
      */
     public function create(Request $request)
     {
         //ToDo Call Validator
 
         $result = $this->CUDService->create($request, "Artist");
-        return $result;
+        return $this->response($result, self::CREATE);
     }
 
     /**
