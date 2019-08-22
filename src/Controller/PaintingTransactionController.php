@@ -69,4 +69,18 @@ class PaintingTransactionController extends BaseController
         return $this->response($result, self::DELETE);
 
     }
+
+
+    /**
+     * @Route("/getAllPaintingTransaction",name="getAllPaintingTransaction)
+     *  @param
+     *
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"PaintingTransaction");
+        return $this->response($result,self::FETCH,"PaintingTransaction");
+    }
 }

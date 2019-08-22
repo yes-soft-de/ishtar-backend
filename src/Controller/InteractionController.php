@@ -66,7 +66,21 @@ class InteractionController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "Interaction");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE,"Interaction");
 
+    }
+
+
+    /**
+     * @Route("/getAllInteraction",name="getAllInteraction)
+     *  @param
+     *
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Interaction");
+        return $this->response($result,self::FETCH,"Interaction");
     }
 }

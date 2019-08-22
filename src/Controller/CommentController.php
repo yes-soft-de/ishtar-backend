@@ -66,7 +66,21 @@ class CommentController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "Comment");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE,"Comment");
 
+    }
+
+
+    /**
+     * @Route("/getAllComment",name="getAllComment)
+     *  @param
+     *
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Comment");
+        return $this->response($result,self::FETCH,"Comment");
     }
 }

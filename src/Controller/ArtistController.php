@@ -27,7 +27,7 @@ class ArtistController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Artist");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE,"Artist");
     }
 
     /**
@@ -65,5 +65,21 @@ class ArtistController extends BaseController
         $result = $this->CUDService->delete($request, "Artist");
         return $this->response($result, self::DELETE);
 
+    }
+
+
+
+    /**
+     * @Route("/getAllArtist",name="getAllArtist)
+     *  @param
+     *
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+        //ToDo Call Validator
+
+        $result = $this->FDService->fetchData($request,"Artist");
+        return $this->response($result,self::FETCH,"Artist");
     }
 }

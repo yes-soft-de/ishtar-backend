@@ -69,4 +69,18 @@ class AuctionController extends BaseController
         return $this->response($result, self::DELETE);
 
     }
+
+
+    /**
+     * @Route("/getAllAuction",name="getAllAuction)
+     *  @param
+     *
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Auction");
+        return $this->response($result,self::FETCH,"Auction");
+    }
 }

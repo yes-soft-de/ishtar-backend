@@ -69,4 +69,17 @@ class ArtistArtTypeController extends BaseController
         return $this->response($result, self::DELETE);
 
     }
+
+
+    /**
+     * @Route("/getAllArtistArtType",name="getAllArtistArtType)
+     *  @param
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"ArtistArtType");
+        return $this->response($result,self::FETCH,"ArtistArtType");
+    }
 }

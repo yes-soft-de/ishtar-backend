@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\ArtTypeEntity;
 use App\Service\CreateUpdateDeleteServiceInterface;
+use App\Service\FetchDataServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,15 +15,18 @@ class BaseController extends AbstractController
 {
     private $serializer;
     public $CUDService;
+    public $FDService;
+
     /**
      * @var EntityManagerInterface
      */
     private $em;
 
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService, SerializerInterface $serializer, EntityManagerInterface $em)
+    public function __construct(CreateUpdateDeleteServiceInterface $CUDService, SerializerInterface $serializer, EntityManagerInterface $em,FetchDataServiceInterface $FDService)
     {
         $this->serializer = $serializer;
         $this->CUDService = $CUDService;
+        $this->FDService=$FDService;
         $this->em = $em;
     }
 
@@ -30,6 +34,7 @@ class BaseController extends AbstractController
     const CREATE = "created";
     const UPDATE="updated";
     const DELETE="deleted";
+    const FETCH="fetched";
 
     /**
      * Returns a JSON response
@@ -73,19 +78,22 @@ class BaseController extends AbstractController
         return $this->setStatusCode(401)->respondWithErrors($message);
     }
 
-    public function response($result, $status) :jsonResponse
+    public function response($result, $status,$entity) :jsonResponse
     {
-        $result =  $this->serializer->serialize($result, "json");
+        switch ($entity) {
+            case "Painting":
+        $result = $this->serializer->serialize($result, "json", /*['ignored_attributes' => ['artist', 'artType', 'painting']
+            ,*/['groups' => ['default']]);
+                break;
 
-        $response = new jsonResponse([
-                "status_code" => "200",
-                "msg" =>$status. " "."Successfully.",
-                "Data" => json_decode($result)
-            ]
-            , Response::HTTP_OK);
-
+            default:
+                $result = $this->serializer->serialize($result, "json");
+        }
+        $response = new jsonResponse(["status_code" => "200",
+            "msg" => $status. " "."Successfully.",
+            "Data" => json_decode($result),]
+        , Response::HTTP_OK);
         $response->headers->set('Access-Control-Allow-Origin', '*');
-
         return $response;
     }
 }

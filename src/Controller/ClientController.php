@@ -58,4 +58,17 @@ class ClientController extends BaseController
         $result = $this->CUDService->delete($request, "Client");
         return $result;
     }
+
+
+    /**
+     * @Route("/getAllClient",name="getAllClient)
+     *  @param
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Client");
+        return $this->response($result,self::FETCH,"Client");
+    }
 }

@@ -69,4 +69,18 @@ class AuctionPaintingController extends BaseController
         return $this->response($result, self::DELETE);
 
     }
+
+    /**
+     * @Route("/getAllAuctionPainting",name="getAllAuctionPainting)
+     *  @param
+     *
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+        //ToDo Call Validator
+
+        $result = $this->FDService->fetchData($request,"AuctionPainting");
+        return $this->response($result,self::FETCH,"AuctionPainting");
+    }
 }

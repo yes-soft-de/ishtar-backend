@@ -66,7 +66,20 @@ class ImageController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "Image");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE,"Image");
 
+    }
+
+
+    /**
+     * @Route("/getAllImage",name="getAllImage)
+     *  @param
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Image");
+        return $this->response($result,self::FETCH,"Image");
     }
 }

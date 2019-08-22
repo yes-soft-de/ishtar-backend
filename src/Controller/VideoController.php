@@ -69,4 +69,17 @@ class VideoController extends BaseController
         return $this->response($result, self::DELETE);
 
     }
+
+
+    /**
+     * @Route("/getAllVideo",name="getAllVideo)
+     *  @param
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Video");
+        return $this->response($result,self::FETCH,"Video");
+    }
 }

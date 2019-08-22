@@ -69,4 +69,16 @@ class ClapController extends BaseController
         return $this->response($result, self::DELETE);
 
     }
+
+    /**
+     * @Route("/getAllClap",name="getAllClap)
+     *  @param
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Clap");
+        return $this->response($result,self::FETCH,"Clap");
+    }
 }

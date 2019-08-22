@@ -30,7 +30,7 @@ class ArtTypeController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "ArtType");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE,"ArtType");
     }
 
     /**
@@ -68,5 +68,19 @@ class ArtTypeController extends BaseController
         $result = $this->CUDService->delete($request, "ArtType");
         return $this->response($result, self::DELETE);
 
+    }
+
+
+    /**
+     * @Route("/getAllArtType",name="getAllArtType)
+     *  @param
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+        //ToDo Call Validator
+
+        $result = $this->FDService->fetchData($request,"ArtType");
+        return $this->response($result,self::FETCH,"ArtType");
     }
 }

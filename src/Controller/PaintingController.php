@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\PaintingEntity;
 use App\Service\CreateUpdateDeleteServiceInterface;
 use App\Validator\PaintingValidate;
 use App\Validator\PaintingValidateInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PaintingController extends BaseController
 {
+
     /**
      * @Route("/createPainting", name="createPainting")
      * @param Request $request
@@ -30,7 +32,7 @@ class PaintingController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Painting");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE,"Painting");
     }
 
     /**
@@ -48,7 +50,7 @@ class PaintingController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Painting");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE,"Painting");
     }
 
     /**
@@ -57,7 +59,7 @@ class PaintingController extends BaseController
      * @return
      */
     public function delete(Request $request, PaintingValidateInterface $paintingValidate)
-    {
+   {
         $validateResult = $paintingValidate->paintingValidator($request, 'delete');
         if (!empty($validateResult))
         {
@@ -66,7 +68,22 @@ class PaintingController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "Painting");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE,"Painting");
 
     }
+
+    /**
+     * @Route("/getAllPainting",name="getAllPainting)
+     * @param Request $request
+     * @return
+     */
+
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Painting");
+        return $this->response($result,self::FETCH,"Painting");
+    }
+
+
 }

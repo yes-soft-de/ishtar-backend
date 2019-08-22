@@ -11,4 +11,5 @@ interface CreateUpdateDeleteServiceInterface
     public function update(Request $request, $entity);
 
     public function delete(Request $request, $entity);
+
 }
