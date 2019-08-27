@@ -5,11 +5,14 @@ namespace App\Validator;
 
 
 use App\Entity\ArtistEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints\Required;
 
-class ArtistValidate
+class ArtistValidate implements ArtistValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -77,7 +80,7 @@ class ArtistValidate
             'linkedin' => [
                 new Required(),
                 new Assert\NotBlank(),
-            ],
+            ]
 
         ]);
 

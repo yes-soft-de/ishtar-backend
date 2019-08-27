@@ -5,29 +5,34 @@ namespace App\Controller;
 use App\Service\CreateUpdateDeleteServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Validator\ClientValidateInterface;
 
 
 
-class ClientController extends AbstractController
+class ClientController extends BaseController
 {
-    private $CUDService;
 
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
-    {
-        $this->CUDService = $CUDService;
-    }
 
     /**
      * @Route("/createClient", name="createClient")
      * @param Request $request
+     * @return
      */
-    public function create(Request $request)
+    public function create(Request $request, ClientValidateInterface $clientValidate)
     {
-        //ToDo Call Validator
+        //Validation
+        $validateResult = $clientValidate->clientValidator($request, 'create');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
 
         $result = $this->CUDService->create($request, "Client");
-        return $result;
+        return $this->response($result, self::CREATE, "Client");
     }
 
     /**
@@ -52,5 +57,18 @@ class ClientController extends AbstractController
 
         $result = $this->CUDService->delete($request, "Client");
         return $result;
+    }
+
+
+    /**
+     * @Route("/getAllClient",name="getAllClient")
+     * @param Request $request
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Client");
+        return $this->response($result,self::FETCH,"Client");
     }
 }

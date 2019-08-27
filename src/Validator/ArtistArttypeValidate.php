@@ -5,11 +5,14 @@ namespace App\Validator;
 
 
 use App\Entity\ArtistArttypeEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
 
-class ArtistArttypeValidate
+class ArtistArttypeValidate implements ArtistArtTypeValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -30,11 +33,11 @@ class ArtistArttypeValidate
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'artistId' => [
+            'artist' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'arttypeId' => [
+            'artType' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -45,8 +48,8 @@ class ArtistArttypeValidate
             unset($constraints->fields['id']);
         }
         if ($type == "delete") {
-            unset($constraints->fields['artistId']);
-            unset($constraints->fields['arttypeId']);
+            unset($constraints->fields['artist']);
+            unset($constraints->fields['arttype']);
         }
 
         $violations = $this->validator->validate($input, $constraints);

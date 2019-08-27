@@ -24,7 +24,7 @@ class ArtistMapper
         $details     = $data["details"];
         $image       = $data["image"];
         $video       = $data["video"];
-        $faceBook    = $data["faceBook"];
+        $faceBook    = $data["facebook"];
         $instagram   = $data["instagram"];
         $twitter     = $data["twitter"];
         $linkedin    = $data["linkedin"];

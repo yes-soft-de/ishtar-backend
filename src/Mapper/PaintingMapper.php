@@ -3,10 +3,12 @@
 namespace App\Mapper;
 
 use App\Entity\ArtistEntity;
+use App\Entity\ArtType;
 use App\Entity\ArtTypeEntity;
 use App\Entity\PaintingEntity;
 use DateTime;
 use Exception;
+use phpDocumentor\Reflection\Types\This;
 
 class PaintingMapper
 {
@@ -16,7 +18,7 @@ class PaintingMapper
         $this->en=$entityManger;
         $name = $data["name"];
         $artist = $this->en->getRepository(ArtistEntity::class)->find($data["artist"]);
-        $artType = $artType = $this->en->getRepository(ArtTypeEntity::class)->find($data["artType"]);
+        $artType  = $this->en->getRepository(ArtTypeEntity::class)->find($data["artType"]);
         //this (try catch) just to make IDE happy, must use date calender in frontend
         //if date empty the date of today will be there
         try {

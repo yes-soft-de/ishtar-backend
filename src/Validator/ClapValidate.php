@@ -5,11 +5,14 @@ namespace App\Validator;
 
 
 use App\Entity\ClapEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
 
-class ClapValidate
+class ClapValidate implements ClapValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -19,6 +22,8 @@ class ClapValidate
         $this->validator = $validator;
         $this->entityManager = $entityManagerInterface;
     }
+
+
 
     public function clapValidator(Request $request, $type)
     {
@@ -41,9 +46,8 @@ class ClapValidate
             'value' => [
                 new Required(),
                 new Assert\NotBlank(),
-                new Assert\Rang(min(1),max(50)),
             ],
-            'clientId' => [
+            'client' => [
                 new Required(),
                 new Assert\NotBlank(),
             ]
@@ -56,7 +60,7 @@ class ClapValidate
             unset($constraints->fields['pageName']);
             unset($constraints->fields['rowNum']);
             unset($constraints->fields['value']);
-            unset($constraints->fields['clientId']);
+            unset($constraints->fields['client']);
         }
 
         $violations = $this->validator->validate($input, $constraints);

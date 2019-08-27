@@ -2,54 +2,83 @@
 
 namespace App\Controller;
 
-
 use App\Service\CreateUpdateDeleteServiceInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Validator\ClapValidate;
+use App\Validator\ClapValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ClapController extends AbstractController
+class ClapController extends BaseController
 {
-    private $CUDService;
-
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
-    {
-        $this->CUDService = $CUDService;
-    }
-
     /**
      * @Route("/createClap", name="createClap")
      * @param Request $request
+     * @return
      */
-    public function create(Request $request)
+    public function create(Request $request, ClapValidateInterface $clapValidate)
     {
-        //ToDo Call Validator
+        //Validation
+        $validateResult = $clapValidate->clapValidator($request, 'create');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
+        //
 
-        $result = $this->CUDService->create($request, "Clap");
-        return $result;
+        $result = $this->CUDService->create($request, "clap");
+        return $this->response($result, self::CREATE, "clap");
     }
 
     /**
-     * @Route("/updateClap", name="updateClap")
+     * @Route("/updateclap", name="updateClap")
      * @param Request $request
+     * @return
      */
-    public function update(Request $request)
+    public function update(Request $request, ClapValidateInterface $clapValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $clapValidate->clapValidator($request, 'update');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->update($request, "Clap");
-        return $result;
+        return $this->response($result, self::UPDATE, "clap");
     }
 
     /**
      * @Route("/deleteClap", name="deleteClap")
      * @param Request $request
+     * @return
      */
-    public function delete(Request $request)
+    public function delete(Request $request, ClapValidateInterface $clapValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $clapValidate->clapValidator($request, 'delete');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->delete($request, "Clap");
-        return $result;
+        return $this->response($result, self::DELETE, "Clap");
+
+    }
+
+    /**
+     * @Route("/getAllClap",name="getAllClap")
+     * @param Request $request
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Clap");
+        return $this->response($result,self::FETCH,"Clap");
     }
 }

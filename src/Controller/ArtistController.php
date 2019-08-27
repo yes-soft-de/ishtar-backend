@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Validator\ArtistValidateInterface;
 
 class ArtistController extends BaseController
 {
@@ -12,35 +14,71 @@ class ArtistController extends BaseController
      * @param Request $request
      * @return
      */
-    public function create(Request $request)
+    public function create(Request $request, ArtistValidateInterface $artistValidate)
     {
-        //ToDo Call Validator
+        //Validation
+        $validateResult = $artistValidate->artistValidator($request, 'create');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
+        //
 
         $result = $this->CUDService->create($request, "Artist");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE,"Artist");
     }
 
     /**
      * @Route("/updateArtist", name="updateArtist")
      * @param Request $request
+     * @return
      */
-    public function update(Request $request)
+    public function update(Request $request, ArtistValidateInterface $artistValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $artistValidate->artistValidator($request, 'update');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->update($request, "Artist");
-        return $result;
+        return $this->response($result, self::UPDATE,"Artist");
     }
 
     /**
      * @Route("/deleteArtist", name="deleteArtist")
      * @param Request $request
+     * @return
      */
-    public function delete(Request $request)
+    public function delete(Request $request, ArtistValidateInterface $artistValidate)
+    {
+        $validateResult = $artistValidate->artistValidator($request, 'delete');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
+        $result = $this->CUDService->delete($request, "Artist");
+        return $this->response($result, self::DELETE,"Artist");
+
+    }
+
+
+
+    /**
+     * @Route("/getAllArtist",name="getAllArtist")
+     * @param Request $request
+     * @return
+     */
+    public function getAll(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->delete($request, "Artist");
-        return $result;
+        $result = $this->FDService->fetchData($request,"Artist");
+        return $this->response($result,self::FETCH,"Artist");
     }
 }

@@ -3,53 +3,83 @@
 namespace App\Controller;
 
 use App\Service\CreateUpdateDeleteServiceInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Validator\ImageValidate;
+use App\Validator\ImageValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
-class ImageController extends AbstractController
+class ImageController extends BaseController
 {
-    private $CUDService;
-
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService)
-    {
-        $this->CUDService = $CUDService;
-    }
-
     /**
      * @Route("/createImage", name="createImage")
      * @param Request $request
+     * @return
      */
-    public function create(Request $request)
+    public function create(Request $request, ImageValidateInterface $imageValidate)
     {
-        //ToDo Call Validator
+        //Validation
+        $validateResult = $imageValidate->imageValidator($request, 'create');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
+        //
 
         $result = $this->CUDService->create($request, "Image");
-        return $result;
+        return $this->response($result, self::CREATE, "Image");
     }
 
     /**
      * @Route("/updateImage", name="updateImage")
      * @param Request $request
+     * @return
      */
-    public function update(Request $request)
+    public function update(Request $request, ImageValidateInterface $imageValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $imageValidate->imageValidator($request, 'update');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->update($request, "Image");
-        return $result;
+        return $this->response($result, self::UPDATE, "Image");
     }
 
     /**
      * @Route("/deleteImage", name="deleteImage")
      * @param Request $request
+     * @return
      */
-    public function delete(Request $request)
+    public function delete(Request $request, ImageValidateInterface $imageValidate)
     {
-        //ToDo Call Validator
-
+        $validateResult = $imageValidate->imageValidator($request, 'delete');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->delete($request, "Image");
-        return $result;
+        return $this->response($result, self::DELETE,"Image");
+
+    }
+
+
+    /**
+     * @Route("/getAllImage",name="getAllImage")
+     *@param Request $request
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Image");
+        return $this->response($result,self::FETCH,"Image");
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PaintingEntityRepository")
@@ -13,53 +14,63 @@ class PaintingEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *  @Groups({"default"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=45)
+     *   @Groups({"default"})
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ArtistEntity", inversedBy="painting")
      * @ORM\JoinColumn(nullable=false)
+     *   @Groups({"default"})
      */
     private $artist;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ArtTypeEntity", inversedBy="painting")
+     * @ORM\ManyToOne(targetEntity="ArtTypeEntity", inversedBy="painting")
      * @ORM\JoinColumn(nullable=false)
+     *   @Groups({"default"})
      */
     private $artType;
 
     /**
      * @ORM\Column(type="boolean")
+     *   @Groups({"default"})
      */
     private $state;
 
     /**
      * @ORM\Column(type="string", length=45)
+     *   @Groups({"default"})
      */
     private $deminsions;
 
     /**
      * @ORM\Column(type="string", length=45)
+     *   @Groups({"default"})
      */
     private $colorsType;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=0)
+     *   @Groups({"default"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="text")
+     *   @Groups({"default"})
      */
     private $story;
 
     /**
      * @ORM\Column(type="datetime")
+     *   @Groups({"default"})
      */
     private $addingDate;
 
