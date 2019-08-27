@@ -12,7 +12,7 @@ class ArtistController extends BaseController
     /**
      * @Route("/createArtist", name="createArtist")
      * @param Request $request
-     * @return
+     * @return Response
      */
     public function create(Request $request, ArtistValidateInterface $artistValidate)
     {

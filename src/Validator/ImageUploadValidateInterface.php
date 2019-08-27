@@ -6,5 +6,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface ImageUploadValidateInterface
 {
-    public function artistValidator(Request $request, $type);
+    public function uploadedFileValidator(Request $request, $type);
 }

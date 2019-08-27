@@ -17,13 +17,13 @@ class ImageUploadValidate implements ImageUploadValidateInterface
     private $validator;
     private $entityManager;
 
-    public function __construct( ValidatorInterface $validator, EntityManagerInterface $entityManagerInterface)
+    public function __construct(ValidatorInterface $validator, EntityManagerInterface $entityManagerInterface)
     {
         $this->validator = $validator;
         $this->entityManager = $entityManagerInterface;
     }
 
-    public function artistValidator(Request $request, $type)
+    public function uploadedFileValidator(Request $request, $type)
     {
         /** @var UploadedFile $input */
         $input = $request->files->get('image');
