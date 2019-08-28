@@ -30,7 +30,7 @@ class ArtistArtTypeController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "ArtistArtType");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE, "ArtistArtType");
     }
 
     /**
@@ -48,7 +48,7 @@ class ArtistArtTypeController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "ArtistArtType");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE, "ArtistArtType");
     }
 
     /**
@@ -66,14 +66,14 @@ class ArtistArtTypeController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "ArtistArtType");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE, "ArtistArtType");
 
     }
 
 
     /**
-     * @Route("/getAllArtistArtType",name="getAllArtistArtType)
-     *  @param
+     * @Route("/getAllArtistArtType",name="getAllArtistArtType")
+     *@param Request $request
      * @return
      */
     public function getAll(Request $request)

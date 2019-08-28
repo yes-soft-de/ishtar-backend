@@ -12,7 +12,7 @@ class ArtistController extends BaseController
     /**
      * @Route("/createArtist", name="createArtist")
      * @param Request $request
-     * @return
+     * @return Response
      */
     public function create(Request $request, ArtistValidateInterface $artistValidate)
     {
@@ -45,7 +45,7 @@ class ArtistController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Artist");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE,"Artist");
     }
 
     /**
@@ -63,16 +63,15 @@ class ArtistController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "Artist");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE,"Artist");
 
     }
 
 
 
     /**
-     * @Route("/getAllArtist",name="getAllArtist)
-     *  @param
-     *
+     * @Route("/getAllArtist",name="getAllArtist")
+     * @param Request $request
      * @return
      */
     public function getAll(Request $request)

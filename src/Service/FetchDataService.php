@@ -41,4 +41,17 @@ class FetchDataService implements FetchDataServiceInterface
 
         return $response;
     }
+    public function getArtistPaintings(Request $request)
+    {
+        return $result = $this->manager->getArtistPaintings($request);
+    }
+    public function getPaintingById(Request $request)
+    {
+        return $result = $this->manager->getPaintingById($request);
+    }
+
+    public function getPaintingImages(Request $request)
+    {
+        return $result = $this->manager->getPaintingImages($request);
+    }
 }

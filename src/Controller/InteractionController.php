@@ -30,7 +30,7 @@ class InteractionController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Interaction");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE,"Interaction");
     }
 
     /**
@@ -48,7 +48,7 @@ class InteractionController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Interaction");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE,"Interaction");
     }
 
     /**
@@ -72,9 +72,8 @@ class InteractionController extends BaseController
 
 
     /**
-     * @Route("/getAllInteraction",name="getAllInteraction)
-     *  @param
-     *
+     * @Route("/getAllInteraction",name="getAllInteraction")
+     *@param Request $request
      * @return
      */
     public function getAll(Request $request)

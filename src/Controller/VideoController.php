@@ -30,7 +30,7 @@ class VideoController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Video");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE,"Video");
     }
 
     /**
@@ -48,7 +48,7 @@ class VideoController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Video");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE,"Video");
     }
 
     /**
@@ -66,14 +66,14 @@ class VideoController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "Video");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE,"Video");
 
     }
 
 
     /**
-     * @Route("/getAllVideo",name="getAllVideo)
-     *  @param
+     * @Route("/getAllVideo",name="getAllVideo")
+     * @param Request $request
      * @return
      */
     public function getAll(Request $request)

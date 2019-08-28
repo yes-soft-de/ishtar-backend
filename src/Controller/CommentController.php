@@ -30,7 +30,7 @@ class CommentController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Comment");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE, "Comment");
     }
 
     /**
@@ -48,7 +48,7 @@ class CommentController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Comment");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE, "Comment");
     }
 
     /**
@@ -72,9 +72,8 @@ class CommentController extends BaseController
 
 
     /**
-     * @Route("/getAllComment",name="getAllComment)
-     *  @param
-     *
+     * @Route("/getAllComment",name="getAllComment")
+     * @param Request $request
      * @return
      */
     public function getAll(Request $request)

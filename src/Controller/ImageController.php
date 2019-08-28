@@ -30,7 +30,7 @@ class ImageController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Image");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE, "Image");
     }
 
     /**
@@ -48,7 +48,7 @@ class ImageController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Image");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE, "Image");
     }
 
     /**
@@ -72,14 +72,25 @@ class ImageController extends BaseController
 
 
     /**
-     * @Route("/getAllImage",name="getAllImage)
-     *  @param
+     * @Route("/getAllImage",name="getAllImage")
+     *@param Request $request
      * @return
      */
     public function getAll(Request $request)
     {
 
         $result = $this->FDService->fetchData($request,"Image");
+        return $this->response($result,self::FETCH,"Image");
+    }
+/**
+* @Route("/getPaintingImages",name="getPaintingImages")
+*@param Request $request
+* @return
+*/
+    public function getPaintingImages(Request $request)
+    {
+
+        $result = $this->FDService->getPaintingImages($request);
         return $this->response($result,self::FETCH,"Image");
     }
 }

@@ -30,7 +30,7 @@ class AuctionPaintingController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "AuctionPainting");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE, "AuctionPainting");
     }
 
     /**
@@ -48,7 +48,7 @@ class AuctionPaintingController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "AuctionPainting");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE, "AuctionPainting");
     }
 
     /**
@@ -66,14 +66,13 @@ class AuctionPaintingController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "AuctionPainting");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE, "AuctionPainting");
 
     }
 
     /**
-     * @Route("/getAllAuctionPainting",name="getAllAuctionPainting)
-     *  @param
-     *
+     * @Route("/getAllAuctionPainting",name="getAllAuctionPainting")
+     * @param Request $request
      * @return
      */
     public function getAll(Request $request)

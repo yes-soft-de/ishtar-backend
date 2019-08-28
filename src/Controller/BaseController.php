@@ -17,6 +17,7 @@ class BaseController extends AbstractController
     public $CUDService;
     public $FDService;
 
+
     /**
      * @var EntityManagerInterface
      */
@@ -82,16 +83,20 @@ class BaseController extends AbstractController
     {
         switch ($entity) {
             case "Painting":
-        $result = $this->serializer->serialize($result, "json", /*['ignored_attributes' => ['artist', 'artType', 'painting']
-            ,*/['groups' => ['default']]);
+        $result = $this->serializer->serialize($result, "json", ['ignored_attributes' => ['artist', 'artType', 'painting']
+           ] ,['groups' => ['default']]);
                 break;
-
+            case "Image"or"Video":
+                $result = $this->serializer->serialize($result, "json", ['ignored_attributes' => ['artist','painting','addingDate']
+                ] ,['groups' => ['default']]);
+                break;
             default:
                 $result = $this->serializer->serialize($result, "json");
         }
         $response = new jsonResponse(["status_code" => "200",
             "msg" => $status. " "."Successfully.",
-            "Data" => json_decode($result),]
+            "Data" => json_decode($result)
+            ]
         , Response::HTTP_OK);
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;

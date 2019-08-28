@@ -30,7 +30,7 @@ class AuctionController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Auction");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE, "Auction");
     }
 
     /**
@@ -48,7 +48,7 @@ class AuctionController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Auction");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE, "Auction");
     }
 
     /**
@@ -66,15 +66,14 @@ class AuctionController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "Auction");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE, "Auction");
 
     }
 
 
     /**
-     * @Route("/getAllAuction",name="getAllAuction)
-     *  @param
-     *
+     * @Route("/getAllAuction",name="getAllAuction")
+     *@param Request $request
      * @return
      */
     public function getAll(Request $request)

@@ -30,7 +30,7 @@ class PaintingTransactionController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "PaintingTransaction");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE,"PaintingTransaction");
     }
 
     /**
@@ -48,7 +48,7 @@ class PaintingTransactionController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "PaintingTransaction");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE,"PaintingTransaction");
     }
 
     /**
@@ -66,15 +66,14 @@ class PaintingTransactionController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "PaintingTransaction");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE,"PaintingTransaction");
 
     }
 
 
     /**
-     * @Route("/getAllPaintingTransaction",name="getAllPaintingTransaction)
-     *  @param
-     *
+     * @Route("/getAllPaintingTransaction",name="getAllPaintingTransaction")
+     * @param Request $request
      * @return
      */
     public function getAll(Request $request)

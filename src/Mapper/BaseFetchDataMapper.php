@@ -91,4 +91,22 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
         }
         return $data;
     }
+
+
+    public function getArtistPaintings(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(PaintingEntity::class)->findByArtist($data['artist']);
+    }
+    public function getPaintingById(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(PaintingEntity::class)->find($data['painting']);
+    }
+
+    public function getPaintingImages(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ImageEntity::class)->findByPainting($data['painting']);
+    }
 }

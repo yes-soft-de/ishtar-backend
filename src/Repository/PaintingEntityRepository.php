@@ -19,14 +19,12 @@ class PaintingEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, PaintingEntity::class);
     }
 
-    // /**
-    //  * @return PaintingEntity[] Returns an array of PaintingEntity objects
-    //  */
 
-    public function findByExampleField($value)
+
+    public function findByArtist($value):?array
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
+            ->andWhere('p.artist = :val')
             ->setParameter('val', $value)
             ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
@@ -37,7 +35,7 @@ class PaintingEntityRepository extends ServiceEntityRepository
 
 
 
-    public function findOneById($value): ?PaintingEntity
+    public function findOneById($value): ?array
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.id = :val')
@@ -46,5 +44,4 @@ class PaintingEntityRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-
 }

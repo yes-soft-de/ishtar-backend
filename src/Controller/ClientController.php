@@ -32,7 +32,7 @@ class ClientController extends BaseController
         }
 
         $result = $this->CUDService->create($request, "Client");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE, "Client");
     }
 
     /**
@@ -61,8 +61,8 @@ class ClientController extends BaseController
 
 
     /**
-     * @Route("/getAllClient",name="getAllClient)
-     *  @param
+     * @Route("/getAllClient",name="getAllClient")
+     * @param Request $request
      * @return
      */
     public function getAll(Request $request)

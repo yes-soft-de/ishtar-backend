@@ -24,7 +24,7 @@ class ImageEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ArtistEntity")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $artist;
 

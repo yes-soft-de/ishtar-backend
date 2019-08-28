@@ -30,7 +30,7 @@ class ClapController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "clap");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE, "clap");
     }
 
     /**
@@ -48,7 +48,7 @@ class ClapController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Clap");
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE, "clap");
     }
 
     /**
@@ -66,13 +66,13 @@ class ClapController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "Clap");
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE, "Clap");
 
     }
 
     /**
-     * @Route("/getAllClap",name="getAllClap)
-     *  @param
+     * @Route("/getAllClap",name="getAllClap")
+     * @param Request $request
      * @return
      */
     public function getAll(Request $request)

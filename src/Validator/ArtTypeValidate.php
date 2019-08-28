@@ -24,7 +24,7 @@ class ArtTypeValidate implements ArtTypeValidateInterface
         $this->entityManager = $entityManagerInterface;
     }
 
-    public function artTypeValidator(Request $request, $type)
+    public function artTypeValidator(Request $request,$entity)
     {
         $input = json_decode($request->getContent(), true);
 

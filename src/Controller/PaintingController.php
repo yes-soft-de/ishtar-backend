@@ -2,11 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\PaintingEntity;
-use App\Service\CreateUpdateDeleteServiceInterface;
-use App\Validator\PaintingValidate;
+use App\Entity\ArtistEntity;
 use App\Validator\PaintingValidateInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,7 +70,7 @@ class PaintingController extends BaseController
     }
 
     /**
-     * @Route("/getAllPainting",name="getAllPainting)
+     * @Route("/getAllPainting", name="getAllPainting")
      * @param Request $request
      * @return
      */
@@ -85,5 +82,25 @@ class PaintingController extends BaseController
         return $this->response($result,self::FETCH,"Painting");
     }
 
+    /**
+     * @Route("/getArtistPaintings", name="getArtistPaintings")
+     * @param Request $request
+     * @return
+     */
+public function getArtistPaintings(Request $request)
+{
+    $result = $this->FDService->getArtistPaintings($request);
+    return $this->response($result,self::FETCH,"Painting");
+}
 
+    /**
+     * @Route("/getPaintingById", name="getPaintingsById")
+     * @param Request $request
+     * @return
+     */
+    public function getPaintingById(Request $request)
+    {
+        $result = $this->FDService->getPaintingById($request);
+        return $this->response($result,self::FETCH,"Painting");
+    }
 }
