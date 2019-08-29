@@ -82,4 +82,15 @@ class AuctionController extends BaseController
         $result = $this->FDService->fetchData($request,"Auction");
         return $this->response($result,self::FETCH,"Auction");
     }
+
+    /**
+     * @Route("/getAuctionById", name="getAuctionById")
+     * @param Request $request
+     * @return
+     */
+    public function getAuctionById(Request $request)
+    {
+        $result = $this->FDService->getAuctionById($request);
+        return $this->response($result,self::FETCH,"Auction");
+    }
 }

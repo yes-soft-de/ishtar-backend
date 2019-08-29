@@ -94,7 +94,18 @@ public function getArtistPaintings(Request $request)
 }
 
     /**
-     * @Route("/getPaintingById", name="getPaintingsById")
+     * @Route("/getArtTypePaintings", name="getArtTypePaintings")
+     * @param Request $request
+     * @return
+     */
+    public function getArtTypePaintings(Request $request)
+    {
+        $result = $this->FDService->getArtTypePaintings($request);
+        return $this->response($result,self::FETCH,"Painting");
+    }
+
+    /**
+     * @Route("/getPaintingById", name="getPaintingById")
      * @param Request $request
      * @return
      */

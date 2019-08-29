@@ -89,7 +89,6 @@ class ImageController extends BaseController
 */
     public function getPaintingImages(Request $request)
     {
-
         $result = $this->FDService->getPaintingImages($request);
         return $this->response($result,self::FETCH,"Image");
     }

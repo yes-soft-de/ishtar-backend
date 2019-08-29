@@ -83,4 +83,15 @@ class ArtTypeController extends BaseController
         $result = $this->FDService->fetchData($request,"ArtType");
         return $this->response($result,self::FETCH,"ArtType");
     }
-}
+
+    /**
+     * @Route("/getArtTypeById", name="getArtTypeById")
+     * @param Request $request
+     * @return
+     */
+    public function getArtTypeById(Request $request)
+    {
+        $result = $this->FDService->getArtTypeById($request);
+        return $this->response($result,self::FETCH,"ArtType");
+    }
+    }

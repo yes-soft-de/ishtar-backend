@@ -11,5 +11,5 @@ interface BaseFetchDataMapperInterface
     public function fetchDataMapper(Request $request, $entity);
     public function getArtistPaintings(Request $request);
     public function getPaintingImages(Request $request);
-
+    public function getArtTypePaintings(Request $request);
 }

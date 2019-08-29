@@ -33,6 +33,18 @@ class PaintingEntityRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByArtType($value):?array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.artType = :val')
+            ->setParameter('val', $value)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
 
     public function findOneById($value): ?array

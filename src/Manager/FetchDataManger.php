@@ -63,4 +63,31 @@ class FetchDataManger implements FetchDataMangerInterface
 
         return $data;
     }
+    public function getArtistById(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getArtistById($request);
+
+        return $data;
+    }
+    public function getArtTypeById(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getArtTypeById($request);
+
+        return $data;
+    }
+    public function getClientById(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getClientById($request);
+        return $data;
+    }
+    public function getArtTypePaintings(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getArtTypePaintings($request);
+        return $data;
+    }
+    public function getAuctionById(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getAuctionById($request);
+        return $data;
+    }
 }

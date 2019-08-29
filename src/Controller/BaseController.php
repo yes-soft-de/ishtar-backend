@@ -83,9 +83,8 @@ class BaseController extends AbstractController
     {
         switch ($entity) {
             case "Painting":
-        $result = $this->serializer->serialize($result, "json", ['ignored_attributes' => ['artist', 'artType', 'painting']
-           ] ,['groups' => ['default']]);
-                break;
+        $result = $this->serializer->serialize($result, "json",['groups' => ['default']]);
+              break;
             case "Image"or"Video":
                 $result = $this->serializer->serialize($result, "json", ['ignored_attributes' => ['artist','painting','addingDate']
                 ] ,['groups' => ['default']]);
@@ -98,6 +97,7 @@ class BaseController extends AbstractController
             "Data" => json_decode($result)
             ]
         , Response::HTTP_OK);
+        $response->headers->set('Access-Control-Allow-Headers', 'X-Header-One,X-Header-Two');
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }

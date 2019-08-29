@@ -109,4 +109,29 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
         $data = json_decode($request->getContent(), true);
         return $data = $this->entityManager->getRepository(ImageEntity::class)->findByPainting($data['painting']);
     }
+    public function getArtistById(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ArtistEntity::class)->find($data['artist']);
+    }
+    public function getArtTypeById(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ArtTypeEntity::class)->find($data['artType']);
+    }
+    public function getClientById(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ClientEntity::class)->find($data['client']);
+    }
+    public function getAuctionById(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(AuctionEntity::class)->find($data['auction']);
+    }
+    public function getArtTypePaintings(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(PaintingEntity::class)->findByArtType($data['artType']);
+    }
 }
