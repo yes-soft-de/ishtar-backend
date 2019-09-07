@@ -44,13 +44,6 @@ class PaintingValidate implements PaintingValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'createDate' => [
-
-                new Assert\NotBlank(),
-            ],
-            'updateDate' => [
-                new Assert\NotBlank(),
-            ],
             'story' => [
                 new Required(),
                 new Assert\NotBlank(),
@@ -87,11 +80,7 @@ class PaintingValidate implements PaintingValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'createdBy'=>[
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'updatedBy'=>[
+            'keyWords'=>[
                 new Required(),
                 new Assert\NotBlank(),
             ],

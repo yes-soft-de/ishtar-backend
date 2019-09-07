@@ -23,11 +23,13 @@ class EntityArtTypeMapper
         $this->en=$entityManger;
         $entity = $this->en->getRepository(\App\Entity\Entity::class)->find(1);
         $artType = $this->en->getRepository(ArtTypeEntity::class)->find($data['artType']);
-    $row=$this->en->getRepository(PaintingEntity::class)->findBy(array(),array('id'=>'DESC'),1,1);
 
-$id= $row[0]->getId()+1;
+            $row = $this->en->getRepository(PaintingEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
+            $row= $row[0]->getId()+1;
+
+
         $artTypeEntity->setArtType($artType)
-            ->setRow($id)
+            ->setRow($row)
             ->setEntity($entity)
             ->setArtType($artType);
 

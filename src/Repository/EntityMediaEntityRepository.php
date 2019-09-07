@@ -47,4 +47,17 @@ class EntityMediaEntityRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findPaintingImage($value): ?array
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m.path as image')
+            ->andWhere('m.row = :val')
+            ->andWhere('m.entity=1')
+            ->andWhere('m.media=1')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

@@ -12,11 +12,11 @@ class ArtTypeMapper
     {
         $name    = $data["name"];
         $history = $data["history"];
-        $story   = $data["story"];
+
 
         $artType->setName($name)
             ->setHistory($history)
-            ->setStory($story);
+            ;
 
         return $artType;
     }

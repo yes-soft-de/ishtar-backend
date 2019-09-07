@@ -105,7 +105,7 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
     public function getArtistById(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        return $data = $this->entityManager->getRepository(ArtistEntity::class)->find($data['artist']);
+        return $data = $this->entityManager->getRepository(ArtistEntity::class)->findById($data['artist']);
     }
     public function getArtTypeById(Request $request)
     {

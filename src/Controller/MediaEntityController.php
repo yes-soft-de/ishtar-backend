@@ -7,27 +7,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CommentController extends BaseController
+class MediaEntityController extends BaseController
 {
     /**
-     * @Route("/createComment", name="createComment")
+     * @Route("/createMedia", name="createMedia")
      * @param Request $request
      * @return
      */
     public function create(Request $request, CommentValidateInterface $commentValidate)
     {
-        //Validation
-        $validateResult = $commentValidate->commentValidator($request, 'create');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
-        //
 
-        $result = $this->CUDService->create($request, "Comment");
-        return $this->response($result, self::CREATE, "Comment");
+        $result = $this->CUDService->create($request, "MediaEntity");
+        return $this->response($result, self::CREATE, "MediaEntity");
     }
 
     /**
@@ -44,8 +35,8 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "Comment");
-        return $this->response($result, self::UPDATE, "Comment");
+        $result = $this->CUDService->update($request, "MediaEntity");
+        return $this->response($result, self::UPDATE, "MediaEntity");
     }
 
     /**
@@ -62,8 +53,8 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->delete($request, "Comment");
-        return $this->response($result, self::DELETE,"Comment");
+        $result = $this->CUDService->delete($request, "MediaEntity");
+        return $this->response($result, self::DELETE,"MediaEntity");
 
     }
 

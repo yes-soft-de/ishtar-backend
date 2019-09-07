@@ -28,7 +28,7 @@ class PriceEntity
     private $price;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
     private $createdDate;
 

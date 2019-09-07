@@ -27,6 +27,8 @@ class ArtistController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Artist");
+        $this->CUDService->create($request,"ArtistArtType");
+        $this->CUDService->create($request,"MediaArtist");
         return $this->response($result, self::CREATE,"Artist");
     }
 

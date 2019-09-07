@@ -8,6 +8,7 @@ use App\Entity\ArtistEntity;
 use App\Entity\ArtTypeEntity;
 use App\Entity\ClientEntity;
 use App\Entity\EntityArtTypeEntity;
+use App\Entity\EntityMediaEntity;
 use App\Entity\PaintingEntity;
 use App\Entity\InteractionEntity;
 use App\Entity\AuctionEntity;
@@ -16,9 +17,10 @@ use App\Entity\PaintingTransactionEntity;
 use App\Entity\ClapEntity;
 use App\Entity\CommentEntity;
 use App\Entity\PriceEntity;
+use App\Entity\SocialMediaArtistEntity;
+use App\Entity\StoryEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use App\Repository\ArtistEntityRepository;
 
 class BaseCreateMapper implements BaseCreateMapperInterface
 {
@@ -49,10 +51,7 @@ class BaseCreateMapper implements BaseCreateMapperInterface
             case "Painting":
 
                 $paintingMapper = new PaintingMapper();
-                $entityArtTypeMapper=new EntityArtTypeMapper();
                 $paintingEntity = new PaintingEntity();
-                $entityArtTYpeEntity=new EntityArtTypeEntity();
-                $entityArtTypeMapper->EntityArtTypeData($data,$entityArtTYpeEntity,$this->entityManager);
                 return $paintingMapper->PaintingData($data, $paintingEntity,$this->entityManager);
                 break;
 
@@ -80,12 +79,6 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 return $auctionPaintingMapper->auctionPaintingData($data, $auctionPaintingEntity,$this->entityManager);
                 break;
 
-            case "ArtistArtType":
-                $artistArtTypeMapper = new ArtistArtTypeMapper();
-                $artistArtTypeEntity = new ArtistArtTypeEntity();
-                return $artistArtTypeMapper->artistArtTypeData($data, $artistArtTypeEntity,$this->entityManager);
-                break;
-
             case "PaintingTransaction":
                 $paintingTransactionMapper = new PaintingTransactionMapper();
                 $paintingTransactionEntity = new PaintingTransactionEntity();
@@ -105,7 +98,7 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 return $commentMapper->CommentData($data, $commentEntity,$this->entityManager);
                 break;
 
-            case "EntityArtType":
+            case "PaintingArtType":
                 $mapper=new EntityArtTypeMapper();
                 $entity=new EntityArtTypeEntity();
                 return $mapper->EntityArtTypeData($data,$entity,$this->entityManager);
@@ -114,6 +107,26 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 $mapper=new PriceMapper();
                 $entity=new PriceEntity();
                 return $mapper->PriceData($data,$entity,$this->entityManager);
+
+            case "MediaEntity":
+                $mapper=new MediaEntityMapper();
+                $entity=new EntityMediaEntity();
+                return $mapper->MediaEntityData($data,$entity,$this->entityManager,0);
+
+            case "ArtistArtType":
+                $mapper=new ArtistArtTypeMapper();
+                $entity=new EntityArtTypeEntity();
+                return $mapper->ArtistArtTypeData($data,$entity,$this->entityManager);
+
+            case "Story":
+                $mapper=new StoryMapper();
+                $entity=new StoryEntity();
+                return $mapper->StoryData($data,$entity,$this->entityManager);
+
+            case "MediaArtist":
+                $mapper=new MediaEntityMapper();
+                $entity=new EntityMediaEntity();
+                return $mapper->MediaEntityData($data,$entity,$this->entityManager,2);
         }
     }
 }

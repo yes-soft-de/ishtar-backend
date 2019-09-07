@@ -3,25 +3,15 @@
 namespace App\Mapper;
 
 use App\Entity\ArtistEntity;
-use App\Entity\ArtType;
-use App\Entity\ArtTypeEntity;
-use App\Entity\EntityArtTypeEntity;
-use App\Entity\GalleryEntity;
 use App\Entity\PaintingEntity;
-use App\Entity\PriceEntity;
-use App\Repository\GalleryEntityRepository;
 use DateTime;
-use Doctrine\ORM\Mapping\Entity;
 use Exception;
-use phpDocumentor\Reflection\Types\This;
 
 class PaintingMapper
 {
     private $en;
     public function PaintingData($data, PaintingEntity $painting,$entityManger)
     {
-        $PaintingArtType=new EntityArtTypeEntity();
-        $PaintingPrice=new PriceEntity();
         $this->en=$entityManger;
         $name = $data["name"];
         $artist = $this->en->getRepository(ArtistEntity::class)->findOneById($data["artist"]);
@@ -40,28 +30,20 @@ class PaintingMapper
         $height = $data["height"];
         $width = $data["width"];
         $colorsType = $data["colorsType"];
-        $price = $data["price"];
-        $story = $data["story"];
         $image = $data["image"];
         $active = $data["active"];
-       // $createdBy = $data["createdBy"];
-      // $updatedBy = $data["updatedBy"];
-        $artType = $data["artType"];
+        $keyWords = $data["keyWords"];
 
         $painting->setName($name)
             ->setArtist($artist)
-            ->setCreateDate($createDate)
-            ->setStory($story)
+            ->setkeyWords($keyWords)
             ->setState($state)
             ->setHeight($height)
             ->setWidth($width)
             ->setColorsType($colorsType)
             ->setActive($active)
-           // ->setCreatedBy($createdBy)
-          //  ->setUpdetedBy($updatedBy)
-          // ->setGallery($gallery)
-            ->setImage($image)
-            ->setUpdateDate($updateDate);
+            ->setImage($image);
+
 
         return $painting;
     }

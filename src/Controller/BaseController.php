@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\ArtTypeEntity;
 use App\Service\CreateUpdateDeleteServiceInterface;
 use App\Service\FetchDataServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;

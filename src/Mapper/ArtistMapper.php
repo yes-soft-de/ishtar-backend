@@ -22,12 +22,10 @@ class ArtistMapper
         }
         $story       = $data["story"];
         $details     = $data["details"];
-        $image       = $data["image"];
-        $video       = $data["video"];
-        $faceBook    = $data["facebook"];
-        $instagram   = $data["instagram"];
-        $twitter     = $data["twitter"];
-        $linkedin    = $data["linkedin"];
+        $facebbok=$data['Facebook'];
+        $twitter=$data['Twitter'];
+        $instagram=$data['Instagram'];
+        $linkedin=$data['Linkedin'];
 
         $artist->setName($name)
             ->setNationality($nationality)
@@ -35,11 +33,9 @@ class ArtistMapper
             ->setBirthDate($birthDate)
             ->setStory($story)
             ->setDetails($details)
-            ->setImage($image)
-            ->setVideo($video)
-            ->setFacebook($faceBook)
-            ->setInstagram($instagram)
+            ->setFacebook($facebbok)
             ->setTwitter($twitter)
+            ->setInstagram($instagram)
             ->setLinkedin($linkedin);
 
         return $artist;

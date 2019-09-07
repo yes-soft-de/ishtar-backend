@@ -78,6 +78,26 @@ class ArtistEntity
      */
     private $updateDate;
 
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    private $Facebook;
+
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    private $Twitter;
+
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    private $Linkedin;
+
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    private $Instagram;
+
 
 
     public function __construct()
@@ -164,36 +184,36 @@ class ArtistEntity
     }
 
 
-    /**
-     * @return Collection|GalleryEntity[]
-     */
-    public function getGallery(): Collection
-    {
-        return $this->gallery;
-    }
-
-    public function addGallery(GalleryEntity $gallery): self
-    {
-        if (!$this->gallery->contains($gallery)) {
-            $this->gallery[] = $gallery;
-            $gallery->setArtist($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGallery(GalleryEntity $gallery): self
-    {
-        if ($this->gallery->contains($gallery)) {
-            $this->gallery->removeElement($gallery);
-            // set the owning side to null (unless already changed)
-            if ($gallery->getArtist() === $this) {
-                $gallery->setArtist(null);
-            }
-        }
-
-        return $this;
-    }
+//    /**
+//     * @return Collection|GalleryEntity[]
+//     */
+//    public function getGallery(): Collection
+//    {
+//        return $this->gallery;
+//    }
+//
+//    public function addGallery(GalleryEntity $gallery): self
+//    {
+//        if (!$this->gallery->contains($gallery)) {
+//            $this->gallery[] = $gallery;
+//            $gallery->setArtist($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeGallery(GalleryEntity $gallery): self
+//    {
+//        if ($this->gallery->contains($gallery)) {
+//            $this->gallery->removeElement($gallery);
+//            // set the owning side to null (unless already changed)
+//            if ($gallery->getArtist() === $this) {
+//                $gallery->setArtist(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 
     public function getCreatedBy(): ?string
     {
@@ -239,6 +259,54 @@ class ArtistEntity
     public function setUpdateDate(?\DateTimeInterface $updateDate): self
     {
         $this->updateDate = $updateDate;
+
+        return $this;
+    }
+
+    public function getFacebook(): ?string
+    {
+        return $this->Facebook;
+    }
+
+    public function setFacebook(?string $Facebook): self
+    {
+        $this->Facebook = $Facebook;
+
+        return $this;
+    }
+
+    public function getTwitter(): ?string
+    {
+        return $this->Twitter;
+    }
+
+    public function setTwitter(?string $Twitter): self
+    {
+        $this->Twitter = $Twitter;
+
+        return $this;
+    }
+
+    public function getLinkedin(): ?string
+    {
+        return $this->Linkedin;
+    }
+
+    public function setLinkedin(?string $Linkedin): self
+    {
+        $this->Linkedin = $Linkedin;
+
+        return $this;
+    }
+
+    public function getInstagram(): ?string
+    {
+        return $this->Instagram;
+    }
+
+    public function setInstagram(?string $Instagram): self
+    {
+        $this->Instagram = $Instagram;
 
         return $this;
     }

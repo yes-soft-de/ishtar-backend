@@ -51,7 +51,7 @@ class PaintingEntity
      * @ORM\Column(type="text")
      *   @Groups({"default"})
      */
-    private $story;
+    private $keyWords;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=0)
@@ -154,14 +154,14 @@ class PaintingEntity
         return $this;
     }
 
-    public function getStory(): ?string
+    public function getkeyWords(): ?string
     {
-        return $this->story;
+        return $this->keyWords;
     }
 
-    public function setStory(string $story): self
+    public function setkeyWords(string $keyWords): self
     {
-        $this->story = $story;
+        $this->keyWords = $keyWords;
 
         return $this;
     }

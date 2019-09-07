@@ -32,12 +32,7 @@ class ArtTypeEntity
      */
     private $history;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $story;
-
-    /**
+       /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
     private $createdBy;
@@ -87,17 +82,6 @@ class ArtTypeEntity
         return $this;
     }
 
-    public function getStory(): ?string
-    {
-        return $this->story;
-    }
-
-    public function setStory(string $story): self
-    {
-        $this->story = $story;
-
-        return $this;
-    }
 
     public function getCreatedBy(): ?string
     {

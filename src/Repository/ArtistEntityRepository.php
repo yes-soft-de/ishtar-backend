@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ArtistEntity;
+use App\Entity\EntityArtTypeEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,19 +20,27 @@ class ArtistEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, ArtistEntity::class);
     }
 
-    /**
-      * @return ArtistEntity[] Returns an array of ArtistEntity objects
-     */
+
 
     public function findById($value)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.Id = :val')
+        $result=$this->createQueryBuilder('c')
+            ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story',
+                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','m.path')
+            ->from('App:EntityMediaEntity','m')
+            ->from('App:ArtistEntity','a')
+            ->andWhere('a.id = :val')
+            ->andWhere('a.id=m.row')
+            ->andWhere('m.entity=2')
+            ->andWhere('m.media=1')
             ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('a.name')
+            ->groupBy('a.id')
             ->getQuery()
             ->getResult();
+        $result=array_merge($result,$this->getEntityManager()->getRepository
+        (EntityArtTypeEntity::class)->getArtistArtTypes($value));
+        return $result;
     }
 
     /**
@@ -41,6 +50,7 @@ class ArtistEntityRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.id =:val')
+
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();
@@ -62,16 +72,18 @@ class ArtistEntityRepository extends ServiceEntityRepository
     public function getArtistsData($request)
     {
         return $this->createQueryBuilder('p')
-            ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story','sm.address','a.story','m.path')
+            ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story',
+                'a.story','m.path','at.name as artType')
             ->from('App:EntityMediaEntity','m')
             ->from('App:ArtistEntity','a')
-            ->from('App:SocialMediaArtistEntity','sm')
+            ->from('App:ArtTypeEntity','at')
+            ->from('App:EntityArtTypeEntity','ea')
             ->andWhere('a.id=m.row')
             ->andWhere('m.entity=2')
-            ->andWhere('m.media=1')
-            ->andWhere('sm.artist=a.id')
+            ->andWhere('at.id=ea.artType')
+            ->andWhere('ea.entity=2')
+            ->andWhere('a.id=ea.row')
             ->groupBy('a.id')
-            ->setMaxResults(100)
             ->getQuery()
             ->getResult();
     }

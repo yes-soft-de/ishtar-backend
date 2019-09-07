@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\ArtistEntity;
 use App\Validator\PaintingValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,8 +27,9 @@ class PaintingController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->create($request, "Painting");
-        $this->CUDService->create($request,"EntityArtType");
+        $this->CUDService->create($request,"PaintingArtType");
         $this->CUDService->create($request,"Price");
+        $this->CUDService->create($request,"Story");
         return $this->response($result, self::CREATE,"Painting");
     }
 

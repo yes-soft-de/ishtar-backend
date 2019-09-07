@@ -3,10 +3,6 @@
 namespace App\Mapper;
 use App\Entity\PaintingEntity;
 use App\Entity\PriceEntity;
-use DateTime;
-use Doctrine\ORM\Mapping\Entity;
-use Exception;
-use phpDocumentor\Reflection\Types\This;
 
 class PriceMapper
 {
@@ -20,6 +16,7 @@ class PriceMapper
         $painting=$this->en->getRepository(PaintingEntity::class)->find($id);
         $PriceEntity->setPrice($price)
             ->setPainting($painting);
+
 
         return $PriceEntity;
     }

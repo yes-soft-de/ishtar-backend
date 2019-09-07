@@ -42,10 +42,7 @@ class ArtTypeValidate implements ArtTypeValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'story' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ]
+
         ]);
 
         if ($type == 'create') {

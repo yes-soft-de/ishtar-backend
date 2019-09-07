@@ -47,4 +47,35 @@ class EntityArtTypeEntityRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getPaintingArtTypes($id):?array
+    {
+        return $this->createQueryBuilder('q')
+            ->select('at.name as artType')
+            ->from('App:EntityArtTypeEntity','ea')
+            ->from('App:ArtTypeEntity','at')
+            ->andWhere('ea.entity=1')
+            ->andWhere('ea.artType=at.id')
+            ->andWhere('ea.row='.$id)
+            ->groupBy('at.id')
+
+            // ->setMaxResults(100)
+            ->getQuery()
+            ->getResult();
+    }
+    public function getArtistArtTypes($id):?array
+    {
+        return $this->createQueryBuilder('q')
+            ->select('at.name as artType')
+            ->from('App:EntityArtTypeEntity','ea')
+            ->from('App:ArtTypeEntity','at')
+            ->andWhere('ea.entity=2')
+            ->andWhere('ea.artType=at.id')
+            ->andWhere('ea.row='.$id)
+            ->groupBy('at.id')
+
+            // ->setMaxResults(100)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
