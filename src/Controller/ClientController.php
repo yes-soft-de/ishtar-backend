@@ -30,6 +30,7 @@ class ClientController extends BaseController
         }
 
         $result = $this->CUDService->create($request, "Client");
+        $this->CUDService->create($request,"MediaClient");
         return $this->response($result, self::CREATE, "Client");
     }
 

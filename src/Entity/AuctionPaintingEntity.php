@@ -28,7 +28,7 @@ class AuctionPaintingEntity
     private $startPrice;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=0)
+     * @ORM\Column(type="decimal", precision=10, scale=0, nullable=true)
      */
     private $finalPrice;
 

@@ -17,7 +17,6 @@ use App\Entity\PaintingTransactionEntity;
 use App\Entity\ClapEntity;
 use App\Entity\CommentEntity;
 use App\Entity\PriceEntity;
-use App\Entity\SocialMediaArtistEntity;
 use App\Entity\StoryEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -127,6 +126,11 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 $mapper=new MediaEntityMapper();
                 $entity=new EntityMediaEntity();
                 return $mapper->MediaEntityData($data,$entity,$this->entityManager,2);
+
+            case "MediaClient":
+                $mapper=new MediaEntityMapper();
+                $entity=new EntityMediaEntity();
+                return $mapper->MediaEntityData($data,$entity,$this->entityManager,5);
         }
     }
 }

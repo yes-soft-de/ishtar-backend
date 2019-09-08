@@ -63,7 +63,7 @@ class ArtTypeRepository extends ServiceEntityRepository
    public function findAll()
    {
        return $this->createQueryBuilder('p')
-           ->select('at.id','at.name','at.history','at.story','m.path')
+           ->select('at.id','at.name','at.history','m.path')
            ->from('App:EntityMediaEntity','m')
            ->from('App:ArtTypeEntity','at')
            ->andWhere('at.id=m.row')

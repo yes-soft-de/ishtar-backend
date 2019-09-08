@@ -5,6 +5,7 @@ namespace App\Mapper;
 
 
 use App\Entity\ArtistEntity;
+use App\Entity\ClientEntity;
 use App\Entity\Entity;
 use App\Entity\EntityMediaEntity;
 use App\Entity\MediaEntity;
@@ -28,12 +29,19 @@ class MediaEntityMapper{
 
 
 
-        else {
+
+        else if ($entityId==5) {
+            $entity = $this->en->getRepository(Entity::class)->find(5);
+            $media = $this->en->getRepository(MediaEntity::class)->find(1);
+            $row = $this->en->getRepository(ClientEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
+            $row= $row[0]->getId()+1;
+            $path = $data['image'];
+            $name = $data['image'];
+        }
+        else  {
             $entity = $this->en->getRepository(Entity::class)->find($data['entity']);
             $media = $this->en->getRepository(MediaEntity::class)->find($data['media']);
-
             $row = $data['row'];
-
             $path = $data['path'];
             $name = $data['name'];
         }

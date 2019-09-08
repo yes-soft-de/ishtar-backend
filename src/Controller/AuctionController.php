@@ -27,6 +27,7 @@ class AuctionController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Auction");
+        $this->CUDService->create($request,"AuctionPainting");
         return $this->response($result, self::CREATE, "Auction");
     }
 

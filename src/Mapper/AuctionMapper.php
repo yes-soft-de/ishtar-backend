@@ -17,10 +17,11 @@ class AuctionMapper
             $endDate=new DateTime((string)$data["endDate"]);
         } catch (Exception $e) {
         }
-
+        $name=$data['name'];
 
         $auction->setStartDate($startDate)
-            ->setEndDate($endDate);
+            ->setEndDate($endDate)
+            ->setName($name);
         return $auction;
     }
 }

@@ -71,6 +71,11 @@ class ClientEntity
      */
     private $updateDate;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $birthDate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -204,6 +209,18 @@ class ClientEntity
     public function setUpdateDate(?\DateTimeInterface $updateDate): self
     {
         $this->updateDate = $updateDate;
+
+        return $this;
+    }
+
+    public function getBirthDate(): ?\DateTimeInterface
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(?\DateTimeInterface $birthDate): self
+    {
+        $this->birthDate = $birthDate;
 
         return $this;
     }
