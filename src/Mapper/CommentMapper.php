@@ -4,18 +4,18 @@ namespace App\Mapper;
 
 use App\Entity\ClientEntity;
 use App\Entity\CommentEntity;
+use App\Entity\Entity;
 use DateTime;
 use Exception;
 
 class CommentMapper
 {
     private $en;
-    public function commentData($data, CommentEntity $comment,$entityManger)
+    public function commentData($data, CommentEntity $commentEntity,$entityManger)
     {
         $this->en=$entityManger;
-        $pageName  = $data["pageName"];
-        $rowNum = $data["rowNum"];
-        $date   = $data["date"];
+        $entity  = $this->en->getRepository(Entity::class)->find($data["entity"]);
+        $row = $data["row"];
         //this (try catch) just to make IDE happy, must use date calender in frontend
         //if date empty the date of today will be there
         try {
@@ -30,14 +30,16 @@ class CommentMapper
         }
         $body = $data["body"];
         $client = $this->en->getRepository(ClientEntity::class)->find($data["client"]);
+        $spacial=$data['spacial'];
 
-        $comment->setPageName($pageName)
-            ->setRowNum($rowNum)
+        $commentEntity->setEntity($entity)
+            ->setRow($row)
             ->setBody($body)
             ->setDate($date)
             ->setLastEdit($lastEdit)
-            ->setClient($client);
+            ->setClient($client)
+            ->setSpacial($spacial);
 
-        return $comment;
+        return $commentEntity;
     }
 }

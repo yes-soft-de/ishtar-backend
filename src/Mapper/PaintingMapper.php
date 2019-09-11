@@ -30,7 +30,7 @@ class PaintingMapper
         $height = $data["height"];
         $width = $data["width"];
         $colorsType = $data["colorsType"];
-        $image = $data["image"];
+        $image = $data['image'];
         $active = $data["active"];
         $keyWords = $data["keyWords"];
 

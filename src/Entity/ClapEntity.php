@@ -26,7 +26,7 @@ class ClapEntity
     /**
      * @ORM\Column(type="integer")
      */
-    private $rowNum;
+    private $row;
 
     /**
      * @ORM\Column(type="integer")
@@ -57,14 +57,14 @@ class ClapEntity
     }
 
 
-    public function getRowNum(): ?int
+    public function getRow(): ?int
     {
-        return $this->rowNum;
+        return $this->row;
     }
 
-    public function setRowNum(int $rowNum): self
+    public function setRow(int $row): self
     {
-        $this->rowNum = $rowNum;
+        $this->row = $row;
 
         return $this;
     }

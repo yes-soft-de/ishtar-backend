@@ -6,11 +6,12 @@ namespace App\Mapper;
 
 use App\Entity\ArtistEntity;
 use App\Entity\ArtTypeEntity;
+use App\Entity\AuctionClientEntity;
 use App\Entity\ClientEntity;
 use App\Entity\EntityArtTypeEntity;
+use App\Entity\EntityInteractionEntity;
 use App\Entity\EntityMediaEntity;
 use App\Entity\PaintingEntity;
-use App\Entity\InteractionEntity;
 use App\Entity\AuctionEntity;
 use App\Entity\AuctionPaintingEntity;
 use App\Entity\PaintingTransactionEntity;
@@ -60,10 +61,10 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 return $clientMapper->clientData($data, $clientEntity);
                 break;
 
-            case "Interaction":
-                $interactionMapper = new InteractionMapper();
-                $interactionEntity = new InteractionEntity();
-                return $interactionMapper->interactionData($data,$interactionEntity,$this->entityManager);
+            case "EntityInteraction":
+                $interactionMapper = new EntityInteractionMapper();
+                $interactionEntity = new EntityInteractionEntity();
+                return $interactionMapper->EntityInteractionData($data,$interactionEntity,$this->entityManager);
                 break;
 
             case "Auction":
@@ -83,7 +84,6 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 $paintingTransactionEntity = new PaintingTransactionEntity();
                 return $paintingTransactionMapper->paintingTransactionData($data,$paintingTransactionEntity,$this->entityManager);
                 break;
-
 
             case "Clap":
                 $clapMapper = new ClapMapper();
@@ -131,6 +131,11 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 $mapper=new MediaEntityMapper();
                 $entity=new EntityMediaEntity();
                 return $mapper->MediaEntityData($data,$entity,$this->entityManager,5);
+
+            case "AuctionClient":
+                $mapper=new AuctionClientMapper();
+                $entity=new AuctionClientEntity();
+                return $mapper->auctionClientData($data,$entity,$this->entityManager);
         }
     }
 }

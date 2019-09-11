@@ -101,5 +101,14 @@ class ArtTypeController extends BaseController
         $result = $this->FDService->getArtTypelist();
         return $this->response($result,self::FETCH,"ArtType");
     }
-
+    /**
+     * @Route("/getEntityNames", name="getEntityNames")
+     * @param Request $request
+     * @return
+     */
+    public function getEntityNames(Request $request)
+    {
+        $result = $this->FDService->getEntityNames($request);
+        return $this->response($result,self::FETCH,"ArtType");
+    }
     }

@@ -19,7 +19,7 @@ class ClientEntity
     /**
      * @ORM\Column(type="string", length=45)
      */
-    private $fisrtName;
+    private $firstName;
 
     /**
      * @ORM\Column(type="string", length=45)
@@ -81,14 +81,14 @@ class ClientEntity
         return $this->id;
     }
 
-    public function getfisrtName(): ?string
+    public function getfirsttName(): ?string
     {
-        return $this->fisrtName;
+        return $this->firstName;
     }
 
-    public function setfisrtName(string $fisrtName): self
+    public function setfirstName(string $firstName): self
     {
-        $this->fisrtName = $fisrtName;
+        $this->firstName = $firstName;
 
         return $this;
     }

@@ -34,7 +34,7 @@ class  ClientMapper
         }
 
 
-        $client->setfisrtName($firstName)
+        $client->setfirstName($firstName)
             ->setUserName($userName)
             ->setPassword($password)
             ->setEmail($email)

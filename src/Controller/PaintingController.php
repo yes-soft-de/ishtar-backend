@@ -48,6 +48,9 @@ class PaintingController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Painting");
+        $this->CUDService->update($request,"PaintingArtType");
+       // $this->CUDService->update($request,"Price");
+       // $this->CUDService->update($request,"Story");
         return $this->response($result, self::UPDATE,"Painting");
     }
 

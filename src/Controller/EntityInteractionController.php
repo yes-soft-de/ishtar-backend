@@ -7,10 +7,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class InteractionController extends BaseController
+class EntityInteractionController extends BaseController
 {
     /**
-     * @Route("/createNewInteraction", name="createNewInteraction")
+     * @Route("/createInteraction", name="createInteraction")
      * @param Request $request
      * @return
      */
@@ -26,8 +26,8 @@ class InteractionController extends BaseController
         }
         //
 
-        $result = $this->CUDService->create($request, "Interaction");
-        return $this->response($result, self::CREATE,"Interaction");
+        $result = $this->CUDService->create($request, "EntityInteraction");
+        return $this->response($result, self::CREATE,"EntityInteraction");
     }
 
     /**

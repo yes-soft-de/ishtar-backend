@@ -44,7 +44,7 @@ class CommentEntity
     private $lastEdit;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Entity", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Entity")
      * @ORM\JoinColumn(nullable=false)
      */
     private $entity;

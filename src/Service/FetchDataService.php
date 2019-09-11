@@ -91,4 +91,9 @@ class FetchDataService implements FetchDataServiceInterface
         return $result = $this->manager->getArtistsData($request);
 
     }
+    public function getEntityNames($request)
+    {
+        return $result = $this->manager->getEntityNames($request);
+
+    }
 }

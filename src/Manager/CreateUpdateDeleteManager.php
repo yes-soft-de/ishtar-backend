@@ -33,7 +33,6 @@ BaseUpdateMapperInterface $baseUpdateMapper,BaseDeleteMapperInterface $baseDelet
         $data = $this->baseCreateMapper->createMapper($request, $entity);
         $this->entityManager->persist($data);
         $this->entityManager->flush();
-       // $this->entityManager->refresh($data);
 
         return $data;
     }
