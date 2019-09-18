@@ -44,4 +44,19 @@ class InteractionEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+    public function getEntityInteraction($entity,$id):?array
+    {
+        return $this->createQueryBuilder('q')
+            ->select('c.userName')
+            ->from('App:EntityInteractionEntity','ei')
+            ->from('App:ClientEntity','c')
+            ->andWhere('ei.entity='.$entity)
+            ->andWhere('ei.row='.$id)
+            ->andWhere('ei.interaction=2')
+            ->andWhere('c.id=ei.client')
+            ->groupBy('c.firstName')
+            // ->setMaxResults(100)
+            ->getQuery()
+            ->getResult();
+    }
 }

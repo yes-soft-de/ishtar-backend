@@ -89,7 +89,7 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
     public function getArtistPaintings(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        return $data = $this->entityManager->getRepository(PaintingEntity::class)->findByArtist($data['artist']);
+        return $data = $this->entityManager->getRepository(ArtistEntity::class)->getArtistPaintings($data['artist']);
     }
     public function getPaintingById(Request $request)
     {
@@ -144,9 +144,27 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
         $data = json_decode($request->getContent(), true);
         return $data = $this->entityManager->getRepository(ArtTypeEntity::class)->getEntityNames($data['entity']);
     }
-
-    public function getPaintingImages(Request $request)
+    public function getEntityInteraction($request)
     {
-        // TODO: Implement getPaintingImages() method.
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(InteractionEntity::class)->getEntityInteraction
+        ($data['entity'],$data['id']);
+    }
+    public function getEntityComment($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(CommentEntity::class)->getEntityComment
+        ($data['entity'],$data['id']);
+    }
+    public function getEntityClap($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ClapEntity::class)->getEntityClap
+        ($data['entity'],$data['id']);
+    }
+    public function search(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ArtistEntity::class)->search($data['keyword']);
     }
 }

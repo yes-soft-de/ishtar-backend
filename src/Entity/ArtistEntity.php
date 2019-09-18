@@ -25,27 +25,27 @@ class ArtistEntity
      * @ORM\Column(type="string", length=45)
      *  @Groups({"default"})
      * */
-    private $name;
+    public $name;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    private $nationality;
+    public $nationality;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    private $residence;
+    public $residence;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $birthDate;
+    public $birthDate;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $story;
+    public $story;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -54,7 +54,7 @@ class ArtistEntity
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\GalleryEntity", mappedBy="artist", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\GalleryEntity", mappedBy="artist")
      */
     private $gallery;
 
@@ -81,12 +81,12 @@ class ArtistEntity
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $Facebook;
+    public $Facebook;
 
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $Twitter;
+    public $Twitter;
 
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
@@ -100,11 +100,11 @@ class ArtistEntity
 
 
 
-    public function __construct()
-    {
-        $this->painting = new ArrayCollection();
-        $this->gallery = new ArrayCollection();
-    }
+//    public function __construct()
+//    {
+//        $this->painting = new ArrayCollection();
+//        $this->gallery = new ArrayCollection();
+//    }
 
     public function getId(): ?int
     {

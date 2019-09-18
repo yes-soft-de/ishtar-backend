@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\ArtistEntity;
 use App\Entity\EntityArtTypeEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -87,4 +88,52 @@ class ArtistEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function getArtistPaintings($request)
+    {
+        $data1=$this->createQueryBuilder('p')
+            ->select('a.id as ArtistId','a.name as Artist')
+            ->from('App:ArtistEntity','a')
+            ->andWhere('a.id='.$request)
+            ->groupBy('a.id')
+            ->getQuery()
+            ->getResult();
+        $data= $this->createQueryBuilder('p')
+            ->select('a.id','a.name','a.image')
+            ->from('App:PaintingEntity','a')
+            ->andWhere('a.artist='.$request)
+            ->groupBy('a.id')
+            ->getQuery()
+            ->getResult();
+       return $result=array_merge($data1,$data);
+    }
+    public function search($keyword):?array
+    {
+        $q1= $this->createQueryBuilder('q')
+            ->select('a.id','a.name','m.path')
+            ->from('App:ArtistEntity','a')
+            ->from('App:EntityMediaEntity','m')
+            ->andWhere('a.id=m.row')
+            ->andWhere('m.entity=2')
+            ->andWhere('m.media=1')
+            ->andWhere('a.name LIKE :keyword')
+            ->setParameter('keyword', '%'.$keyword.'%')
+            ->groupBy('a.id')
+            // ->setMaxResults(100)
+            ->getQuery()
+            ->getResult();
+        $q2= $this->createQueryBuilder('q')
+                ->select('p.id','p.name','p.image','a.name as artist')
+                ->from('App:PaintingEntity','p')
+                ->from('App:ArtistEntity','a')
+                ->andWhere('p.artist=a.id')
+                ->andWhere('p.name LIKE :keyword')
+            ->orWhere('p.keyWords LIKE :keyword')
+                ->setParameter('keyword', '%'.$keyword.'%')
+                ->groupBy('p.id')
+                // ->setMaxResults(100)
+                ->getQuery()
+                ->getResult();
+        return $q1+$q2;
+    }
+
 }

@@ -20,5 +20,8 @@ interface FetchDataMangerInterface
     public function getArtTypeList();
     public function getArtistsData($request);
     public function getEntityNames($request);
-
+    public function getEntityInteraction($request);
+    public function getEntityComment($request);
+    public function getEntityClap($request);
+    public function search($request);
 }

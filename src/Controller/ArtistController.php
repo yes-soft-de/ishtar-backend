@@ -105,5 +105,28 @@ class ArtistController extends BaseController
         $result = $this->FDService->getArtistsData($request,"Artist");
         return $this->response($result,self::FETCH,"Artist");
     }
+    /**
+     * @Route("/getArtistPaintings", name="getArtistPaintings")
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
+     */
+    public function getArtistPaintings(Request $request)
+    {
 
+        $result = $this->FDService->getArtistsData($request,"Artist");
+        return $this->response($result,self::FETCH,"Artist");
+    }
+
+    /**
+     * @Route("/search", name="search")
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
+     */
+    public function search(Request $request)
+    {
+        $result = $this->FDService->search($request);
+        return $this->response($result,self::FETCH,"Artist");
+    }
 }

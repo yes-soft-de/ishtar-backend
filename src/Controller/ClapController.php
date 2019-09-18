@@ -79,4 +79,15 @@ class ClapController extends BaseController
         $result = $this->FDService->fetchData($request,"Clap");
         return $this->response($result,self::FETCH,"Clap");
     }
+    /**
+     * @Route("/getEntityClap",name="getEntityClap")
+     * @param Request $request
+     * @return
+     */
+    public function getEntityClap(Request $request)
+    {
+
+        $result = $this->FDService->getEntityClap($request);
+        return $this->response($result,self::FETCH,"Clap");
+    }
 }
