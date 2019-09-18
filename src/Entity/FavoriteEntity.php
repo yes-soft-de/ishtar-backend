@@ -28,6 +28,11 @@ class FavoriteEntity
      */
     private $painting;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $row;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +58,18 @@ class FavoriteEntity
     public function setPainting(?PaintingEntity $painting): self
     {
         $this->painting = $painting;
+
+        return $this;
+    }
+
+    public function getRow(): ?int
+    {
+        return $this->row;
+    }
+
+    public function setRow(int $row): self
+    {
+        $this->row = $row;
 
         return $this;
     }

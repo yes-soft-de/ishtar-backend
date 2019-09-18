@@ -22,7 +22,6 @@ final class Version20190909231739 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE comment_entity DROP INDEX entity_id_2, ADD INDEX IDX_C43B1C7A81257D5D (entity_id)');
         $this->addSql('ALTER TABLE comment_entity DROP FOREIGN KEY FK_C43B1C7A81257D5D');
         $this->addSql('ALTER TABLE comment_entity DROP FOREIGN KEY FK_C43B1C7A19EB6921');
         $this->addSql('ALTER TABLE comment_entity ADD CONSTRAINT FK_C43B1C7A81257D5D FOREIGN KEY (entity_id) REFERENCES entity (id)');

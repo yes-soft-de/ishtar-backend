@@ -87,4 +87,22 @@ class ArtistEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function getArtistPaintings($request)
+    {
+        $data1=$this->createQueryBuilder('p')
+            ->select('a.id as ArtistId','a.name as Artist')
+            ->from('App:ArtistEntity','a')
+            ->andWhere('a.id='.$request)
+            ->groupBy('a.id')
+            ->getQuery()
+            ->getResult();
+        $data= $this->createQueryBuilder('p')
+            ->select('a.id','a.name','a.image')
+            ->from('App:PaintingEntity','a')
+            ->andWhere('a.artist='.$request)
+            ->groupBy('a.id')
+            ->getQuery()
+            ->getResult();
+       return $result=array_merge($data1,$data);
+    }
 }

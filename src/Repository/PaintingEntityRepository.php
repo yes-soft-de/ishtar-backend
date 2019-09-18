@@ -65,6 +65,9 @@ class PaintingEntityRepository extends ServiceEntityRepository
     }
     public function getBy($parm,$value):?array
     {
+        if($parm=='artType')
+            $parm='ea.artType='.$value;
+        else
         $parm = "p." . $parm . "='" . $value . "'";
 
         return $this->createQueryBuilder('q')
@@ -103,5 +106,7 @@ class PaintingEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
 
 }

@@ -61,4 +61,22 @@ class CommentEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getEntityComment($entity,$id):?array
+    {
+        return $this->createQueryBuilder('q')
+            ->select('c.id','c.body','c.date','c.spacial','cl.userName','m.path as image')
+            ->from('App:CommentEntity','c')
+            ->from('App:ClientEntity','cl')
+            ->from('App:EntityMediaEntity','m')
+            ->andWhere('c.client=cl.id')
+            ->andWhere('c.entity='.$entity)
+            ->andWhere('c.row='.$id)
+            ->andWhere('m.entity=5')
+            ->andWhere('m.media=1')
+            ->andWhere('m.row=c.id')
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+    }
 }
