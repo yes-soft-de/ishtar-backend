@@ -28,7 +28,7 @@ class AuctionPaintingEntity
     private $startPrice;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=0)
+     * @ORM\Column(type="decimal", precision=10, scale=0, nullable=true)
      */
     private $finalPrice;
 
@@ -37,6 +37,16 @@ class AuctionPaintingEntity
      * @ORM\JoinColumn(nullable=false)
      */
     private $auction;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=0, nullable=true)
+     */
+    private $highiestPrice;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ClientEntity")
+     */
+    private $client;
 
     public function getId(): ?int
     {
@@ -87,6 +97,30 @@ class AuctionPaintingEntity
     public function setAuction(AuctionEntity $auction): self
     {
         $this->auction = $auction;
+
+        return $this;
+    }
+
+    public function getHighiestPrice(): ?string
+    {
+        return $this->highiestPrice;
+    }
+
+    public function setHighiestPrice(?string $highiestPrice): self
+    {
+        $this->highiestPrice = $highiestPrice;
+
+        return $this;
+    }
+
+    public function getClient(): ?ClientEntity
+    {
+        return $this->client;
+    }
+
+    public function setClient(?ClientEntity $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }

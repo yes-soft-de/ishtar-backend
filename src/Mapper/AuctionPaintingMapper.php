@@ -12,15 +12,15 @@ class AuctionPaintingMapper
     public function auctionPaintingData($data, AuctionPaintingEntity $auctionPainting,$entityManager)
     {
         $this->en=$entityManager;
-        $auction=$this->en->getRepository(AuctionEntity::class)->find($data["auction"]);
+        $auction=$this->en->getRepository(AuctionEntity::class)->findBy(array(),array('id'=>'DESC'),1,1);
+        $id= $auction[0]->getId()+1;
         $painting = $this->en->getRepository(PaintingEntity::class)->find($data["painting"]);
+        $auction= $this->en->getRepository(AuctionEntity::class)->find($id);
         $startPrice = $data["startPrice"];
-        $finalPrice = $data["finalPrice"];
 
         $auctionPainting->setPainting($painting)
             ->setAuction($auction)
-            ->setStartPrice($startPrice)
-            ->setFinalPrice($finalPrice);
+            ->setStartPrice($startPrice);
 
         return $auctionPainting;
     }

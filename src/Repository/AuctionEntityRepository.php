@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method AuctionEntity|null find($id, $lockMode = null, $lockVersion = null)
  * @method AuctionEntity|null findOneBy(array $criteria, array $orderBy = null)
- * @method AuctionEntity[]    findAll()
+ //* @method AuctionEntity[]    findAll()
  * @method AuctionEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class AuctionEntityRepository extends ServiceEntityRepository
@@ -43,5 +43,21 @@ class AuctionEntityRepository extends ServiceEntityRepository
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+    public function findAll()
+    {
+        return $this->createQueryBuilder('q')
+            ->select('a.id','a.name','a.startDate','a.endDate','ap.startPrice','ap.finalPrice','ap.highiestPrice',
+                'c.firstName','p.name')
+            ->from('App:AuctionEntity','a')
+            ->from('App:PaintingEntity','p')
+            ->from('App:ClientEntity','c')
+            ->from('App:AuctionPaintingEntity','ap')
+            ->andWhere('a.id=ap.auction')
+           // ->andWhere('c.id=ap.client')
+            ->andWhere('p.id=ap.painting')
+            ->groupBy('a.id')
+            ->getQuery()
+            ->getResult();
     }
 }

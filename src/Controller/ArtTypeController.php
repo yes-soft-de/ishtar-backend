@@ -27,31 +27,88 @@ class ArtTypeController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "ArtType");
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE,"ArtType");
     }
 
     /**
      * @Route("/updateArtType", name="updateArtType")
      * @param Request $request
+     * @return
      */
-    public function update(Request $request)
+    public function update(Request $request, ArtTypeValidateInterface $artTypeValidate)
     {
-        //ToDo Call artistValidator
-
+        $validateResult = $artTypeValidate->artTypeValidator($request, 'update');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->update($request, "ArtType");
-
-        return $result;
+        return $this->response($result, self::UPDATE, "ArtType");
     }
 
     /**
      * @Route("/deleteArtType", name="deleteArtType")
      * @param Request $request
+     * @return
      */
-    public function delete(Request $request)
+    public function delete(Request $request, ArtTypeValidateInterface $artTypeValidate)
     {
-        //ToDo Call artistValidator
-
+        $validateResult = $artTypeValidate->artTypeValidator($request, 'delete');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
         $result = $this->CUDService->delete($request, "ArtType");
-        return $result;
+        return $this->response($result, self::DELETE, "ArtType");
+
     }
-}
+
+
+    /**
+     * @Route("/getAllArtType",name="getAllArtType")
+     * @param Request $request
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+        //ToDo Call Validator
+
+        $result = $this->FDService->fetchData($request,"ArtType");
+        return $this->response($result,self::FETCH,"ArtType");
+    }
+
+    /**
+     * @Route("/getArtTypeById", name="getArtTypeById")
+     * @param Request $request
+     * @return
+     */
+    public function getArtTypeById(Request $request)
+    {
+        $result = $this->FDService->getArtTypeById($request);
+        return $this->response($result,self::FETCH,"ArtType");
+    }
+    /**
+     * @Route("/getArtTypeList", name="getArtTypeList")
+     * @param Request $request
+     * @return
+     */
+    public function getArtTypelist()
+    {
+        $result = $this->FDService->getArtTypelist();
+        return $this->response($result,self::FETCH,"ArtType");
+    }
+    /**
+     * @Route("/getEntityNames", name="getEntityNames")
+     * @param Request $request
+     * @return
+     */
+    public function getEntityNames(Request $request)
+    {
+        $result = $this->FDService->getEntityNames($request);
+        return $this->response($result,self::FETCH,"ArtType");
+    }
+    }

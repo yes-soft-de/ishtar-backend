@@ -9,18 +9,25 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadFileService
 {
+    const path = "http://ishtar.96.lt/Ishtar/public/uploads/ArtistImages/";
+
     public function upload(UploadedFile $file, $destination)
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $safeFilename =  $originalFilename;
+        $safeFilename = $originalFilename; //todo add more strong file renaming
         $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
 
-        try {
+        try
+        {
             $file->move($destination, $fileName);
-        } catch (FileException $e) {
-            // ... handle exception if something happens during file upload
+        }
+        catch (FileException $e)
+        {
+            $response = 'failed to upload image: ' . $e->getMessage();
+            //throw new FileException('Failed to upload file');
+            return $response;
         }
 
-        return $fileName;
+        return self::path.$fileName;
     }
 }

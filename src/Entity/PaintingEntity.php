@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PaintingEntityRepository")
@@ -13,55 +14,91 @@ class PaintingEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *  @Groups({"default"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=45)
+     *
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ArtistEntity", inversedBy="painting")
      * @ORM\JoinColumn(nullable=false)
+     *   @Groups({"default"})
      */
     private $artist;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ArtTypeEntity", inversedBy="painting")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $artType;
 
     /**
      * @ORM\Column(type="boolean")
+     *   @Groups({"default"})
      */
     private $state;
 
-    /**
-     * @ORM\Column(type="string", length=45)
-     */
-    private $deminsions;
 
     /**
      * @ORM\Column(type="string", length=45)
+     *   @Groups({"default"})
      */
     private $colorsType;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=0)
-     */
-    private $price;
+
 
     /**
      * @ORM\Column(type="text")
+     *   @Groups({"default"})
      */
-    private $story;
+    private $keyWords;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="decimal", precision=6, scale=0)
      */
-    private $addingDate;
+    private $height;
+
+    /**
+     * @ORM\Column(type="decimal", precision=6, scale=2)
+     */
+    private $width;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $active;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    private $createdBy;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $createDate;
+
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    private $updetedBy;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $updateDate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\GalleryEntity", inversedBy="paintingEntities")
+     */
+    private $gallery;
+
+
 
     public function getId(): ?int
     {
@@ -92,19 +129,7 @@ class PaintingEntity
         return $this;
     }
 
-    public function getArtType(): ?ArtTypeEntity
-    {
-        return $this->artType;
-    }
-
-    public function setArtType(?ArtTypeEntity $artType): self
-    {
-        $this->artType = $artType;
-
-        return $this;
-    }
-
-    public function getState(): ?bool
+       public function getState(): ?bool
     {
         return $this->state;
     }
@@ -116,17 +141,6 @@ class PaintingEntity
         return $this;
     }
 
-    public function getDeminsions(): ?string
-    {
-        return $this->deminsions;
-    }
-
-    public function setDeminsions(string $deminsions): self
-    {
-        $this->deminsions = $deminsions;
-
-        return $this;
-    }
 
     public function getColorsType(): ?string
     {
@@ -140,39 +154,125 @@ class PaintingEntity
         return $this;
     }
 
-    public function getPrice()
+    public function getkeyWords(): ?string
     {
-        return $this->price;
+        return $this->keyWords;
     }
 
-    public function setPrice($price): self
+    public function setkeyWords(string $keyWords): self
     {
-        $this->price = $price;
+        $this->keyWords = $keyWords;
 
         return $this;
     }
 
-    public function getStory(): ?string
+    public function getHeight(): ?string
     {
-        return $this->story;
+        return $this->height;
     }
 
-    public function setStory(string $story): self
+    public function setHeight(string $height): self
     {
-        $this->story = $story;
+        $this->height = $height;
 
         return $this;
     }
 
-    public function getAddingDate(): ?\DateTimeInterface
+    public function getWidth(): ?string
     {
-        return $this->addingDate;
+        return $this->width;
     }
 
-    public function setAddingDate(\DateTimeInterface $addingDate): self
+    public function setWidth(string $width): self
     {
-        $this->addingDate = $addingDate;
+        $this->width = $width;
 
         return $this;
     }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(?bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?string
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?string $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getCreateDate(): ?\DateTimeInterface
+    {
+        return $this->createDate;
+    }
+
+    public function setCreateDate(?\DateTimeInterface $createDate): self
+    {
+        $this->createDate = $createDate;
+
+        return $this;
+    }
+
+    public function getUpdetedBy(): ?string
+    {
+        return $this->updetedBy;
+    }
+
+    public function setUpdetedBy(?string $updetedBy): self
+    {
+        $this->updetedBy = $updetedBy;
+
+        return $this;
+    }
+
+    public function getUpdateDate(): ?\DateTimeInterface
+    {
+        return $this->updateDate;
+    }
+
+    public function setUpdateDate(?\DateTimeInterface $updateDate): self
+    {
+        $this->updateDate = $updateDate;
+
+        return $this;
+    }
+
+    public function getGallery(): ?GalleryEntity
+    {
+        return $this->gallery;
+    }
+
+    public function setGallery(?GalleryEntity $gallery): self
+    {
+        $this->gallery = $gallery;
+
+        return $this;
+    }
+
+
 }

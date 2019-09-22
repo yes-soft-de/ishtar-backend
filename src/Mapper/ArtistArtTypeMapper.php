@@ -2,23 +2,28 @@
 
 namespace App\Mapper;
 
-    use App\Entity\ArtistArttypeEntity;
-    use App\Entity\ArtistEntity;
-    use App\Entity\ArtTypeEntity;
+use App\Entity\ArtistEntity;
+use App\Entity\ArtTypeEntity;
+use App\Entity\EntityArtTypeEntity;
 
-    class ArtistArtTypeMapper
+class ArtistArtTypeMapper
 {
     private $en;
-    public function artistArttypeData($data, ArtistArttypeEntity $artistArttype,$entityManager)
+    public function ArtistArtTypeData($data, EntityArtTypeEntity $artTypeEntity,$entityManger)
     {
-        $this->en=$entityManager;
-        $artist =  $this->en->getRepository(ArtistEntity::class)->find($data["artist"]);
-        $artType = $this->en->getRepository(ArtTypeEntity::class)->find($data["artType"]);
+        $this->en=$entityManger;
+        $entity = $this->en->getRepository(\App\Entity\Entity::class)->find(2);
+        $artType = $this->en->getRepository(ArtTypeEntity::class)->find($data['artType']);
+
+            $row = $this->en->getRepository(ArtistEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
+            $row= $row[0]->getId()+1;
 
 
-        $artistArttype->setArtist($artist)
+        $artTypeEntity->setArtType($artType)
+            ->setRow($row)
+            ->setEntity($entity)
             ->setArtType($artType);
 
-        return $artistArttype;
+        return $artTypeEntity;
     }
 }

@@ -5,11 +5,14 @@ namespace App\Validator;
 
 
 use App\Entity\ArtistEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints\Required;
 
-class ArtistValidate
+class ArtistValidate implements ArtistValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -54,30 +57,31 @@ class ArtistValidate
                 new Required(),
                 new Assert\NotBlank(),
             ],
+            'Facebook' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'Instagram' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'Twitter' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'artType' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'Linkedin' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
             'image' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'video' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'facebook' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'instagram' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'twitter' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'linkedin' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
+        new Required(),
+        new Assert\NotBlank(),
+    ]
+
 
         ]);
 

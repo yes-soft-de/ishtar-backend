@@ -5,11 +5,14 @@ namespace App\Validator;
 
 
 use App\Entity\PaintingTransactionEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
 
-class PaintingTransactionValidate
+class PaintingTransactionValidate implements PaintingTransactionValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -19,6 +22,7 @@ class PaintingTransactionValidate
         $this->validator = $validator;
         $this->entityManager = $entityManagerInterface;
     }
+
 
     public function paintingTransactionValidator(Request $request, $type)
     {
@@ -30,11 +34,11 @@ class PaintingTransactionValidate
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'paintingId' => [
+            'painting' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'clientId' => [
+            'client' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -53,8 +57,8 @@ class PaintingTransactionValidate
             unset($constraints->fields['id']);
         }
         if ($type == "delete") {
-            unset($constraints->fields['paintingId']);
-            unset($constraints->fields['clientId']);
+            unset($constraints->fields['painting']);
+            unset($constraints->fields['client']);
             unset($constraints->fields['date']);
             unset($constraints->fields['price']);
         }
