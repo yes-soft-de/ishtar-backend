@@ -5,11 +5,14 @@ namespace App\Validator;
 
 
 use App\Entity\AuctionEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
 
-class AuctionValidate
+class AuctionValidate implements AuctionValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -35,6 +38,18 @@ class AuctionValidate
                 new Assert\NotBlank(),
             ],
             'endDate' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'name' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'painting' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'startPrice' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],

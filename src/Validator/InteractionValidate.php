@@ -5,11 +5,14 @@ namespace App\Validator;
 
 
 use App\Entity\InteractionEntity;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Required;
 
-class InteractionValidate
+class InteractionValidate implements InteractionValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -19,6 +22,7 @@ class InteractionValidate
         $this->validator = $validator;
         $this->entityManager = $entityManagerInterface;
     }
+
 
     public function interactionValidator(Request $request, $type)
     {
@@ -31,19 +35,19 @@ class InteractionValidate
                 new Assert\NotBlank(),
             ],
 
-            'pageName' => [
+            'entity' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'rowNum' => [
+            'row' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'interactionType' => [
+            'interaction' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'clientId' => [
+            'client' => [
                 new Required(),
                 new Assert\NotBlank(),
             ]
@@ -56,7 +60,7 @@ class InteractionValidate
             unset($constraints->fields['pageName']);
             unset($constraints->fields['rowNum']);
             unset($constraints->fields['interactionType']);
-            unset($constraints->fields['clientId']);
+            unset($constraints->fields['client']);
         }
 
         $violations = $this->validator->validate($input, $constraints);

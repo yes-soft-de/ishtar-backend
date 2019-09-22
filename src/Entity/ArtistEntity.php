@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArtistEntityRepository")
@@ -15,75 +16,95 @@ class ArtistEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *  @Groups({"default"})
+     *
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=45)
-     */
-    private $name;
+     *  @Groups({"default"})
+     * */
+    public $name;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    private $nationality;
+    public $nationality;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    private $residence;
+    public $residence;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $birth_date;
+    public $birthDate;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $story;
+    public $story;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $details;
 
-    /**
-     * @ORM\Column(type="string", length=45, nullable=true)
-     */
-    private $image;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\GalleryEntity", mappedBy="artist")
      */
-    private $video;
+    private $gallery;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $facebook;
+    private $createdBy;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
-    private $instagram;
+    private $createDate;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $twitter;
+    private $updatedBy;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
-    private $linkedin;
+    private $updateDate;
+
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    public $Facebook;
+
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    public $Twitter;
+
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    private $Linkedin;
+
+    /**
+     * @ORM\Column(type="string", length=25, nullable=true)
+     */
+    private $Instagram;
 
 
 
-    public function __construct()
-    {
-        $this->painting = new ArrayCollection();
-    }
+//    public function __construct()
+//    {
+//        $this->painting = new ArrayCollection();
+//        $this->gallery = new ArrayCollection();
+//    }
 
     public function getId(): ?int
     {
@@ -128,12 +149,12 @@ class ArtistEntity
 
     public function getBirthDate(): ?\DateTimeInterface
     {
-        return $this->birth_date;
+        return $this->birthDate;
     }
 
-    public function setBirthDate(?\DateTimeInterface $birth_date): self
+    public function setBirthDate(?\DateTimeInterface $birthDate): self
     {
-        $this->birth_date = $birth_date;
+        $this->birthDate = $birthDate;
 
         return $this;
     }
@@ -162,74 +183,130 @@ class ArtistEntity
         return $this;
     }
 
-    public function getImage(): ?string
+
+//    /**
+//     * @return Collection|GalleryEntity[]
+//     */
+//    public function getGallery(): Collection
+//    {
+//        return $this->gallery;
+//    }
+//
+//    public function addGallery(GalleryEntity $gallery): self
+//    {
+//        if (!$this->gallery->contains($gallery)) {
+//            $this->gallery[] = $gallery;
+//            $gallery->setArtist($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeGallery(GalleryEntity $gallery): self
+//    {
+//        if ($this->gallery->contains($gallery)) {
+//            $this->gallery->removeElement($gallery);
+//            // set the owning side to null (unless already changed)
+//            if ($gallery->getArtist() === $this) {
+//                $gallery->setArtist(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
+
+    public function getCreatedBy(): ?string
     {
-        return $this->image;
+        return $this->createdBy;
     }
 
-    public function setImage(?string $image): self
+    public function setCreatedBy(?string $createdBy): self
     {
-        $this->image = $image;
+        $this->createdBy = $createdBy;
 
         return $this;
     }
 
-    public function getVideo(): ?string
+    public function getCreateDate(): ?\DateTimeInterface
     {
-        return $this->video;
+        return $this->createDate;
     }
 
-    public function setVideo(?string $video): self
+    public function setCreateDate(?\DateTimeInterface $createDate): self
     {
-        $this->video = $video;
+        $this->createDate = $createDate;
+
+        return $this;
+    }
+
+    public function getUpdatedBy(): ?string
+    {
+        return $this->updatedBy;
+    }
+
+    public function setUpdatedBy(?string $updatedBy): self
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    public function getUpdateDate(): ?\DateTimeInterface
+    {
+        return $this->updateDate;
+    }
+
+    public function setUpdateDate(?\DateTimeInterface $updateDate): self
+    {
+        $this->updateDate = $updateDate;
 
         return $this;
     }
 
     public function getFacebook(): ?string
     {
-        return $this->facebook;
+        return $this->Facebook;
     }
 
-    public function setFacebook(?string $facebook): self
+    public function setFacebook(?string $Facebook): self
     {
-        $this->facebook = $facebook;
-
-        return $this;
-    }
-
-    public function getInstagram(): ?string
-    {
-        return $this->instagram;
-    }
-
-    public function setInstagram(?string $instagram): self
-    {
-        $this->instagram = $instagram;
+        $this->Facebook = $Facebook;
 
         return $this;
     }
 
     public function getTwitter(): ?string
     {
-        return $this->twitter;
+        return $this->Twitter;
     }
 
-    public function setTwitter(?string $twitter): self
+    public function setTwitter(?string $Twitter): self
     {
-        $this->twitter = $twitter;
+        $this->Twitter = $Twitter;
 
         return $this;
     }
 
     public function getLinkedin(): ?string
     {
-        return $this->linkedin;
+        return $this->Linkedin;
     }
 
-    public function setLinkedin(?string $linkedin): self
+    public function setLinkedin(?string $Linkedin): self
     {
-        $this->linkedin = $linkedin;
+        $this->Linkedin = $Linkedin;
+
+        return $this;
+    }
+
+    public function getInstagram(): ?string
+    {
+        return $this->Instagram;
+    }
+
+    public function setInstagram(?string $Instagram): self
+    {
+        $this->Instagram = $Instagram;
 
         return $this;
     }
