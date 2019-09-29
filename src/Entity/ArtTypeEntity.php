@@ -32,20 +32,25 @@ class ArtTypeEntity
      */
     private $history;
 
-    /**
-     * @ORM\Column(type="text")
+       /**
+     * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $story;
+    private $createdBy;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="date", nullable=true)
      */
-    private $image;
+    private $createDate;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $video;
+    private $updatedBy;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $updateDate;
 
 
     public function getId(): ?int
@@ -77,38 +82,51 @@ class ArtTypeEntity
         return $this;
     }
 
-    public function getStory(): ?string
+
+    public function getCreatedBy(): ?string
     {
-        return $this->story;
+        return $this->createdBy;
     }
 
-    public function setStory(string $story): self
+    public function setCreatedBy(?string $createdBy): self
     {
-        $this->story = $story;
+        $this->createdBy = $createdBy;
 
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getCreateDate(): ?\DateTimeInterface
     {
-        return $this->image;
+        return $this->createDate;
     }
 
-    public function setImage(string $image): self
+    public function setCreateDate(?\DateTimeInterface $createDate): self
     {
-        $this->image = $image;
+        $this->createDate = $createDate;
 
         return $this;
     }
 
-    public function getVideo(): ?string
+    public function getUpdatedBy(): ?string
     {
-        return $this->video;
+        return $this->updatedBy;
     }
 
-    public function setVideo(?string $video): self
+    public function setUpdatedBy(?string $updatedBy): self
     {
-        $this->video = $video;
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    public function getUpdateDate(): ?\DateTimeInterface
+    {
+        return $this->updateDate;
+    }
+
+    public function setUpdateDate(?\DateTimeInterface $updateDate): self
+    {
+        $this->updateDate = $updateDate;
 
         return $this;
     }

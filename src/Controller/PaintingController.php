@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\ArtistEntity;
 use App\Validator\PaintingValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,8 @@ class PaintingController extends BaseController
      */
     public function create(Request $request, PaintingValidateInterface $paintingValidate)
     {
-        //Validation
+
+       // Validation
         $validateResult = $paintingValidate->paintingValidator($request, 'create');
         if (!empty($validateResult))
         {
@@ -26,9 +26,10 @@ class PaintingController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        //
-
         $result = $this->CUDService->create($request, "Painting");
+        $this->CUDService->create($request,"PaintingArtType");
+        $this->CUDService->create($request,"Price");
+        $this->CUDService->create($request,"Story");
         return $this->response($result, self::CREATE,"Painting");
     }
 
@@ -47,6 +48,9 @@ class PaintingController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Painting");
+        $this->CUDService->update($request,"PaintingArtType");
+        $this->CUDService->create($request,"Price");
+        $this->CUDService->update($request,"Story");
         return $this->response($result, self::UPDATE,"Painting");
     }
 
@@ -89,7 +93,51 @@ class PaintingController extends BaseController
      */
 public function getArtistPaintings(Request $request)
 {
-    $result = $this->FDService->getArtistPaintings($request,"Painting");
+    $result = $this->FDService->getArtistPaintings($request);
     return $this->response($result,self::FETCH,"Painting");
 }
+
+    /**
+     * @Route("/getArtTypePaintings", name="getArtTypePaintings")
+     * @param Request $request
+     * @return
+     */
+    public function getArtTypePaintings(Request $request)
+    {
+        $result = $this->FDService->getArtTypePaintings($request);
+        return $this->response($result,self::FETCH,"Painting");
+    }
+
+    /**
+     * @Route("/getPaintingById", name="getPaintingById")
+     * @param Request $request
+     * @return
+     */
+    public function getPaintingById(Request $request)
+    {
+        $result = $this->FDService->getPaintingById($request);
+        return $this->response($result,self::FETCH,"Painting");
+    }
+    /**
+     * @Route("/getBy", name="getBy")
+     * @param Request $request
+     * @return
+     */
+    public function getBy(Request $request)
+    {
+        $result = $this->FDService->getBy($request);
+        return $this->response($result,self::FETCH,"Painting");
+    }
+
+    /**
+     * @Route("/getPaintingShort", name="getPaintingShort")
+     * @param Request $request
+     * @return
+     */
+    public function getPaintingShort()
+    {
+        $result = $this->FDService->getPaintingShort();
+        return $this->response($result,self::FETCH,"Painting");
+    }
+
 }

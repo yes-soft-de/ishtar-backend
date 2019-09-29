@@ -38,6 +38,11 @@ class PaintingTransactionEntity
      */
     private $price;
 
+    /**
+     * @ORM\Column(type="string", length=45, nullable=true)
+     */
+    private $details;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +92,18 @@ class PaintingTransactionEntity
     public function setPrice($price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getDetails(): ?string
+    {
+        return $this->details;
+    }
+
+    public function setDetails(?string $details): self
+    {
+        $this->details = $details;
 
         return $this;
     }

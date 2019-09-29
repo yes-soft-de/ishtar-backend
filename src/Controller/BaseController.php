@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\ArtTypeEntity;
 use App\Service\CreateUpdateDeleteServiceInterface;
 use App\Service\FetchDataServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -81,20 +80,24 @@ class BaseController extends AbstractController
 
     public function response($result, $status,$entity) :jsonResponse
     {
-        switch ($entity) {
-            case "Painting":
-        $result = $this->serializer->serialize($result, "json", ['ignored_attributes' => ['artist', 'artType', 'painting']
-           ] ,['groups' => ['default']]);
-                break;
-
-            default:
-                $result = $this->serializer->serialize($result, "json");
-        }
+//        switch ($entity) {
+//            case "Painting":
+//        $result = $this->serializer->serialize($result, "json");
+//              break;
+//            case "Image"or"Video":
+//                $result = $this->serializer->serialize($result, "json", ['ignored_attributes' => ['artist','painting','addingDate']
+//                ] ,['groups' => ['default']]);
+//                break;
+//            default:
+                $result = $this->serializer->serialize($result, "json", [
+                    'enable_max_depth' => true]);
+        //}
         $response = new jsonResponse(["status_code" => "200",
             "msg" => $status. " "."Successfully.",
             "Data" => json_decode($result)
             ]
         , Response::HTTP_OK);
+        $response->headers->set('Access-Control-Allow-Headers', 'X-Header-One,X-Header-Two');
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }

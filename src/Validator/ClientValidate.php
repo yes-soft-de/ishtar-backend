@@ -36,7 +36,11 @@ class ClientValidate implements ClientValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'name' => [
+            'firstName' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'lastName' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -51,7 +55,23 @@ class ClientValidate implements ClientValidateInterface
             'email' => [
                 new Required(),
                 new Assert\NotBlank(),
-                ]
+            ],
+            'phone' => [
+                 new Required(),
+                new Assert\NotBlank(),
+            ],
+            'roll' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'birthDate' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'image' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ]
         ]);
 
         if ($type == 'create') {

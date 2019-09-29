@@ -22,15 +22,11 @@ class CommentEntity
      */
     private $client;
 
-    /**
-     * @ORM\Column(type="string", length=25)
-     */
-    private $pageName;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $rowNum;
+    private $row;
 
     /**
      * @ORM\Column(type="text")
@@ -46,6 +42,17 @@ class CommentEntity
      * @ORM\Column(type="datetime")
      */
     private $lastEdit;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Entity")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $entity;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $spacial;
 
     public function getId(): ?int
     {
@@ -64,26 +71,15 @@ class CommentEntity
         return $this;
     }
 
-    public function getPageName(): ?string
+
+    public function getRow(): ?int
     {
-        return $this->pageName;
+        return $this->row;
     }
 
-    public function setPageName(string $pageName): self
+    public function setRow(int $row): self
     {
-        $this->pageName = $pageName;
-
-        return $this;
-    }
-
-    public function getRowNum(): ?int
-    {
-        return $this->rowNum;
-    }
-
-    public function setRowNum(int $rowNum): self
-    {
-        $this->rowNum = $rowNum;
+        $this->row = $row;
 
         return $this;
     }
@@ -120,6 +116,30 @@ class CommentEntity
     public function setLastEdit(\DateTimeInterface $lastEdit): self
     {
         $this->lastEdit = $lastEdit;
+
+        return $this;
+    }
+
+    public function getEntity(): ?Entity
+    {
+        return $this->entity;
+    }
+
+    public function setEntity(Entity $entity): self
+    {
+        $this->entity = $entity;
+
+        return $this;
+    }
+
+    public function getSpacial(): ?bool
+    {
+        return $this->spacial;
+    }
+
+    public function setSpacial(bool $spacial): self
+    {
+        $this->spacial = $spacial;
 
         return $this;
     }

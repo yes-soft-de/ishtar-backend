@@ -17,76 +17,25 @@ class InteractionEntity
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ClientEntity")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $client;
-
-    /**
      * @ORM\Column(type="string", length=25)
      */
-    private $pageName;
-
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    private $interactionType;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $rowNum;
+    private $name;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getClient(): ?ClientEntity
+    public function getName(): ?string
     {
-        return $this->client;
+        return $this->name;
     }
 
-    public function setClient(?ClientEntity $client): self
+    public function setName(string $name): self
     {
-        $this->client = $client;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getPageName(): ?string
-    {
-        return $this->pageName;
-    }
-
-    public function setPageName(string $pageName): self
-    {
-        $this->pageName = $pageName;
-
-        return $this;
-    }
-
-    public function getInteractionType(): ?string
-    {
-        return $this->interactionType;
-    }
-
-    public function setInteractionType(string $interactionType): self
-    {
-        $this->interactionType = $interactionType;
-
-        return $this;
-    }
-
-    public function getRowNum(): ?int
-    {
-        return $this->rowNum;
-    }
-
-    public function setRowNum(int $rowNum): self
-    {
-        $this->rowNum = $rowNum;
-
-        return $this;
-    }
 }

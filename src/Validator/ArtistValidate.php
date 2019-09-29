@@ -57,30 +57,31 @@ class ArtistValidate implements ArtistValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
+            'Facebook' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'Instagram' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'Twitter' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'artType' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'Linkedin' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
             'image' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'video' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'facebook' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'instagram' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'twitter' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'linkedin' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ]
+        new Required(),
+        new Assert\NotBlank(),
+    ]
+
 
         ]);
 

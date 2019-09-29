@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\CreateUpdateDeleteServiceInterface;
-use App\Validator\AuctionValidate;
 use App\Validator\AuctionValidateInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,6 +27,7 @@ class AuctionController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Auction");
+        $this->CUDService->create($request,"AuctionPainting");
         return $this->response($result, self::CREATE, "Auction");
     }
 
@@ -80,6 +78,17 @@ class AuctionController extends BaseController
     {
 
         $result = $this->FDService->fetchData($request,"Auction");
+        return $this->response($result,self::FETCH,"Auction");
+    }
+
+    /**
+     * @Route("/getAuctionById", name="getAuctionById")
+     * @param Request $request
+     * @return
+     */
+    public function getAuctionById(Request $request)
+    {
+        $result = $this->FDService->getAuctionById($request);
         return $this->response($result,self::FETCH,"Auction");
     }
 }

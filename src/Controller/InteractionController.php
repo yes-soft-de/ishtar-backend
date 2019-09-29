@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\CreateUpdateDeleteServiceInterface;
-use App\Validator\InteractionValidate;
 use App\Validator\InteractionValidateInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,9 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class InteractionController extends BaseController
 {
     /**
-     * @Route("/createInteraction", name="createInteraction")
+     * @Route("/createNewInteraction", name="createNewInteraction")
      * @param Request $request
-     * @return
+     * @return Response
      */
     public function create(Request $request, InteractionValidateInterface $interactionValidate)
     {
@@ -80,6 +77,16 @@ class InteractionController extends BaseController
     {
 
         $result = $this->FDService->fetchData($request,"Interaction");
+        return $this->response($result,self::FETCH,"Interaction");
+    }
+    /**
+     * @Route("/getInteraction",name="getInteraction")
+     *@param Request $request
+     * @return
+     */
+    public function getInteraction(Request $request)
+    {
+        $result = $this->FDService->getInteraction($request);
         return $this->response($result,self::FETCH,"Interaction");
     }
 }

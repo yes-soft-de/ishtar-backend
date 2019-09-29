@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\CreateUpdateDeleteServiceInterface;
-use App\Validator\CommentValidate;
 use App\Validator\CommentValidateInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -80,6 +77,28 @@ class CommentController extends BaseController
     {
 
         $result = $this->FDService->fetchData($request,"Comment");
+        return $this->response($result,self::FETCH,"Comment");
+    }
+    /**
+     * @Route("/getEntityInteraction",name="getEntityInteraction")
+     * @param Request $request
+     * @return
+     */
+    public function getEntityInteraction(Request $request)
+    {
+
+        $result = $this->FDService->getEntityInteraction($request);
+        return $this->response($result,self::FETCH,"Comment");
+    }
+    /**
+     * @Route("/getEntityComment",name="getEntityComment")
+     * @param Request $request
+     * @return
+     */
+    public function getEntityComment(Request $request)
+    {
+
+        $result = $this->FDService->getEntityComment($request);
         return $this->response($result,self::FETCH,"Comment");
     }
 }

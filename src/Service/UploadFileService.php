@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadFileService
 {
+    const path = "http://ishtar.96.lt/Ishtar/public/uploads/ArtistImages/";
+
     public function upload(UploadedFile $file, $destination)
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -26,6 +28,6 @@ class UploadFileService
             return $response;
         }
 
-        return $originalFilename." uploaded successfully";
+        return self::path.$fileName;
     }
 }

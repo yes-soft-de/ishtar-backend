@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Service\CreateUpdateDeleteServiceInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +30,7 @@ class ClientController extends BaseController
         }
 
         $result = $this->CUDService->create($request, "Client");
+        $this->CUDService->create($request,"MediaClient");
         return $this->response($result, self::CREATE, "Client");
     }
 
@@ -69,6 +68,16 @@ class ClientController extends BaseController
     {
 
         $result = $this->FDService->fetchData($request,"Client");
+        return $this->response($result,self::FETCH,"Client");
+    }
+    /**
+     * @Route("/getClientById", name="getClientById")
+     * @param Request $request
+     * @return
+     */
+    public function getClientById(Request $request)
+    {
+        $result = $this->FDService->getClientById($request);
         return $this->response($result,self::FETCH,"Client");
     }
 }

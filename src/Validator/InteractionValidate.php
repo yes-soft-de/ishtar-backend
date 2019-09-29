@@ -35,15 +35,15 @@ class InteractionValidate implements InteractionValidateInterface
                 new Assert\NotBlank(),
             ],
 
-            'pageName' => [
+            'entity' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'rowNum' => [
+            'row' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'interactionType' => [
+            'interaction' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],

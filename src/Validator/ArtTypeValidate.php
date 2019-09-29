@@ -24,7 +24,7 @@ class ArtTypeValidate implements ArtTypeValidateInterface
         $this->entityManager = $entityManagerInterface;
     }
 
-    public function artTypeValidator(Request $request,$entity)
+    public function artTypeValidator(Request $request,$type)
     {
         $input = json_decode($request->getContent(), true);
 
@@ -42,18 +42,6 @@ class ArtTypeValidate implements ArtTypeValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'story' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'image' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'video' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
 
         ]);
 
@@ -64,8 +52,6 @@ class ArtTypeValidate implements ArtTypeValidateInterface
             unset($constraints->fields['name']);
             unset($constraints->fields['story']);
             unset($constraints->fields['history']);
-            unset($constraints->fields['image']);
-            unset($constraints->fields['video']);
         }
 
         $violations = $this->validator->validate($input, $constraints);

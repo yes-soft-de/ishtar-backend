@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method CommentEntity|null find($id, $lockMode = null, $lockVersion = null)
  * @method CommentEntity|null findOneBy(array $criteria, array $orderBy = null)
- * @method CommentEntity[]    findAll()
+ //* @method CommentEntity[]    findAll()
  * @method CommentEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CommentEntityRepository extends ServiceEntityRepository
@@ -43,5 +43,40 @@ class CommentEntityRepository extends ServiceEntityRepository
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+    public function findAll():?array
+    {
+        return $this->createQueryBuilder('q')
+            ->select('c.id','c.body','c.date','c.lastEdit','c.spacial','cl.userName','e.name as entity','c.row')
+            ->from('App:CommentEntity','c')
+            ->from('App:ClientEntity','cl')
+            ->from('App:Entity','e')
+            ->andWhere('c.client=cl.id')
+            ->andWhere('c.entity=e.id')
+//            ->andWhere('at.id=ea.artType')
+//            ->andWhere('ea.entity=1')
+//            ->andWhere('p.id=s.row')
+//            ->andWhere('s.entity=1')
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getEntityComment($entity,$id):?array
+    {
+        return $this->createQueryBuilder('q')
+            ->select('c.id','c.body','c.date','c.spacial','cl.userName','m.path as image')
+            ->from('App:CommentEntity','c')
+            ->from('App:ClientEntity','cl')
+            ->from('App:EntityMediaEntity','m')
+            ->andWhere('c.client=cl.id')
+            ->andWhere('c.entity='.$entity)
+            ->andWhere('c.row='.$id)
+            ->andWhere('m.entity=5')
+            ->andWhere('m.media=1')
+            ->andWhere('m.row=c.id')
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
     }
 }

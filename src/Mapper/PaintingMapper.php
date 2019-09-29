@@ -3,12 +3,9 @@
 namespace App\Mapper;
 
 use App\Entity\ArtistEntity;
-use App\Entity\ArtType;
-use App\Entity\ArtTypeEntity;
 use App\Entity\PaintingEntity;
 use DateTime;
 use Exception;
-use phpDocumentor\Reflection\Types\This;
 
 class PaintingMapper
 {
@@ -17,29 +14,37 @@ class PaintingMapper
     {
         $this->en=$entityManger;
         $name = $data["name"];
-        $artist = $this->en->getRepository(ArtistEntity::class)->find($data["artist"]);
-        $artType  = $this->en->getRepository(ArtTypeEntity::class)->find($data["artType"]);
+        $artist = $this->en->getRepository(ArtistEntity::class)->findOneById($data["artist"]);
+      //  $gallery=$this->en->getRepository(GalleryEntity::class)->find($data["gallery"]);
         //this (try catch) just to make IDE happy, must use date calender in frontend
         //if date empty the date of today will be there
         try {
-            $addingDate = new DateTime((string)$data["addingDate"]);
+            $createDate = new DateTime((string)$data["createDate"]);
+        } catch (Exception $e) {
+        }
+        try {
+            $updateDate = new DateTime((string)$data["updateDate"]);
         } catch (Exception $e) {
         }
         $state = $data["state"];
-        $deminsions = $data["deminsions"];
+        $height = $data["height"];
+        $width = $data["width"];
         $colorsType = $data["colorsType"];
-        $price = $data["price"];
-        $story = $data["story"];
+        $image = $data['image'];
+        $active = $data["active"];
+        $keyWords = $data["keyWords"];
 
         $painting->setName($name)
             ->setArtist($artist)
-            ->setArtType($artType)
-            ->setAddingDate($addingDate)
-            ->setStory($story)
+            ->setkeyWords($keyWords)
             ->setState($state)
-            ->setDeminsions($deminsions)
+            ->setHeight($height)
+            ->setWidth($width)
             ->setColorsType($colorsType)
-            ->setPrice($price);
+            ->setActive($active)
+            ->setImage($image);
+
+
         return $painting;
     }
 }

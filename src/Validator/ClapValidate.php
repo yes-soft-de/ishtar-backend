@@ -35,11 +35,11 @@ class ClapValidate implements ClapValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'pageName' => [
+            'entity' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'rowNum' => [
+            'row' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],

@@ -27,6 +27,8 @@ class ArtistController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "Artist");
+        $this->CUDService->create($request,"ArtistArtType");
+        $this->CUDService->create($request,"MediaArtist");
         return $this->response($result, self::CREATE,"Artist");
     }
 
@@ -79,6 +81,53 @@ class ArtistController extends BaseController
         //ToDo Call Validator
 
         $result = $this->FDService->fetchData($request,"Artist");
+        return $this->response($result,self::FETCH,"Artist");
+    }
+
+    /**
+     * @Route("/getArtistById", name="getArtistById")
+     * @param Request $request
+     * @return
+     */
+    public function getArtistById(Request $request)
+    {
+        $result = $this->FDService->getArtistById($request);
+        return $this->response($result,self::FETCH,"Artist");
+    }
+    /**
+     * @Route("/getArtistsData",name="getArtistsData")
+     * @param Request $request
+     * @return
+     */
+    public function getArtistsData(Request $request)
+    {
+
+        $result = $this->FDService->getArtistsData($request,"Artist");
+        return $this->response($result,self::FETCH,"Artist");
+    }
+
+//    /**
+//     * @Route("/getArtistPaintings", name="getArtistPaintings")
+//     * @param Request $request
+//     * @return Response
+//     * @throws \Exception
+//     */
+//    public function getArtistPaintings(Request $request)
+//    {
+//
+//        $result = $this->FDService->getArtistsData($request,"Artist");
+//        return $this->response($result,self::FETCH,"Artist");
+//    }
+
+    /**
+     * @Route("/search", name="search")
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
+     */
+    public function search(Request $request)
+    {
+        $result = $this->FDService->search($request);
         return $this->response($result,self::FETCH,"Artist");
     }
 }

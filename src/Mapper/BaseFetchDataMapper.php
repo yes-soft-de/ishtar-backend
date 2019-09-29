@@ -46,7 +46,7 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
                 break;
 
             case "Painting":
-                $data = $this->entityManager->getRepository(PaintingEntity::class)->findAll();
+                $data = $this->entityManager->getRepository(PaintingEntity::class)->getAll();
                 break;
 
             case "Client":
@@ -73,13 +73,6 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
                 $data = $this->entityManager->getRepository(PaintingTransactionEntity::class)->findAll();
                 break;
 
-            case "Image":
-                $data = $this->entityManager->getRepository(ImageEntity::class)->findAll();
-                break;
-
-            case "Video":
-                $data = $this->entityManager->getRepository(VideoEntity::class)->findAll();
-                break;
 
             case "Clap":
                 $data = $this->entityManager->getRepository(ClapEntity::class)->findAll();
@@ -96,6 +89,89 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
     public function getArtistPaintings(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        return $data = $this->entityManager->getRepository(PaintingEntity::class)->findByArtist($data['artist']);
+        return $data = $this->entityManager->getRepository(ArtistEntity::class)->getArtistPaintings($data['artist']);
+    }
+    public function getPaintingById(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(PaintingEntity::class)->findOneByID($data['painting']);
+    }
+
+    public function getArtistById(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ArtistEntity::class)->findById($data['artist']);
+    }
+    public function getArtTypeById(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ArtTypeEntity::class)->getById($data['artType']);
+    }
+    public function getClientById(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ClientEntity::class)->find($data['client']);
+    }
+    public function getAuctionById(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(AuctionEntity::class)->find($data['auction']);
+    }
+    public function getArtTypePaintings(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(PaintingEntity::class)->findByArtType($data['artType']);
+    }
+    public function getBy(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(PaintingEntity::class)->getBy($data['parm'],$data['value']);
+    }
+    public function getPaintingShort()
+    {
+        return $data = $this->entityManager->getRepository(PaintingEntity::class)->getPaintingShort();
+    }
+    public function getArtTypeList()
+    {
+        return $data = $this->entityManager->getRepository(ArtTypeEntity::class)->getArtTypeList();
+    }
+    public function getArtistsData($request)
+    {
+        return $data = $this->entityManager->getRepository(ArtistEntity::class)->getArtistsData($request);
+    }
+    public function getEntityNames($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ArtTypeEntity::class)->getEntityNames($data['entity']);
+    }
+    public function getEntityInteraction($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(InteractionEntity::class)->getEntityInteraction
+        ($data['entity'],$data['id']);
+    }
+    public function getEntityComment($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(CommentEntity::class)->getEntityComment
+        ($data['entity'],$data['id']);
+    }
+    public function getEntityClap($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ClapEntity::class)->getEntityClap
+        ($data['entity'],$data['id']);
+    }
+    public function search(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ArtistEntity::class)->search($data['keyword']);
+    }
+
+    public function getInteraction($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(InteractionEntity::class)->getInteraction
+        ($data['entity'],$data['row'],$data['interaction']);
     }
 }

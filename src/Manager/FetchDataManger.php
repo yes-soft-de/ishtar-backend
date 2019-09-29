@@ -31,12 +31,13 @@ class FetchDataManger implements FetchDataMangerInterface
     private $baseFetchDataMapper;
 
 
-    public function __construct(EntityManagerInterface $entityManagerInterface,BaseFetchDataMapperInterface $baseFetchDataMapper)
+    public function __construct(EntityManagerInterface $entityManagerInterface, BaseFetchDataMapperInterface $baseFetchDataMapper)
     {
         $this->entityManager = $entityManagerInterface;
-        $this->baseFetchDataMapper=$baseFetchDataMapper;
+        $this->baseFetchDataMapper = $baseFetchDataMapper;
 
     }
+
     public function fetchData(Request $request, $entity)
     {
         $data = $this->baseFetchDataMapper->fetchDataMapper($request, $entity);
@@ -44,6 +45,7 @@ class FetchDataManger implements FetchDataMangerInterface
 
         return $data;
     }
+
     public function getArtistPaintings(Request $request)
     {
         $data = $this->baseFetchDataMapper->getArtistPaintings($request);
@@ -51,4 +53,110 @@ class FetchDataManger implements FetchDataMangerInterface
         return $data;
     }
 
+    public function getPaintingById(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getPaintingById($request);
+
+        return $data;
+    }
+
+    public function getPaintingImages(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getPaintingImages($request);
+
+        return $data;
+    }
+
+    public function getArtistById(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getArtistById($request);
+
+        return $data;
+    }
+
+    public function getArtTypeById(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getArtTypeById($request);
+
+        return $data;
+    }
+
+    public function getClientById(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getClientById($request);
+        return $data;
+    }
+
+    public function getArtTypePaintings(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getArtTypePaintings($request);
+        return $data;
+    }
+
+    public function getAuctionById(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getAuctionById($request);
+        return $data;
+    }
+
+    public function getBy(Request $request)
+    {
+        $data = $this->baseFetchDataMapper->getBy($request);
+        return $data;
+    }
+
+    public function getPaintingShort()
+    {
+        $data = $this->baseFetchDataMapper->getPaintingShort();
+        return $data;
+    }
+
+    public function getArtTypeList()
+    {
+        $data = $this->baseFetchDataMapper->getArtTypeList();
+        return $data;
+    }
+
+    public function getArtistsData($request)
+    {
+        $data = $this->baseFetchDataMapper->getArtistsData($request);
+        return $data;
+    }
+
+    public function getEntityNames($request)
+    {
+        $data = $this->baseFetchDataMapper->getEntityNames($request);
+        return $data;
+    }
+
+    public function getEntityInteraction($request)
+    {
+        $data = $this->baseFetchDataMapper->getEntityInteraction($request);
+        return $data;
+    }
+
+    public function getEntityComment($request)
+    {
+        $data = $this->baseFetchDataMapper->getEntityComment($request);
+        return $data;
+    }
+
+    public function getEntityClap($request)
+    {
+        $data = $this->baseFetchDataMapper->getEntityClap($request);
+        return $data;
+    }
+
+    public function search($request)
+    {
+        $data = $this->baseFetchDataMapper->search($request);
+        return $data;
+    }
+
+    public function getInteraction($request)
+    {
+        $data = $this->baseFetchDataMapper->getInteraction($request);
+        return $data;
+
+    }
 }

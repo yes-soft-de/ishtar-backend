@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\CreateUpdateDeleteServiceInterface;
-use App\Validator\ArtTypeValidate;
 use App\Validator\ArtTypeValidateInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,4 +80,35 @@ class ArtTypeController extends BaseController
         $result = $this->FDService->fetchData($request,"ArtType");
         return $this->response($result,self::FETCH,"ArtType");
     }
-}
+
+    /**
+     * @Route("/getArtTypeById", name="getArtTypeById")
+     * @param Request $request
+     * @return
+     */
+    public function getArtTypeById(Request $request)
+    {
+        $result = $this->FDService->getArtTypeById($request);
+        return $this->response($result,self::FETCH,"ArtType");
+    }
+    /**
+     * @Route("/getArtTypeList", name="getArtTypeList")
+     * @param Request $request
+     * @return
+     */
+    public function getArtTypelist()
+    {
+        $result = $this->FDService->getArtTypelist();
+        return $this->response($result,self::FETCH,"ArtType");
+    }
+    /**
+     * @Route("/getEntityNames", name="getEntityNames")
+     * @param Request $request
+     * @return
+     */
+    public function getEntityNames(Request $request)
+    {
+        $result = $this->FDService->getEntityNames($request);
+        return $this->response($result,self::FETCH,"ArtType");
+    }
+    }

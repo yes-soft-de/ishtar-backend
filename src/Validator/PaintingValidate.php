@@ -26,7 +26,6 @@ class PaintingValidate implements PaintingValidateInterface
     public function paintingValidator(Request $request, $type)
     {
         $input = json_decode($request->getContent(), true);
-
         $constraints = new Assert\Collection([
 
             'id' => [
@@ -45,10 +44,6 @@ class PaintingValidate implements PaintingValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'addingDate' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
             'story' => [
                 new Required(),
                 new Assert\NotBlank(),
@@ -57,7 +52,11 @@ class PaintingValidate implements PaintingValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'deminsions' => [
+            'height'=>[
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'width'=>[
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -66,6 +65,22 @@ class PaintingValidate implements PaintingValidateInterface
                 new Assert\NotBlank(),
             ],
             'colorsType' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'active'=>[
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'image'=>[
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'gallery'=>[
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'keyWords'=>[
                 new Required(),
                 new Assert\NotBlank(),
             ],

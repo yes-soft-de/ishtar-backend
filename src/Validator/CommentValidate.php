@@ -35,11 +35,11 @@ class CommentValidate implements CommentValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'pageName' => [
+            'entity' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'rowNum' => [
+            'row' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -51,10 +51,7 @@ class CommentValidate implements CommentValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'date' => [
-                new Required(),
-            ],
-            'lastEdit' => [
+            'spacial' => [
                 new Required(),
             ]
 

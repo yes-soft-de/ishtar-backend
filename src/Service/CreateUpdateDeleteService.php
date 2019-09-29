@@ -23,6 +23,7 @@ class CreateUpdateDeleteService implements CreateUpdateDeleteServiceInterface
 
     public function create(Request $request, $entity)
     {
+
         return $result = $this->manager->create($request, $entity);
 
         //return $this->response($result, "Created");

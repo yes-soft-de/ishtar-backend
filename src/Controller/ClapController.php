@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Service\CreateUpdateDeleteServiceInterface;
-use App\Validator\ClapValidate;
+
 use App\Validator\ClapValidateInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,12 +27,12 @@ class ClapController extends BaseController
         }
         //
 
-        $result = $this->CUDService->create($request, "clap");
-        return $this->response($result, self::CREATE, "clap");
+        $result = $this->CUDService->create($request, "Clap");
+        return $this->response($result, self::CREATE, "Clap");
     }
 
     /**
-     * @Route("/updateclap", name="updateClap")
+     * @Route("/updateClap", name="updateClap")
      * @param Request $request
      * @return
      */
@@ -48,7 +46,7 @@ class ClapController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "Clap");
-        return $this->response($result, self::UPDATE, "clap");
+        return $this->response($result, self::UPDATE, "Clap");
     }
 
     /**
@@ -79,6 +77,17 @@ class ClapController extends BaseController
     {
 
         $result = $this->FDService->fetchData($request,"Clap");
+        return $this->response($result,self::FETCH,"Clap");
+    }
+    /**
+     * @Route("/getEntityClap",name="getEntityClap")
+     * @param Request $request
+     * @return
+     */
+    public function getEntityClap(Request $request)
+    {
+
+        $result = $this->FDService->getEntityClap($request);
         return $this->response($result,self::FETCH,"Clap");
     }
 }

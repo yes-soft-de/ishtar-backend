@@ -26,6 +26,11 @@ class AuctionEntity
      */
     private $endDate;
 
+    /**
+     * @ORM\Column(type="string", length=45)
+     */
+    private $name;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,18 @@ class AuctionEntity
     public function setEndDate(\DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

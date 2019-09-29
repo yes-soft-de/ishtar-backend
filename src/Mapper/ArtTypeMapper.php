@@ -12,15 +12,11 @@ class ArtTypeMapper
     {
         $name    = $data["name"];
         $history = $data["history"];
-        $story   = $data["story"];
-        $image   = $data["image"];
-        $video   = $data["video"];
+
 
         $artType->setName($name)
             ->setHistory($history)
-            ->setStory($story)
-            ->setImage($image)
-            ->setVideo($video);
+            ;
 
         return $artType;
     }

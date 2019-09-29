@@ -41,6 +41,18 @@ class AuctionValidate implements AuctionValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
+            'name' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'painting' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'startPrice' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
 
         ]);
 
