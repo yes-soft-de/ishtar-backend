@@ -53,10 +53,10 @@ class FetchDataService implements FetchDataServiceInterface
         return $result = $this->manager->getPaintingById($request);
     }
 
-//    public function getPaintingImages(Request $request)
-//    {
-//        return $result = $this->manager->getPaintingImages($request);
-//    }
+   public function getPaintingImages(Request $request)
+    {
+        return $result = $this->manager->getPaintingImages($request);
+  }
     public function getArtistById(Request $request)
     {
         return $result = $this->manager->getArtistById($request);
@@ -131,5 +131,9 @@ class FetchDataService implements FetchDataServiceInterface
     public function getInteraction($request)
     {
         return $result = $this->manager->getInteraction($request);
+    }
+    public function getClientFavorite($request)
+    {
+        return $result = $this->manager->getClientFavorite($request);
     }
 }

@@ -4,7 +4,7 @@
 namespace App\Validator;
 
 
-use App\Entity\EntityInteractionEntity;
+use App\Entity\FavoriteEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Required;
 
-class InteractionValidate implements InteractionValidateInterface
+class FavoriteValidate implements FavoriteValidateInterface
 {
     private $validator;
     private $entityManager;
@@ -24,7 +24,8 @@ class InteractionValidate implements InteractionValidateInterface
     }
 
 
-    public function interactionValidator(Request $request, $type)
+
+    public function favoriteValidator(Request $request, $type)
     {
         $input = json_decode($request->getContent(), true);
 
@@ -34,16 +35,7 @@ class InteractionValidate implements InteractionValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-
-            'entity' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'row' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'interaction' => [
+            'painting' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -53,13 +45,12 @@ class InteractionValidate implements InteractionValidateInterface
             ]
         ]);
 
+
         if ($type == 'create') {
             unset($constraints->fields['id']);
         }
         if ($type == "delete") {
-            unset($constraints->fields['entity']);
-            unset($constraints->fields['row']);
-            unset($constraints->fields['interaction']);
+            unset($constraints->fields['painting']);
             unset($constraints->fields['client']);
         }
 
@@ -82,8 +73,8 @@ class InteractionValidate implements InteractionValidateInterface
         }
 
         if ($type != "create") {
-            if (!$this->entityManager->getRepository(EntityInteractionEntity::class)->find($input["id"])) {
-                return "No Interaction with this id!";
+            if (!$this->entityManager->getRepository(FavoriteEntity::class)->find($input["id"])) {
+                return "No Favorite with this id!";
             }
         }
         return null;

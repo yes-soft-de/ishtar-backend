@@ -7,6 +7,7 @@ namespace App\Mapper;
 use App\Entity\ArtistEntity;
 use App\Entity\ArtTypeEntity;
 use App\Entity\ClientEntity;
+use App\Entity\EntityInteractionEntity;
 use App\Entity\PaintingEntity;
 use App\Entity\InteractionEntity;
 use App\Entity\AuctionEntity;
@@ -14,6 +15,7 @@ use App\Entity\AuctionPaintingEntity;
 use App\Entity\ArtistArtTypeEntity;
 use App\Entity\PaintingTransactionEntity;
 use App\Entity\ImageEntity;
+use App\Entity\PriceEntity;
 use App\Entity\VideoEntity;
 use App\Entity\ClapEntity;
 use App\Entity\CommentEntity;
@@ -46,7 +48,7 @@ class BaseDeleteMapper implements BaseDeleteMapperInterface
                 break;
 
             case "Painting":
-                return $this->entityManager->getRepository(PaintingEntity::class)->findOneById($data["id"]);
+                return $this->entityManager->getRepository(PaintingEntity::class)->find($data["id"]);
                 break;
 
             case "Client":
@@ -54,7 +56,7 @@ class BaseDeleteMapper implements BaseDeleteMapperInterface
                 break;
 
             case "Interaction":
-                return $this->entityManager->getRepository(InteractionEntity::class)->findOneById($data["id"]);
+                return $this->entityManager->getRepository(EntityInteractionEntity::class)->find($data["id"]);
                 break;
 
             case "Auction":
@@ -73,20 +75,17 @@ class BaseDeleteMapper implements BaseDeleteMapperInterface
                 return $this->entityManager->getRepository(PaintingTransactionEntity::class)->findOneById($data["id"]);
                 break;
 
-            case "Image":
-                return $this->entityManager->getRepository(ImageEntity::class)->findOneById($data["id"]);
-                break;
-
-            case "Video":
-                return $this->entityManager->getRepository(VideoEntity::class)->findOneById($data["id"]);
-                break;
 
             case "Clap":
                 return $this->entityManager->getRepository(ClapEntity::class)->findOneById($data["id"]);
                 break;
 
             case "Comment":
-                return $this->entityManager->getRepository(CommentEntity::class)->findOneById($data["id"]);
+                return $this->entityManager->getRepository(CommentEntity::class)->find($data["id"]);
+                break;
+
+            case "Price":
+                return $this->entityManager->getRepository(PriceEntity::class)->find($data["id"]);
                 break;
         }
     }

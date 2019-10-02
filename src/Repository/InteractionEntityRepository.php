@@ -54,20 +54,11 @@ class InteractionEntityRepository extends ServiceEntityRepository
             ->andWhere('ei.row='.$id)
             ->andWhere('ei.interaction=2')
             ->andWhere('c.id=ei.client')
+            ->andWhere('c.id=interaction.client')
             ->groupBy('ei.id')
             // ->setMaxResults(100)
             ->getQuery()
             ->getResult();
     }
-    public function getInteraction($entity,$row,$interaction)
-    {
-        return $this->createQueryBuilder('q')
-            ->select('count (ei) as interactions')
-            ->from('App:EntityInteractionEntity','ei')
-            ->andWhere('ei.entity='.$entity)
-            ->andWhere('ei.row='.$row)
-            ->andWhere('ei.interaction='.$interaction)
-            ->getQuery()
-            ->getResult();
-    }
+
 }

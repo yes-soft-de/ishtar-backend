@@ -62,12 +62,13 @@ class CommentValidate implements CommentValidateInterface
             unset($constraints->fields['id']);
         }
         if ($type == "delete") {
-            unset($constraints->fields['pageName']);
-            unset($constraints->fields['rowNum']);
+            unset($constraints->fields['entity']);
+            unset($constraints->fields['row']);
             unset($constraints->fields['body']);
             unset($constraints->fields['date']);
             unset($constraints->fields['lastEdit']);
-            unset($constraints->fields['clientId']);
+            unset($constraints->fields['client']);
+            unset($constraints->fields['spacial']);
         }
 
         $violations = $this->validator->validate($input, $constraints);

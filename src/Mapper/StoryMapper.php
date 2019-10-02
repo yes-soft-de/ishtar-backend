@@ -16,13 +16,9 @@ class StoryMapper
         $this->en=$entityManger;
         $entity = $this->en->getRepository(Entity::class)->find(1);
         $story   =$data['story'];
-        if(!is_null($data['id'])) {
-           $id=$data['id'] ;
-        }
-        else {
             $row = $this->en->getRepository(PaintingEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
             $id = $id = $row[0]->getId() + 1;
-        }
+
 
         $storyEntity->setEntity($entity)
             ->setStory($story)

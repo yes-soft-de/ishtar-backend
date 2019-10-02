@@ -5,15 +5,16 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomePageController extends AbstractController
+class Controller extends AbstractController
 {
     /**
-     * @Route("/", name="home_page")
+     * @Route("/m", name="m")
      */
     public function index()
     {
-        return $this->render('home_page/Home.html.twig', [
-            'controller_name' => 'Yes Soft',
+        return $this->json([
+            'message' => 'Welcome to your new controller!',
+            'path' => 'src/Controller/Controller.php',
         ]);
     }
 }

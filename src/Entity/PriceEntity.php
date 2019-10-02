@@ -18,7 +18,7 @@ class PriceEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PaintingEntity")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $painting;
 

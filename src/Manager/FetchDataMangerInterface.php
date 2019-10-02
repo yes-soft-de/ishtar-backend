@@ -25,4 +25,6 @@ interface FetchDataMangerInterface
     public function getEntityClap($request);
     public function search($request);
     public function getInteraction($request);
+    public function getClientFavorite($request);
+
 }

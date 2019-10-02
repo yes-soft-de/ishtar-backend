@@ -12,7 +12,7 @@ class InteractionController extends BaseController
     /**
      * @Route("/createNewInteraction", name="createNewInteraction")
      * @param Request $request
-     * @return Response
+     * @return
      */
     public function create(Request $request, InteractionValidateInterface $interactionValidate)
     {
@@ -49,7 +49,7 @@ class InteractionController extends BaseController
     }
 
     /**
-     * @Route("/deleteInteraction", name="deleteInteraction")
+     * @Route("/deleteAnInteraction", name="deleteAnInteraction")
      * @param Request $request
      * @return
      */

@@ -61,14 +61,16 @@ class PaintingController extends BaseController
      */
     public function delete(Request $request, PaintingValidateInterface $paintingValidate)
    {
-        $validateResult = $paintingValidate->paintingValidator($request, 'delete');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
+//        $validateResult = $paintingValidate->paintingValidator($request, 'delete');
+//        if (!empty($validateResult))
+//        {
+//            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+//            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+//            return $resultResponse;
+//        }
+        $this->CUDService->delete($request,"Price");
         $result = $this->CUDService->delete($request, "Painting");
+
         return $this->response($result, self::DELETE,"Painting");
 
     }
@@ -137,6 +139,17 @@ public function getArtistPaintings(Request $request)
     public function getPaintingShort()
     {
         $result = $this->FDService->getPaintingShort();
+        return $this->response($result,self::FETCH,"Painting");
+    }
+
+    /**
+     * @Route("/getPaintingImages", name="getPaintingImages")
+     * @param Request $request
+     * @return
+     */
+    public function getPaintingImages(Request $request)
+    {
+        $result = $this->FDService->getPaintingImages($request);
         return $this->response($result,self::FETCH,"Painting");
     }
 

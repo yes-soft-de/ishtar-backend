@@ -48,14 +48,17 @@ class GoogleAuthenticator extends SocialAuthenticator
 
         $email = $googleUser->getEmail();
 
-        $user = $this->em->getRepository('App:User')
+        $user = $this->em->getRepository('App:ClientEntity')
             ->findOneBy(['email' => $email]);
         if (!$user)
         {
             $user = new ClientEntity();
             $user->setEmail($googleUser->getEmail());
+            $user->setfirstName($googleUser->getFirstName());
+            $user->setLastName($googleUser->getLastName());
             $user->setUserName($googleUser->getName());
-            $user->getCreateDate(new DateTime(date('Y-m-d H:i:s')));
+            $user->setPassword("set your pass here");
+            $user->setCreateDate(new DateTime(date('Y-m-d H:i:s')));
             $this->em->persist($user);
             $this->em->flush();
         }

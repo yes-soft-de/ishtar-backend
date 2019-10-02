@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method PaintingEntity|null find($id, $lockMode = null, $lockVersion = null)
  * @method PaintingEntity|null findOneBy(array $criteria, array $orderBy = null)
- * @method PaintingEntity[]    findAll()
+ //* @method PaintingEntity[]    findAll()
  * @method PaintingEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PaintingEntityRepository extends ServiceEntityRepository
@@ -107,6 +107,32 @@ class PaintingEntityRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAll()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('a.id','a.name','count(p) as painting','at.name as artType','m.path as image')
+            ->from('App:EntityMediaEntity','m')
+            ->from('App:ArtistEntity','a')
+            //->from('App:PaintingEntity','p')
+            ->from('App:ArtTypeEntity','at')
+            ->from('App:EntityArtTypeEntity','ea')
+           // ->from('App:EntityInteractionEntity','ei')
+           ->distinct('p.id')
+            ->Where('a.id=m.row')
+            ->andWhere('m.entity=2')
+            ->andWhere('m.media=1')
+            ->andWhere('at.id=ea.artType')
+            ->andWhere('p.artist=a.id')
+            ->andWhere('ea.entity=2')
+            ->andWhere('a.id=ea.row')
+            //->andWhere('ei.entity=2')
+            //->andWhere('ei.interaction=3')
+            // ->andWhere('ei.row=a.id')
+            ->groupBy('a.id')
+           // ->orderBy('a.id')
+            ->getQuery()
+            ->getResult();
+    }
 
 
 }

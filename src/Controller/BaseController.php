@@ -80,15 +80,6 @@ class BaseController extends AbstractController
 
     public function response($result, $status,$entity) :jsonResponse
     {
-//        switch ($entity) {
-//            case "Painting":
-//        $result = $this->serializer->serialize($result, "json");
-//              break;
-//            case "Image"or"Video":
-//                $result = $this->serializer->serialize($result, "json", ['ignored_attributes' => ['artist','painting','addingDate']
-//                ] ,['groups' => ['default']]);
-//                break;
-//            default:
                 $result = $this->serializer->serialize($result, "json", [
                     'enable_max_depth' => true]);
         //}

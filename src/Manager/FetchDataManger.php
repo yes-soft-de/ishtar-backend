@@ -157,6 +157,11 @@ class FetchDataManger implements FetchDataMangerInterface
     {
         $data = $this->baseFetchDataMapper->getInteraction($request);
         return $data;
-
     }
+    public function getClientFavorite($request)
+    {
+        $data = $this->baseFetchDataMapper->getClientFavorite($request);
+        return $data;
+    }
+
 }
