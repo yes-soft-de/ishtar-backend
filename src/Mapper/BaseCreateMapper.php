@@ -11,6 +11,7 @@ use App\Entity\ClientEntity;
 use App\Entity\EntityArtTypeEntity;
 use App\Entity\EntityInteractionEntity;
 use App\Entity\EntityMediaEntity;
+use App\Entity\FavoriteEntity;
 use App\Entity\PaintingEntity;
 use App\Entity\AuctionEntity;
 use App\Entity\AuctionPaintingEntity;
@@ -136,6 +137,11 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 $mapper=new AuctionClientMapper();
                 $entity=new AuctionClientEntity();
                 return $mapper->auctionClientData($data,$entity,$this->entityManager);
+
+            case "Favorite":
+                $mapper=new FavoriteMapper();
+                $entity=new FavoriteEntity();
+                return $mapper->favoriteData($data,$entity,$this->entityManager);
         }
     }
 }

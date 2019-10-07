@@ -47,4 +47,17 @@ class FavoriteEntityRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getClientFavorite($client)
+    {
+        return $this->createQueryBuilder('q')
+            ->select('p.id','p.name')
+            ->from('App:PaintingEntity','p')
+            ->from('App:FavoriteEntity','f')
+            ->andWhere('f.client='.$client)
+            ->andWhere('f.painting=p.id')
+            ->groupBy('p.id')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

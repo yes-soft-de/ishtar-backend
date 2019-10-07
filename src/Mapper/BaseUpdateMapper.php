@@ -49,8 +49,8 @@ class BaseUpdateMapper implements BaseUpdateMapperInterface
 
             case "Painting":
                 $paintingMapper = new PaintingMapper();
-                return $paintingMapper->paintingData($data,
-                    $this->entityManager->getRepository(PaintingEntity::class)->find($data["id"]), $this->entityManager);
+                 return $paintingMapper->PaintingData($data,
+                     $this->entityManager->getRepository(PaintingEntity::class)->find($data["id"]),$this->entityManager);
                 break;
 
             case "Client":
@@ -112,7 +112,7 @@ class BaseUpdateMapper implements BaseUpdateMapperInterface
             case "Story":
                 $mapper = new StoryMapper();
                 return $mapper->StoryData($data,
-                    $this->entityManager->getRepository(StoryEntity::class)->findByPainting($data["id"]),
+                    $this->entityManager->getRepository(StoryEntity::class)->findByPainting($data['id']),
                     $this->entityManager);
                 break;
 

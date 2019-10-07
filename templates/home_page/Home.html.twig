@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomePageController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    <span style="font-size: large; color: red; ">Welcome to Ishtar Backend!</span> <br>
+    This links will help you Yes soft friends! <br>
+    <span style="font-size: large; color: red; ">Have Fun!</span>
+    <ul>
+        <li>End Points list: <code><a href="{{ 'https://drive.google.com/file/d/1TkeqkkKX5Ed6xR_sjUSgGXSqdKQLIe_T/view?usp=sharing'}}">Click here</a></code></li>
+        <li>Daily reports <code><a href="{{ 'https://docs.google.com/spreadsheets/d/12ydKCEp780B7Yoa4tr4Q9FO8G-O8uAfSuJ93Q9p4Qi4/edit#gid=411396092'}}">Click here</a></code></li>
+    </ul>
+    Backend Team.
+</div>
+{% endblock %}

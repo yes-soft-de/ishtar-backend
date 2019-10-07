@@ -57,8 +57,8 @@ class ClapValidate implements ClapValidateInterface
             unset($constraints->fields['id']);
         }
         if ($type == "delete") {
-            unset($constraints->fields['pageName']);
-            unset($constraints->fields['rowNum']);
+            unset($constraints->fields['entity']);
+            unset($constraints->fields['row']);
             unset($constraints->fields['value']);
             unset($constraints->fields['client']);
         }

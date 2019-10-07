@@ -36,15 +36,16 @@ class PriceEntityRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?PriceEntity
+
+    public function findPainting($value): ?PriceEntity
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
+            ->andWhere('p.painting = :val')
             ->setParameter('val', $value)
+            ->orderBy('p.id','DESC')
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }

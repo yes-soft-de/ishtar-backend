@@ -12,7 +12,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method EntityMediaEntity[]    findAll()
  * @method EntityMediaEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EntityMediaEntityRepository extends ServiceEntityRepository
+class
+EntityMediaEntityRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -47,14 +48,26 @@ class EntityMediaEntityRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findPaintingImage($value): ?array
+    public function getPaintingImages($painting): ?array
     {
         return $this->createQueryBuilder('m')
             ->select('m.path as image')
             ->andWhere('m.row = :val')
             ->andWhere('m.entity=1')
             ->andWhere('m.media=1')
-            ->setParameter('val', $value)
+            ->setParameter('val', $painting)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    public function findPaintingImage($painting): ?array
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m.path as image')
+            ->andWhere('m.row = :val')
+            ->andWhere('m.entity=1')
+            ->andWhere('m.media=1')
+            ->setParameter('val', $painting)
             ->getQuery()
             ->getResult()
             ;

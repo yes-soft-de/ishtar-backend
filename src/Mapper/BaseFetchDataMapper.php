@@ -7,6 +7,9 @@ namespace App\Mapper;
 use App\Entity\ArtistEntity;
 use App\Entity\ArtTypeEntity;
 use App\Entity\ClientEntity;
+use App\Entity\EntityInteractionEntity;
+use App\Entity\EntityMediaEntity;
+use App\Entity\FavoriteEntity;
 use App\Entity\PaintingEntity;
 use App\Entity\InteractionEntity;
 use App\Entity\AuctionEntity;
@@ -38,7 +41,7 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
 
         switch ($entity) {
             case "Artist":
-                $data = $this->entityManager->getRepository(ArtistEntity::class)->findAll();
+                $data = $this->entityManager->getRepository(PaintingEntity::class)->findAll();
                 break;
 
             case "ArtType":
@@ -166,5 +169,42 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
     {
         $data = json_decode($request->getContent(), true);
         return $data = $this->entityManager->getRepository(ArtistEntity::class)->search($data['keyword']);
+    }
+
+    public function getInteraction($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(EntityInteractionEntity::class)->getInteraction
+        ($data['entity'],$data['row'],$data['interaction']);
+    }
+    public function getClientFavorite($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(FavoriteEntity::class)->getClientFavorite
+        ($data['client']);
+    }
+    public function getPaintingImages($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(EntityMediaEntity::class)->getPaintingImages
+        ($data['painting']);
+    }
+    public function getClientInteraction($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(EntityInteractionEntity::class)->getClientInteraction
+        ($data['client']);
+    }
+    public function getClientClap($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ClapEntity::class)->getClientClap
+        ($data['client']);
+    }
+    public function getClientComment($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(CommentEntity::class)->getClientComment
+        ($data['client']);
     }
 }

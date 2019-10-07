@@ -61,4 +61,16 @@ class ClapEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function getClientClap($client):?array
+    {
+        return $this->createQueryBuilder('q')
+            ->select('e.name as entity','c.row as id','c.value','c.id as ClapID')
+            ->from('App:ClapEntity','c')
+            ->from('App:Entity','e')
+            ->andWhere('c.entity=e.id')
+            ->andWhere('c.client='.$client)
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+    }
 }

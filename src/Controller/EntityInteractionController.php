@@ -79,4 +79,15 @@ class EntityInteractionController extends BaseController
         $result = $this->FDService->fetchData($request,"Interaction");
         return $this->response($result,self::FETCH,"Interaction");
     }
+    /**
+     * @Route("/getEntityInteraction",name="getEntityInteraction")
+     * @param Request $request
+     * @return
+     */
+    public function getEntityInteraction(Request $request)
+    {
+
+        $result = $this->FDService->getEntityInteraction($request);
+        return $this->response($result,self::FETCH,"Comment");
+    }
 }

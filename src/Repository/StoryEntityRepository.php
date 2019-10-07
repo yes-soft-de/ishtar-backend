@@ -19,15 +19,11 @@ class StoryEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, StoryEntity::class);
     }
 
-
-
     public function findByPainting($value):?storyEntity
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.row = :val')
+            ->andWhere('s.row ='.$value)
             ->andWhere('s.entity=1')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
             ->getQuery()
             ->getOneOrNullResult()
         ;

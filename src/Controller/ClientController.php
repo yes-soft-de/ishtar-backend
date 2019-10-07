@@ -80,4 +80,24 @@ class ClientController extends BaseController
         $result = $this->FDService->getClientById($request);
         return $this->response($result,self::FETCH,"Client");
     }
+    /**
+     * @Route("/getClientInteraction", name="getClientInteraction")
+     * @param Request $request
+     * @return
+     */
+    public function getClientInteraction(Request $request)
+    {
+        $result = $this->FDService->getClientInteraction($request);
+        return $this->response($result,self::FETCH,"Client");
+    }
+    /**
+     * @Route("/getClientClap", name="getClientClap")
+     * @param Request $request
+     * @return
+     */
+    public function getClientClap(Request $request)
+    {
+        $result = $this->FDService->getClientClap($request);
+        return $this->response($result,self::FETCH,"Client");
+    }
 }

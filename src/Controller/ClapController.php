@@ -13,7 +13,7 @@ class ClapController extends BaseController
     /**
      * @Route("/createClap", name="createClap")
      * @param Request $request
-     * @return
+     * @return Response
      */
     public function create(Request $request, ClapValidateInterface $clapValidate)
     {
@@ -75,7 +75,6 @@ class ClapController extends BaseController
      */
     public function getAll(Request $request)
     {
-
         $result = $this->FDService->fetchData($request,"Clap");
         return $this->response($result,self::FETCH,"Clap");
     }
@@ -86,7 +85,6 @@ class ClapController extends BaseController
      */
     public function getEntityClap(Request $request)
     {
-
         $result = $this->FDService->getEntityClap($request);
         return $this->response($result,self::FETCH,"Clap");
     }
