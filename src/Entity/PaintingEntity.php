@@ -14,6 +14,7 @@ class PaintingEntity
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @ORM\JoinColumn( onDelete="CASCADE")
      *  @Groups({"default"})
      */
     private $id;
@@ -26,7 +27,7 @@ class PaintingEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ArtistEntity", inversedBy="painting")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *   @Groups({"default"})
      */
     private $artist;
@@ -59,7 +60,7 @@ class PaintingEntity
     private $height;
 
     /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @ORM\Column(type="decimal", precision=6, scale=0)
      */
     private $width;
 
@@ -95,6 +96,7 @@ class PaintingEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\GalleryEntity", inversedBy="paintingEntities")
+      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $gallery;
 

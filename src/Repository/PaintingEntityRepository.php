@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method PaintingEntity|null find($id, $lockMode = null, $lockVersion = null)
  * @method PaintingEntity|null findOneBy(array $criteria, array $orderBy = null)
- * @method PaintingEntity[]    findAll()
+ //* @method PaintingEntity[]    findAll()
  * @method PaintingEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PaintingEntityRepository extends ServiceEntityRepository
@@ -25,10 +25,12 @@ class PaintingEntityRepository extends ServiceEntityRepository
     {
         $result = $this->createQueryBuilder('q')
             ->select('p.id','p.name','p.keyWords','p.state','p.height','p.width','p.colorsType','p.image'
-                ,'p.active','a.name as artist','s.story')
+                ,'p.active','a.name as artist','s.story','pr.price')
             ->from('App:PaintingEntity','p')
             ->from('App:ArtistEntity','a')
             ->from('App:StoryEntity','s')
+            ->from('App:PriceEntity', 'pr')
+            ->andWhere('p.id=pr.painting')
             ->andWhere('p.artist=a.id')
             ->andWhere('p.id=s.row')
             ->andWhere('p.id = :val')
@@ -72,16 +74,18 @@ class PaintingEntityRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('q')
             ->select('p.id', 'p.name', 'p.keyWords', 'p.state', 'p.height', 'p.width', 'p.colorsType', 'p.image',
-                'p.active', 'a.name as artist', 'at.name as artType')
+                'p.active', 'a.name as artist', 'at.name as artType','pr.price')
             ->from('App:PaintingEntity', 'p')
             ->from('App:ArtistEntity', 'a')
             ->from('App:ArtTypeEntity', 'at')
             ->from('App:EntityArtTypeEntity', 'ea')
+            ->from('App:PriceEntity', 'pr')
             ->andWhere('p.artist=a.id')
             ->andWhere('p.id=ea.row')
             ->andWhere('at.id=ea.artType')
             ->andWhere('ea.entity=1')
             ->andWhere($parm)
+            ->andWhere('p.id=pr.painting')
             ->orderBy('p.id', 'ASC')
             ->groupBy('p.name')
             ->getQuery()
@@ -107,6 +111,32 @@ class PaintingEntityRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAll()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('a.id','a.name','count(p) as painting','at.name as artType','m.path as image')
+            ->from('App:EntityMediaEntity','m')
+            ->from('App:ArtistEntity','a')
+            //->from('App:PaintingEntity','p')
+            ->from('App:ArtTypeEntity','at')
+            ->from('App:EntityArtTypeEntity','ea')
+           // ->from('App:EntityInteractionEntity','ei')
+           ->distinct('p.id')
+            ->Where('a.id=m.row')
+            ->andWhere('m.entity=2')
+            ->andWhere('m.media=1')
+            ->andWhere('at.id=ea.artType')
+            ->andWhere('p.artist=a.id')
+            ->andWhere('ea.entity=2')
+            ->andWhere('a.id=ea.row')
+            //->andWhere('ei.entity=2')
+            //->andWhere('ei.interaction=3')
+            // ->andWhere('ei.row=a.id')
+            ->groupBy('a.id')
+           // ->orderBy('a.id')
+            ->getQuery()
+            ->getResult();
+    }
 
 
 }

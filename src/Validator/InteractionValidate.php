@@ -4,7 +4,7 @@
 namespace App\Validator;
 
 
-use App\Entity\InteractionEntity;
+use App\Entity\EntityInteractionEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -57,9 +57,9 @@ class InteractionValidate implements InteractionValidateInterface
             unset($constraints->fields['id']);
         }
         if ($type == "delete") {
-            unset($constraints->fields['pageName']);
-            unset($constraints->fields['rowNum']);
-            unset($constraints->fields['interactionType']);
+            unset($constraints->fields['entity']);
+            unset($constraints->fields['row']);
+            unset($constraints->fields['interaction']);
             unset($constraints->fields['client']);
         }
 
@@ -82,7 +82,7 @@ class InteractionValidate implements InteractionValidateInterface
         }
 
         if ($type != "create") {
-            if (!$this->entityManager->getRepository(InteractionEntity::class)->find($input["id"])) {
+            if (!$this->entityManager->getRepository(EntityInteractionEntity::class)->find($input["id"])) {
                 return "No Interaction with this id!";
             }
         }

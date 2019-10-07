@@ -34,12 +34,14 @@ class CommentEntity
     private $body;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $date;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $lastEdit;
 

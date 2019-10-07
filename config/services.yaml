@@ -28,3 +28,11 @@ services:
     App\EventListener\KafkaSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    App\Service\UploadFileService:
+        arguments:
+            - "%kernel.project_dir%"
+
+
+    #App\Validator\ArtistValidateInterface:  '@App\Validator\ArtistValidate'
+    #App\Validator\ArtistValidateInterface:  '@App\Validator\ImageUploadValidate'

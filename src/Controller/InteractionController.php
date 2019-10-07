@@ -49,7 +49,7 @@ class InteractionController extends BaseController
     }
 
     /**
-     * @Route("/deleteInteraction", name="deleteInteraction")
+     * @Route("/deleteAnInteraction", name="deleteAnInteraction")
      * @param Request $request
      * @return
      */
@@ -77,6 +77,16 @@ class InteractionController extends BaseController
     {
 
         $result = $this->FDService->fetchData($request,"Interaction");
+        return $this->response($result,self::FETCH,"Interaction");
+    }
+    /**
+     * @Route("/getInteraction",name="getInteraction")
+     *@param Request $request
+     * @return
+     */
+    public function getInteraction(Request $request)
+    {
+        $result = $this->FDService->getInteraction($request);
         return $this->response($result,self::FETCH,"Interaction");
     }
 }

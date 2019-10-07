@@ -22,7 +22,10 @@ class MediaEntityMapper{
         {$entity = $this->en->getRepository(Entity::class)->find(2);
         $media=$this->en->getRepository(MediaEntity::class)->find(1);
         $row = $this->en->getRepository(ArtistEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
-        $row= $row[0]->getId()+1;
+            if(!isset($row[0]))
+                $row=1;
+            else
+                $row= $row[0]->getId()+1;
         $path=$data['image'];
         $name=$data['image'];
         }
@@ -34,7 +37,11 @@ class MediaEntityMapper{
             $entity = $this->en->getRepository(Entity::class)->find(5);
             $media = $this->en->getRepository(MediaEntity::class)->find(1);
             $row = $this->en->getRepository(ClientEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
-            $row= $row[0]->getId()+1;
+            $row = $this->en->getRepository(ArtistEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
+            if(!isset($row[0]))
+                $row=1;
+            else
+                $row= $row[0]->getId()+1;
             $path = $data['image'];
             $name = $data['image'];
         }

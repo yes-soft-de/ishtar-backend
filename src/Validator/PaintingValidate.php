@@ -96,10 +96,16 @@ class PaintingValidate implements PaintingValidateInterface
             unset($constraints->fields['artType']);
             unset($constraints->fields['addingDate']);
             unset($constraints->fields['story']);
-            unset($constraints->fields['deminsions']);
+            unset($constraints->fields['keyWords']);
             unset($constraints->fields['colorsType']);
             unset($constraints->fields['price']);
             unset($constraints->fields['state']);
+            unset($constraints->fields['gallery']);
+            unset($constraints->fields['image']);
+            unset($constraints->fields['active']);
+            unset($constraints->fields['height']);
+            unset($constraints->fields['width']);
+
         }
 
         $violations = $this->validator->validate($input, $constraints);

@@ -58,18 +58,30 @@ class ArtistEntityRepository extends ServiceEntityRepository
     }
     public function findAll()
     {
-        return $this->createQueryBuilder('p')
-            ->select('at.id','at.name','m.path')
+        return $this->createQueryBuilder('pb')
+            ->select('a.id','a.name','m.path','at.name as artType','count(p.id) as painting')
             ->from('App:EntityMediaEntity','m')
-            ->from('App:ArtistEntity','at')
-            ->andWhere('at.id=m.row')
+            ->from('App:ArtistEntity','a')
+            ->from('App:PaintingEntity','p')
+            ->from('App:ArtTypeEntity','at')
+            ->from('App:EntityArtTypeEntity','ea')
+            ->from('App:EntityInteractionEntity','ei')
+            ->Where('a.id=m.row')
             ->andWhere('m.entity=2')
             ->andWhere('m.media=1')
-            ->groupBy('at.id')
-            ->setMaxResults(100)
+            ->andWhere('at.id=ea.artType')
+            ->andWhere('p.artist=a.id')
+            ->andWhere('ea.entity=2')
+            ->andWhere('a.id=ea.row')
+            //->andWhere('ei.entity=2')
+            //->andWhere('ei.interaction=3')
+           // ->andWhere('ei.row=a.id')
+            ->groupBy('a.name')
+            ->orderBy('a.id')
             ->getQuery()
             ->getResult();
     }
+
     public function getArtistsData($request)
     {
         return $this->createQueryBuilder('p')
@@ -121,19 +133,19 @@ class ArtistEntityRepository extends ServiceEntityRepository
             // ->setMaxResults(100)
             ->getQuery()
             ->getResult();
-        $q2= $this->createQueryBuilder('q')
+        $q2= $this->createQueryBuilder('qb')
                 ->select('p.id','p.name','p.image','a.name as artist')
                 ->from('App:PaintingEntity','p')
                 ->from('App:ArtistEntity','a')
                 ->andWhere('p.artist=a.id')
                 ->andWhere('p.name LIKE :keyword')
-            ->orWhere('p.keyWords LIKE :keyword')
+                ->orWhere('p.keyWords LIKE :keyword')
                 ->setParameter('keyword', '%'.$keyword.'%')
                 ->groupBy('p.id')
                 // ->setMaxResults(100)
                 ->getQuery()
                 ->getResult();
-        return $q1+$q2;
+        return $result=array_merge($q1,$q2);
     }
 
 }

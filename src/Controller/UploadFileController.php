@@ -11,25 +11,22 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UploadFileController extends AbstractController
 {
-    //ToDo: move const to baseController
-    const ARTISTIMAGEPATH = '/public/uploads/ArtistImages/';
-    const PANTINGIMAGEPATH = '/public/uploads/PantingImages';
+    const ARTISTIMAGEPATH = '/../ImageUploads/ArtistImages/';
+    const PANTINGIMAGEPATH = '/../ImageUploads/PaintingImages/';
 
     /**
      * @Route("/uploadArtistImage", name="uploadArtistImage")
      * @param Request $request
      * @param UploadFileService $uploadFile
-     * @return
+     * @return jsonResponse
      */
     public function uploadArtistImage(Request $request, UploadFileService $uploadFile)
     {
         $this->validation($request);
 
         $imageFile = $request->files->get('image');
-        $destination = $this->getParameter('kernel.project_dir').self::ARTISTIMAGEPATH;
 
-        $path = $uploadFile->upload($imageFile, $destination);
-
+        $path = $uploadFile->upload($imageFile, self::ARTISTIMAGEPATH);
 
         $response = new jsonResponse(["status_code" => "200",
                 "url" => $path
@@ -52,9 +49,17 @@ class UploadFileController extends AbstractController
         $this->validation($request);
 
         $imageFile = $request->files->get('image');
-        $destination = $this->getParameter('kernel.project_dir').self::PANTINGIMAGEPATH;
 
-        return new JsonResponse($uploadFile->upload($imageFile, $destination));
+        $path = $uploadFile->upload($imageFile, self::PANTINGIMAGEPATH);
+
+        $response = new jsonResponse(["status_code" => "200",
+                "url" => $path
+            ]
+            , Response::HTTP_OK);
+
+        $response->headers->set('Access-Control-Allow-Headers', 'X-Header-One,X-Header-Two');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
     }
 
     public function validation(Request $request)

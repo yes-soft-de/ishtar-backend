@@ -40,19 +40,19 @@ class MediaEntityController extends BaseController
     }
 
     /**
-     * @Route("/deleteComment", name="deleteComment")
+     * @Route("/deleteMediaEntity", name="deleteMediaEntity")
      * @param Request $request
      * @return
      */
     public function delete(Request $request, CommentValidateInterface $commentValidate)
     {
-        $validateResult = $commentValidate->commentValidator($request, 'delete');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
+//        $validateResult = $commentValidate->commentValidator($request, 'delete');
+//        if (!empty($validateResult))
+//        {
+//            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+//            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+//            return $resultResponse;
+//        }
         $result = $this->CUDService->delete($request, "MediaEntity");
         return $this->response($result, self::DELETE,"MediaEntity");
 

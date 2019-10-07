@@ -128,24 +128,55 @@ class FetchDataManger implements FetchDataMangerInterface
         $data = $this->baseFetchDataMapper->getEntityNames($request);
         return $data;
     }
+
     public function getEntityInteraction($request)
     {
         $data = $this->baseFetchDataMapper->getEntityInteraction($request);
         return $data;
     }
+
     public function getEntityComment($request)
     {
         $data = $this->baseFetchDataMapper->getEntityComment($request);
         return $data;
     }
+
     public function getEntityClap($request)
     {
         $data = $this->baseFetchDataMapper->getEntityClap($request);
         return $data;
     }
+
     public function search($request)
-{
-    $data = $this->baseFetchDataMapper->search($request);
-    return $data;
-}
+    {
+        $data = $this->baseFetchDataMapper->search($request);
+        return $data;
+    }
+
+    public function getInteraction($request)
+    {
+        $data = $this->baseFetchDataMapper->getInteraction($request);
+        return $data;
+    }
+    public function getClientFavorite($request)
+    {
+        $data = $this->baseFetchDataMapper->getClientFavorite($request);
+        return $data;
+    }
+
+    public function getClientInteraction($request)
+    {
+        $data = $this->baseFetchDataMapper->getClientInteraction($request);
+        return $data;
+    }
+    public function getClientClap($request)
+    {
+        $data = $this->baseFetchDataMapper->getClientClap($request);
+        return $data;
+    }
+    public function getClientComment($request)
+    {
+        $data = $this->baseFetchDataMapper->getClientComment($request);
+        return $data;
+    }
 }
