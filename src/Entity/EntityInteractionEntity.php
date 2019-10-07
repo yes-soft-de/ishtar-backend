@@ -35,7 +35,7 @@ class EntityInteractionEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ClientEntity")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $client;
 

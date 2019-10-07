@@ -79,17 +79,7 @@ class CommentController extends BaseController
         $result = $this->FDService->fetchData($request,"Comment");
         return $this->response($result,self::FETCH,"Comment");
     }
-    /**
-     * @Route("/getEntityInteraction",name="getEntityInteraction")
-     * @param Request $request
-     * @return
-     */
-    public function getEntityInteraction(Request $request)
-    {
 
-        $result = $this->FDService->getEntityInteraction($request);
-        return $this->response($result,self::FETCH,"Comment");
-    }
     /**
      * @Route("/getEntityComment",name="getEntityComment")
      * @param Request $request
@@ -99,6 +89,18 @@ class CommentController extends BaseController
     {
 
         $result = $this->FDService->getEntityComment($request);
+        return $this->response($result,self::FETCH,"Comment");
+    }
+
+    /**
+     * @Route("/getClientComment",name="getClientComment")
+     * @param Request $request
+     * @return
+     */
+    public function getClientComment(Request $request)
+    {
+
+        $result = $this->FDService->getClientComment($request);
         return $this->response($result,self::FETCH,"Comment");
     }
 }

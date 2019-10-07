@@ -10,9 +10,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadFileService
 {
-    const PATH = "http://ishtar-art.de/ImageUploads/";
-    const ARTISTIMAGEPATH = '/../ImageUploads/ArtistImages/';
-    const PANTINGIMAGEPATH = '/../ImageUploads/PaintingImages/';
+    const PATH = "http://ishtar-art.de/ImageUploads";
+
     private $rootPath;
 
     public function __construct(string $rootPath)
@@ -20,7 +19,7 @@ class UploadFileService
         $this->rootPath = $rootPath;
     }
 
-    public function upload(UploadedFile $file)
+    public function upload(UploadedFile $file, $mainFolder)
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $originalFilename; //todo add more strong file renaming
@@ -28,7 +27,7 @@ class UploadFileService
 
         try
         {
-            $file->move($this->Destination(), $fileName);
+            $file->move($this->Destination($mainFolder), $fileName);
         }
         catch (FileException $e)
         {
@@ -37,7 +36,7 @@ class UploadFileService
             return $response;
         }
 
-        return self::PATH.$this->GetFilesAndFolder($this->rootPath.self::ARTISTIMAGEPATH).$fileName;
+        return self::PATH.$this->GetFilesAndFolder($mainFolder)."/".$fileName;
     }
 
     public function GetFilesAndFolder($directory) {
@@ -49,13 +48,13 @@ class UploadFileService
 
         $FilesAndFolders = [];
         /*Scan Files and Directory*/
-        $FilesAndDirectoryList = scandir($directory);
+        $FilesAndDirectoryList = scandir($this->rootPath.$directory);
         foreach ($FilesAndDirectoryList as $SingleFile) {
             if (in_array($SingleFile, $EscapedFiles)){
                 continue;
             }
             /*Store the Files with Modification Time to an Array*/
-            $FilesAndFolders[$SingleFile] = filemtime($directory . '/' . $SingleFile);
+            $FilesAndFolders[$SingleFile] = filemtime($this->rootPath.$directory . '/' . $SingleFile);
         }
         /*Sort the result*/
         arsort($FilesAndFolders);
@@ -70,22 +69,22 @@ class UploadFileService
         return iterator_count($fi);
     }
 
-    public function Destination()
+    public function Destination($mainFolder)
     {
         //todo: if there is no folder
 
-        $count = $this->CountFiles($this->rootPath.self::ARTISTIMAGEPATH);
+        $count = $this->CountFiles($this->rootPath.$mainFolder);
 
-        if ($count >= 4)
+        if ($count >= 10)
         {
             $datetime = new DateTime();
-            $folderName = $datetime->format('Y-m-d H:i:s');
-            $destination = $this->rootPath.self::ARTISTIMAGEPATH.$folderName;
+            $folderName = $datetime->format('Y-m-d_H:i:s');
+            $destination = $this->rootPath.$mainFolder.$folderName;
             return $destination;
         }
         else
         {
-            return $this->GetFilesAndFolder($this->rootPath.self::ARTISTIMAGEPATH);
+            return $this->rootPath.$this->GetFilesAndFolder($mainFolder);
         }
     }
 }

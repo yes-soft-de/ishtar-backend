@@ -54,7 +54,8 @@ class InteractionEntityRepository extends ServiceEntityRepository
             ->andWhere('ei.row='.$id)
             ->andWhere('ei.interaction=2')
             ->andWhere('c.id=ei.client')
-            ->andWhere('c.id=interaction.client')
+            ->andWhere('c.id=ei.client')
+
             ->groupBy('ei.id')
             // ->setMaxResults(100)
             ->getQuery()

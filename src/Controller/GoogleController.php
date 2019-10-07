@@ -43,7 +43,7 @@ class GoogleController extends AbstractController
         } else
         {
             // return $this->redirectToRoute('home_page');
-            return $this->redirect('http://ishtar.esy.es/');
+            return $this->redirect('http://ishtar-art.de/');
         }
     }
 

@@ -109,7 +109,7 @@ class GoogleAuthenticator extends SocialAuthenticator
     {
         //todo return usser to the last page he visited here or in fornt?
         //return new RedirectResponse($this->router->generate('re'));
-        return new RedirectResponse('http://ishtar.esy.es/');
+        return new RedirectResponse('http://ishtar-art.de/');
     }
 
 

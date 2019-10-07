@@ -25,10 +25,12 @@ class PaintingEntityRepository extends ServiceEntityRepository
     {
         $result = $this->createQueryBuilder('q')
             ->select('p.id','p.name','p.keyWords','p.state','p.height','p.width','p.colorsType','p.image'
-                ,'p.active','a.name as artist','s.story')
+                ,'p.active','a.name as artist','s.story','pr.price')
             ->from('App:PaintingEntity','p')
             ->from('App:ArtistEntity','a')
             ->from('App:StoryEntity','s')
+            ->from('App:PriceEntity', 'pr')
+            ->andWhere('p.id=pr.painting')
             ->andWhere('p.artist=a.id')
             ->andWhere('p.id=s.row')
             ->andWhere('p.id = :val')
@@ -72,16 +74,18 @@ class PaintingEntityRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('q')
             ->select('p.id', 'p.name', 'p.keyWords', 'p.state', 'p.height', 'p.width', 'p.colorsType', 'p.image',
-                'p.active', 'a.name as artist', 'at.name as artType')
+                'p.active', 'a.name as artist', 'at.name as artType','pr.price')
             ->from('App:PaintingEntity', 'p')
             ->from('App:ArtistEntity', 'a')
             ->from('App:ArtTypeEntity', 'at')
             ->from('App:EntityArtTypeEntity', 'ea')
+            ->from('App:PriceEntity', 'pr')
             ->andWhere('p.artist=a.id')
             ->andWhere('p.id=ea.row')
             ->andWhere('at.id=ea.artType')
             ->andWhere('ea.entity=1')
             ->andWhere($parm)
+            ->andWhere('p.id=pr.painting')
             ->orderBy('p.id', 'ASC')
             ->groupBy('p.name')
             ->getQuery()

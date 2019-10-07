@@ -28,4 +28,6 @@ interface FetchDataServiceInterface
     public function search($request);
     public function getInteraction($request);
     public function getClientFavorite($request);
+    public function getClientInteraction($request);
+    public function getClientClap($request);
 }

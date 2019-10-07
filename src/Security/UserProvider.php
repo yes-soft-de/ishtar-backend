@@ -79,6 +79,7 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
+        //Todo: for further using
         return $class === 'App\Security\User';
     }
 }

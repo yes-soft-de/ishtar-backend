@@ -57,7 +57,23 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->andWhere('q.row='.$row)
             ->andWhere('q.interaction='.$interaction)
             ->andWhere('c.id=q.client')
-            //->groupBy('interactions')
+            ->orWhere('q.client IS Null')
+            ->distinct('q.id')
+            ->groupBy('q.')
+            ->getQuery()
+            ->getResult();
+    }
+    public function getClientInteraction($client):?array
+    {
+        return $this->createQueryBuilder('q')
+            ->select('e.name as entity', 'ei.row as id','i.name as interaction','ei.id as interactionID')
+            ->from('App:EntityInteractionEntity', 'ei')
+            ->from('App:Entity', 'e')
+            ->from('App:InteractionEntity', 'i')
+            ->andWhere('ei.client=' . $client)
+            ->andWhere('ei.entity=e.id')
+            ->andWhere('ei.interaction=i.id')
+            ->groupBy('ei.id')
             ->getQuery()
             ->getResult();
     }

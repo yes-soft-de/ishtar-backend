@@ -164,4 +164,19 @@ class FetchDataManger implements FetchDataMangerInterface
         return $data;
     }
 
+    public function getClientInteraction($request)
+    {
+        $data = $this->baseFetchDataMapper->getClientInteraction($request);
+        return $data;
+    }
+    public function getClientClap($request)
+    {
+        $data = $this->baseFetchDataMapper->getClientClap($request);
+        return $data;
+    }
+    public function getClientComment($request)
+    {
+        $data = $this->baseFetchDataMapper->getClientComment($request);
+        return $data;
+    }
 }

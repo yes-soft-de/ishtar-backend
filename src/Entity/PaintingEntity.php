@@ -60,7 +60,7 @@ class PaintingEntity
     private $height;
 
     /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @ORM\Column(type="decimal", precision=6, scale=0)
      */
     private $width;
 
@@ -96,7 +96,7 @@ class PaintingEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\GalleryEntity", inversedBy="paintingEntities")
-      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $gallery;
 

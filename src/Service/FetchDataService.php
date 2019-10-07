@@ -136,4 +136,16 @@ class FetchDataService implements FetchDataServiceInterface
     {
         return $result = $this->manager->getClientFavorite($request);
     }
+    public function getClientInteraction($request)
+    {
+        return $result = $this->manager->getClientInteraction($request);
+    }
+    public function getClientClap($request)
+    {
+        return $result = $this->manager->getClientClap($request);
+    }
+    public function getClientComment($request)
+    {
+        return $result = $this->manager->getClientComment($request);
+    }
 }

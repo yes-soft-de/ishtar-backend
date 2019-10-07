@@ -189,4 +189,22 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
         return $data = $this->entityManager->getRepository(EntityMediaEntity::class)->getPaintingImages
         ($data['painting']);
     }
+    public function getClientInteraction($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(EntityInteractionEntity::class)->getClientInteraction
+        ($data['client']);
+    }
+    public function getClientClap($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(ClapEntity::class)->getClientClap
+        ($data['client']);
+    }
+    public function getClientComment($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(CommentEntity::class)->getClientComment
+        ($data['client']);
+    }
 }

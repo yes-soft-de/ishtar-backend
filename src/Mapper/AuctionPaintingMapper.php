@@ -13,9 +13,13 @@ class AuctionPaintingMapper
     {
         $this->en=$entityManager;
         $auction=$this->en->getRepository(AuctionEntity::class)->findBy(array(),array('id'=>'DESC'),1,1);
-        $id= $auction[0]->getId()+1;
+        if(!isset($auction[0]))
+            $auction=1;
+        else
+            $auction= $auction[0]->getId()+1;
+
         $painting = $this->en->getRepository(PaintingEntity::class)->find($data["painting"]);
-        $auction= $this->en->getRepository(AuctionEntity::class)->find($id);
+        $auction= $this->en->getRepository(AuctionEntity::class)->find($auction);
         $startPrice = $data["startPrice"];
 
         $auctionPainting->setPainting($painting)

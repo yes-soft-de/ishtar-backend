@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UploadFileController extends AbstractController
 {
-    const ARTISTIMAGEPATH = '/../ImageUploads/';
+    const ARTISTIMAGEPATH = '/../ImageUploads/ArtistImages/';
     const PANTINGIMAGEPATH = '/../ImageUploads/PaintingImages/';
 
     /**
@@ -26,7 +26,7 @@ class UploadFileController extends AbstractController
 
         $imageFile = $request->files->get('image');
 
-        $path = $uploadFile->upload($imageFile);
+        $path = $uploadFile->upload($imageFile, self::ARTISTIMAGEPATH);
 
         $response = new jsonResponse(["status_code" => "200",
                 "url" => $path
@@ -49,10 +49,8 @@ class UploadFileController extends AbstractController
         $this->validation($request);
 
         $imageFile = $request->files->get('image');
-        $destination = $this->getParameter('kernel.project_dir').self::PANTINGIMAGEPATH;
 
-        $path = $uploadFile->upload($imageFile, $destination);
-
+        $path = $uploadFile->upload($imageFile, self::PANTINGIMAGEPATH);
 
         $response = new jsonResponse(["status_code" => "200",
                 "url" => $path

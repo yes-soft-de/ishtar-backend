@@ -25,6 +25,9 @@ class EntityArtTypeMapper
         $artType = $this->en->getRepository(ArtTypeEntity::class)->find($data['artType']);
 
             $row = $this->en->getRepository(PaintingEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
+        if(!isset($row[0]))
+            $row=1;
+        else
             $row= $row[0]->getId()+1;
 
 

@@ -42,6 +42,7 @@ class PriceEntityRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->andWhere('p.painting = :val')
             ->setParameter('val', $value)
+            ->orderBy('p.id','DESC')
             ->getQuery()
             ->getOneOrNullResult()
         ;
