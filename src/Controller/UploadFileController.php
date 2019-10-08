@@ -11,8 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UploadFileController extends AbstractController
 {
-    const ARTISTIMAGEPATH = '/../ImageUploads/ArtistImages/';
-    const PANTINGIMAGEPATH = '/../ImageUploads/PaintingImages/';
+    const ARTISTIMAGEPATH = '/ImageUploads/ArtistImages/';
+    const PANTINGIMAGEPATH = '/ImageUploads/PaintingImages/';
 
     /**
      * @Route("/uploadArtistImage", name="uploadArtistImage")
@@ -64,15 +64,6 @@ class UploadFileController extends AbstractController
 
     public function validation(Request $request)
     {
-        /*
-        $token = $request->get("token");
-
-        if (!$this->isCsrfTokenValid('upload', $token))
-        {
-            return new JsonResponse("Operation not allowed",  Response::HTTP_BAD_REQUEST,
-                ['content-type' => 'text/plain']);
-        } */
-
         $file = $request->files->get('image');
         if (empty($file))
         {
