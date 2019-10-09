@@ -1,0 +1,15 @@
+{
+    "name": "mohammad/ishtar-behat",
+    "authors": [
+        {
+            "name": "Mohammad Al Kalaleeb",
+            "email": "mohammad.al.kalaleeb@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "behat/behat": "^3.5"
+    }
+}
