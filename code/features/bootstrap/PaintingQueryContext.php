@@ -3,9 +3,6 @@
 
 trait PaintingQueryContext
 {
-    private $request;
-    private $response;
-    private $client;
 
     /**
      * @Given /^I Have A Valid Painting Id$/
@@ -13,7 +10,7 @@ trait PaintingQueryContext
     public function iHaveAValidPaintingId()
     {
         $request_factory = new RequestFactory();
-        $this->request = $request_factory->prepareRequestWithArtistId("1");
+        $this->request = $request_factory->prepareRequestWithPaintingId("1");
     }
 
     /**
@@ -22,7 +19,7 @@ trait PaintingQueryContext
     public function iHaveAInvalidPaintingId()
     {
         $request_factory = new RequestFactory();
-        $this->request = $request_factory->prepareRequestWithArtistId("-1");
+        $this->request = $request_factory->prepareRequestWithPaintingId("-1");
     }
 
     /**
@@ -32,20 +29,10 @@ trait PaintingQueryContext
     {
         $this->response = $this->client->post(
             IshtarConfig::$BASE_API . IshtarConfig::$PAINTING_QUERY_BY_ID_ENDPOINT,
-            $this->request
+            [
+                'json' => $this->request
+            ]
         );
-    }
-
-    /**
-     * @Then /^I Should Get a Response Code of "([^"]*)"$/
-     */
-    public function iShouldGetAResponseCodeOf($arg1)
-    {
-        if ($this->response->getStatusCode() == $arg1)
-            return;
-        else {
-            throw new Exception("Status Code Error", -1);
-        }
     }
 
     /**
@@ -53,9 +40,9 @@ trait PaintingQueryContext
      */
     public function iShouldGetAValidPaintingName()
     {
-        $json_object = json_decode( $this->response->getBody()->getContent());
+        $json_object = json_decode( $this->response->getBody()->getContents(), true);
 
-        if ($json_object['Data']['Name'] == null) {
+        if (strlen($json_object['Data']['Name']) > 0) {
             throw new Exception('Error Reading Name!');
         }
 
