@@ -10,6 +10,7 @@ use Exception;
 class PaintingMapper
 {
     private $en;
+    //To DO remove entity manger
     public function PaintingData($data, PaintingEntity $painting,$entityManger)
     {
         $this->en=$entityManger;

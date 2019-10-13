@@ -20,11 +20,9 @@ class ArtistEntityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ArtistEntity::class);
     }
-
-
-
+    //To do cretae get method bdl find
     public function findById($value)
-    {
+    {//To Do replace alise with full name
         $result=$this->createQueryBuilder('c')
             ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story',
                 'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','m.path')
@@ -47,11 +45,11 @@ class ArtistEntityRepository extends ServiceEntityRepository
     /**
      * @return ArtistEntity[] Returns an array of ArtistEntity objects
      */
-    public function findOneById($value): ?ArtistEntity
+    //return artist entity or throw exception
+    public function findOneById($value): ArtistEntity
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.id =:val')
-
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();
@@ -147,5 +145,4 @@ class ArtistEntityRepository extends ServiceEntityRepository
                 ->getResult();
         return $result=array_merge($q1,$q2);
     }
-
 }

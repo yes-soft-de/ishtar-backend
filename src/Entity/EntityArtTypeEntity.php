@@ -14,24 +14,24 @@ class EntityArtTypeEntity
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ArtTypeEntity")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $artType;
+    public $artType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Entity")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $entity;
+    public $entity;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $row;
+    public $row;
 
     public function getId(): ?int
     {

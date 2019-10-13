@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Validator\ArtistValidateInterface;
 
+
 class ArtistController extends BaseController
 {
     /**
@@ -83,9 +84,10 @@ class ArtistController extends BaseController
         $result = $this->FDService->fetchData($request,"Artist");
         return $this->response($result,self::FETCH,"Artist");
     }
-
+//to Do if not exist throw exception
+//name="artist/id",methods={GET}
     /**
-     * @Route("/getArtistById", name="getArtistById")
+     * @Route("/getArtistById",name="getArtistById")
      * @param Request $request
      * @return
      */
@@ -94,20 +96,8 @@ class ArtistController extends BaseController
         $result = $this->FDService->getArtistById($request);
         return $this->response($result,self::FETCH,"Artist");
     }
-    /**
-     * @Route("/getArtistsData",name="getArtistsData")
-     * @param Request $request
-     * @return
-     */
-    public function getArtistsData(Request $request)
-    {
-
-        $result = $this->FDService->getArtistsData($request,"Artist");
-        return $this->response($result,self::FETCH,"Artist");
-    }
-
 //    /**
-//     * @Route("/getArtistPaintings", name="getArtistPaintings")
+//     * @Route("/getArtistPaintings",name="getArtistPaintings")
 //     * @param Request $request
 //     * @return Response
 //     * @throws \Exception

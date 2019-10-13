@@ -17,10 +17,9 @@ class ArtistValidate implements ArtistValidateInterface
     private $validator;
     private $entityManager;
 
-    public function __construct(ValidatorInterface $validator, EntityManagerInterface $entityManagerInterface)
+    public function __construct(ValidatorInterface $validator)
     {
         $this->validator = $validator;
-        $this->entityManager = $entityManagerInterface;
     }
 
     public function artistValidator(Request $request, $type)

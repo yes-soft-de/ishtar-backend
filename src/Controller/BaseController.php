@@ -8,33 +8,26 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+
 
 class BaseController extends AbstractController
 {
     private $serializer;
-    public $CUDService;
-    public $FDService;
 
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    public function __construct(CreateUpdateDeleteServiceInterface $CUDService, SerializerInterface $serializer, EntityManagerInterface $em,FetchDataServiceInterface $FDService)
+    public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
-        $this->CUDService = $CUDService;
-        $this->FDService=$FDService;
-        $this->em = $em;
     }
 
     const STATE_OK = 200;
-    const CREATE = "created";
-    const UPDATE="updated";
-    const DELETE="deleted";
-    const FETCH="fetched";
+    const CREATE = ["created ","201"];
+    const UPDATE=["updated","204"];
+    const DELETE=["deleted","401"];
+    const FETCH=["fetched","200"];
 
     /**
      * Returns a JSON response
@@ -51,9 +44,7 @@ class BaseController extends AbstractController
 
     /**
      * Sets an error message and returns a JSON response
-     *
      * @param string $errors
-     *
      * @param array $headers
      * @return JsonResponse
      */
@@ -78,13 +69,15 @@ class BaseController extends AbstractController
         return $this->setStatusCode(401)->respondWithErrors($message);
     }
 
-    public function response($result, $status,$entity) :jsonResponse
+    public function response($result, $status) :jsonResponse
     {
+        $encoders = [ new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+        $this->serializer=new Serializer($normalizers, $encoders);
                 $result = $this->serializer->serialize($result, "json", [
                     'enable_max_depth' => true]);
-        //}
-        $response = new jsonResponse(["status_code" => "200",
-            "msg" => $status. " "."Successfully.",
+        $response = new jsonResponse(["status_code" => $status[1],
+            "msg" => $status[0]. " "."Successfully.",
             "Data" => json_decode($result)
             ]
         , Response::HTTP_OK);
