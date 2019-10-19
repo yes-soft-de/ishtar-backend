@@ -1,10 +1,8 @@
 <?php
 
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Client;
-use IshtarConfig;
+
 
 /**
  * Defines application features from the specific context.
@@ -12,14 +10,25 @@ use IshtarConfig;
 class FeatureContext implements Context
 {
     public $request;
+
+    /**
+     * @var GuzzleHttp\Psr7\Response
+     */
     public $response;
+
+    /**
+     * @var GuzzleHttp\Client $client
+     */
     public $client;
 
     use ArtistListQueryContext;
     use ArtistQueryContext;
     use PaintingListQueryContext;
     use PaintingQueryContext;
-
+    use LoginContext;
+    use LoveInteractionContext;
+    use FollowInteractionContext;
+    use ViewInteractionContext;
 
     /**
      * Initializes context.
@@ -40,7 +49,7 @@ class FeatureContext implements Context
         if ($this->response->getStatusCode() == $arg1)
             return;
         else {
-            throw new Exception("Status Code Error", -1);
+            return new Exception("Status Code Error", -1);
         }
     }
 
@@ -65,5 +74,13 @@ class FeatureContext implements Context
         if ($ishtarCommon->isValidJson($this->response) != true) {
             throw new Exception('JSON Format Error ' . $ishtarCommon->isValidJson($this->response));
         }
+    }
+
+    /**
+     * @Given /^I Am A Signed In User Of Id "([^"]*)"$/
+     */
+    public function iAmASignedInUserOfId($arg1)
+    {
+        $this->userId = $arg1;
     }
 }
