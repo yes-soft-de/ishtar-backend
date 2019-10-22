@@ -10,13 +10,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadFileService
 {
-    const PATH = "http://ishtar-art.de/ImageUploads";
-
+    const PATH = "http://ishtar-art.de";
+    const PATHDEVTest = "http://dev-ishtar.96.lt";
     private $rootPath;
 
     public function __construct(string $rootPath)
     {
-        $this->rootPath = $rootPath;
+        $path = explode('/ishtar-backend', $rootPath);
+        $this->rootPath = $path[0];
     }
 
     public function upload(UploadedFile $file, $mainFolder)
@@ -36,10 +37,15 @@ class UploadFileService
             return $response;
         }
 
-        return self::PATH.$this->GetFilesAndFolder($mainFolder)."/".$fileName;
+        return self::PATHDEVTest.$this->GetFilesAndFolder($mainFolder)."/".$fileName;
     }
 
-    public function GetFilesAndFolder($directory) {
+    /**
+     * @param string $directory
+     * @return string
+     */
+    public function GetFilesAndFolder($directory)
+    {
         /*file want to be escaped*/
         $EscapedFiles = [
             '.',
@@ -47,15 +53,20 @@ class UploadFileService
         ];
 
         $FilesAndFolders = [];
+
         /*Scan Files and Directory*/
         $FilesAndDirectoryList = scandir($this->rootPath.$directory);
-        foreach ($FilesAndDirectoryList as $SingleFile) {
-            if (in_array($SingleFile, $EscapedFiles)){
+
+        foreach ($FilesAndDirectoryList as $SingleFile)
+        {
+            if (in_array($SingleFile, $EscapedFiles))
+            {
                 continue;
             }
             /*Store the Files with Modification Time to an Array*/
-            $FilesAndFolders[$SingleFile] = filemtime($this->rootPath.$directory . '/' . $SingleFile);
+            $FilesAndFolders[$SingleFile] = filemtime($this->rootPath.$directory . $SingleFile);
         }
+
         /*Sort the result*/
         arsort($FilesAndFolders);
         $FilesAndFolders = array_keys($FilesAndFolders);
@@ -65,21 +76,24 @@ class UploadFileService
 
     public function CountFiles($directoryPath)
     {
-        $fi = new FilesystemIterator($this->GetFilesAndFolder($directoryPath), FilesystemIterator::SKIP_DOTS);
-        return iterator_count($fi);
+        $path = $this->rootPath.$this->GetFilesAndFolder($directoryPath);
+        $fileIterator = new FilesystemIterator($path, FilesystemIterator::SKIP_DOTS);
+
+        return iterator_count($fileIterator);
     }
 
     public function Destination($mainFolder)
     {
-        //todo: if there is no folder
+        //Note: I did not path the rootPath with mainFolder because we do not want response to have physical path. *K*
 
-        $count = $this->CountFiles($this->rootPath.$mainFolder);
+        $count = $this->CountFiles($mainFolder);
 
-        if ($count >= 10)
+        if ($count >= 10 || $count == 0)
         {
             $datetime = new DateTime();
-            $folderName = $datetime->format('Y-m-d_H:i:s');
+            $folderName = $datetime->format('Y-m-d_H-i-s');
             $destination = $this->rootPath.$mainFolder.$folderName;
+
             return $destination;
         }
         else
