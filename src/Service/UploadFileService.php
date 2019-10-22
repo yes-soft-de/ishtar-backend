@@ -11,12 +11,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class UploadFileService
 {
     const PATH = "http://ishtar-art.de";
-
+    const PATHDEVTest = "http://dev-ishtar.96.lt";
     private $rootPath;
 
     public function __construct(string $rootPath)
     {
-        $this->rootPath = $rootPath;
+        $path = explode('/ishtar-backend', $rootPath);
+        $this->rootPath = $path[0];
     }
 
     public function upload(UploadedFile $file, $mainFolder)
@@ -36,7 +37,7 @@ class UploadFileService
             return $response;
         }
 
-        return self::PATH.$this->GetFilesAndFolder($mainFolder)."/".$fileName;
+        return self::PATHDEVTest.$this->GetFilesAndFolder($mainFolder)."/".$fileName;
     }
 
     /**

@@ -57,9 +57,9 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->andWhere('q.row='.$row)
             ->andWhere('q.interaction='.$interaction)
             ->andWhere('c.id=q.client')
-            ->orWhere('q.client IS Null')
-            ->distinct('q.id')
-            ->groupBy('q.')
+           // ->orWhere('q.client IS Null')
+           // ->distinct('q.id')
+          //  ->groupBy('q.')
             ->getQuery()
             ->getResult();
     }
