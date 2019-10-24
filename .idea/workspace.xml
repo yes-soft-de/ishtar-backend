@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ff6da291-0f38-43a9-8537-ec8ea53cb2f3" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>clie</find>
+      <find>const</find>
+      <find>InteractionConfig</find>
+      <find>LinksConfig</find>
+      <find>IshtarConfig</find>
+      <find>name</find>
+      <find>response</find>
+      <find>getB</find>
+      <find>getRe</find>
+      <find>prep</find>
+      <find>pre</find>
+      <find>client</find>
+      <find>req</find>
+      <find>request</find>
+      <find>I Have</find>
+      <find>Diah</find>
+      <find>Data</find>
+      <find>data i</find>
+      <find>Dia</find>
+      <find>Artist</find>
+      <find>CREATE_ARTIST_ENDPOINT</find>
+      <find>artist</find>
+      <find>:</find>
+      <find>get</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>LinksConfig</replace>
+      <replace>configLinks</replace>
+      <replace>ConfigLinks</replace>
+      <replace>httpClient</replace>
+      <replace>Painting</replace>
+      <replace>CREATE_PAINTING_ENDPOINT</replace>
+      <replace>painting</replace>
+      <replace>=&gt;</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/features/interaction/bootstrap/FeatureContext.php" />
+        <option value="$PROJECT_DIR$/features/bootstrap/IshtarContext.php" />
+        <option value="$PROJECT_DIR$/features/bootstrap/FeatureContext.php" />
+        <option value="$PROJECT_DIR$/bootstrap/interaction/InteractionContext.php" />
+        <option value="$PROJECT_DIR$/bootstrap/IshtarContext.php" />
+        <option value="$PROJECT_DIR$/bootstrap/Interaction-LoveInteraction.php" />
+        <option value="$PROJECT_DIR$/bootstrap/Interaction-FollowInteraction.php" />
+        <option value="$PROJECT_DIR$/bootstrap/Interaction-ViewInteractionContext.php" />
+        <option value="$PROJECT_DIR$/bootstrap/FeatureContext.php" />
+        <option value="$PROJECT_DIR$/ishtar-config.yml" />
+        <option value="$PROJECT_DIR$/bootstrap/InteractionLove.php" />
+        <option value="$PROJECT_DIR$/bootstrap/InteractionConfig.php" />
+        <option value="$PROJECT_DIR$/bootstrap/InteractionFollow.php" />
+        <option value="$PROJECT_DIR$/bootstrap/InteractionView.php" />
+        <option value="$PROJECT_DIR$/bootstrap/InteractionCommonFactory.php" />
+        <option value="$PROJECT_DIR$/bootstrap/QueriesAllArtists.php" />
+        <option value="$PROJECT_DIR$/bootstrap/QueriesAllPainting.php" />
+        <option value="$PROJECT_DIR$/bootstrap/QueriesContext.php" />
+        <option value="$PROJECT_DIR$/bootstrap/QueriesArtist.php" />
+        <option value="$PROJECT_DIR$/bootstrap/QueriesPainting.php" />
+        <option value="$PROJECT_DIR$/bootstrap/ValidatorCommon.php" />
+        <option value="$PROJECT_DIR$/bootstrap/QueriesCommon.php" />
+        <option value="$PROJECT_DIR$/test_queries.bat" />
+        <option value="$PROJECT_DIR$/bootstrap/ArtistObject.php" />
+        <option value="$PROJECT_DIR$/bootstrap/InteractionContext.php" />
+        <option value="$PROJECT_DIR$/bootstrap/InteractionCommon.php" />
+        <option value="$PROJECT_DIR$/features/create/create-painting.feature" />
+        <option value="$PROJECT_DIR$/bootstrap/CreateContext.php" />
+        <option value="$PROJECT_DIR$/composer.json" />
+        <option value="$PROJECT_DIR$/bootstrap/CreateCommon.php" />
+        <option value="$PROJECT_DIR$/test_interaction.bat" />
+        <option value="$PROJECT_DIR$/test_create.bat" />
+        <option value="$PROJECT_DIR$/features/create/create-artist.feature" />
+        <option value="$PROJECT_DIR$/bootstrap/MapperArtist.php" />
+        <option value="$PROJECT_DIR$/bootstrap/ObjectArtist.php" />
+        <option value="$PROJECT_DIR$/bootstrap/CreateArtist.php" />
+        <option value="$PROJECT_DIR$/bootstrap/ConfigLinks.php" />
+        <option value="$PROJECT_DIR$/bootstrap/CreatePainting.php" />
+        <option value="$PROJECT_DIR$/bootstrap/RequestFactory.php" />
+        <option value="$PROJECT_DIR$/bootstrap/ObjectPainting.php" />
+        <option value="$PROJECT_DIR$/bootstrap/MapperPainting.php" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.3">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/container-interop/container-interop" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php73" />
+      <path value="$PROJECT_DIR$/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/vendor/behat/transliterator" />
+      <path value="$PROJECT_DIR$/vendor/behat/behat" />
+      <path value="$PROJECT_DIR$/vendor/behat/gherkin" />
+      <path value="$PROJECT_DIR$/vendor/symfony/dependency-injection" />
+      <path value="$PROJECT_DIR$/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/filesystem" />
+      <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher" />
+      <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/symfony/translation" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/symfony/class-loader" />
+      <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/config" />
+      <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+    </include_path>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="950" />
+    <option name="width" value="980" />
+    <option name="height" value="1090" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="http.proxy" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Servers\behat002\bootstrap" />
+      <recent name="E:\Servers\behat002\features\bootstrap\interaction" />
+      <recent name="E:\Servers\behat002\features\bootstrap" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Servers\behat002" />
+      <recent name="E:\Servers\behat002\features\create" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Behat.create test">
+    <configuration name="Init files" type="PhpBehatConfigurationType" factoryName="Behat">
+      <BehatRunner configuration_file="$PROJECT_DIR$/ishtar-config.yml" directory="$PROJECT_DIR$/vendor/bin" scenario="" scope="Yml" options="--init" use_alternative_configuration_file="true" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Interaction test" type="PhpBehatConfigurationType" factoryName="Behat">
+      <BehatRunner configuration_file="$PROJECT_DIR$/ishtar-config.yml" directory="$PROJECT_DIR$/vendor/bin" scenario="" scope="Yml" options="-s interaction" use_alternative_configuration_file="true" />
+      <method v="2" />
+    </configuration>
+    <configuration name="create test" type="PhpBehatConfigurationType" factoryName="Behat">
+      <BehatRunner configuration_file="$PROJECT_DIR$/ishtar-config.yml" directory="$PROJECT_DIR$/vendor/bin" scenario="" scope="Yml" options="-s create" use_alternative_configuration_file="true" />
+      <method v="2" />
+    </configuration>
+    <configuration name="queries test" type="PhpBehatConfigurationType" factoryName="Behat">
+      <BehatRunner configuration_file="$PROJECT_DIR$/ishtar-config.yml" directory="$PROJECT_DIR$/vendor/bin" scenario="" scope="Yml" options="-s queries" use_alternative_configuration_file="true" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Behat.Interaction test" />
+      <item itemvalue="Behat.create test" />
+      <item itemvalue="Behat.queries test" />
+      <item itemvalue="Behat.Init files" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ff6da291-0f38-43a9-8537-ec8ea53cb2f3" name="Default Changelist" comment="" />
+      <created>1571837894035</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1571837894035</updated>
+      <workItem from="1571837895792" duration="12207000" />
+      <workItem from="1571913636576" duration="6389000" />
+      <workItem from="1571926034952" duration="3038000" />
+    </task>
+    <task id="LOCAL-00001" summary="Creates Test Created, Structured the Tests">
+      <created>1571929793360</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1571929793360</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="create_test - 2019.10.24 at 14h 41m 45s.xml">
+      <configuration name="create test" configurationId="PhpBehatConfigurationType" />
+    </history-entry>
+    <history-entry file="create_test - 2019.10.24 at 14h 43m 32s.xml">
+      <configuration name="create test" configurationId="PhpBehatConfigurationType" />
+    </history-entry>
+    <history-entry file="create_test - 2019.10.24 at 14h 46m 44s.xml">
+      <configuration name="create test" configurationId="PhpBehatConfigurationType" />
+    </history-entry>
+    <history-entry file="create_test - 2019.10.24 at 14h 48m 24s.xml">
+      <configuration name="create test" configurationId="PhpBehatConfigurationType" />
+    </history-entry>
+    <history-entry file="create_test - 2019.10.24 at 14h 50m 09s.xml">
+      <configuration name="create test" configurationId="PhpBehatConfigurationType" />
+    </history-entry>
+    <history-entry file="create_test - 2019.10.24 at 14h 53m 58s.xml">
+      <configuration name="create test" configurationId="PhpBehatConfigurationType" />
+    </history-entry>
+    <history-entry file="create_test - 2019.10.24 at 14h 54m 50s.xml">
+      <configuration name="create test" configurationId="PhpBehatConfigurationType" />
+    </history-entry>
+    <history-entry file="create_test - 2019.10.24 at 14h 57m 33s.xml">
+      <configuration name="create test" configurationId="PhpBehatConfigurationType" />
+    </history-entry>
+    <history-entry file="create_test - 2019.10.24 at 14h 58m 30s.xml">
+      <configuration name="create test" configurationId="PhpBehatConfigurationType" />
+    </history-entry>
+    <history-entry file="create_test - 2019.10.24 at 14h 59m 07s.xml">
+      <configuration name="create test" configurationId="PhpBehatConfigurationType" />
+    </history-entry>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="21764000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24966443" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3297587" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3297587" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" />
+      <window_info anchor="bottom" id="Database Changes" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.3297587" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="Creates Test Created, Structured the Tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="Creates Test Created, Structured the Tests" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/features/interaction/bootstrap/FeatureContext.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/IshtarCommon.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/IshtarConfig.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/PaintingListQueryContext.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/LoginContext.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/LoveInteraction.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/FollowInteraction.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/ArtistListQueryContext.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/ViewInteractionContext.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/FeatureContext.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/PaintingQueryContext.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/Login-LoginContext.php" />
+    <entry file="file://$PROJECT_DIR$/bootstrap/InteractionView.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/InteractionLove.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="29" column="41" selection-start-line="29" selection-start-column="41" selection-end-line="29" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/queries/get-artist.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/QueriesContext.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="23" column="22" lean-forward="true" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
+          <folding>
+            <element signature="e#7#39#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/QueriesArtist.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="2" column="20" lean-forward="true" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/queries/get-painting.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/QueriesAllPainting.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="9" column="82" selection-start-line="9" selection-start-column="82" selection-end-line="9" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/QueriesPainting.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="28" column="49" selection-start-line="28" selection-start-column="49" selection-end-line="28" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/ValidatorCommon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="5" selection-start-column="5" selection-end-column="5" />
+          <folding>
+            <element signature="n#isValidJson#0;n#ValidatorCommon#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/interaction/view-painting.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="4" column="30" lean-forward="true" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/InteractionCommonFactory.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/InteractionFollow.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/interaction/follow-painting.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="39" column="33" selection-start-line="39" selection-start-column="33" selection-end-line="39" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_queries.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="30" selection-start-column="30" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/QueriesCommon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="49" column="29" lean-forward="true" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/psr/http-message/src/ResponseInterface.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="66" column="25" selection-start-line="66" selection-start-column="20" selection-end-line="66" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/InteractionContext.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/guzzlehttp/guzzle/src/Client.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="11" column="17" lean-forward="true" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+          <folding>
+            <element signature="e#29#61#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/QueriesAllArtists.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="8" column="5" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/InteractionCommon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2673">
+          <caret line="81" column="9" selection-start-line="81" selection-start-column="9" selection-end-line="81" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ishtar-config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="21" column="11" lean-forward="true" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_interaction.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="4" column="4" lean-forward="true" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_create.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/ObjectArtist.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/CreateArtist.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/create/create-painting.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="20" column="25" lean-forward="true" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/CreatePainting.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="14" column="33" lean-forward="true" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/create/create-artist.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/CreateContext.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/CreateCommon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/ConfigLinks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="28" column="36" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/RequestFactory.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="387">
+          <caret line="148" selection-start-line="148" selection-end-line="148" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/MapperArtist.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="632">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/ObjectPainting.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="429">
+          <caret line="139" column="19" selection-start-line="139" selection-start-column="19" selection-end-line="139" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bootstrap/MapperPainting.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="123" column="25" lean-forward="true" selection-start-line="123" selection-start-column="25" selection-end-line="123" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
