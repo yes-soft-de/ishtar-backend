@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FavoriteController extends BaseController
 {
     /**
-     * @Route("/createFavorite", name="createFavorite")
+     * @Route("/favorites", name="createFavorite",methods={"POST"})
      * @param Request $request
      * @return
      */
@@ -30,8 +30,7 @@ class FavoriteController extends BaseController
         return $this->response($result, self::CREATE, "Favorite");
     }
 
-    /**
-     * @Route("/updateFavorite", name="updateFavorite")
+    /**@Route("/favorite/{id}", name="updateFavorite",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -49,7 +48,7 @@ class FavoriteController extends BaseController
     }
 
     /**
-     * @Route("/deleteFavorite", name="deleteFavorite")
+     *  @Route("/favorite/{id}", name="deleteFavorite",methods={"DELETE"})
      * @param Request $request
      * @return
      */

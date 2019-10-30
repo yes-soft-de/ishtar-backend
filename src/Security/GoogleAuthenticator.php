@@ -59,6 +59,7 @@ class GoogleAuthenticator extends SocialAuthenticator
             $user->setUserName($googleUser->getName());
             $user->setPassword("set your pass here");
             $user->setCreateDate(new DateTime(date('Y-m-d H:i:s')));
+            $user->setRoles(['ROLE_USER']);
             $this->em->persist($user);
             $this->em->flush();
         }
@@ -109,9 +110,8 @@ class GoogleAuthenticator extends SocialAuthenticator
     {
         //todo return usser to the last page he visited here or in fornt?
         //return new RedirectResponse($this->router->generate('re'));
-        return new RedirectResponse('http://ishtar-art.de/');
+        //return new RedirectResponse('http://ishtar-art.de/');
+        return new RedirectResponse('http://127.0.0.1:8000/');
     }
-
-
 
 }

@@ -19,29 +19,12 @@ class ArtTypeRepository extends ServiceEntityRepository
         parent::__construct($registry, ArtTypeEntity::class);
     }
 
-    // /**
-    //  * @return ArtType[] Returns an array of ArtType objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
     public function getById($value): ?array
     {
-        return $this->createQueryBuilder('q')
+        return $this->createQueryBuilder('at')
             ->select('at.id','at.name','m.path')
             ->from('App:EntityMediaEntity','m')
-            ->from('App:ArtTypeEntity','at')
             ->andWhere('at.id=m.row')
             ->andWhere('m.entity=3')
             ->andWhere('m.media=1')
@@ -54,45 +37,28 @@ class ArtTypeRepository extends ServiceEntityRepository
     }
  public function  getArtTypeList()
    {
-       return $this->createQueryBuilder('p')
+       return $this->createQueryBuilder('at')
            ->select('at.id','at.name','m.path')
            ->from('App:EntityMediaEntity','m')
-           ->from('App:ArtTypeEntity','at')
            ->andWhere('at.id=m.row')
            ->andWhere('m.entity=3')
            ->andWhere('m.media=1')
            ->groupBy('at.id')
-           ->setMaxResults(100)
            ->getQuery()
            ->getResult();
 
    }
    public function findAll()
    {
-       return $this->createQueryBuilder('p')
+       return $this->createQueryBuilder('at')
            ->select('at.id','at.name','at.history','m.path')
            ->from('App:EntityMediaEntity','m')
-           ->from('App:ArtTypeEntity','at')
            ->andWhere('at.id=m.row')
            ->andWhere('m.entity=3')
            ->andWhere('m.media=1')
            ->groupBy('at.id')
-           ->setMaxResults(100)
            ->getQuery()
            ->getResult();
    }
-   public function getEntityNames($entity)
-   {
-       if ($entity=='Client')
-           $name='a.userName';
-       else $name='a.name';
-       $entity = 'App:' . $entity . 'Entity';
-       return $this->createQueryBuilder('p')
-           ->select('a.id',$name)
-           ->from($entity,'a')
-           ->setMaxResults(100)
-           ->groupBy('a.id')
-           ->getQuery()
-           ->getResult();
-   }
+
 }

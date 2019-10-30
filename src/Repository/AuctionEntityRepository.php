@@ -38,25 +38,23 @@ class AuctionEntityRepository extends ServiceEntityRepository
 
     public function findOneById($value): ?AuctionEntity
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.id =:val')
+        return $this->createQueryBuilder('au')
+            ->andWhere('au.id =:val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();
     }
     public function findAll()
     {
-        return $this->createQueryBuilder('q')
-            ->select('a.id','a.name','a.startDate','a.endDate','ap.startPrice','ap.finalPrice','ap.highiestPrice',
+        return $this->createQueryBuilder('au')
+            ->select('au.id','au.name','au.startDate','au.endDate','ap.startPrice','ap.finalPrice','ap.highiestPrice',
                 'c.firstName','p.name')
-            ->from('App:AuctionEntity','a')
             ->from('App:PaintingEntity','p')
             ->from('App:ClientEntity','c')
             ->from('App:AuctionPaintingEntity','ap')
-            ->andWhere('a.id=ap.auction')
-           // ->andWhere('c.id=ap.client')
+            ->andWhere('au.id=ap.auction')
             ->andWhere('p.id=ap.painting')
-            ->groupBy('a.id')
+            ->groupBy('au.id')
             ->getQuery()
             ->getResult();
     }

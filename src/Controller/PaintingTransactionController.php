@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PaintingTransactionController extends BaseController
 {
     /**
-     * @Route("/createPaintingTransaction", name="createPaintingTransaction")
+     * @Route("/paintingTransactions", name="createPaintingTransaction")
      * @param Request $request
      * @return
      */
@@ -31,7 +31,7 @@ class PaintingTransactionController extends BaseController
     }
 
     /**
-     * @Route("/updatePaintingTransaction", name="updatePaintingTransaction")
+     * @Route("/paintingTransaction/{id}", name="updatePaintingTransaction",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -49,7 +49,7 @@ class PaintingTransactionController extends BaseController
     }
 
     /**
-     * @Route("/deletePaintingTransaction", name="deletePaintingTransaction")
+     *  @Route("/paintingTransaction/{id}", name="deletePaintingTransaction",methods={"DELETE"})
      * @param Request $request
      * @return
      */

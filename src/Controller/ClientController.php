@@ -11,10 +11,8 @@ use App\Validator\ClientValidateInterface;
 
 class ClientController extends BaseController
 {
-
-
     /**
-     * @Route("/createClient", name="createClient")
+     * @Route("/clients", name="createClient",methods={"POST"})
      * @param Request $request
      * @return
      */
@@ -35,7 +33,7 @@ class ClientController extends BaseController
     }
 
     /**
-     * @Route("/updateClient", name="updateClient")
+     * @Route("/client/{id}", name="updateClient",methods={"PUT"})
      * @param Request $request
      */
     public function update(Request $request)
@@ -47,7 +45,7 @@ class ClientController extends BaseController
     }
 
     /**
-     * @Route("/deleteClient", name="deleteClient")
+     *  @Route("/client/{id}", name="deleteClient",methods={"DELETE"})
      * @param Request $request
      */
     public function delete(Request $request)
@@ -60,7 +58,7 @@ class ClientController extends BaseController
 
 
     /**
-     * @Route("/getAllClient",name="getAllClient")
+     * @Route("/clients", name="getAllClient",methods={"GET"})
      * @param Request $request
      * @return
      */

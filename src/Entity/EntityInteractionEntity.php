@@ -39,6 +39,11 @@ class EntityInteractionEntity
      */
     private $client;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +93,18 @@ class EntityInteractionEntity
     public function setClient(?ClientEntity $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(): self
+    {
+        $this->date = new \DateTime('Now');
 
         return $this;
     }

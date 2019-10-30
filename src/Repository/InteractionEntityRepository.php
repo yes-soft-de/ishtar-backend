@@ -38,24 +38,24 @@ class InteractionEntityRepository extends ServiceEntityRepository
 
     public function findOneById($value): ?InteractionEntity
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.id =:val')
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.id =:val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();
     }
     public function getEntityInteraction($entity,$id):?array
     {
-        return $this->createQueryBuilder('q')
+        return $this->createQueryBuilder('ei')
             ->select('c.userName')
-            ->from('App:EntityInteractionEntity','ei')
             ->from('App:ClientEntity','c')
-            ->andWhere('ei.entity='.$entity)
-            ->andWhere('ei.row='.$id)
+            ->andWhere('ei.entity=:entity')
+            ->andWhere('ei.row=:id')
             ->andWhere('ei.interaction=2')
             ->andWhere('c.id=ei.client')
             ->andWhere('c.id=ei.client')
-
+            ->setParameter('entity',$entity)
+            ->setParameter('id',$id)
             ->groupBy('ei.id')
             // ->setMaxResults(100)
             ->getQuery()

@@ -38,38 +38,39 @@ class ClapEntityRepository extends ServiceEntityRepository
 
     public function findOneById($value): ?ClapEntity
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.id =:val')
+        return $this->createQueryBuilder('cp')
+            ->andWhere('cp.id =:val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();
     }
     public function getEntityClap($entity,$id):?array
     {
-        return $this->createQueryBuilder('q')
-            ->select('c.id','c.value','cl.userName','m.path as image')
-            ->from('App:ClapEntity','c')
-            ->from('App:ClientEntity','cl')
+        return $this->createQueryBuilder('cp')
+            ->select('cp.id','cp.value','c.userName','m.path as image')
+            ->from('App:ClientEntity','c')
             ->from('App:EntityMediaEntity','m')
-            ->andWhere('c.client=cl.id')
-            ->andWhere('c.entity='.$entity)
-            ->andWhere('c.row='.$id)
+            ->andWhere('cp.client=c.id')
+            ->andWhere('cp.entity=:entity')
+            ->andWhere('cp.row=:id')
             ->andWhere('m.entity=5')
             ->andWhere('m.media=1')
-            ->andWhere('c.id=m.row')
-            ->groupBy('c.id')
+            ->andWhere('cp.id=m.row')
+            ->setParameter('entity',$entity)
+            ->setParameter('id',$id)
+            ->groupBy('cp.id')
             ->getQuery()
             ->getResult();
     }
     public function getClientClap($client):?array
     {
-        return $this->createQueryBuilder('q')
-            ->select('e.name as entity','c.row as id','c.value','c.id as ClapID')
-            ->from('App:ClapEntity','c')
+        return $this->createQueryBuilder('cp')
+            ->select('e.name as entity','c.row as id','cp.value','cp.id as ClapID')
             ->from('App:Entity','e')
-            ->andWhere('c.entity=e.id')
-            ->andWhere('c.client='.$client)
-            ->groupBy('c.id')
+            ->andWhere('cp.entity=e.id')
+            ->andWhere('cp.client=:client')
+            ->setParameter('client',$client)
+            ->groupBy('cp.id')
             ->getQuery()
             ->getResult();
     }

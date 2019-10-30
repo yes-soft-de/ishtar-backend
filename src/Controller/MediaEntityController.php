@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MediaEntityController extends BaseController
 {
     /**
-     * @Route("/createMedia", name="createMedia")
+     * @Route("/medias", name="createMedia",methods={"POST"})
      * @param Request $request
      * @return
      */
@@ -22,7 +22,7 @@ class MediaEntityController extends BaseController
     }
 
     /**
-     * @Route("/updateMediaEntity", name="updateMediaEntity")
+     *@Route("/media/{id}", name="updateMedia",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -40,7 +40,7 @@ class MediaEntityController extends BaseController
     }
 
     /**
-     * @Route("/deleteMediaEntity", name="deleteMediaEntity")
+     *  @Route("/media/{id}", name="deleteMedia",methods={"DELETE"})
      * @param Request $request
      * @return
      */
@@ -60,7 +60,7 @@ class MediaEntityController extends BaseController
 
 
     /**
-     * @Route("/getAllComment",name="getAllComment")
+     * @Route("/media/getAll", name="getAllMedia",methods={"GET"})
      * @param Request $request
      * @return
      */

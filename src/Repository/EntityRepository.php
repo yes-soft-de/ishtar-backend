@@ -19,32 +19,17 @@ class EntityRepository extends ServiceEntityRepository
         parent::__construct($registry, Entity::class);
     }
 
-    // /**
-    //  * @return Entity[] Returns an array of Entity objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getEntityNames($entity)
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
+        if ($entity=='Client')
+            $name='e.userName';
+        else $name='e.name';
+        $entity = 'App:' . $entity .'Entity';
+        return $this->createQueryBuilder('p')
+            ->select('e.id',$name)
+            ->from($entity,'e')
+            ->groupBy('e.id')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Entity
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

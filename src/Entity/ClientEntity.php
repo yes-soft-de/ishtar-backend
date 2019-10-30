@@ -48,9 +48,9 @@ class ClientEntity implements UserInterface
     private $phone;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="array")
      */
-    private $roll;
+    private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
@@ -154,18 +154,6 @@ class ClientEntity implements UserInterface
         return $this;
     }
 
-    public function getRoll(): ?int
-    {
-        return $this->roll;
-    }
-
-    public function setRoll(?int $roll): self
-    {
-        $this->roll = $roll;
-
-        return $this;
-    }
-
     public function getCreatedBy(): ?string
     {
         return $this->createdBy;
@@ -238,11 +226,21 @@ class ClientEntity implements UserInterface
      * and populated in any number of different ways when the user object
      * is created.
      *
-     * @return (Role|string)[] The user roles
      */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     /**

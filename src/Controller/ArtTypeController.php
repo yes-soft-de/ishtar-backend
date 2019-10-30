@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArtTypeController extends BaseController
 {
     /**
-     * @Route("/createArtType", name="createArtType")
+     * @Route("/arttypes", name="createArtType",methods={"POST"})
      * @param Request $request
      * @return
      */
@@ -31,7 +31,7 @@ class ArtTypeController extends BaseController
     }
 
     /**
-     * @Route("/updateArtType", name="updateArtType")
+     * @Route("/arttype/{id}", name="updateArttype",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -49,7 +49,7 @@ class ArtTypeController extends BaseController
     }
 
     /**
-     * @Route("/deleteArtType", name="deleteArtType")
+     *  @Route("/arttype/{id}", name="deleteArtType",methods={"DELETE"})
      * @param Request $request
      * @return
      */
@@ -69,8 +69,7 @@ class ArtTypeController extends BaseController
 
 
     /**
-     * @Route("/getAllArtType",name="getAllArtType")
-     * @param Request $request
+     * @Route("/arttype/getAll", name="getAllArtTYpe",methods={"GET"})
      * @return
      */
     public function getAll(Request $request)
@@ -82,7 +81,7 @@ class ArtTypeController extends BaseController
     }
 
     /**
-     * @Route("/getArtTypeById", name="getArtTypeById")
+     * @Route("/arttype/{id}", name="getArtTypeById",methods={"GET"})
      * @param Request $request
      * @return
      */

@@ -179,4 +179,9 @@ class FetchDataManger implements FetchDataMangerInterface
         $data = $this->baseFetchDataMapper->getClientComment($request);
         return $data;
     }
+    public function getStatueByID($request)
+    {
+        $data = $this->baseFetchDataMapper->getStatueById($request);
+        return $data;
+    }
 }

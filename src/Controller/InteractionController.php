@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class InteractionController extends BaseController
 {
     /**
-     * @Route("/createNewInteraction", name="createNewInteraction")
+     * @Route("/interactionstype", name="createInteractionType",methods={"POST"})
      * @param Request $request
      * @return
      */
@@ -31,7 +31,7 @@ class InteractionController extends BaseController
     }
 
     /**
-     * @Route("/updateInteraction", name="updateInteraction")
+     * @Route("/interactionType/{id}", name="updateInteractionType",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -49,7 +49,7 @@ class InteractionController extends BaseController
     }
 
     /**
-     * @Route("/deleteAnInteraction", name="deleteAnInteraction")
+     *  @Route("/interactionType/{id}", name="deleteInteractionType",methods={"DELETE"})
      * @param Request $request
      * @return
      */
@@ -68,9 +68,7 @@ class InteractionController extends BaseController
     }
 
 
-    /**
-     * @Route("/getAllInteraction",name="getAllInteraction")
-     *@param Request $request
+    /**@Route("/interactionType/getAll", name="getAllInteractionType",methods={"GET"})
      * @return
      */
     public function getAll(Request $request)
@@ -79,14 +77,5 @@ class InteractionController extends BaseController
         $result = $this->FDService->fetchData($request,"Interaction");
         return $this->response($result,self::FETCH,"Interaction");
     }
-    /**
-     * @Route("/getInteraction",name="getInteraction")
-     *@param Request $request
-     * @return
-     */
-    public function getInteraction(Request $request)
-    {
-        $result = $this->FDService->getInteraction($request);
-        return $this->response($result,self::FETCH,"Interaction");
-    }
+
 }

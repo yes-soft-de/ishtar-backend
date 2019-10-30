@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuctionController extends BaseController
 {
     /**
-     * @Route("/createAuction", name="createAuction")
+     * @Route("/auctions", name="createAuction",methods={"POST"})
      * @param Request $request
      * @return
      */
@@ -32,7 +32,7 @@ class AuctionController extends BaseController
     }
 
     /**
-     * @Route("/updateAuction", name="updateAuction")
+     * @Route("/auction/{id}", name="updateAuction",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -50,7 +50,7 @@ class AuctionController extends BaseController
     }
 
     /**
-     * @Route("/deleteAuction", name="deleteAuction")
+     *  @Route("/auction/{id}", name="deleteAuction",methods={"DELETE"})
      * @param Request $request
      * @return
      */
@@ -70,7 +70,7 @@ class AuctionController extends BaseController
 
 
     /**
-     * @Route("/getAllAuction",name="getAllAuction")
+     * @Route("/auction/getAll", name="getAllAuction",methods={"GET"})
      *@param Request $request
      * @return
      */
