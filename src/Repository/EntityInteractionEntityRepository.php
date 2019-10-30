@@ -49,31 +49,71 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
     */
     public function getInteraction($entity,$row,$interaction)
     {
-        return $this->createQueryBuilder('q')
-            ->select('count (q) as interactions')
-           // ->from('App:EntityInteractionEntity','ei')
+        if($interaction!=3)
+        return $this->createQueryBuilder('ei')
+            ->select('count (ei) as interactions')
             ->from('App:ClientEntity','c')
-            ->andWhere('q.entity='.$entity)
-            ->andWhere('q.row='.$row)
-            ->andWhere('q.interaction='.$interaction)
-            ->andWhere('c.id=q.client')
-           // ->orWhere('q.client IS Null')
-           // ->distinct('q.id')
-          //  ->groupBy('q.')
+            ->andWhere('ei.entity=:entity')
+            ->andWhere('ei.row=:row')
+            ->andWhere('ei.interaction=:interaction')
+            ->andWhere('c.id=ei.client')
+            ->setParameter('entity',$entity)
+            ->setParameter('row',$row)
+            ->setParameter('interaction',$interaction)
             ->getQuery()
             ->getResult();
+        else
+            {
+                return $this->createQueryBuilder('ei')
+                    ->select('count (ei) as interactions')
+                    ->from('App:ClientEntity','c')
+                    ->andWhere('ei.entity=:entity')
+                    ->andWhere('ei.row=:row')
+                    ->andWhere('ei.interaction=:interaction')
+                    ->andWhere('c.id=ei.client OR ei.client IS NULL')
+                    ->setParameter('entity',$entity)
+                    ->setParameter('row',$row)
+                    ->setParameter('interaction',$interaction)
+                    ->getQuery()
+                    ->getResult();
+        }
     }
     public function getClientInteraction($client):?array
     {
-        return $this->createQueryBuilder('q')
+        return $this->createQueryBuilder('ei')
             ->select('e.name as entity', 'ei.row as id','i.name as interaction','ei.id as interactionID')
-            ->from('App:EntityInteractionEntity', 'ei')
             ->from('App:Entity', 'e')
             ->from('App:InteractionEntity', 'i')
-            ->andWhere('ei.client=' . $client)
+            ->andWhere('ei.client=:client')
+            ->andWhere('ei.entity=e.id')
+            ->andWhere('ei.interaction=i.id')
+            ->setParameter('client',$client)
+            ->groupBy('ei.id')
+            ->getQuery()
+            ->getResult();
+    }
+    public function getAll():?array
+    {
+        return $this->createQueryBuilder('ei')
+            ->select('ei.id', 'e.name as entity','ei.row as id','i.name as interaction','c.id as client')
+            ->from('App:Entity', 'e')
+            ->from('App:InteractionEntity', 'i')
+            ->from('App:ClientEntity','c')
+            ->andWhere('ei.client=c.id')
             ->andWhere('ei.entity=e.id')
             ->andWhere('ei.interaction=i.id')
             ->groupBy('ei.id')
+            ->getQuery()
+            ->getResult();
+    }
+    public function getEntityInteraction($entity,$id):?array
+    {
+        return $this->createQueryBuilder('ei')
+            ->select('ei')
+            ->andWhere('ei.entity=:entity')
+            ->andWhere('ei.row=:row')
+            ->setParameter('entity',$entity)
+            ->setParameter('row',$id)
             ->getQuery()
             ->getResult();
     }

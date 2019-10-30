@@ -43,20 +43,20 @@ class FetchDataService implements FetchDataServiceInterface
         return $response;
     }
 
-    public function getArtistPaintings(Request $request)
-    {
-        return $result = $this->manager->getArtistPaintings($request);
-    }
-
-    public function getPaintingById(Request $request)
-    {
-        return $result = $this->manager->getPaintingById($request);
-    }
-
-   public function getPaintingImages(Request $request)
-    {
-        return $result = $this->manager->getPaintingImages($request);
-  }
+//    public function getArtistPaintings(Request $request)
+//    {
+//        return $result = $this->manager->getArtistPaintings($request);
+//    }
+//
+//    public function getPaintingById(Request $request)
+//    {
+//        return $result = $this->manager->getPaintingById($request);
+//    }
+//
+//   public function getPaintingImages(Request $request)
+//    {
+//        return $result = $this->manager->getPaintingImages($request);
+//  }
     public function getArtistById(Request $request)
     {
         return $result = $this->manager->getArtistById($request);
@@ -77,20 +77,20 @@ class FetchDataService implements FetchDataServiceInterface
         return $result = $this->manager->getAuctionById($request);
     }
 
-    public function getArtTypePaintings(Request $request)
-    {
-        return $result = $this->manager->getArtTypePaintings($request);
-    }
+//    public function getArtTypePaintings(Request $request)
+//    {
+//        return $result = $this->manager->getArtTypePaintings($request);
+//    }
 
-    public function getBy(Request $request)
-    {
-        return $result = $this->manager->getBy($request);
-    }
+//    public function getBy(Request $request)
+//    {
+//        return $result = $this->manager->getBy($request);
+//    }
 
-    public function getPaintingShort()
-    {
-        return $result = $this->manager->getPaintingShort();
-    }
+//    public function getPaintingShort()
+//    {
+//        return $result = $this->manager->getPaintingShort();
+//    }
 
     public function getArtTypeList()
     {
@@ -148,4 +148,9 @@ class FetchDataService implements FetchDataServiceInterface
     {
         return $result = $this->manager->getClientComment($request);
     }
+    public function getStatueById( $request)
+    {
+        return $result = $this->manager->getStatueById($request);
+    }
+
 }

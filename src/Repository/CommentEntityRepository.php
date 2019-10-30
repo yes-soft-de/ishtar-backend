@@ -47,46 +47,44 @@ class CommentEntityRepository extends ServiceEntityRepository
     public function findAll():?array
     {
         return $this->createQueryBuilder('q')
-            ->select('c.id','c.body','c.date','c.lastEdit','c.spacial','cl.userName','e.name as entity','c.row')
-            ->from('App:CommentEntity','c')
+            ->select('ct.id','ct.body','ct.date','ct.lastEdit','ct.spacial','cl.userName','e.name as entity','ct.row')
+            ->from('App:CommentEntity','ct')
             ->from('App:ClientEntity','cl')
             ->from('App:Entity','e')
-            ->andWhere('c.client=cl.id')
-            ->andWhere('c.entity=e.id')
+            ->andWhere('ct.client=cl.id')
+            ->andWhere('ct.entity=e.id')
 //            ->andWhere('at.id=ea.artType')
 //            ->andWhere('ea.entity=1')
 //            ->andWhere('p.id=s.row')
 //            ->andWhere('s.entity=1')
-            ->groupBy('c.id')
+            ->groupBy('ct.id')
             ->getQuery()
             ->getResult();
     }
 
     public function getEntityComment($entity,$id):?array
     {
-        return $this->createQueryBuilder('q')
-            ->select('c.id','c.body','c.date','c.spacial','cl.userName')
-            ->from('App:CommentEntity','c')
-            ->from('App:ClientEntity','cl')
+        return $this->createQueryBuilder('cl')
+            ->select('cl.id','cl.body','cl.date','cl.spacial','c.userName')
+            ->from('App:ClientEntity','c')
             ->from('App:EntityMediaEntity','m')
-            ->andWhere('c.client=cl.id')
-            ->andWhere('c.entity='.$entity)
-            ->andWhere('c.row='.$id)
-//            ->andWhere('m.entity=5')
-//            ->andWhere('m.media=1')
-//            ->andWhere('m.row=c.id')
-            ->groupBy('c.id')
+            ->andWhere('cl.client=c.id')
+            ->andWhere('cl.entity=:entity')
+            ->andWhere('cl.row=:id')
+            ->setParameter('entity',$entity)
+            ->setParameter('id',$id)
+            ->groupBy('cl.id')
             ->getQuery()
             ->getResult();
     }
     public function getClientComment($client):?array
     {
-        return $this->createQueryBuilder('q')
-            ->select('e.name as entity','c.row as id','c.body','c.date','c.spacial')
-            ->from('App:CommentEntity','c')
+        return $this->createQueryBuilder('cl')
+            ->select('e.name as entity','cl.row as id','cl.body','cl.date','cl.spacial')
             ->from('App:Entity','e')
-            ->andWhere('c.client='.$client)
-            ->groupBy('c.id')
+            ->andWhere('cl.client=:client')
+            ->setParameter('client',$client)
+            ->groupBy('cl.id')
             ->getQuery()
             ->getResult();
     }

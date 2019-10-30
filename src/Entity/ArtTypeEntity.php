@@ -23,7 +23,7 @@ class ArtTypeEntity
 
     /**
      * @ORM\Column(type="string", length=45)
-     * @Groups({"default"})
+     *
      */
     private $name;
 

@@ -17,6 +17,7 @@ use App\Entity\AuctionPaintingEntity;
 use App\Entity\ArtistArtTypeEntity;
 use App\Entity\PaintingTransactionEntity;
 use App\Entity\ImageEntity;
+use App\Entity\StatueEntity;
 use App\Entity\VideoEntity;
 use App\Entity\ClapEntity;
 use App\Entity\CommentEntity;
@@ -84,6 +85,9 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
             case "Comment":
                 $data = $this->entityManager->getRepository(CommentEntity::class)->findAll();
                 break;
+            case "Statue":
+                $data = $this->entityManager->getRepository(StatueEntity::class)->findAll();
+                break;
         }
         return $data;
     }
@@ -145,7 +149,7 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
     public function getEntityNames($request)
     {
         $data = json_decode($request->getContent(), true);
-        return $data = $this->entityManager->getRepository(ArtTypeEntity::class)->getEntityNames($data['entity']);
+        return $data = $this->entityManager->getRepository(Entity::class)->getEntityNames($data['entity']);
     }
     public function getEntityInteraction($request)
     {
@@ -206,5 +210,10 @@ class BaseFetchDataMapper implements BaseFetchDataMapperInterface
         $data = json_decode($request->getContent(), true);
         return $data = $this->entityManager->getRepository(CommentEntity::class)->getClientComment
         ($data['client']);
+    }
+    public function getStatueById($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data = $this->entityManager->getRepository(StatueEntity::class)->find($data['id']);
     }
 }

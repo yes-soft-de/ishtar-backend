@@ -13,7 +13,7 @@ use App\Entity\PaintingEntity;
 use DateTime;
 use Exception;
 
-class MediaEntityMapper{
+class EntityMediaMapper{
     private $en;
     public function MediaEntityData($data, EntityMediaEntity $mediaEntity,$entityManger,$entityId)
     {

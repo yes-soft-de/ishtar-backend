@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class BaseController extends AbstractController
@@ -80,6 +83,9 @@ class BaseController extends AbstractController
 
     public function response($result, $status,$entity) :jsonResponse
     {
+        $encoders = [ new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+        $this->serializer=new Serializer($normalizers, $encoders);
                 $result = $this->serializer->serialize($result, "json", [
                     'enable_max_depth' => true]);
         //}

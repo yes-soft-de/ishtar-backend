@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\CommentService;
 use App\Validator\CommentValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,8 +10,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CommentController extends BaseController
 {
+    private $commentService;
+
     /**
-     * @Route("/createComment", name="createComment")
+     * CommentController constructor.
+     * @param $commentService
+     */
+    public function __construct(CommentService $commentService)
+    {
+        $this->commentService = $commentService;
+    }
+
+    /**
+     * @Route("/comments", name="createComment",methods={"POST"})
      * @param Request $request
      * @return
      */
@@ -26,12 +38,12 @@ class CommentController extends BaseController
         }
         //
 
-        $result = $this->CUDService->create($request, "Comment");
+        $result = $this->commentService->create($request);
         return $this->response($result, self::CREATE, "Comment");
     }
 
     /**
-     * @Route("/updateComment", name="updateComment")
+     * @Route("/comment/{id}", name="updateComment",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -44,12 +56,12 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "Comment");
+        $result = $this->commentService->update($request, "Comment");
         return $this->response($result, self::UPDATE, "Comment");
     }
 
     /**
-     * @Route("/deleteComment", name="deleteComment")
+     *  @Route("/comment/{id}", name="deleteComment",methods={"DELETE"})
      * @param Request $request
      * @return
      */
@@ -62,23 +74,11 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->delete($request, "Comment");
+        $result = $this->commentService->delete($request, "Comment");
         return $this->response($result, self::DELETE,"Comment");
 
     }
 
-
-    /**
-     * @Route("/getAllComment",name="getAllComment")
-     * @param Request $request
-     * @return
-     */
-    public function getAll(Request $request)
-    {
-
-        $result = $this->FDService->fetchData($request,"Comment");
-        return $this->response($result,self::FETCH,"Comment");
-    }
 
     /**
      * @Route("/getEntityComment",name="getEntityComment")
@@ -88,7 +88,7 @@ class CommentController extends BaseController
     public function getEntityComment(Request $request)
     {
 
-        $result = $this->FDService->getEntityComment($request);
+        $result = $this->commentService->getEntityComment($request);
         return $this->response($result,self::FETCH,"Comment");
     }
 
@@ -100,7 +100,16 @@ class CommentController extends BaseController
     public function getClientComment(Request $request)
     {
 
-        $result = $this->FDService->getClientComment($request);
+        $result = $this->commentService->getClientComment($request);
+        return $this->response($result,self::FETCH,"Comment");
+    }
+    /**
+     * @Route("/comments",name="getClientComment",methods={"GET"})
+     * @return
+     */
+    public function getAll()
+    {
+        $result = $this->commentService->getAll();
         return $this->response($result,self::FETCH,"Comment");
     }
 }

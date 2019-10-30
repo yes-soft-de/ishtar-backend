@@ -29,5 +29,6 @@ interface FetchDataMangerInterface
     public function getClientInteraction($request);
     public function getClientClap($request);
     public function getClientComment($request);
+    public function getStatueById(Request $request);
 
 }

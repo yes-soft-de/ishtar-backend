@@ -29,10 +29,6 @@ class ArtistValidate implements ArtistValidateInterface
 
         $constraints = new Assert\Collection([
 
-            'id' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
             'name' => [
                 new Required(),
                 new Assert\NotBlank(),
@@ -121,11 +117,7 @@ class ArtistValidate implements ArtistValidateInterface
             return $result;
         }
 
-        if ($type != "create") {
-            if (!$this->entityManager->getRepository(ArtistEntity::class)->find($input["id"])) {
-                return "No Artist with this id!";
-            }
-        }
+
         return null;
     }
 }

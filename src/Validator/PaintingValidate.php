@@ -28,10 +28,6 @@ class PaintingValidate implements PaintingValidateInterface
         $input = json_decode($request->getContent(), true);
         $constraints = new Assert\Collection([
 
-            'id' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
             'name' => [
                 new Required(),
                 new Assert\NotBlank(),
@@ -124,12 +120,7 @@ class PaintingValidate implements PaintingValidateInterface
             $result = json_encode($errorMessages);
 
             return $result;
-        }
 
-        if ($type != "create") {
-            if (!$this->entityManager->getRepository(PaintingEntity::class)->find($input["id"])) {
-                return "No Painting with this id!";
-            }
         }
         return null;
     }

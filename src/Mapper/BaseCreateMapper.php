@@ -19,6 +19,7 @@ use App\Entity\PaintingTransactionEntity;
 use App\Entity\ClapEntity;
 use App\Entity\CommentEntity;
 use App\Entity\PriceEntity;
+use App\Entity\StatueEntity;
 use App\Entity\StoryEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,13 +104,16 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 $entity=new EntityArtTypeEntity();
                 return $mapper->EntityArtTypeData($data,$entity,$this->entityManager);
 
-            case "Price":
+            case "PaintingPrice":
                 $mapper=new PriceMapper();
                 $entity=new PriceEntity();
-                return $mapper->PriceData($data,$entity,$this->entityManager);
-
+                return $mapper->PriceData($data,$entity,$this->entityManager,1);
+            case "StatuePrice":
+                $mapper=new PriceMapper();
+                $entity=new PriceEntity();
+                return $mapper->PriceData($data,$entity,$this->entityManager,6);
             case "MediaEntity":
-                $mapper=new MediaEntityMapper();
+                $mapper=new EntityMediaMapper();
                 $entity=new EntityMediaEntity();
                 return $mapper->MediaEntityData($data,$entity,$this->entityManager,0);
 
@@ -124,12 +128,12 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 return $mapper->StoryData($data,$entity,$this->entityManager);
 
             case "MediaArtist":
-                $mapper=new MediaEntityMapper();
+                $mapper=new EntityMediaMapper();
                 $entity=new EntityMediaEntity();
                 return $mapper->MediaEntityData($data,$entity,$this->entityManager,2);
 
             case "MediaClient":
-                $mapper=new MediaEntityMapper();
+                $mapper=new EntityMediaMapper();
                 $entity=new EntityMediaEntity();
                 return $mapper->MediaEntityData($data,$entity,$this->entityManager,5);
 
@@ -142,6 +146,11 @@ class BaseCreateMapper implements BaseCreateMapperInterface
                 $mapper=new FavoriteMapper();
                 $entity=new FavoriteEntity();
                 return $mapper->favoriteData($data,$entity,$this->entityManager);
+
+            case "Statue":
+                $mapper=new StatueMapper();
+                $entity=new StatueEntity();
+                return $mapper->statueData($data,$entity,$this->entityManager);
         }
     }
 }

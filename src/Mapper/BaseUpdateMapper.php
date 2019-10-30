@@ -16,6 +16,7 @@ use App\Entity\PaintingTransactionEntity;
 use App\Entity\ClapEntity;
 use App\Entity\CommentEntity;
 use App\Entity\PriceEntity;
+use App\Entity\StatueEntity;
 use App\Entity\StoryEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -120,6 +121,12 @@ class BaseUpdateMapper implements BaseUpdateMapperInterface
                 $mapper = new PriceMapper();
                 return $mapper->PriceData($data,
                     $this->entityManager->getRepository(PriceEntity::class)->find($data["id"]),
+                    $this->entityManager);
+                break;
+            case "Statue":
+                $mapper = new StatueMapper();
+                return $mapper->statueData($data,
+                    $this->entityManager->getRepository(StatueEntity::class)->find($data["id"]),
                     $this->entityManager);
                 break;
 
