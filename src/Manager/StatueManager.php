@@ -54,14 +54,14 @@ class StatueManager
     }
     public function delete(Request $request)
     {
-        $statue = json_decode($request->getContent(),true);
-        $statueEntity=$this->entityManager->getRepository(StatueEntity::class)->getStatue($statue['id']);
+        $statueEntity=$this->entityManager->getRepository(StatueEntity::class)
+            ->getStatue($request->get('id'));
         if (!$statueEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("statue");
         }
         else {
-
+        $statueEntity->setActive(0);
             $this->entityManager->flush();
             return $statueEntity;
         }

@@ -42,7 +42,9 @@ class StatueService implements StatueServiceInterface
     }
     public function delete($request)
     {
-        return$result=$this->StatueManager->delete($request);
+        $result=$this->StatueManager->delete($request);
+        $this->priceManager->delete($request,6);
+        return $result;
     }
 
     public function getStatueById($request)

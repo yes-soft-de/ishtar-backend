@@ -56,10 +56,10 @@ class PaintingController extends BaseController
 
     /**
      * @Route("/painting/{id}", name="deletePainting",methods={"DELETE"})
-     * @param $id
+     * @param Request $request
      * @return
      */
-    public function delete($id, PaintingValidateInterface $paintingValidate)
+    public function delete(Request $request ,PaintingValidateInterface $paintingValidate)
    {
 //        $validateResult = $paintingValidate->paintingValidator($request, 'delete');
 //        if (!empty($validateResult))
@@ -68,9 +68,7 @@ class PaintingController extends BaseController
 //            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
 //            return $resultResponse;
 //        }
-       $result=$this->paintingService->delete($id);
-    //    $result = $this->CUDService->delete($request, "Painting");
-
+       $result=$this->paintingService->delete($request);
         return $this->response($result, self::DELETE,"Painting");
 
     }

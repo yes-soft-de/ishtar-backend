@@ -37,8 +37,6 @@ class ArtistController extends BaseController
         //
 
         $result = $this->artistService->create($request);
-//        $this->CUDService->create($request,"ArtistArtType");
-//        $this->CUDService->create($request,"MediaArtist");
         return $this->response($result, self::CREATE,"Artist");
     }
 
@@ -98,7 +96,7 @@ class ArtistController extends BaseController
      */
     public function getArtistById(Request $request)
     {
-        $result = $this->artistService->getArtistById($request->get('id'));
+        $result = $this->artistService->getArtistById($request);
         return $this->response($result,self::FETCH,"Artist");
     }
 

@@ -56,7 +56,7 @@ class ClapController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->clapService->update($request, "Clap");
+        $result = $this->clapService->update($request);
         return $this->response($result, self::UPDATE, "Clap");
     }
 
@@ -74,33 +74,41 @@ class ClapController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->clapService->delete($request, "Clap");
+        $result = $this->clapService->delete($request);
         return $this->response($result, self::DELETE,"Clap");
 
     }
 
 
     /**
-     * @Route("/clap/entity",name="getEntityClap")
+     * @Route("/clapsentity/{entity}/{row}",name="getEntityClap",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getEntityclap(Request $request)
     {
-
         $result = $this->clapService->getEntityClap($request);
         return $this->response($result,self::FETCH,"Clap");
     }
 
     /**
-     * @Route("/clap/client",name="getClientClap")
+     * @Route("/clapsclient/{client}", name="getClientClaps",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getClientClap(Request $request)
     {
-
         $result = $this->clapService->getClientClap($request);
+        return $this->response($result,self::FETCH,"Clap");
+    }
+    /**
+     * @Route("/claps",name="getAllClap",methods={"GET"})
+     * @param Request $request
+     * @return
+     */
+    public function getAll(Request $request)
+    {
+        $result = $this->clapService->getAll($request);
         return $this->response($result,self::FETCH,"Clap");
     }
 }

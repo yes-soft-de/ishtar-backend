@@ -50,16 +50,11 @@ class EntityArtTypeManager
             return $entityArtTypeEntity;
         }
     }
-//    public function getAll()
-//    {
-//        $entityArtTypesLists[]=new EntityArtTypesListResponse();
-//        $data=$this->entityManager->getRepository(EntityArtTypeEntity::class)->findAll();
-//        $i=0;
-//        foreach ($entityArtTypesLists as &$list) {
-//            $list = $this->autoMapper->map((object)$data[$i],$list);
-//            $i++;
-//        }
-//        return $entityArtTypesLists;
-//    }
-
+    public function delete(Request $request,$entity)
+    {
+        $arttype=$this->entityManager->getRepository(EntityArtTypeEntity::class)
+            ->findEntity($request->get('id'),$entity);
+        $this->entityManager->remove($arttype);
+        $this->entityManager->flush();
+    }
 }

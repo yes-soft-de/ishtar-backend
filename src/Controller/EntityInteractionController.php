@@ -79,7 +79,6 @@ class EntityInteractionController extends BaseController
 
     }
 
-
     /**
      * @Route("/interactions", name="getAllInteraction",methods={"GET"})
      *@param Request $request
@@ -92,7 +91,7 @@ class EntityInteractionController extends BaseController
         return $this->response($result,self::FETCH,"Interaction");
     }
     /**
-     * @Route("/interaction/entity",name="getInteraction",methods={"GET"})
+     *@Route("/interactionsentity/{entity}/{row}/{interaction}",name="getEntityInteraction",methods={"GET"})
      * @param Request $request
      * @return
      */
@@ -100,16 +99,16 @@ class EntityInteractionController extends BaseController
     {
 
         $result = $this->interactionService->getEntityInteraction($request);
-        return $this->response($result,self::FETCH,"Comment");
+        return $this->response($result,self::FETCH,"Interaction");
     }
     /**
-     * @Route("/getInteraction",name="getInteraction")
+     * @Route("/interactionsclient/{client}", name="getClientInteraction",methods={"GET"})
      *@param Request $request
      * @return
      */
-    public function getInteraction(Request $request)
+    public function getClientInteractions(Request $request)
     {
-        $result = $this->interactionService->getInteraction($request);
+        $result = $this->interactionService->getClientInteraction($request);
         return $this->response($result,self::FETCH,"Interaction");
     }
 }

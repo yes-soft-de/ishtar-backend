@@ -40,30 +40,23 @@ class EntityMediaManger
             return $entityMediaEntity;
         }
     }
-//    public function update(UpdateEntityMediaRequest $entityMedia)
-//    {
-//        $entityMediaEntity=$this->entityManager->getRepository(EntityMediaEntity::class)->find($entityMedia->getId());
-//
-//        if (!$entityMediaEntity) {
-//            $exception=new EntityException();
-//            $exception->entityNotFound("entityMedia");
-//        }
-//        else {
-//            $data = $this->autoMapper->Map($entityMedia, $entityMediaEntity);
-//            $this->entityManager->flush();
-//            return $entityMediaEntity;
-//        }
-//    }
-//    public function getAll()
-//    {
-//        $entityMediasLists[]=new EntityMediasListResponse();
-//        $data=$this->entityManager->getRepository(EntityMediaEntity::class)->findAll();
-//        $i=0;
-//        foreach ($entityMediasLists as &$list) {
-//            $list = $this->autoMapper->map((object)$data[$i],$list);
-//            $i++;
-//        }
-//        return $entityMediasLists;
-//    }
+    public function delete(Request $request,$entity)
+    {
+        $media=$this->entityManager->getRepository(EntityMediaEntity::class)
+            ->findImages($request->get('id'),$entity);
+        $this->entityManager->remove($media);
+        $this->entityManager->flush();
+    }
+    public function getAll()
+    {
+        $entityMediasLists[]=new EntityMediasListResponse();
+        $data=$this->entityManager->getRepository(EntityMediaEntity::class)->findAll();
+        $i=0;
+        foreach ($entityMediasLists as &$list) {
+            $list = $this->autoMapper->map((object)$data[$i],$list);
+            $i++;
+        }
+        return $entityMediasLists;
+    }
 
 }

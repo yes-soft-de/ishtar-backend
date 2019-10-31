@@ -94,17 +94,29 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
     }
     public function getAll():?array
     {
-        return $this->createQueryBuilder('ei')
-            ->select('ei.id', 'e.name as entity','ei.row as id','i.name as interaction','c.id as client')
+        $q1= $this->createQueryBuilder('ei')
+            ->select('ei.id', 'e.name as entity','ei.row ','i.name as interaction','c.id as client')
             ->from('App:Entity', 'e')
             ->from('App:InteractionEntity', 'i')
             ->from('App:ClientEntity','c')
             ->andWhere('ei.client=c.id')
+            ->andWhere('ei.interaction != 3')
             ->andWhere('ei.entity=e.id')
             ->andWhere('ei.interaction=i.id')
             ->groupBy('ei.id')
             ->getQuery()
             ->getResult();
+        $q2=$this->createQueryBuilder('ei')
+            ->select('ei.id', 'e.name as entity','ei.row ','i.name as interaction')
+            ->from('App:Entity', 'e')
+            ->from('App:InteractionEntity', 'i')
+            ->andWhere('ei.interaction = 3')
+            ->andWhere('ei.entity=e.id')
+            ->andWhere('ei.interaction=i.id')
+            ->groupBy('ei.id')
+            ->getQuery()
+            ->getResult();
+        return array_merge($q1,$q2);
     }
     public function getEntityInteraction($entity,$id):?array
     {

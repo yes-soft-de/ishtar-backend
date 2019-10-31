@@ -34,7 +34,8 @@ class CommentService implements CommentServiceInterface
     }
     public function delete($request)
     {
-        // TODO: Implement delete() method.
+        $commentResult =$this->commentManager->delete($request);
+        return $commentResult;
     }
 
 

@@ -54,8 +54,9 @@ class PaintingManager
             return $paintingEntity;
         }
     }
-    public function delete($id)
+    public function delete(Request $request)
     {
+        $id=$request->get('id');
         $paintingEntity=$this->entityManager->getRepository(PaintingEntity::class)->getPainting($id);
         if (!$paintingEntity) {
             $exception=new EntityException();

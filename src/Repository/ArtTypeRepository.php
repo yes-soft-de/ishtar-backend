@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ArtTypeEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -60,5 +61,16 @@ class ArtTypeRepository extends ServiceEntityRepository
            ->getQuery()
            ->getResult();
    }
-
+    public function getArtType($id):ArtTypeEntity
+    {
+        try {
+            return $this->createQueryBuilder('at')
+                ->andWhere('at.id=:id')
+                ->groupBy('at.id')
+                ->getQuery()
+                ->setParameter('id', $id)
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
+    }
 }

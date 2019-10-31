@@ -51,20 +51,13 @@ class PriceManager
             return $priceEntity;
         }
     }
-//    public function update(UpdatePriceRequest $price)
-//    {
-//        $priceEntity=$this->entityManager->getRepository(PriceEntity::class)->find($price->getId());
-//
-//        if (!$priceEntity) {
-//            $exception=new EntityException();
-//            $exception->entityNotFound("price");
-//        }
-//        else {
-//            $data = $this->autoMapper->Map($price, $priceEntity);
-//            $this->entityManager->flush();
-//            return $priceEntity;
-//        }
-//    }
+    public function delete(Request $request,$entity)
+    {
+        $price=$this->entityManager->getRepository(PriceEntity::class)
+            ->findEntity($request->get('id'),$entity);
+        $this->entityManager->remove($price);
+        $this->entityManager->flush();
+    }
 //    public function getAll()
 //    {
 //        $pricesLists[]=new PricesListResponse();

@@ -30,15 +30,15 @@ class ArtTypeValidate implements ArtTypeValidateInterface
 
         $constraints = new Assert\Collection([
 
-            'id' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
             'name' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
             'history' => [
+                new Required(),
+                new Assert\NotBlank(),
+            ],
+            'image'=>[
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -72,11 +72,6 @@ class ArtTypeValidate implements ArtTypeValidateInterface
             return $result;
         }
 
-        if ($type != "create") {
-            if (!$this->entityManager->getRepository(ArtTypeEntity::class)->find($input["id"])) {
-                return "No ArtType with this id!";
-            }
-        }
         return null;
     }
 }

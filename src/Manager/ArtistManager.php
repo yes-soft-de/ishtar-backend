@@ -4,7 +4,7 @@
 namespace App\Manager;
 
 
-use App\Controller\Artist;
+
 use App\Entity\ArtistEntity;
 use App\Mapper\ArtistMapper;
 use App\Mapper\AutoMapper;
@@ -46,6 +46,13 @@ class ArtistManager
             return $artistEntity;
         }
     }
+    public function delete(Request $request)
+    {
+        $artist=$this->entityManager->getRepository(ArtistEntity::class)->getArtist($request->get('id'));
+        $this->entityManager->remove($artist);
+        $this->entityManager->flush();
+        return $artist;
+    }
     public function getAll()
     {
         $data=$this->entityManager->getRepository(ArtistEntity::class)->getAll();
@@ -53,9 +60,9 @@ class ArtistManager
         return $data;
     }
 
-    public function getArtistById($request)
+    public function getArtistById(Request $request)
     {
-        return $result = $this->entityManager->getRepository(ArtistEntity::class)->findById($request);
+        return $result = $this->entityManager->getRepository(ArtistEntity::class)->findById($request->get('id'));
     }
     public function search(Request $request)
     {

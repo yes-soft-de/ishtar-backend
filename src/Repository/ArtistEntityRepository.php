@@ -40,7 +40,7 @@ au:auctionEntity
     {
         $result=$this->createQueryBuilder('a')
             ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story',
-                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','m.path')
+                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','m.path','a.details')
             ->from('App:EntityMediaEntity','m')
             ->andWhere('a.id = :val')
             ->andWhere('a.id=m.row')

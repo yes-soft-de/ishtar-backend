@@ -56,7 +56,7 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->commentService->update($request, "Comment");
+        $result = $this->commentService->update($request);
         return $this->response($result, self::UPDATE, "Comment");
     }
 
@@ -74,14 +74,14 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->commentService->delete($request, "Comment");
+        $result = $this->commentService->delete($request);
         return $this->response($result, self::DELETE,"Comment");
 
     }
 
 
     /**
-     * @Route("/getEntityComment",name="getEntityComment")
+     * @Route("/commentsentity/{entity}/{row}",name="getEntityComment")
      * @param Request $request
      * @return
      */
@@ -93,18 +93,17 @@ class CommentController extends BaseController
     }
 
     /**
-     * @Route("/getClientComment",name="getClientComment")
+     * @Route("/commentsclient/{client}", name="getClientComments",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getClientComment(Request $request)
     {
-
         $result = $this->commentService->getClientComment($request);
         return $this->response($result,self::FETCH,"Comment");
     }
     /**
-     * @Route("/comments",name="getClientComment",methods={"GET"})
+     * @Route("/comments",name="getAllComment",methods={"GET"})
      * @return
      */
     public function getAll()

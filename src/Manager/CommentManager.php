@@ -31,7 +31,7 @@ class CommentManager
     public function update(Request $request)
     {
         $comment = json_decode($request->getContent(),true);
-        $commentEntity=$this->entityManager->getRepository(CommentEntity::class)->find($comment['id']);
+        $commentEntity=$this->entityManager->getRepository(CommentEntity::class)->find($request->get('id'));
         if (!$commentEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("comment");
@@ -43,20 +43,32 @@ class CommentManager
             return $commentEntity;
         }
     }
-    public function getEntityComment($request)
+    public function getEntityComment(Request $request)
     {
-        $comment = json_decode($request->getContent(),true);
-        return $commentResult =$this->entityManager->getRepository(CommentEntity::class)->getEntityComment($comment['entity']
-        ,$comment['id']);
+        return $commentResult =$this->entityManager->getRepository(CommentEntity::class)
+            ->getEntityComment($request->get('entity'),($request->get('row')));
     }
 
-    public function getClientComment($request)
+    public function getClientComment(Request $request)
     {
-        $comment = json_decode($request->getContent(),true);
-        return $commentResult =$this->entityManager->getRepository(CommentEntity::class)->getClientComment($comment['client']);
+        //$comment = json_decode($request->getContent(),true);
+        return $commentResult =$this->entityManager->getRepository(CommentEntity::class)->getClientComment($request->get('client'));
     }
     public function getAll()
     {
-        return $commentResult =$this->entityManager->getRepository(CommentEntity::class)->findAll();
+        return $commentResult =$this->entityManager->getRepository(CommentEntity::class)->getAll();
+    }
+    public function delete(Request $request)
+    {
+        $commentEntity=$this->entityManager->getRepository(CommentEntity::class)->find($request->get('id'));
+        if (!$commentEntity) {
+            $exception=new EntityException();
+            $exception->entityNotFound("comment");
+        }
+        else {
+           $this->entityManager->remove($commentEntity);
+            $this->entityManager->flush();
+            return $commentEntity;
+        }
     }
 }

@@ -34,8 +34,7 @@ class CommentMapper
         $commentEntity->setEntity($entity)
             ->setRow($row)
             ->setBody($body)
-            //->setDate($date)
-           // ->setLastEdit($lastEdit)
+            ->setDate()
             ->setClient($client)
             ->setSpacial($spacial);
 

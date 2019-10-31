@@ -54,16 +54,12 @@ class StoryManager
         }
     }
 
-//    public function getAll()
-//    {
-//        $storysLists[]=new StorysListResponse();
-//        $data=$this->entityManager->getRepository(StoryEntity::class)->findAll();
-//        $i=0;
-//        foreach ($storysLists as &$list) {
-//            $list = $this->autoMapper->map((object)$data[$i],$list);
-//            $i++;
-//        }
-//        return $storysLists;
-//    }
+    public function delete(Request $request,$entity)
+    {
+        $story=$this->entityManager->getRepository(StoryEntity::class)
+            ->findEntity($request->get('id'),$entity);
+        $this->entityManager->remove($story);
+        $this->entityManager->flush();
+    }
 
 }

@@ -31,10 +31,6 @@ class CommentValidate implements CommentValidateInterface
 
         $constraints = new Assert\Collection([
 
-            'id' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
             'entity' => [
                 new Required(),
                 new Assert\NotBlank(),
@@ -89,11 +85,6 @@ class CommentValidate implements CommentValidateInterface
             return $result;
         }
 
-        if ($type != "create") {
-            if (!$this->entityManager->getRepository(CommentEntity::class)->find($input["id"])) {
-                return "No Comment with this id!";
-            }
-        }
         return null;
     }
 }

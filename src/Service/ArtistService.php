@@ -50,7 +50,10 @@ class ArtistService implements ArtistServiceInterface
     }
     public function delete($request)
     {
-        // TODO: Implement delete() method.
+        $result=$this->artistManager->delete($request);
+        $this->mediaManager->delete($request,2);
+        $this->artTypeManager->delete($request,2);
+        return $result;
     }
 
     public function getArtistById($request)

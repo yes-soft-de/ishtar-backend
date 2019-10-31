@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method CommentEntity|null find($id, $lockMode = null, $lockVersion = null)
  * @method CommentEntity|null findOneBy(array $criteria, array $orderBy = null)
- //* @method CommentEntity[]    findAll()
+* @method CommentEntity[]    findAll()
  * @method CommentEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CommentEntityRepository extends ServiceEntityRepository
@@ -44,7 +44,7 @@ class CommentEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-    public function findAll():?array
+    public function getAll():?array
     {
         return $this->createQueryBuilder('q')
             ->select('ct.id','ct.body','ct.date','ct.lastEdit','ct.spacial','cl.userName','e.name as entity','ct.row')
@@ -53,10 +53,6 @@ class CommentEntityRepository extends ServiceEntityRepository
             ->from('App:Entity','e')
             ->andWhere('ct.client=cl.id')
             ->andWhere('ct.entity=e.id')
-//            ->andWhere('at.id=ea.artType')
-//            ->andWhere('ea.entity=1')
-//            ->andWhere('p.id=s.row')
-//            ->andWhere('s.entity=1')
             ->groupBy('ct.id')
             ->getQuery()
             ->getResult();
@@ -79,12 +75,12 @@ class CommentEntityRepository extends ServiceEntityRepository
     }
     public function getClientComment($client):?array
     {
-        return $this->createQueryBuilder('cl')
-            ->select('e.name as entity','cl.row as id','cl.body','cl.date','cl.spacial')
+        return $this->createQueryBuilder('ct')
+            ->select('ct.id','e.name as entity','ct.row as row','ct.body','ct.date','ct.spacial')
             ->from('App:Entity','e')
-            ->andWhere('cl.client=:client')
+            ->andWhere('ct.client=:client')
             ->setParameter('client',$client)
-            ->groupBy('cl.id')
+            ->groupBy('ct.id')
             ->getQuery()
             ->getResult();
     }

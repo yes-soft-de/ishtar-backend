@@ -31,7 +31,7 @@ class ClapManager
     public function update(Request $request)
     {
         $clap = json_decode($request->getContent(),true);
-        $clapEntity=$this->entityManager->getRepository(ClapEntity::class)->find($clap['id']);
+        $clapEntity=$this->entityManager->getRepository(ClapEntity::class)->find($request->get('id'));
         if (!$clapEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("clap");
@@ -43,16 +43,27 @@ class ClapManager
             return $clapEntity;
         }
     }
-    public function getEntityclap($request)
+    public function getEntityclap(Request $request)
     {
-        $clap = json_decode($request->getContent(),true);
-        return $clapResult =$this->entityManager->getRepository(ClapEntity::class)->getEntityClap($clap['entity']
-            ,$clap['id']);
+        return $clapResult =$this->entityManager->getRepository(ClapEntity::class)
+            ->getEntityClap($request->get('entity'),$request->get('row'));
     }
 
-    public function getClientClap($request)
+    public function getClientClap(Request $request)
     {
-        $clap = json_decode($request->getContent(),true);
-        return $clapResult =$this->entityManager->getRepository(ClapEntity::class)->getClientClap($clap['client']);
+        return $clapResult =$this->entityManager->getRepository(ClapEntity::class)
+            ->getClientClap($request->get('client'));
+    }
+    public function getAll()
+    {
+        return $clapResult =$this->entityManager->getRepository(ClapEntity::class)
+            ->findAll();
+    }
+    public function delete(Request $request)
+    {
+        $clapEntity=$this->entityManager->getRepository(ClapEntity::class)->find($request->get('id'));
+        $this->entityManager->remove($clapEntity);
+        $this->entityManager->flush();
+        return $clapEntity;
     }
 }

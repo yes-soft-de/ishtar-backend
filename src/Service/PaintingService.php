@@ -51,7 +51,10 @@ class PaintingService implements PaintingServiceInterface
     }
     public function delete($id)
     {
-        return$result=$this->PaintingManager->delete($id);
+         $result=$this->PaintingManager->delete($id);
+         $this->artTypeManager->delete($id,1);
+         $this->priceManager->delete($id,1);
+         $this->storyManager->delete($id,1);
     }
     public function getArtistPaintings(Request $request)
     {

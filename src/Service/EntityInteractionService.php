@@ -34,9 +34,9 @@ class EntityInteractionService implements EntityInteractionServiceInterface
     }
     public function delete($request)
     {
-        // TODO: Implement delete() method.
+        $entityInteractionResult =$this->entityInteractionManager->delete($request);
+        return $entityInteractionResult;
     }
-
 
     public function getEntityInteraction($request)
     {

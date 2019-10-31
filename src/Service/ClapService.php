@@ -34,7 +34,7 @@ class ClapService implements ClapServiceInterface
     }
     public function delete($request)
     {
-        // TODO: Implement delete() method.
+        return $clapResult =$this->clapManager->delete($request);
     }
 
 
@@ -46,5 +46,9 @@ class ClapService implements ClapServiceInterface
     public function getClientClap($request)
     {
         return $clapResult =$this->clapManager->getClientClap($request);
+    }
+    public function getAll()
+    {
+        return $clapResult =$this->clapManager->getAll();
     }
 }

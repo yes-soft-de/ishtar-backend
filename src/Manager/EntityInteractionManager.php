@@ -31,7 +31,7 @@ class EntityInteractionManager
     public function update(Request $request)
     {
         $entityInteraction = json_decode($request->getContent(),true);
-        $entityInteractionEntity=$this->entityManager->getRepository(EntityInteractionEntity::class)->find($entityInteraction['id']);
+        $entityInteractionEntity=$this->entityManager->getRepository(EntityInteractionEntity::class)->find($request->get('id'));
         if (!$entityInteractionEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("entityInteraction");
@@ -43,23 +43,23 @@ class EntityInteractionManager
             return $entityInteractionEntity;
         }
     }
-    public function delete($id)
+    public function delete(Request $request)
     {
-        $interaction=$this->entityManager->getRepository(EntityInteractionEntity::class)->find($id);
+        $interaction=$this->entityManager->getRepository(EntityInteractionEntity::class)->find($request->get('id'));
         $this->entityManager->remove($interaction);
         $this->entityManager->flush();
+        return $interaction;
     }
-    public function getEntityInteraction($request)
+    public function getEntityInteraction(Request $request)
     {
-        $entityInteraction = json_decode($request->getContent(),true);
-        return $entityInteractionResult =$this->entityManager->getRepository(EntityInteractionEntity::class)->getInteraction($entityInteraction['entity']
-            ,$entityInteraction['id'],$entityInteraction['interaction']);
+        return $entityInteractionResult =$this->entityManager->getRepository(EntityInteractionEntity::class)
+            ->getInteraction($request->get('entity'),$request->get('row'),$request->get('interaction'));
     }
 
-    public function getClientInteraction($request)
+    public function getClientInteraction(Request $request)
     {
-        $entityInteraction = json_decode($request->getContent(),true);
-        return $entityInteractionResult =$this->entityManager->getRepository(EntityInteractionEntity::class)->getClientInteraction($entityInteraction['client']);
+        return $entityInteractionResult =$this->entityManager->getRepository(EntityInteractionEntity::class)
+            ->getClientInteraction($request->get('client'));
     }
     public function getAll()
     {

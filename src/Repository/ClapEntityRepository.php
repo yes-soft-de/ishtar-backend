@@ -19,23 +19,6 @@ class ClapEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, ClapEntity::class);
     }
 
-    // /**
-    //  * @return ClapEntity[] Returns an array of ClapEntity objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
     public function findOneById($value): ?ClapEntity
     {
         return $this->createQueryBuilder('cp')
@@ -47,15 +30,11 @@ class ClapEntityRepository extends ServiceEntityRepository
     public function getEntityClap($entity,$id):?array
     {
         return $this->createQueryBuilder('cp')
-            ->select('cp.id','cp.value','c.userName','m.path as image')
+            ->select('cp.id','cp.value','c.userName','cp.date')
             ->from('App:ClientEntity','c')
-            ->from('App:EntityMediaEntity','m')
             ->andWhere('cp.client=c.id')
             ->andWhere('cp.entity=:entity')
             ->andWhere('cp.row=:id')
-            ->andWhere('m.entity=5')
-            ->andWhere('m.media=1')
-            ->andWhere('cp.id=m.row')
             ->setParameter('entity',$entity)
             ->setParameter('id',$id)
             ->groupBy('cp.id')
@@ -65,7 +44,7 @@ class ClapEntityRepository extends ServiceEntityRepository
     public function getClientClap($client):?array
     {
         return $this->createQueryBuilder('cp')
-            ->select('e.name as entity','c.row as id','cp.value','cp.id as ClapID')
+            ->select('e.name as entity','cp.row as id','cp.value','cp.id as ClapID','cp.date')
             ->from('App:Entity','e')
             ->andWhere('cp.entity=e.id')
             ->andWhere('cp.client=:client')
@@ -74,4 +53,5 @@ class ClapEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 }

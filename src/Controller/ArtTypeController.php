@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\ArtTypeService;
 use App\Validator\ArtTypeValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,6 +10,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArtTypeController extends BaseController
 {
+    private $artTypeService;
+    /**
+     * ArtistController constructor.
+     */
+    public function __construct(ArtTypeService $artTypeService)
+    {
+        $this->artTypeService=$artTypeService;
+    }
     /**
      * @Route("/arttypes", name="createArtType",methods={"POST"})
      * @param Request $request
@@ -26,7 +35,7 @@ class ArtTypeController extends BaseController
         }
         //
 
-        $result = $this->CUDService->create($request, "ArtType");
+        $result = $this->artTypeService->create($request);
         return $this->response($result, self::CREATE,"ArtType");
     }
 
@@ -44,7 +53,7 @@ class ArtTypeController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "ArtType");
+        $result = $this->artTypeService->update($request);
         return $this->response($result, self::UPDATE, "ArtType");
     }
 
@@ -62,21 +71,17 @@ class ArtTypeController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->delete($request, "ArtType");
+        $result = $this->artTypeService->delete($request);
         return $this->response($result, self::DELETE, "ArtType");
 
     }
-
-
     /**
-     * @Route("/arttype/getAll", name="getAllArtTYpe",methods={"GET"})
+     * @Route("/arttypes", name="getAllArtTYpe",methods={"GET"})
      * @return
      */
     public function getAll(Request $request)
     {
-        //ToDo Call Validator
-
-        $result = $this->FDService->fetchData($request,"ArtType");
+        $result = $this->artTypeService->getAll();
         return $this->response($result,self::FETCH,"ArtType");
     }
 
@@ -87,27 +92,8 @@ class ArtTypeController extends BaseController
      */
     public function getArtTypeById(Request $request)
     {
-        $result = $this->FDService->getArtTypeById($request);
+        $result = $this->artTypeService->getArtTypeById($request);
         return $this->response($result,self::FETCH,"ArtType");
     }
-    /**
-     * @Route("/getArtTypeList", name="getArtTypeList")
-     * @param Request $request
-     * @return
-     */
-    public function getArtTypelist()
-    {
-        $result = $this->FDService->getArtTypelist();
-        return $this->response($result,self::FETCH,"ArtType");
-    }
-    /**
-     * @Route("/getEntityNames", name="getEntityNames")
-     * @param Request $request
-     * @return
-     */
-    public function getEntityNames(Request $request)
-    {
-        $result = $this->FDService->getEntityNames($request);
-        return $this->response($result,self::FETCH,"ArtType");
-    }
+
     }
