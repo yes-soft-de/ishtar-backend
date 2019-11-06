@@ -119,7 +119,7 @@ public function getArtistPaintings(Request $request)
         return $this->response($result,self::FETCH,"Painting");
     }
     /**
-     * @Route("/painting/getBy", name="getBy",methods={"GET"})
+     *  @Route("/paintingby/{parm}/{value}", name="getPaintingBy",methods={"GET"})
      * @param Request $request
      * @return
      */

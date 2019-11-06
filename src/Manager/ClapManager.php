@@ -62,8 +62,14 @@ class ClapManager
     public function delete(Request $request)
     {
         $clapEntity=$this->entityManager->getRepository(ClapEntity::class)->find($request->get('id'));
-        $this->entityManager->remove($clapEntity);
-        $this->entityManager->flush();
+        if (!$clapEntity) {
+            $exception=new EntityException();
+            $exception->entityNotFound("artType");
+        }
+        else {
+            $this->entityManager->remove($clapEntity);
+            $this->entityManager->flush();
+        }
         return $clapEntity;
     }
 }

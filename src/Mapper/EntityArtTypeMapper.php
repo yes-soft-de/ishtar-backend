@@ -16,28 +16,14 @@ use phpDocumentor\Reflection\Types\This;
 
 class EntityArtTypeMapper
 {
-    public function EntityArtTypeData($data, EntityArtTypeEntity $artTypeEntity,$entityManger,$entity)
+    public function EntityArtTypeData($data, EntityArtTypeEntity $artTypeEntity,$entityManger,$entity,$ID)
     {
         $artType = $entityManger->getRepository(ArtTypeEntity::class)->find($data['artType']);
-        if($entity==1) {
-            $row = $entityManger->getRepository(PaintingEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
-            if (!isset($row[0]))
-                $row = 1;
-            else
-                $row = $row[0]->getId() + 1;
-        }
-        else if($entity==2)
-        {
-            $row = $entityManger->getRepository(ArtistEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
-            if (!isset($row[0]))
-                $row = 1;
-            else
-                $row = $row[0]->getId() + 1;
-        }
+
         $entity = $entityManger->getRepository(\App\Entity\Entity::class)->find($entity);
 
         $artTypeEntity->setArtType($artType)
-            ->setRow($row)
+            ->setRow($ID)
             ->setEntity($entity)
             ->setArtType($artType);
 

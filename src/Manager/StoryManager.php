@@ -26,12 +26,12 @@ class StoryManager
         $this->entityManager = $entityManagerInterface;
     }
 
-    public function create(Request $request,$entity)
+    public function create(Request $request,$entity,$id)
     {
         $story= json_decode($request->getContent(),true);
         $storyEntity=new StoryEntity();
         $storyMapper = new StoryMapper();
-        $storyData=$storyMapper->StoryData($story, $storyEntity,$this->entityManager);
+        $storyData=$storyMapper->StoryData($story, $storyEntity,$this->entityManager,$id);
         $this->entityManager->persist($storyData);
         $this->entityManager->flush();
         return $storyEntity;
@@ -56,10 +56,16 @@ class StoryManager
 
     public function delete(Request $request,$entity)
     {
+
         $story=$this->entityManager->getRepository(StoryEntity::class)
             ->findEntity($request->get('id'),$entity);
+        if (!$story) {
+            $exception=new EntityException();
+            $exception->entityNotFound("artType");
+        }
+        else {
         $this->entityManager->remove($story);
         $this->entityManager->flush();
-    }
+    }}
 
 }

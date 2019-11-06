@@ -25,12 +25,12 @@ class PriceManager
     {
         $this->entityManager = $entityManagerInterface;
     }
-    public function create(Request $request,$entity)
+    public function create(Request $request,$entity,$id)
     {
         $price= json_decode($request->getContent(),true);
         $priceEntity=new PriceEntity();
         $priceMapper = new PriceMapper();
-        $priceData=$priceMapper->PriceData($price, $priceEntity,$this->entityManager,$entity);
+        $priceData=$priceMapper->PriceData($price, $priceEntity,$this->entityManager,$entity,$id);
         $this->entityManager->persist($priceData);
         $this->entityManager->flush();
         return $priceEntity;
@@ -38,32 +38,35 @@ class PriceManager
 
     public function update(Request $request,$entity)
     {
+        $id=$request->get('id');
         $price = json_decode($request->getContent(),true);
-        $priceEntity=$this->entityManager->getRepository(PriceEntity::class)
-            ->findEntity($request->get('id'),$entity);
-        if (!$priceEntity) {
-            $exception=new EntityException();
-            $exception->entityNotFound("price");
-        }
-        else {
-            $priceEntity->setPrice($price['price']);
-            $this->entityManager->flush();
-            return $priceEntity;
-        }
+        $priceEntity=new PriceEntity();
+        $priceMapper = new PriceMapper();
+        $priceData=$priceMapper->PriceData($price, $priceEntity,$this->entityManager,$entity,$id);
+        $this->entityManager->persist($priceData);
+        $this->entityManager->flush();
+        return $priceEntity;
     }
     public function delete(Request $request,$entity)
     {
-        $price=$this->entityManager->getRepository(PriceEntity::class)
-            ->findEntity($request->get('id'),$entity);
-        $this->entityManager->remove($price);
-        $this->entityManager->flush();
+        $price = $this->entityManager->getRepository(PriceEntity::class)
+            ->findEntity($request->get('id'), $entity);
+        if (!$price) {
+            $exception = new EntityException();
+            $exception->entityNotFound("artType");
+        } else {
+            foreach ($price as $list) {
+                $this->entityManager->remove($list);
+            }
+            $this->entityManager->flush();
+        }
     }
 //    public function getAll()
 //    {
 //        $pricesLists[]=new PricesListResponse();
 //        $data=$this->entityManager->getRepository(PriceEntity::class)->findAll();
 //        $i=0;
-//        foreach ($pricesLists as &$list) {
+//
 //            $list = $this->autoMapper->map((object)$data[$i],$list);
 //            $i++;
 //        }

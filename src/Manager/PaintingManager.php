@@ -64,17 +64,6 @@ class PaintingManager
         }
         else {
             $paintingEntity->setActive(false);
-            $interactions=$this->entityManager->getRepository(EntityInteractionEntity::class)->
-                getEntityInteraction(1,$id);
-            if($interactions)
-            foreach ($interactions as $interaction) {
-                $this->entityManager->remove($interaction);
-            }
-            $claps=$this->entityManager->getRepository(ClapEntity::class)->getEntityClap(1,$id);
-            if($claps)
-                foreach ($claps as $clap) {
-                    $this->entityManager->remove($clap);
-                }
             $this->entityManager->flush();
             return $paintingEntity;
         }
@@ -102,16 +91,10 @@ class PaintingManager
         $data = json_decode($request->getContent(),true);
         return $result = $this->entityManager->getRepository(EntityMediaEntity::class)->getPaintingImages($data['id']);
     }
-//    public function getArtTypePaintings(Request $request)
-//    {
-//        $data = json_decode($request->getContent(),true);
-//        return $result = $this->entityManager->getRepository(EntityArtTypeEntity::class)->getArtTypePaintings($data['id']);
-//    }
     public function getBy(Request $request)
     {
-        $data = json_decode($request->getContent(),true);
          $result = $this->entityManager->getRepository(PaintingEntity::class)->
-        getBy($data['parm'],$data['value']);
+        getBy($request->get('parm'),$request->get('value'));
          return $result;
     }
 

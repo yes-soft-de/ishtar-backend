@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ClientEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -39,12 +40,14 @@ class ClientEntityRepository extends ServiceEntityRepository
 
     public function findOneById($value): ?ClientEntity
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.id = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        try {
+            return $this->createQueryBuilder('c')
+                ->andWhere('c.id = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
     public function findAll()
     {

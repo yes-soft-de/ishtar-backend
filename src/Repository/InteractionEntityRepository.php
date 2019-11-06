@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\InteractionEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -38,21 +39,23 @@ class InteractionEntityRepository extends ServiceEntityRepository
 
     public function findOneById($value): ?InteractionEntity
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.id =:val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('i')
+                ->andWhere('i.id =:val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
     public function getEntityInteraction($entity,$id):?array
     {
         return $this->createQueryBuilder('ei')
-            ->select('c.userName')
+           // ->select('c.userName')
             ->from('App:ClientEntity','c')
             ->andWhere('ei.entity=:entity')
             ->andWhere('ei.row=:id')
             ->andWhere('ei.interaction=2')
-            ->andWhere('c.id=ei.client')
             ->andWhere('c.id=ei.client')
             ->setParameter('entity',$entity)
             ->setParameter('id',$id)

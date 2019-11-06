@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\AuctionService;
 use App\Validator\AuctionValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,6 +10,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AuctionController extends BaseController
 {
+    private $auctionService;
+    /**
+     * ArtistController constructor.
+     */
+    public function __construct(AuctionService $auctionService)
+    {
+        $this->auctionService=$auctionService;
+    }
     /**
      * @Route("/auctions", name="createAuction",methods={"POST"})
      * @param Request $request
@@ -26,8 +35,8 @@ class AuctionController extends BaseController
         }
         //
 
-        $result = $this->CUDService->create($request, "Auction");
-        $this->CUDService->create($request,"AuctionPainting");
+        $result = $this->auctionService->create($request);
+      //  $this->CUDService->create($request,"AuctionPainting");
         return $this->response($result, self::CREATE, "Auction");
     }
 
@@ -45,7 +54,7 @@ class AuctionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "Auction");
+        $result = $this->auctionService->update($request);
         return $this->response($result, self::UPDATE, "Auction");
     }
 
@@ -63,32 +72,31 @@ class AuctionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->delete($request, "Auction");
+        $result = $this->auctionService->delete($request);
         return $this->response($result, self::DELETE, "Auction");
 
     }
 
 
     /**
-     * @Route("/auction/getAll", name="getAllAuction",methods={"GET"})
-     *@param Request $request
+     * @Route("/auctions", name="getAllAuction",methods={"GET"})
      * @return
      */
     public function getAll(Request $request)
     {
 
-        $result = $this->FDService->fetchData($request,"Auction");
+        $result = $this->auctionService->getAll();
         return $this->response($result,self::FETCH,"Auction");
     }
 
     /**
-     * @Route("/getAuctionById", name="getAuctionById")
+     * @Route("/auction/{id}", name="getAuctionById",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getAuctionById(Request $request)
     {
-        $result = $this->FDService->getAuctionById($request);
+        $result = $this->auctionService->getById($request);
         return $this->response($result,self::FETCH,"Auction");
     }
 }

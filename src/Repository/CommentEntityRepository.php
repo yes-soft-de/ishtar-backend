@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\CommentEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -38,11 +39,14 @@ class CommentEntityRepository extends ServiceEntityRepository
 
     public function findOneById($value): ?CommentEntity
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.id =:val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.id =:val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
     public function getAll():?array
     {
@@ -81,6 +85,17 @@ class CommentEntityRepository extends ServiceEntityRepository
             ->andWhere('ct.client=:client')
             ->setParameter('client',$client)
             ->groupBy('ct.id')
+            ->getQuery()
+            ->getResult();
+    }
+    public function getEntity($entity,$id):?array
+    {
+        return $this->createQueryBuilder('cl')
+            ->andWhere('cl.entity=:entity')
+            ->andWhere('cl.row=:id')
+            ->setParameter('entity',$entity)
+            ->setParameter('id',$id)
+            ->groupBy('cl.id')
             ->getQuery()
             ->getResult();
     }

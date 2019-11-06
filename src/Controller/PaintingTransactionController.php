@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Service\AuctionPainitngServiceInterface;
+use App\Service\AuctionPaintingService;
 use App\Validator\PaintingTransactionValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,6 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PaintingTransactionController extends BaseController
 {
+    private $auctionPaintingService;
+    /**
+     * PaintingController constructor.
+     */
+    public function __construct(AuctionPaintingService $auctionPaintingService)
+    {
+        $this->auctionPaintingService=$auctionPaintingService;
+    }
     /**
      * @Route("/paintingTransactions", name="createPaintingTransaction")
      * @param Request $request
@@ -26,7 +36,7 @@ class PaintingTransactionController extends BaseController
         }
         //
 
-        $result = $this->CUDService->create($request, "PaintingTransaction");
+        $result = $this->auctionPaintingService->create($request);
         return $this->response($result, self::CREATE,"PaintingTransaction");
     }
 
@@ -44,7 +54,7 @@ class PaintingTransactionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "PaintingTransaction");
+        $result = $this->auctionPaintingService->update($request);
         return $this->response($result, self::UPDATE,"PaintingTransaction");
     }
 
@@ -62,21 +72,21 @@ class PaintingTransactionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->delete($request, "PaintingTransaction");
+        $result = $this->auctionPaintingService->delete($request);
         return $this->response($result, self::DELETE,"PaintingTransaction");
 
     }
 
 
     /**
-     * @Route("/getAllPaintingTransaction",name="getAllPaintingTransaction")
+     * @Route("/transactions",name="getAllPaintingTransaction",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getAll(Request $request)
     {
 
-        $result = $this->FDService->fetchData($request,"PaintingTransaction");
+        $result = $this->auctionPaintingService->getAll($request);
         return $this->response($result,self::FETCH,"PaintingTransaction");
     }
 }

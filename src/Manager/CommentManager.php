@@ -66,9 +66,10 @@ class CommentManager
             $exception->entityNotFound("comment");
         }
         else {
-           $this->entityManager->remove($commentEntity);
+            $this->entityManager->remove($commentEntity);
             $this->entityManager->flush();
-            return $commentEntity;
         }
+            return $commentEntity;
+
     }
 }

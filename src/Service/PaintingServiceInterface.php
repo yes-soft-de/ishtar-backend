@@ -15,6 +15,5 @@ interface PaintingServiceInterface
     public function getArtistPaintings(Request $request);
     public function getPaintingById($request);
     public function getPaintingImages(Request $request);
-    public function getArtTypePaintings(Request $request);
     public function getBy(Request $request);
 }

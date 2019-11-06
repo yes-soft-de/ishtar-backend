@@ -5,6 +5,7 @@ namespace App\Service;
 
 
 use App\Manager\EntityArtTypeManager;
+use App\Manager\InteractionsManager;
 use App\Manager\PaintingManager;
 use App\Manager\PriceManager;
 use App\Manager\StoryManager;
@@ -17,22 +18,25 @@ class PaintingService implements PaintingServiceInterface
     private $artTypeManager;
     private $priceManager;
     private $storyManager;
+    private $interasctionsManager;
 
     public function __construct(PaintingManager $manager,EntityArtTypeManager $artTypeManager,PriceManager $priceManager
-    ,StoryManager $storyManager)
+    ,StoryManager $storyManager,InteractionsManager $interactionsManager)
     {
         $this->PaintingManager=$manager;
         $this->artTypeManager=$artTypeManager;
         $this->priceManager=$priceManager;
         $this->storyManager=$storyManager;
+        $this->interasctionsManager=$interactionsManager;
     }
 
     public function create($request)
     {
         $paintingResult =$this->PaintingManager->create($request);
-        $artTypeResult=$this->artTypeManager->create($request,1);
-        $priceData=$this->priceManager->create($request,1);
-        $storyData=$this->storyManager->create($request,1);
+        $paintingId=$paintingResult->getId();
+        $artTypeResult=$this->artTypeManager->create($request,1,$paintingId);
+        $priceData=$this->priceManager->create($request,1,$paintingId);
+        $storyData=$this->storyManager->create($request,1,$paintingId);
         return $paintingResult;
     }
     //ToDO mapping painting entity and response
@@ -55,6 +59,11 @@ class PaintingService implements PaintingServiceInterface
          $this->artTypeManager->delete($id,1);
          $this->priceManager->delete($id,1);
          $this->storyManager->delete($id,1);
+         $this->interasctionsManager->deleteInteractions($id,1);
+         $this->interasctionsManager->deleteComments($id,1);
+         $this->interasctionsManager->deleteClaps($id,1);
+         return $result;
+
     }
     public function getArtistPaintings(Request $request)
     {
@@ -70,12 +79,10 @@ class PaintingService implements PaintingServiceInterface
     {
         return $result = $this->PaintingManager->getPaintingImages($request);
     }
-    public function getArtTypePaintings(Request $request)
-    {
-        return $result = $this->PaintingManager->getArtTypePaintings($request);
-    }
+
     public function getBy(Request $request)
     {
+
         return $result = $this->PaintingManager->getBy($request);
     }
 

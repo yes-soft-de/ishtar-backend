@@ -29,7 +29,8 @@ class ArtTypeService implements ArtTypeServiceInterface
     public function create($request)
     {
         $artTypeResult =$this->artTypeManager->create($request);
-        $mediaResault=$this->mediaManager->create($request,3);
+        $artTypeId=$artTypeResult->getId();
+        $mediaResault=$this->mediaManager->create($request,3,$artTypeId);
         return $artTypeResult;
     }
     public function update($request)

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\StoryEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method StoryEntity|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,14 +22,16 @@ class StoryEntityRepository extends ServiceEntityRepository
 
     public function findEntity($value,$entity):?storyEntity
     {
-        return $this->createQueryBuilder('st')
-            ->andWhere('st.row =:value')
-            ->andWhere('st.entity=:entity')
-            ->setParameter('value',$value)
-            ->setParameter('entity',$entity)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        try {
+            return $this->createQueryBuilder('st')
+                ->andWhere('st.row =:value')
+                ->andWhere('st.entity=:entity')
+                ->setParameter('value', $value)
+                ->setParameter('entity', $entity)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
 
 

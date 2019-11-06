@@ -58,6 +58,7 @@ au:auctionEntity
 
     /**
      * @return ArtistEntity[] Returns an array of ArtistEntity objects
+     * @throws NonUniqueResultException
      */
     public function findOneById($value): ?ArtistEntity
     {

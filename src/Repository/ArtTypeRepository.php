@@ -23,18 +23,20 @@ class ArtTypeRepository extends ServiceEntityRepository
 
     public function getById($value): ?array
     {
-        return $this->createQueryBuilder('at')
-            ->select('at.id','at.name','m.path')
-            ->from('App:EntityMediaEntity','m')
-            ->andWhere('at.id=m.row')
-            ->andWhere('m.entity=3')
-            ->andWhere('m.media=1')
-            ->andWhere('at.id = :val')
-            ->setParameter('val', $value)
-            ->groupBy('at.id')
-            ->getQuery()
-            ->getOneOrNullResult()
-            ;
+        try {
+            return $this->createQueryBuilder('at')
+                ->select('at.id', 'at.name', 'm.path')
+                ->from('App:EntityMediaEntity', 'm')
+                ->andWhere('at.id=m.row')
+                ->andWhere('m.entity=3')
+                ->andWhere('m.media=1')
+                ->andWhere('at.id = :val')
+                ->setParameter('val', $value)
+                ->groupBy('at.id')
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
  public function  getArtTypeList()
    {

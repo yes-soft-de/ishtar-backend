@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\EntityArtTypeEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method EntityArtTypeEntity|null find($id, $lockMode = null, $lockVersion = null)
@@ -77,14 +78,16 @@ class EntityArtTypeEntityRepository extends ServiceEntityRepository
     }
     public function findEntity($value,$entity):EntityArtTypeEntity
     {
-        return $this->createQueryBuilder('eat')
-            ->andWhere('eat.row =:value')
-            ->andWhere('eat.entity=:entity')
-            ->setParameter('value',$value)
-            ->setParameter('entity',$entity)
-            ->orderBy('eat.id','DESC')
-            ->getQuery()
-            ->getOneOrNullResult()
-            ;
+        try {
+            return $this->createQueryBuilder('eat')
+                ->andWhere('eat.row =:value')
+                ->andWhere('eat.entity=:entity')
+                ->setParameter('value', $value)
+                ->setParameter('entity', $entity)
+                ->orderBy('eat.id', 'DESC')
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
 }

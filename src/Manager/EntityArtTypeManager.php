@@ -23,12 +23,12 @@ class EntityArtTypeManager
         $this->entityManager = $entityManagerInterface;
     }
 
-    public function create(Request $request,$entity)
+    public function create(Request $request,$entity,$entityID)
     {
         $entityArtType = json_decode($request->getContent(),true);
         $entityArtTypeEntity=new EntityArtTypeEntity();
         $entityArtTypeMapper = new EntityArtTypeMapper();
-        $entityArtTypeData=$entityArtTypeMapper->EntityArtTypeData($entityArtType, $entityArtTypeEntity,$this->entityManager,$entity);
+        $entityArtTypeData=$entityArtTypeMapper->EntityArtTypeData($entityArtType, $entityArtTypeEntity,$this->entityManager,$entity,$entityID);
         $this->entityManager->persist($entityArtTypeData);
         $this->entityManager->flush();
         return $entityArtTypeEntity;
@@ -52,9 +52,17 @@ class EntityArtTypeManager
     }
     public function delete(Request $request,$entity)
     {
+        if(!isset($entity))
+            $entity=$request->get('entity');
         $arttype=$this->entityManager->getRepository(EntityArtTypeEntity::class)
             ->findEntity($request->get('id'),$entity);
-        $this->entityManager->remove($arttype);
-        $this->entityManager->flush();
+        if (!$arttype) {
+            $exception=new EntityException();
+            $exception->entityNotFound("artType");
+        }
+        else {
+            $this->entityManager->remove($arttype);
+            $this->entityManager->flush();
+        }
     }
 }

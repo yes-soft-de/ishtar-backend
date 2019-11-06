@@ -49,8 +49,14 @@ class ArtistManager
     public function delete(Request $request)
     {
         $artist=$this->entityManager->getRepository(ArtistEntity::class)->getArtist($request->get('id'));
-        $this->entityManager->remove($artist);
-        $this->entityManager->flush();
+        if (!$artist) {
+            $exception=new EntityException();
+            $exception->entityNotFound("artist");
+        }
+        else {
+            $artist->setState(false);
+            $this->entityManager->flush();
+        }
         return $artist;
     }
     public function getAll()

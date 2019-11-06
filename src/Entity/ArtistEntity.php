@@ -101,7 +101,7 @@ class ArtistEntity
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $state;
+    private $active;
 
 
 
@@ -316,14 +316,14 @@ class ArtistEntity
         return $this;
     }
 
-    public function getState(): ?bool
+    public function getActive(): ?bool
     {
-        return $this->state;
+        return $this->active;
     }
 
-    public function setState(?bool $state): self
+    public function setActive(?bool $active): self
     {
-        $this->state = $state;
+        $this->active = $active;
 
         return $this;
     }

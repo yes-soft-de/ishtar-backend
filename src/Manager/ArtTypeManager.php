@@ -48,9 +48,14 @@ class ArtTypeManager
     public function delete(Request $request)
     {
         $artType=$this->entityManager->getRepository(ArtTypeEntity::class)->getArtType($request->get('id'));
+        if (!$artType) {
+            $exception=new EntityException();
+            $exception->entityNotFound("artType");
+        }
+        else {
         $this->entityManager->remove($artType);
         $this->entityManager->flush();
-        return $artType;
+        return $artType;}
     }
     public function getAll()
     {

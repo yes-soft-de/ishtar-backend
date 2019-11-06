@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ClapEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -21,11 +22,14 @@ class ClapEntityRepository extends ServiceEntityRepository
 
     public function findOneById($value): ?ClapEntity
     {
-        return $this->createQueryBuilder('cp')
-            ->andWhere('cp.id =:val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('cp')
+                ->andWhere('cp.id =:val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
     public function getEntityClap($entity,$id):?array
     {
@@ -53,5 +57,15 @@ class ClapEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
+    public function getEntity($entity,$id):?array
+    {
+        return $this->createQueryBuilder('cp')
+            ->andWhere('cp.entity=:entity')
+            ->andWhere('cp.row=:id')
+            ->setParameter('entity',$entity)
+            ->setParameter('id',$id)
+            ->groupBy('cp.id')
+            ->getQuery()
+            ->getResult();
+    }
 }

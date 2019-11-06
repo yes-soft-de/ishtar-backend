@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\EntityMediaEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method EntityMediaEntity|null find($id, $lockMode = null, $lockVersion = null)
@@ -74,15 +75,17 @@ EntityMediaEntityRepository extends ServiceEntityRepository
     }
     public function findImages($id,$entity):EntityMediaEntity
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.row = :val')
-            ->andWhere('m.entity=:entity')
-            ->andWhere('m.media=1')
-            ->setParameter('val', $id)
-            ->setParameter('entity',$entity)
-            ->getQuery()
-            ->getOneOrNullResult()
-            ;
+        try {
+            return $this->createQueryBuilder('m')
+                ->andWhere('m.row = :val')
+                ->andWhere('m.entity=:entity')
+                ->andWhere('m.media=1')
+                ->setParameter('val', $id)
+                ->setParameter('entity', $entity)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
 
 }

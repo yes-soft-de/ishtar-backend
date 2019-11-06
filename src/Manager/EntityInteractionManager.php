@@ -46,8 +46,14 @@ class EntityInteractionManager
     public function delete(Request $request)
     {
         $interaction=$this->entityManager->getRepository(EntityInteractionEntity::class)->find($request->get('id'));
-        $this->entityManager->remove($interaction);
-        $this->entityManager->flush();
+        if (!$interaction) {
+            $exception=new EntityException();
+            $exception->entityNotFound("artType");
+        }
+        else {
+            $this->entityManager->remove($interaction);
+            $this->entityManager->flush();
+        }
         return $interaction;
     }
     public function getEntityInteraction(Request $request)

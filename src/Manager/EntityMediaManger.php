@@ -16,12 +16,12 @@ class EntityMediaManger
     {
         $this->entityManager = $entityManagerInterface;
     }
-    public function create(Request $request,$entity)
+    public function create(Request $request,$entity,$id)
     {
         $entityMedia= json_decode($request->getContent(),true);
         $entityMediaEntity=new EntityMediaEntity();
         $entityMediaMapper = new entityMediaMapper();
-        $entityMediaData=$entityMediaMapper->MediaEntityData($entityMedia, $entityMediaEntity,$this->entityManager,$entity);
+        $entityMediaData=$entityMediaMapper->MediaEntityData($entityMedia, $entityMediaEntity,$this->entityManager,$entity,$id);
         $this->entityManager->persist($entityMediaData);
         $this->entityManager->flush();
         return $entityMediaEntity;
@@ -42,10 +42,18 @@ class EntityMediaManger
     }
     public function delete(Request $request,$entity)
     {
+        if(!isset($entity))
+            $entity=$request->get('entity');
         $media=$this->entityManager->getRepository(EntityMediaEntity::class)
             ->findImages($request->get('id'),$entity);
-        $this->entityManager->remove($media);
-        $this->entityManager->flush();
+        if (!$media) {
+            $exception=new EntityException();
+            $exception->entityNotFound("artType");
+        }
+        else {
+            $this->entityManager->remove($media);
+            $this->entityManager->flush();
+        }
     }
     public function getAll()
     {

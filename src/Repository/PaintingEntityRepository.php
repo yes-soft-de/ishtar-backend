@@ -87,7 +87,7 @@ class PaintingEntityRepository extends ServiceEntityRepository
             ->andWhere('p.artist=a.id')
             ->andWhere('p.id=eat.row')
             ->andWhere('at.id=eat.artType')
-            ->andWhere('ea.entity=1')
+            ->andWhere('eat.entity=1')
             ->andWhere($parm)
             ->andWhere('p.id=pr.row')
             ->andWhere('pr.entity=1')
