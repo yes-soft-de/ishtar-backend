@@ -15,28 +15,15 @@ class CommentMapper
     {
         $entity  =$entityManger->getRepository(Entity::class)->find($data["entity"]);
         $row = $data["row"];
-        //this (try catch) just to make IDE happy, must use date calender in frontend
-        //if date empty the date of today will be there
-//        try {
-//            $date = new DateTime((string)$data["date"]);
-//        } catch (Exception $e) {
-//        }
-
-//        $lastEdit=$data["lastEdit"];
-//        try {
-//            $lastEdit = new DateTime((string)$data["lastEdit"]);
-//        } catch (Exception $e) {
-//        }
         $body = $data["body"];
         $client = $entityManger->getRepository(ClientEntity::class)->find($data["client"]);
-        $spacial=$data['spacial'];
 
         $commentEntity->setEntity($entity)
             ->setRow($row)
             ->setBody($body)
             ->setDate()
             ->setClient($client)
-            ->setSpacial($spacial);
+            ->setSpacial(0);
 
         return $commentEntity;
     }

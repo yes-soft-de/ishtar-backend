@@ -111,4 +111,13 @@ class CommentController extends BaseController
         $result = $this->commentService->getAll();
         return $this->response($result,self::FETCH,"Comment");
     }
+    /**
+     * @Route("/spacialcomment/{id}",name="setSpacialComment",methods={"PUT"})
+     * @return
+     */
+    public function setSpacial(Request $request)
+    {
+        $result = $this->commentService->setSpacial($request);
+        return $this->response($result,self::UPDATE,"Comment");
+    }
 }

@@ -13,4 +13,5 @@ namespace App\Service;
      public function getEntityComment($request);
      public function getClientComment($request);
      public function getAll();
+     public function setSpacial($request);
 }

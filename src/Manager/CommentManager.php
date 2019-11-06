@@ -72,4 +72,17 @@ class CommentManager
             return $commentEntity;
 
     }
+    public function setSpacial(Request $request)
+    {
+        $commentEntity=$this->entityManager->getRepository(CommentEntity::class)->find($request->get('id'));
+        if (!$commentEntity) {
+            $exception=new EntityException();
+            $exception->entityNotFound("comment");
+        }
+        else {
+            $commentEntity->setSpacial(1);
+            $this->entityManager->flush();
+        }
+        return $commentEntity;
+    }
 }

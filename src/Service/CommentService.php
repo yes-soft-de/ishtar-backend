@@ -53,4 +53,8 @@ class CommentService implements CommentServiceInterface
     {
         return $commentResult =$this->commentManager->getAll();
     }
+    public function setSpacial($request)
+    {
+        return $commentResult =$this->commentManager->setSpacial($request);
+    }
 }
