@@ -19,4 +19,6 @@ class LoginContext implements Context
     public function __construct()
     {
     }
+
+    use LoginCommon;
 }

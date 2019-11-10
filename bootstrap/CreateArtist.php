@@ -67,17 +67,6 @@ trait CreateArtist
     }
 
     /**
-     * @Then /^I Should Get A Response Explaining The Error$/
-     */
-    public function iShouldGetAResponseExplainingTheError()
-    {
-        $json = json_decode($this->response->getBody()->getContents());
-        if ($json->msg == "fetched Successfully"){
-            throw new Exception('Deceiving Msg! ' . $json->msg);
-        }
-    }
-
-    /**
      * @Then /^The Artist Data Found Matches The Artist Data$/
      * @throws Exception
      */

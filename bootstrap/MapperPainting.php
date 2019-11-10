@@ -88,10 +88,10 @@ class MapperPainting
     }
 
     /**
-     * @param ObjectPainting $painting
+     * @param ObjectPainting|array $painting
      * @return bool
      */
-    function isEqual($painting): bool
+    public function isEqual($painting): bool
     {
 
         $second = $this->getPainting();
@@ -104,9 +104,9 @@ class MapperPainting
         }
 
         // If its an array
-        if ($first[$this->KEY_NAME] != $second->getName())
+        if ($first[$this->KEY_NAME] !== $second->getName())
             return false;
-        if ($first[$this->KEY_ARTIST] != $second->getArtist())
+        if ($first[$this->KEY_ARTIST] !== $second->getArtist())
             return false;
         if ($first[$this->KEY_STATE] != $second->getState())
             return false;
@@ -114,19 +114,19 @@ class MapperPainting
             return false;
         if ($first[$this->KEY_WIDTH] != $second->getWidth())
             return false;
-        if ($first[$this->KEY_PRICE] != $second->getPrice())
+        if ($first[$this->KEY_PRICE] !== $second->getPrice())
             return false;
-        if ($first[$this->KEY_IMAGE] != $second->getArtType())
+        if ($first[$this->KEY_IMAGE] !== $second->getArtType())
             return false;
-        if ($first[$this->KEY_ACTIVE] != $second->getActive())
+        if ($first[$this->KEY_ACTIVE] !== $second->getActive())
             return false;
-        if ($first[$this->KEY_GALLERY] != $second->getGallery())
+        if ($first[$this->KEY_GALLERY] !== $second->getGallery())
             return false;
-        if ($first[$this->KEY_KEYWORDS] != $second->getKeyWords())
+        if ($first[$this->KEY_KEYWORDS] !== $second->getKeyWords())
             return false;
-        if ($first[$this->KEY_COLORS_TYPE] != $second->getColorsType())
+        if ($first[$this->KEY_COLORS_TYPE] !== $second->getColorsType())
             return false;
-        if ($first[$this->KEY_STORY] != $second->getStory())
+        if ($first[$this->KEY_STORY] !== $second->getStory())
             return false;
 
         // If all the above is OK then the Objects are equal
