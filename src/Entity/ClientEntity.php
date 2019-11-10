@@ -29,6 +29,14 @@ class ClientEntity implements UserInterface
      * @ORM\Column(name="is_active",type="boolean")
      */
     private $isActive;
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive): void
+    {
+        $this->isActive = $isActive;
+    }
     /**
      * @ORM\Column(type="string", length=190, unique=true)
      */
@@ -36,12 +44,8 @@ class ClientEntity implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $firstName;
+    private $fullName;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lastName;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -141,29 +145,18 @@ class ClientEntity implements UserInterface
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getFullName(): ?string
     {
-        return $this->firstName;
+        return $this->fullName;
     }
 
-    public function setFirstName(?string $firstName): self
+    public function setFullName(?string $fullName): self
     {
-        $this->firstName = $firstName;
+        $this->fullName = $fullName;
 
         return $this;
     }
 
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(?string $lastName): self
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
 
     public function getPhone(): ?string
     {
@@ -201,9 +194,9 @@ class ClientEntity implements UserInterface
         return $this->createDate;
     }
 
-    public function setCreateDate(?\DateTimeInterface $createDate): self
+    public function setCreateDate(): self
     {
-        $this->createDate = $createDate;
+        $this->createDate = new \DateTime('Now');;
 
         return $this;
     }

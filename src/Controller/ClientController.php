@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\ClientService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,8 +10,14 @@ use App\Validator\ClientValidateInterface;
 
 
 
-class ClientController extends BaseController
+class ClientController extends BaseController{
+private $clientService;
+
+    public function __construct(ClientService $clientService)
 {
+    $this->clientService=$clientService;
+}
+
     /**
      * @Route("/clients", name="createClient",methods={"POST"})
      * @param Request $request
@@ -27,21 +34,25 @@ class ClientController extends BaseController
             return $resultResponse;
         }
 
-        $result = $this->CUDService->create($request, "Client");
-        $this->CUDService->create($request,"MediaClient");
-        return $this->response($result, self::CREATE, "Client");
+        $result = $this->clientService->create($request);
+        return $this->response($result, self::CREATE);
     }
 
     /**
      * @Route("/client/{id}", name="updateClient",methods={"PUT"})
      * @param Request $request
      */
-    public function update(Request $request)
+    public function update(Request $request,ClientValidateInterface $clientValidate)
     {
-        //ToDo Call Validator
-
-        $result = $this->CUDService->update($request, "Client");
-        return $result;
+        $validateResult = $clientValidate->clientValidator($request, 'update');
+        if (!empty($validateResult))
+        {
+            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
+            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
+            return $resultResponse;
+        }
+        $result = $this->clientService->update($request);
+        return $this->response($result,self::UPDATE);
     }
 
     /**
@@ -52,8 +63,8 @@ class ClientController extends BaseController
     {
         //ToDo Call Validator
 
-        $result = $this->CUDService->delete($request, "Client");
-        return $result;
+        $result = $this->clientService->delete($request);
+        return $this->response($result,self::DELETE);
     }
 
 
@@ -65,37 +76,17 @@ class ClientController extends BaseController
     public function getAll(Request $request)
     {
 
-        $result = $this->FDService->fetchData($request,"Client");
+        $result = $this->clientService->getAll($request);
         return $this->response($result,self::FETCH,"Client");
     }
     /**
-     * @Route("/getClientById", name="getClientById")
+     * @Route("/client/{id}", name="getClientById",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getClientById(Request $request)
     {
-        $result = $this->FDService->getClientById($request);
-        return $this->response($result,self::FETCH,"Client");
-    }
-    /**
-     * @Route("/getClientInteraction", name="getClientInteraction")
-     * @param Request $request
-     * @return
-     */
-    public function getClientInteraction(Request $request)
-    {
-        $result = $this->FDService->getClientInteraction($request);
-        return $this->response($result,self::FETCH,"Client");
-    }
-    /**
-     * @Route("/getClientClap", name="getClientClap")
-     * @param Request $request
-     * @return
-     */
-    public function getClientClap(Request $request)
-    {
-        $result = $this->FDService->getClientClap($request);
-        return $this->response($result,self::FETCH,"Client");
+        $result = $this->clientService->getById($request);
+        return $this->response($result,self::FETCH);
     }
 }

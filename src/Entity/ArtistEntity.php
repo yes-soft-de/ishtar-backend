@@ -30,8 +30,8 @@ class ArtistEntity
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    public $nationality;
 
+    public $nationality;
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
@@ -237,9 +237,9 @@ class ArtistEntity
         return $this->createDate;
     }
 
-    public function setCreateDate(?\DateTimeInterface $createDate): self
+    public function setCreateDate(): self
     {
-        $this->createDate = $createDate;
+        $this->createDate = new \DateTime('Now');;
 
         return $this;
     }

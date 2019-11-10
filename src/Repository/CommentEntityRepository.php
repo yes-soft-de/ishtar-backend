@@ -51,7 +51,7 @@ class CommentEntityRepository extends ServiceEntityRepository
     public function getAll():?array
     {
         return $this->createQueryBuilder('q')
-            ->select('ct.id','ct.body','ct.date','ct.lastEdit','ct.spacial','cl.userName','e.name as entity','ct.row')
+            ->select('ct.id','ct.body','ct.date','ct.lastEdit','ct.spacial','cl.username','e.name as entity','ct.row')
             ->from('App:CommentEntity','ct')
             ->from('App:ClientEntity','cl')
             ->from('App:Entity','e')

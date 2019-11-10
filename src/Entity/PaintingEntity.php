@@ -233,9 +233,9 @@ class PaintingEntity
         return $this->createDate;
     }
 
-    public function setCreateDate(?\DateTimeInterface $createDate): self
+    public function setCreateDate(): self
     {
-        $this->createDate = $createDate;
+        $this->createDate =new \DateTime('Now');;
 
         return $this;
     }

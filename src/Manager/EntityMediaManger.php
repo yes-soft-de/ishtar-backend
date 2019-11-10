@@ -3,6 +3,7 @@
 
 namespace App\Manager;
 
+use App\Entity\Entity;
 use App\Entity\EntityMediaEntity;
 use App\Mapper\EntityMediaMapper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,6 +66,10 @@ class EntityMediaManger
             $i++;
         }
         return $entityMediasLists;
+    }
+    public function getEntityItems(Request $request)
+    {
+        return $this->entityManager->getRepository(Entity::class)->getEntityItem($request->get('entity'));
     }
 
 }

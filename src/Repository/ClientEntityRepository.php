@@ -38,7 +38,7 @@ class ClientEntityRepository extends ServiceEntityRepository
     */
 
 
-    public function findOneById($value): ?ClientEntity
+    public function findClient($value): ?ClientEntity
     {
         try {
             return $this->createQueryBuilder('c')
@@ -52,12 +52,6 @@ class ClientEntityRepository extends ServiceEntityRepository
     public function findAll()
     {
         return $this->createQueryBuilder('c')
-            ->select('c.id','c.userName','c.firstName','c.lastName','c.birthDate','c.email',
-                'c.phone','c.roll','m.path as image')
-            ->from('App:EntityMediaEntity','m')
-            ->andWhere('m.entity=5')
-            ->andWhere('m.row=c.id')
-            ->andWhere('m.media=1')
             ->groupBy('c.id')
             ->getQuery()
             ->getResult();

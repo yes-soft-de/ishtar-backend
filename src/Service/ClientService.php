@@ -32,4 +32,25 @@ class ClientService implements ClientServiceInterface
     {
         // TODO: Implement login() method.
     }
+
+    public function update($request)
+    {
+        // TODO: Implement update() method.
+        return $this->clientManager->update($request);
+    }
+
+    public function getAll()
+    {
+        return $this->clientManager->getAll();
+    }
+
+    public function getById($requset)
+    {
+        return $this->clientManager->getById($requset);
+    }
+
+    public function delete($request)
+    {
+        return $this->clientManager->delete($request);
+    }
 }

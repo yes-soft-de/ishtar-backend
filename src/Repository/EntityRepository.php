@@ -18,11 +18,10 @@ class EntityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Entity::class);
     }
-
-    public function getEntityNames($entity)
+    public function getEntityItems($entity)
     {
         if ($entity=='Client')
-            $name='e.userName';
+            $name='e.username';
         else $name='e.name';
         $entity = 'App:' . $entity .'Entity';
         return $this->createQueryBuilder('p')

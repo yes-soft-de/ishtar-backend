@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\FavoriteService;
 use App\Validator\FavoriteValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

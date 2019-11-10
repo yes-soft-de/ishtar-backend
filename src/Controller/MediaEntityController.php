@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\EntityMediaService;
 use App\Validator\CommentValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,6 +10,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MediaEntityController extends BaseController
 {
+    private $mediaService;
+
+    /**
+     * MediaEntityController constructor.
+     * @param $mediaService
+     */
+    public function __construct(EntityMediaService $mediaService)
+    {
+        $this->mediaService = $mediaService;
+    }
+
     /**
      * @Route("/medias", name="createMedia",methods={"POST"})
      * @param Request $request
@@ -65,6 +77,17 @@ class MediaEntityController extends BaseController
      * @return
      */
     public function getAll(Request $request)
+    {
+
+        $result = $this->FDService->fetchData($request,"Comment");
+        return $this->response($result,self::FETCH,"Comment");
+    }
+    /**
+     * @Route("entityitems/{entity}", name="getEntityItems",methods={"GET"})
+     * @param Request $request
+     * @return
+     */
+    public function getEntityItem(Request $request)
     {
 
         $result = $this->FDService->fetchData($request,"Comment");

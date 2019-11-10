@@ -42,7 +42,8 @@ class PaintingMapper
             ->setWidth($width)
             ->setColorsType($colorsType)
             ->setActive(1)
-            ->setImage($image);
+            ->setImage($image)
+            ->setCreateDate();
 
 
         return $painting;
