@@ -56,7 +56,7 @@ class ClientManager
     }
     public function delete(Request $request)
     {
-        $clientEntity=$this->entityManager->getRepository(ClientEntity::class)->find($request->get('id'));
+        $clientEntity=$this->entityManager->getRepository(ClientEntity::class)->findClient($request->get('id'));
         if (!$clientEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("client");

@@ -49,7 +49,7 @@ class EntityMediaManger
             ->findImages($request->get('id'),$entity);
         if (!$media) {
             $exception=new EntityException();
-            $exception->entityNotFound("artType");
+            $exception->entityNotFound("media");
         }
         else {
             $this->entityManager->remove($media);
@@ -58,18 +58,43 @@ class EntityMediaManger
     }
     public function getAll()
     {
-        $entityMediasLists[]=new EntityMediasListResponse();
         $data=$this->entityManager->getRepository(EntityMediaEntity::class)->findAll();
-        $i=0;
-        foreach ($entityMediasLists as &$list) {
-            $list = $this->autoMapper->map((object)$data[$i],$list);
-            $i++;
-        }
-        return $entityMediasLists;
+
+
+        return $data;
     }
     public function getEntityItems(Request $request)
     {
-        return $this->entityManager->getRepository(Entity::class)->getEntityItem($request->get('entity'));
+        return $this->entityManager->getRepository(Entity::class)->getEntityItems($request->get('entity'));
+    }
+    public function updateMediaById(Request $request)
+    {
+        $entityMediaEntity=$this->entityManager->getRepository(EntityMediaEntity::class)->
+        find($request->get('id'));
+        if (!$entityMediaEntity) {
+            $exception=new EntityException();
+            $exception->entityNotFound("entityMedia");
+        }
+        else {
+            $entityMedia = json_decode($request->getContent(),true);
+            $entityMediaEntity->setPath($entityMedia['image']);
+            $this->entityManager->flush();
+            return $entityMediaEntity;
+        }
+    }
+    public function deleteById(Request $request)
+    {
+        $entityMediaEntity=$this->entityManager->getRepository(EntityMediaEntity::class)->
+        find($request->get('id'));
+        if (!$entityMediaEntity) {
+            $exception=new EntityException();
+            $exception->entityNotFound("entityMedia");
+        }
+        else {
+            $this->entityManager->remove($entityMediaEntity);
+            $this->entityManager->flush();
+            return $entityMediaEntity;
+        }
     }
 
 }

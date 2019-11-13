@@ -19,34 +19,6 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, EntityInteractionEntity::class);
     }
 
-    // /**
-    //  * @return EntityInteractionEntity[] Returns an array of EntityInteractionEntity objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?EntityInteractionEntity
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
     public function getInteraction($entity,$row,$interaction)
     {
         if($interaction!=3)
@@ -128,5 +100,37 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->setParameter('row',$id)
             ->getQuery()
             ->getResult();
+    }
+    public function getMostViews()
+    {
+        $date = new \DateTime();
+        $date->modify('-7 days');
+        $q1= $this->createQueryBuilder('ei')
+            ->select('p','count(p) as viewed')
+            ->from('App:PaintingEntity','p')
+            ->andWhere('ei.entity=1')
+            ->andWhere('ei.row=p.id')
+            ->andWhere('ei.interaction=3')
+            ->andWhere('ei.date > :date')
+            ->setParameter(':date', $date)
+            ->groupBy('p.id')
+            ->orderBy('count(p)','DESC')
+            ->setMaxResults(7)
+            ->getQuery()
+            ->getResult();
+        $q2=$this->createQueryBuilder('ei')
+            ->select('s','count(s) as viewed')
+            ->from('App:StatueEntity','s')
+            ->andWhere('ei.entity=6')
+            ->andWhere('ei.row=s.id')
+            ->andWhere('ei.interaction=3')
+            ->andWhere('ei.date > :date')
+            ->setParameter(':date', $date)
+            ->groupBy('s.id')
+            ->orderBy('count(s)','DESC')
+            ->setMaxResults(7)
+            ->getQuery()
+            ->getResult();
+        return array_merge($q1,$q2);
     }
 }

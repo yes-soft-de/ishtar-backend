@@ -141,7 +141,7 @@ public function getArtistPaintings(Request $request)
     }
 
     /**
-     * @Route("/painting/getImages", name="getPaintingImages",methods={"GET"})
+     * @Route("/paintingimages/{id}", name="getPaintingImages",methods={"GET"})
      * @param Request $request
      * @return
      */

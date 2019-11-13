@@ -111,4 +111,13 @@ class EntityInteractionController extends BaseController
         $result = $this->interactionService->getClientInteraction($request);
         return $this->response($result,self::FETCH,"Interaction");
     }
+    /**
+     * @Route("/mostviews", name="mostViews",methods={"GET"})
+     * @return
+     */
+    public function getMostViews()
+    {
+        $result = $this->interactionService->getMostViews();
+        return $this->response($result,self::FETCH,"Interaction");
+    }
 }

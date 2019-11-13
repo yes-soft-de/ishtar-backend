@@ -34,7 +34,7 @@ class ClapEntityRepository extends ServiceEntityRepository
     public function getEntityClap($entity,$id):?array
     {
         return $this->createQueryBuilder('cp')
-            ->select('cp.id','cp.value','c.userName','cp.date')
+            ->select('cp.id','cp.value','c.username','cp.date')
             ->from('App:ClientEntity','c')
             ->andWhere('cp.client=c.id')
             ->andWhere('cp.entity=:entity')

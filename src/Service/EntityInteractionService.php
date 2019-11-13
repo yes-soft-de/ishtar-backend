@@ -52,4 +52,8 @@ class EntityInteractionService implements EntityInteractionServiceInterface
     {
        return $entityInteractionResault=$this->entityInteractionManager->getAll();
     }
+    public function getMostViews()
+    {
+        return $entityInteractionResault=$this->entityInteractionManager->getMostViews();
+    }
 }

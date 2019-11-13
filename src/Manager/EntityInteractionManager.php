@@ -71,4 +71,8 @@ class EntityInteractionManager
     {
         return $entityInteractionResult =$this->entityManager->getRepository(EntityInteractionEntity::class)->getAll();
     }
+    public function getMostViews()
+    {
+        return $MostViews =$this->entityManager->getRepository(EntityInteractionEntity::class)->getMostViews();
+    }
 }

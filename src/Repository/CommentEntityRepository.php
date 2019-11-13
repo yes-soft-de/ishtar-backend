@@ -20,23 +20,6 @@ class CommentEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, CommentEntity::class);
     }
 
-    // /**
-    //  * @return CommentEntity[] Returns an array of CommentEntity objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
     public function findOneById($value): ?CommentEntity
     {
         try {
@@ -65,7 +48,7 @@ class CommentEntityRepository extends ServiceEntityRepository
     public function getEntityComment($entity,$id):?array
     {
         return $this->createQueryBuilder('cl')
-            ->select('cl.id','cl.body','cl.date','cl.spacial','c.userName')
+            ->select('cl.id','cl.body','cl.date','cl.spacial','c.username')
             ->from('App:ClientEntity','c')
             ->from('App:EntityMediaEntity','m')
             ->andWhere('cl.client=c.id')

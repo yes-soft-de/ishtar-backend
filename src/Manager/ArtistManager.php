@@ -35,16 +35,17 @@ class ArtistManager
     {
         $artist = json_decode($request->getContent(),true);
         $artistEntity=$this->entityManager->getRepository(ArtistEntity::class)->getArtist($request->get('id'));
-        if (!$artistEntity) {
-            $exception=new EntityException();
-            $exception->entityNotFound("artist");
-        }
-        else {
-            $artistMapper = new ArtistMapper();
-            $artistMapper->ArtistData($artist, $artistEntity);
-            $this->entityManager->flush();
-            return $artistEntity;
-        }
+
+            if (!$artistEntity) {
+                $exception = new EntityException();
+                $exception->entityNotFound("artist");
+            } else {
+                $artistMapper = new ArtistMapper();
+                $artistMapper->ArtistData($artist, $artistEntity);
+                $this->entityManager->flush();
+                return $artistEntity;
+            }
+
     }
     public function delete(Request $request)
     {

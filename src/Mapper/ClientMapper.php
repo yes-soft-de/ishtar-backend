@@ -11,7 +11,6 @@ class  ClientMapper
 {
     public function clientData($data, ClientEntity $client,$encoder)
     {
-        $email = $data['email'];
         $password = $data['password'];
         if (isset($data['username']))
             $client->setUserName($data['username']);
@@ -26,7 +25,6 @@ class  ClientMapper
             $client->setFullName($data['fullName']);
         $client->setPassword($encoder->encodePassword($client, $password));
         $client->setRoles(["ROLE_USER"]);
-        $client->setEmail($email);
         $client->setUpdateDate(new DateTime('Now'));
         return $client;
     }

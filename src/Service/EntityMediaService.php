@@ -23,15 +23,18 @@ class EntityMediaService implements EntityMediaServiceInterface
         $this->entityMediaManager=$entityMediaManager;
     }
 
-    public function create($request)
+    public function create(Request $request)
     {
-        $entityMediaResult =$this->entityMediaManager->create($request);
+        $entityMedia= json_decode($request->getContent(),true);
+        $entity=$entityMedia['entity'];
+        $row=$entityMedia['row'];
+        $entityMediaResult =$this->entityMediaManager->create($request,$entity,$row);
         return $entityMediaResult;
     }
     //ToDO mapping painting entity and response
     public function update($request)
     {
-        $entityMediaResult =$this->entityMediaManager->update($request);
+        $entityMediaResult =$this->entityMediaManager->updateMediaByID($request);
         return $entityMediaResult;
     }
     public function getAll()
@@ -41,7 +44,7 @@ class EntityMediaService implements EntityMediaServiceInterface
     }
     public function delete($request)
     {
-        $result=$this->entityMediaManager->delete($request);
+        $result=$this->entityMediaManager->deleteById($request);
         return $result;
     }
 

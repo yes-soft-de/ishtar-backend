@@ -26,11 +26,11 @@ class MediaEntityController extends BaseController
      * @param Request $request
      * @return
      */
-    public function create(Request $request, CommentValidateInterface $commentValidate)
+    public function create(Request $request)
     {
 
-        $result = $this->CUDService->create($request, "MediaEntity");
-        return $this->response($result, self::CREATE, "MediaEntity");
+        $result = $this->mediaService->create($request);
+        return $this->response($result, self::CREATE);
     }
 
     /**
@@ -38,16 +38,9 @@ class MediaEntityController extends BaseController
      * @param Request $request
      * @return
      */
-    public function update(Request $request, CommentValidateInterface $commentValidate)
+    public function update(Request $request)
     {
-        $validateResult = $commentValidate->commentValidator($request, 'update');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
-        $result = $this->CUDService->update($request, "MediaEntity");
+        $result = $this->mediaService->update($request);
         return $this->response($result, self::UPDATE, "MediaEntity");
     }
 
@@ -56,30 +49,23 @@ class MediaEntityController extends BaseController
      * @param Request $request
      * @return
      */
-    public function delete(Request $request, CommentValidateInterface $commentValidate)
+    public function delete(Request $request)
     {
-//        $validateResult = $commentValidate->commentValidator($request, 'delete');
-//        if (!empty($validateResult))
-//        {
-//            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-//            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-//            return $resultResponse;
-//        }
-        $result = $this->CUDService->delete($request, "MediaEntity");
+        $result = $this->mediaService->delete($request);
         return $this->response($result, self::DELETE,"MediaEntity");
 
     }
 
 
     /**
-     * @Route("/media/getAll", name="getAllMedia",methods={"GET"})
+     * @Route("/medias", name="getAllMedia",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getAll(Request $request)
     {
 
-        $result = $this->FDService->fetchData($request,"Comment");
+        $result = $this->mediaService->getAll($request);
         return $this->response($result,self::FETCH,"Comment");
     }
     /**
@@ -90,7 +76,7 @@ class MediaEntityController extends BaseController
     public function getEntityItem(Request $request)
     {
 
-        $result = $this->FDService->fetchData($request,"Comment");
+        $result = $this->mediaService->getEntityItems($request,"Comment");
         return $this->response($result,self::FETCH,"Comment");
     }
 }

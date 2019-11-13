@@ -29,7 +29,7 @@ class Controller extends AbstractController
         $resultResponse->headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
         $resultResponse->headers->set('Access-Control-Allow-Headers', 'DNT,User-Agent,X-Requested-With, If-Modified-Since, Cache-Control, Content-Type,Range, Authorization');
         $resultResponse->headers->set('Access-Control-Max-Age', 1728000);
-        $resultResponse->headers->set('Content-Length', 0);
+       // $resultResponse->headers->set('Content-Length', 0);
         $resultResponse->headers->set('Content-Type', 'text/plain; charset=utf-8');
         return $resultResponse;
     }
