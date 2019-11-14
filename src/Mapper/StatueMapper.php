@@ -54,7 +54,7 @@ class StatueMapper
             ->setDescription($description)
             ->setMediums($mediums)
             ->setKeyWord($keyWords)
-            ->setCreateDate();
+        ;
         return $statue;
     }
 }

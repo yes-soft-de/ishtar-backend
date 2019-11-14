@@ -37,7 +37,7 @@ class ArtistMapper
             ->setTwitter($twitter)
             ->setInstagram($instagram)
             ->setLinkedin($linkedin)
-            ->setCreateDate();
+            ->setIsActive(1);
 
         return $artist;
     }

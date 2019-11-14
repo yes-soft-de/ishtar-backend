@@ -331,9 +331,9 @@ class StatueEntity
         return $this->updatedDate;
     }
 
-    public function setUpdatedDate(?\DateTimeInterface $updatedDate): self
+    public function setUpdatedDate(): self
     {
-        $this->updatedDate = $updatedDate;
+        $this->updatedDate = $this->createDate = new \DateTime('Now');;
 
         return $this;
     }

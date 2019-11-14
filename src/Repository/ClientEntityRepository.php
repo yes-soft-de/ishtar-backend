@@ -52,6 +52,7 @@ class ClientEntityRepository extends ServiceEntityRepository
     public function findAll()
     {
         return $this->createQueryBuilder('c')
+            ->andWhere('c.isActive=1')
             ->groupBy('c.id')
             ->getQuery()
             ->getResult();

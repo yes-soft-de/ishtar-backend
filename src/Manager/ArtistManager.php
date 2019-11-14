@@ -27,6 +27,7 @@ class ArtistManager
         $artistEntity=new ArtistEntity();
         $artistMapper = new ArtistMapper();
         $artistData=$artistMapper->artistData($artist, $artistEntity);
+        $artistEntity->setCreateDate();
         $this->entityManager->persist($artistData);
         $this->entityManager->flush();
         return $artistData;
@@ -42,6 +43,7 @@ class ArtistManager
             } else {
                 $artistMapper = new ArtistMapper();
                 $artistMapper->ArtistData($artist, $artistEntity);
+                $artistEntity->setUpdatedDate();
                 $this->entityManager->flush();
                 return $artistEntity;
             }
@@ -55,7 +57,7 @@ class ArtistManager
             $exception->entityNotFound("artist");
         }
         else {
-            $artist->setState(false);
+            $artist->setIsActive(false);
             $this->entityManager->flush();
         }
         return $artist;

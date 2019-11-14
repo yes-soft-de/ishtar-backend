@@ -196,7 +196,7 @@ class ClientEntity implements UserInterface
 
     public function setCreateDate(): self
     {
-        $this->createDate = new \DateTime('Now');;
+        $this->createDate = new \DateTime('Now');
 
         return $this;
     }
@@ -206,9 +206,9 @@ class ClientEntity implements UserInterface
         return $this->updatedBy;
     }
 
-    public function setUpdatedBy(?string $updatedBy): self
+    public function setUpdatedBy(): self
     {
-        $this->updatedBy = $updatedBy;
+        $this->updatedBy =$this->createDate = new \DateTime('Now');;
 
         return $this;
     }

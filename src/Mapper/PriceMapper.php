@@ -32,7 +32,8 @@ class PriceMapper
         $entity = $entityManger->getRepository(Entity::class)->find($entity);
         $PriceEntity->setPrice($price)
             ->setEntity($entity)
-            ->setRow($id);
+            ->setRow($id)
+        ->setCreatedDate();
         return $PriceEntity;
     }
 }

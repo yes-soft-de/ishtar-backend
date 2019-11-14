@@ -71,9 +71,9 @@ class PriceEntity
         return $this->createdDate;
     }
 
-    public function setCreatedDate(\DateTimeInterface $createdDate): self
+    public function setCreatedDate(): self
     {
-        $this->createdDate = $createdDate;
+        $this->createdDate =$this->createDate = new \DateTime('Now');;
 
         return $this;
     }

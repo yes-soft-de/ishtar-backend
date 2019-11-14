@@ -33,7 +33,8 @@ class EntityMediaMapper{
             ->setMedia($media)
             ->setRow($ID)
             ->setPath($path)
-            ->setName($name);
+            ->setName($name)
+        ;
 
         return $mediaEntity;
     }

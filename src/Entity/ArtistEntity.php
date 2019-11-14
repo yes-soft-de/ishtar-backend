@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+
  * @ORM\Entity(repositoryClass="App\Repository\ArtistEntityRepository")
  */
 class ArtistEntity
@@ -101,7 +102,7 @@ class ArtistEntity
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $active;
+    private $isActive;
 
 
 
@@ -110,7 +111,10 @@ class ArtistEntity
 //        $this->painting = new ArrayCollection();
 //        $this->gallery = new ArrayCollection();
 //    }
-
+    public function __construct()
+    {
+        $this->isActive = true;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -189,37 +193,6 @@ class ArtistEntity
     }
 
 
-//    /**
-//     * @return Collection|GalleryEntity[]
-//     */
-//    public function getGallery(): Collection
-//    {
-//        return $this->gallery;
-//    }
-//
-//    public function addGallery(GalleryEntity $gallery): self
-//    {
-//        if (!$this->gallery->contains($gallery)) {
-//            $this->gallery[] = $gallery;
-//            $gallery->setArtist($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeGallery(GalleryEntity $gallery): self
-//    {
-//        if ($this->gallery->contains($gallery)) {
-//            $this->gallery->removeElement($gallery);
-//            // set the owning side to null (unless already changed)
-//            if ($gallery->getArtist() === $this) {
-//                $gallery->setArtist(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
-
     public function getCreatedBy(): ?string
     {
         return $this->createdBy;
@@ -261,9 +234,9 @@ class ArtistEntity
         return $this->updateDate;
     }
 
-    public function setUpdateDate(?\DateTimeInterface $updateDate): self
+    public function setUpdateDate(): self
     {
-        $this->updateDate = $updateDate;
+        $this->updateDate = $this->createDate = new \DateTime('Now');;
 
         return $this;
     }
@@ -316,17 +289,23 @@ class ArtistEntity
         return $this;
     }
 
-    public function getActive(): ?bool
+    /**
+     * @return mixed
+     */
+    public function getIsActive()
     {
-        return $this->active;
+        return $this->isActive;
     }
 
-    public function setActive(?bool $active): self
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive): void
     {
-        $this->active = $active;
-
-        return $this;
+        $this->isActive = $isActive;
     }
+
+
 
 
 }

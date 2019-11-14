@@ -33,6 +33,7 @@ class StatueManager
         $statueEntity=new StatueEntity();
         $statueMapper = new StatueMapper();
         $statueData=$statueMapper->StatueData($statue, $statueEntity,$this->entityManager);
+        $statueEntity->setCreateDate();
         $this->entityManager->persist($statueData);
         $this->entityManager->flush();
         return $statueData;
@@ -48,6 +49,7 @@ class StatueManager
         else {
             $statueMapper = new StatueMapper();
             $statueMapper->StatueData($statue, $statueEntity,$this->entityManager);
+            $statueEntity->setUpdatedDate();
             $this->entityManager->flush();
             return $statueEntity;
         }

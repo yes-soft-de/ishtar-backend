@@ -131,6 +131,7 @@ class PaintingEntityRepository extends ServiceEntityRepository
             ->andWhere('at.id=eat.artType')
             ->andWhere('p.artist=a.id')
             ->andWhere('eat.entity=2')
+            ->andWhere('p.active=1')
             ->andWhere('a.id=ea.row')
             ->groupBy('a.id')
             ->getQuery()

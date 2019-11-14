@@ -23,6 +23,7 @@ class EntityMediaManger
         $entityMediaEntity=new EntityMediaEntity();
         $entityMediaMapper = new entityMediaMapper();
         $entityMediaData=$entityMediaMapper->MediaEntityData($entityMedia, $entityMediaEntity,$this->entityManager,$entity,$id);
+        $entityMediaEntity->setCreatedDate();
         $this->entityManager->persist($entityMediaData);
         $this->entityManager->flush();
         return $entityMediaEntity;
@@ -37,6 +38,7 @@ class EntityMediaManger
         }
         else {
            $entityMediaEntity->setPath($entityMedia['image']);
+           $entityMediaEntity->setUpdatedDate();
             $this->entityManager->flush();
             return $entityMediaEntity;
         }

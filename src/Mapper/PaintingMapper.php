@@ -43,7 +43,7 @@ class PaintingMapper
             ->setColorsType($colorsType)
             ->setActive(1)
             ->setImage($image)
-            ->setCreateDate();
+        ;
 
 
         return $painting;
