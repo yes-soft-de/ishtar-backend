@@ -38,7 +38,7 @@ class EntityMediaManger
         }
         else {
            $entityMediaEntity->setPath($entityMedia['image']);
-           $entityMediaEntity->setUpdatedDate();
+           $entityMediaEntity->setUpdateDate();
             $this->entityManager->flush();
             return $entityMediaEntity;
         }

@@ -4,28 +4,25 @@
 namespace App\Service;
 
 use App\Manager\ClientManager;
-use App\Manager\CommentManager;
-
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Manager\EntityMediaManger;
 
 class ClientService implements ClientServiceInterface
 {
-
     private $clientManager;
+    private $mediaManager;
 
-
-    public function __construct(ClientManager $clientManager)
+    public function __construct(ClientManager $clientManager,EntityMediaManger $mediaManager)
     {
         $this->clientManager=$clientManager;
+        $this->mediaManager=$mediaManager;
     }
 
     public function register($request)
     {
-      return $result =$this->clientManager->register($request);
+        $result =$this->clientManager->register($request);
+        $clientID=$result->getId();
+        $this->mediaManager->create($request,5,$clientID);
+      return $result;
     }
 
     public function login($request)
@@ -36,6 +33,7 @@ class ClientService implements ClientServiceInterface
     public function update($request)
     {
         // TODO: Implement update() method.
+        $this->mediaManager->update($request,5);
         return $this->clientManager->update($request);
     }
 

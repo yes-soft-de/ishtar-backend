@@ -38,10 +38,15 @@ class ClientEntityRepository extends ServiceEntityRepository
     */
 
 
-    public function findClient($value): ?ClientEntity
+    public function findClient($value)
     {
         try {
             return $this->createQueryBuilder('c')
+                ->select('c','m.path as image')
+                ->from('App:EntityMediaEntity','m')
+                ->andWhere('m.entity=5')
+                ->andWhere('m.row= :val')
+                ->andWhere('m.media=1')
                 ->andWhere('c.id = :val')
                 ->setParameter('val', $value)
                 ->getQuery()
@@ -52,6 +57,10 @@ class ClientEntityRepository extends ServiceEntityRepository
     public function findAll()
     {
         return $this->createQueryBuilder('c')
+            ->select('c','m.path as image')
+            ->from('App:EntityMediaEntity','m')
+            ->andWhere('m.entity=5')
+            ->andWhere('m.row=c.id')
             ->andWhere('c.isActive=1')
             ->groupBy('c.id')
             ->getQuery()

@@ -53,6 +53,7 @@ class GoogleController extends AbstractController
      */
     public function logout()
     {
+        return new jsonResponse(["status_code" => "200"]);
         throw new Exception("ex");
     }
 
