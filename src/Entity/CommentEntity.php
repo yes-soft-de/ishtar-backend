@@ -42,7 +42,6 @@ class CommentEntity
 
     /**
      * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
-     * @ORM\JoinColumn(nullable=true)
      */
     private $lastEdit;
 
