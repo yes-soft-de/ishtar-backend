@@ -1,2 +1,2 @@
-# ishtar-backend1
+# ishtar-backend
 Ishtar back-end
