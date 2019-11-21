@@ -10,6 +10,7 @@ use App\Repository\ClapEntityRepository;
 use App\Repository\ClientEntityRepository;
 use App\Repository\EntityRepository;
 use App\Request\CreateClapRequest;
+use App\Request\DeleteRequest;
 use App\Request\GetClientRequest;
 use App\Request\GetEntityRequest;
 use App\Request\UpdateClapRequest;
@@ -79,12 +80,12 @@ class ClapManager
     {
         return $clapResult =$this->clapRepository->findAll();
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $clapEntity=$this->clapRepository->find($request->get('id'));
+        $clapEntity=$this->clapRepository->find($request->getId());
         if (!$clapEntity) {
             $exception=new EntityException();
-            $exception->entityNotFound("artType");
+            $exception->entityNotFound("clap");
         }
         else {
             $this->entityManager->remove($clapEntity);

@@ -11,6 +11,7 @@ use App\Mapper\AutoMapper;
 use App\Mapper\StoryMapper;
 use App\Repository\EntityRepository;
 use App\Repository\StoryEntityRepository;
+use App\Request\DeleteRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,10 +61,10 @@ class StoryManager
         }
     }
 
-    public function delete(Request $request,$entity)
+    public function delete(DeleteRequest $request,$entity)
     {
 
-        $story=$this->storyRepository->findEntity($request->get('id'),$entity);
+        $story=$this->storyRepository->findEntity($request->getId(),$entity);
         if (!$story) {
             $exception=new EntityException();
             $exception->entityNotFound("artType");

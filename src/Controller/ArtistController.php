@@ -46,7 +46,7 @@ class ArtistController extends BaseController
         $mapper = new AutoMapper($config);
         $request = $mapper->map((object)$data, CreateArtistRequest::class);
         $result = $this->artistService->create($request);
-        return $this->response($result, self::CREATE, "Artist");
+        return $this->response($result, self::CREATE);
     }
 
     /**
@@ -70,7 +70,7 @@ class ArtistController extends BaseController
         $request = $mapper->map((object)$data, UpdateArtistRequest::class);
         $request->setId($id);
         $result = $this->artistService->update($request);
-        return $this->response($result, self::UPDATE, "Artist");
+        return $this->response($result, self::UPDATE);
     }
 
     /**
@@ -78,18 +78,11 @@ class ArtistController extends BaseController
      * @param Request $request
      * @return
      */
-    public function delete(Request $request, ArtistValidateInterface $artistValidate)
+    public function delete(Request $request)
     {
-        $validateResult = $artistValidate->artistValidator($request, 'delete');
-        if (!empty($validateResult)) {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
         $request=new DeleteRequest($request->get('id'));
         $result = $this->artistService->delete($request);
         return $this->response($result, self::DELETE);
-
     }
 
     /**
@@ -118,12 +111,11 @@ class ArtistController extends BaseController
      * @Route("/search)
      * @param Request $request
      * @return Response
-     * @throws \Exception
      */
     public function search(Request $request)
     {
         $result = $this->artistService->search($request);
-        return $this->response($result, self::FETCH, "Artist");
+        return $this->response($result, self::FETCH);
     }
 
     /**
@@ -134,6 +126,6 @@ class ArtistController extends BaseController
     public function getAllDetails()
     {
         $result = $this->artistService->getAllDetails();
-        return $this->response($result, self::FETCH, "Artist");
+        return $this->response($result, self::FETCH);
     }
 }

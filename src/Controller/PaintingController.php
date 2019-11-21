@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Request\ByIdRequest;
 use App\Request\CreateArtistRequest;
 use App\Request\CreatePaintingRequest;
+use App\Request\DeleteRequest;
 use App\Request\getPaintingByRequest;
 use App\Request\UpdatePaintingRequest;
 use App\Service\PaintingService;
@@ -77,13 +78,11 @@ class PaintingController extends BaseController
      * @param Request $request
      * @return
      */
-    public function delete(Request $request ,PaintingValidateInterface $paintingValidate)
+    public function delete(Request $request)
    {
-
-        $request=new ByIdRequest($request->get('id'));
+        $request=new DeleteRequest($request->get('id'));
        $result=$this->paintingService->delete($request);
         return $this->response($result, self::DELETE);
-
     }
 
     /**
@@ -107,7 +106,7 @@ public function getArtistPaintings(Request $request)
 {
     $request=new ByIdRequest($request->get('id'));
     $result = $this->paintingService->getArtistPaintings($request);
-    return $this->response($result,self::FETCH,"Painting");
+    return $this->response($result,self::FETCH);
 }
 
     /**
@@ -131,7 +130,7 @@ public function getArtistPaintings(Request $request)
     {
         $request=new ByIdRequest($request->get('id'));
         $result = $this->paintingService->getPaintingById($request->getId());
-        return $this->response($result,self::FETCH,"Painting");
+        return $this->response($result,self::FETCH);
     }
     /**
      *  @Route("/paintingby/{parm}/{value}", name="getPaintingBy",methods={"GET"})
@@ -142,7 +141,7 @@ public function getArtistPaintings(Request $request)
     {
         $request=new GetPaintingByRequest($request->get('parm'),$request->get('value'));
         $result = $this->paintingService->getBy($request);
-        return $this->response($result,self::FETCH,"Painting");
+        return $this->response($result,self::FETCH);
     }
-    
+
 }

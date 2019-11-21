@@ -83,19 +83,11 @@ class ClapController extends BaseController
      * @param Request $request
      * @return
      */
-    public function delete(Request $request, ClapValidateInterface $clapValidate)
+    public function delete(Request $request)
     {
-        $validateResult = $clapValidate->clapValidator($request, 'delete');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
         $request=new DeleteRequest($request->get('id'));
         $result = $this->clapService->delete($request);
         return $this->response($result, self::DELETE);
-
     }
 
     /**

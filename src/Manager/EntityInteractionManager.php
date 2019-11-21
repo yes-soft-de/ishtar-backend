@@ -11,6 +11,7 @@ use App\Repository\EntityInteractionEntityRepository;
 use App\Repository\EntityRepository;
 use App\Repository\InteractionEntityRepository;
 use App\Request\CreateInteractionRequest;
+use App\Request\DeleteRequest;
 use App\Request\GetClientRequest;
 use App\Request\GetInterctionEntityRequest;
 use App\Request\UpdateClapRequest;
@@ -72,12 +73,12 @@ class EntityInteractionManager
             return $entityInteractionEntity;
         }
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $interaction=$this->entityInteractionRepository->find($request->get('id'));
+        $interaction=$this->entityInteractionRepository->find($request->getId());
         if (!$interaction) {
             $exception=new EntityException();
-            $exception->entityNotFound("artType");
+            $exception->entityNotFound("interaction");
         }
         else {
             $this->entityManager->remove($interaction);

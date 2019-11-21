@@ -15,7 +15,10 @@ use App\Mapper\AutoMapper;
 use App\Mapper\PaintingMapper;
 use App\Repository\ArtistEntityRepository;
 use App\Repository\PaintingEntityRepository;
+use App\Request\ByIdRequest;
 use App\Request\CreatePaintingRequest;
+use App\Request\DeleteRequest;
+use App\Request\getPaintingByRequest;
 use App\Request\UpdatePaintingRequest;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,7 +54,7 @@ class PaintingManager
         $this->entityManager->flush();
         return $paintingData;
     }
-    public function update($request)
+    public function update(UpdatePaintingRequest $request)
     {
         $paintingEntity=$this->paintingRepository->getPainting($request->getId());
         if (!$paintingEntity) {
@@ -69,9 +72,9 @@ class PaintingManager
             return $paintingEntity;
         }
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $id=$request->get('id');
+        $id=$request->getId();
         $paintingEntity=$this->paintingRepository->getPainting($id);
         if (!$paintingEntity) {
             $exception=new EntityException();
@@ -89,10 +92,9 @@ class PaintingManager
 
         return $data;
     }
-    public function getArtistPaintings(Request $request)
+    public function getArtistPaintings(ByIdRequest $request)
     {
-        $data = json_decode($request->getContent(),true);
-         $result = $this->paintingRepository->getArtistPaintings($data['id']);
+         $result = $this->paintingRepository->getArtistPaintings($request->getId());
     return $result;
     }
 
@@ -101,14 +103,13 @@ class PaintingManager
         return $result = $this->paintingRepository->findOneById($id);
     }
 
-    public function getPaintingImages(Request $request)
+    public function getPaintingImages(ByIdRequest $request)
     {
-        $data = json_decode($request->getContent(),true);
-        return $result = $this->paintingRepository->getPaintingImages($data['id']);
+        return $result = $this->paintingRepository->getPaintingImages($request->getId());
     }
-    public function getBy(Request $request)
+    public function getBy(getPaintingByRequest $request)
     {
-         $result = $this->paintingRepository->getBy($request->get('parm'),$request->get('value'));
+         $result = $this->paintingRepository->getBy($request->getParm(),$request->getValue());
          return $result;
     }
 

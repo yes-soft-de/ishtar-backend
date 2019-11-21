@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Request\ByIdRequest;
 use App\Request\CreateStatueRequest;
+use App\Request\DeleteRequest;
 use App\Request\UpdateStatueRequest;
 use App\Service\StatueService;
 use App\Validator\StatueValidateInterface;
@@ -48,7 +50,7 @@ class StatueController extends BaseController
         $mapper = new AutoMapper($config);
         $request = $mapper->map((object)$data, CreateStatueRequest::class);
         $result = $this->statueService->create($request);
-        return $this->response($result, self::CREATE,"Statue");
+        return $this->response($result, self::CREATE);
     }
 
     /**
@@ -73,7 +75,7 @@ class StatueController extends BaseController
         $request = $mapper->map((object)$data, UpdateStatueRequest::class);
         $request->setId($id);
         $result = $this->statueService->update($request);
-        return $this->response($result, self::UPDATE,"Statue");
+        return $this->response($result, self::UPDATE);
     }
 
     /**
@@ -81,19 +83,11 @@ class StatueController extends BaseController
      * @param Request $request
      * @return
      */
-    public function delete(Request $request, StatueValidateInterface $statueValidate)
+    public function delete(Request $request)
     {
-//        $validateResult = $statueValidate->statueValidator($request, 'delete');
-//        if (!empty($validateResult))
-//        {
-//            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-//            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-//            return $resultResponse;
-//        }
-     //   $this->CUDService->delete($request,"Price");
+        $request=new DeleteRequest($request->get('id'));
         $result = $this->statueService->delete($request);
-
-        return $this->response($result, self::DELETE,"Statue");
+        return $this->response($result, self::DELETE);
 
     }
 
@@ -101,12 +95,10 @@ class StatueController extends BaseController
      * @Route("/statues", name="getAllStatue",methods={"GET"})
      * @return
      */
-
     public function getAll()
     {
-
         $result = $this->statueService->getAll();
-        return $this->response($result,self::FETCH,"Statue");
+        return $this->response($result,self::FETCH);
     }
 
     /**
@@ -116,8 +108,9 @@ class StatueController extends BaseController
      */
     public function getStatueById(Request $request)
     {
-        $result = $this->statueService->getStatueById($request->get('id'));
-        return $this->response($result,self::FETCH,"Statue");
+        $request=new ByIdRequest($request->get('id'));
+        $result = $this->statueService->getStatueById($request->getId());
+        return $this->response($result,self::FETCH);
     }
 
 }

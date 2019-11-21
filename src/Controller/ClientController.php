@@ -2,12 +2,18 @@
 
 namespace App\Controller;
 
+use App\Request\ByIdRequest;
+use App\Request\DeleteRequest;
+use App\Request\RegisterRequest;
+use App\Request\UpdateClientRequest;
 use App\Service\ClientService;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Validator\ClientValidateInterface;
-
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 class ClientController extends BaseController{
@@ -17,30 +23,10 @@ private $clientService;
 {
     $this->clientService=$clientService;
 }
-
-    /**
-     * @Route("/clients", name="createClient",methods={"POST"})
-     * @param Request $request
-     * @return
-     */
-    public function create(Request $request, ClientValidateInterface $clientValidate)
-    {
-        //Validation
-        $validateResult = $clientValidate->clientValidator($request, 'create');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
-
-        $result = $this->clientService->create($request);
-        return $this->response($result, self::CREATE);
-    }
-
     /**
      * @Route("/client/{id}", name="updateClient",methods={"PUT"})
      * @param Request $request
+     * @return Response
      */
     public function update(Request $request,ClientValidateInterface $clientValidate)
     {
@@ -51,6 +37,13 @@ private $clientService;
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $id=$request->get('id');
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, UpdateClientRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, UpdateClientRequest::class);
+        $request->setId($id);
         $result = $this->clientService->update($request);
         return $this->response($result,self::UPDATE);
     }
@@ -61,23 +54,19 @@ private $clientService;
      */
     public function delete(Request $request)
     {
-        //ToDo Call Validator
-
+        $request=new DeleteRequest($request->get('id'));
         $result = $this->clientService->delete($request);
         return $this->response($result,self::DELETE);
     }
 
-
     /**
      * @Route("/clients", name="getAllClient",methods={"GET"})
-     * @param Request $request
      * @return
      */
-    public function getAll(Request $request)
+    public function getAll()
     {
-
-        $result = $this->clientService->getAll($request);
-        return $this->response($result,self::FETCH,"Client");
+        $result = $this->clientService->getAll();
+        return $this->response($result,self::FETCH);
     }
     /**
      * @Route("/client/{id}", name="getClientById",methods={"GET"})
@@ -86,7 +75,31 @@ private $clientService;
      */
     public function getClientById(Request $request)
     {
+        $request=new ByIdRequest($request->get('id'));
         $result = $this->clientService->getById($request);
         return $this->response($result,self::FETCH);
+    }
+    public function register(Request $request, ValidatorInterface $validator)
+    {
+        //validation
+        $errors = $validator->validate($request);
+
+        if (count($errors) > 0)
+        {
+            $errorsString = (string) $errors;
+            return $this->respondUnauthorized($errorsString) ;
+        }
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, RegisterRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, RegisterRequest::class);
+        $client= $this->clientService->register($request);
+        return $this->response(sprintf('User %s successfully created', $client->getEmail()),self::CREATE);
+    }
+
+    public function api()
+    {
+        return $this->response(sprintf('Logged in as %s', $this->getUser()->GetEmail()),self::STATE_OK);
     }
 }

@@ -13,7 +13,9 @@ use App\Mapper\AutoMapper;
 use App\Mapper\StatueMapper;
 use App\Repository\ArtistEntityRepository;
 use App\Repository\StatueEntityRepository;
+use App\Request\ByIdRequest;
 use App\Request\CreateStatueRequest;
+use App\Request\DeleteRequest;
 use App\Request\UpdateStatueRequest;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,7 +38,7 @@ class StatueManager
         $this->artistRepository=$artistRepository;
     }
 
-    public function create($request)
+    public function create(CreateStatueRequest $request)
     {
         $config = new AutoMapperConfig();
         $config->registerMapping(CreateStatueRequest::class, StatueEntity::class);
@@ -48,7 +50,7 @@ class StatueManager
         $this->entityManager->flush();
         return $statueData;
     }
-    public function update($request)
+    public function update(UpdateStatueRequest $request)
     {
         $statueEntity=$this->statueRepository->getStatue($request->getId());
         if (!$statueEntity) {
@@ -66,9 +68,9 @@ class StatueManager
             return $statueEntity;
         }
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $statueEntity=$this->statueRepository->getStatue($request->get('id'));
+        $statueEntity=$this->statueRepository->getStatue($request->getId());
         if (!$statueEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("statue");
@@ -86,9 +88,9 @@ class StatueManager
         return $data;
     }
 
-    public function getStatueById($request)
+    public function getStatueById(ByIdRequest $request)
     {
-        return $result = $this->statueRepository->findOneById($request);
+        return $result = $this->statueRepository->findOneById($request->getId());
     }
 
 }

@@ -7,6 +7,11 @@ use App\Entity\ClientEntity;
 use App\Mapper\ClientMapper;
 use App\Repository\ClapEntityRepository;
 use App\Repository\ClientEntityRepository;
+use App\Request\DeleteRequest;
+use App\Request\RegisterRequest;
+use App\Request\UpdateClientRequest;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -26,27 +31,31 @@ class ClientManager
 
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $data = json_decode($request->getContent(),true);
-        $client = new ClientEntity($data['email']);
-        $Mapper = new ClientMapper();
-        $Mapper->ClientData($data,$client,$this->encoder);
+        $client = new ClientEntity($request->getEmail());
+        $config = new AutoMapperConfig();
+        $config->registerMapping(RegisterRequest::class, ClientEntity::class);
+        $mapper = new AutoMapper($config);
+        $client=$mapper->mapToObject($request,$client);
+        $client->setCreateDate();
         $this->entityManager->persist($client);
         $this->entityManager->flush();
         return $client;
     }
-    public function update(Request $request)
+    public function update(UpdateClientRequest $request)
     {
-        $client = json_decode($request->getContent(),true);
-        $clientEntity=$this->clientRepository->find($request->get('id'));
+        $clientEntity=$this->clientRepository->find($request->getId());
         if (!$clientEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("client");
         }
         else {
-            $clientMapper = new ClientMapper();
-            $clientMapper->ClientData($client,$clientEntity,$this->encoder);
+            $config = new AutoMapperConfig();
+            $config->registerMapping(RegisterRequest::class, ClientEntity::class);
+            $mapper = new AutoMapper($config);
+            $client=$mapper->mapToObject($request,$clientEntity);
+            $client->setCreateDate();
             $this->entityManager->flush();
             return $clientEntity;
         }
@@ -59,9 +68,9 @@ class ClientManager
     {
         return $this->clientRepository->findClient($request);
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $clientEntity=$this->clientRepository->findClient($request->get('id'));
+        $clientEntity=$this->clientRepository->findClient($request->getId());
         if (!$clientEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("client");

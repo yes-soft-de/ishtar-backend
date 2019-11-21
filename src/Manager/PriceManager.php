@@ -11,6 +11,7 @@ use App\Mapper\AutoMapper;
 use App\Mapper\PriceMapper;
 use App\Repository\EntityRepository;
 use App\Repository\PriceEntityRepository;
+use App\Request\DeleteRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,9 +53,9 @@ class PriceManager
         $this->entityManager->flush();
         return $priceEntity;
     }
-    public function delete(Request $request,$entity)
+    public function delete(DeleteRequest $request,$entity)
     {
-        $price = $this->priceRepository->findEntity($request->get('id'), $entity);
+        $price = $this->priceRepository->findEntity($request->getId(), $entity);
         if (!$price) {
             $exception = new EntityException();
             $exception->entityNotFound("artType");

@@ -9,7 +9,9 @@ use App\Mapper\CommentMapper;
 use App\Repository\ClientEntityRepository;
 use App\Repository\CommentEntityRepository;
 use App\Repository\EntityRepository;
+use App\Request\ByIdRequest;
 use App\Request\CreateCommentRequest;
+use App\Request\DeleteRequest;
 use App\Request\GetClientRequest;
 use App\Request\GetEntityRequest;
 use App\Request\UpdateCommentRequest;
@@ -78,9 +80,9 @@ class CommentManager
     {
         return $commentResult =$this->commentRepository->getAll();
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $commentEntity=$this->commentRepository->find($request->get('id'));
+        $commentEntity=$this->commentRepository->find($request->getId());
         if (!$commentEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("comment");
@@ -92,9 +94,9 @@ class CommentManager
             return $commentEntity;
 
     }
-    public function setSpacial(Request $request)
+    public function setSpacial(ByIdRequest $request)
     {
-        $commentEntity=$this->commentRepository->find($request->get('id'));
+        $commentEntity=$this->commentRepository->find($request->getId());
         if (!$commentEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("comment");

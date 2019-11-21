@@ -2,8 +2,15 @@
 
 namespace App\Controller;
 
+use App\Request\ByIdRequest;
+use App\Request\CreateMediaRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateMediaRequest;
+use App\Request\UpdatePaintingRequest;
 use App\Service\EntityMediaService;
 use App\Validator\CommentValidateInterface;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +35,11 @@ class MediaEntityController extends BaseController
      */
     public function create(Request $request)
     {
-
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, CreateMediaRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, CreateMediaRequest::class);
         $result = $this->mediaService->create($request);
         return $this->response($result, self::CREATE);
     }
@@ -40,8 +51,15 @@ class MediaEntityController extends BaseController
      */
     public function update(Request $request)
     {
+        $id=$request->get('id');
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, UpdateMediaRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, UpdateMediaRequest::class);
+        $request->setId($id);
         $result = $this->mediaService->update($request);
-        return $this->response($result, self::UPDATE, "MediaEntity");
+        return $this->response($result, self::UPDATE);
     }
 
     /**
@@ -51,22 +69,19 @@ class MediaEntityController extends BaseController
      */
     public function delete(Request $request)
     {
+        $request=new DeleteRequest($request->get('id'));
         $result = $this->mediaService->delete($request);
-        return $this->response($result, self::DELETE,"MediaEntity");
+        return $this->response($result, self::DELETE);
 
     }
-
-
     /**
      * @Route("/medias", name="getAllMedia",methods={"GET"})
-     * @param Request $request
      * @return
      */
-    public function getAll(Request $request)
+    public function getAll()
     {
-
-        $result = $this->mediaService->getAll($request);
-        return $this->response($result,self::FETCH,"Comment");
+        $result = $this->mediaService->getAll();
+        return $this->response($result,self::FETCH);
     }
     /**
      * @Route("entityitems/{entity}", name="getEntityItems",methods={"GET"})
@@ -75,8 +90,8 @@ class MediaEntityController extends BaseController
      */
     public function getEntityItem(Request $request)
     {
-
-        $result = $this->mediaService->getEntityItems($request,"Comment");
-        return $this->response($result,self::FETCH,"Comment");
+        $request=new ByIdRequest($request->get('entity'));
+        $result = $this->mediaService->getEntityItems($request);
+        return $this->response($result,self::FETCH);
     }
 }

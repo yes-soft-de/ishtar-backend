@@ -8,6 +8,9 @@ use App\Entity\EntityMediaEntity;
 use App\Mapper\EntityMediaMapper;
 use App\Repository\EntityMediaEntityRepository;
 use App\Repository\EntityRepository;
+use App\Request\ByIdRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateMediaRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -71,27 +74,26 @@ class EntityMediaManger
 
         return $data;
     }
-    public function getEntityItems(Request $request)
+    public function getEntityItems(ByIdRequest $request)
     {
-        return $this->entityRepository->getEntityItems($request->get('entity'));
+        return $this->entityRepository->getEntityItems($request->getId());
     }
-    public function updateMediaById(Request $request)
+    public function updateMediaById(UpdateMediaRequest $request)
     {
-        $entityMediaEntity=$this->entityMediaRepository->find($request->get('id'));
+        $entityMediaEntity=$this->entityMediaRepository->find($request->getId());
         if (!$entityMediaEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("entityMedia");
         }
         else {
-            $entityMedia = json_decode($request->getContent(),true);
-            $entityMediaEntity->setPath($entityMedia['image']);
+            $entityMediaEntity->setPath($request->getPath());
             $this->entityManager->flush();
             return $entityMediaEntity;
         }
     }
-    public function deleteById(Request $request)
+    public function deleteById(DeleteRequest $request)
     {
-        $entityMediaEntity=$this->entityMediaRepository->find($request->get('id'));
+        $entityMediaEntity=$this->entityMediaRepository->find($request->getId());
         if (!$entityMediaEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("entityMedia");
