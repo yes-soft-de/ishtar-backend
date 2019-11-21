@@ -1,8 +1,15 @@
 <?php
 
 namespace App\Controller;
+use App\Request\ByIdRequest;
+use App\Request\CreateArtistRequest;
+use App\Request\CreatePaintingRequest;
+use App\Request\getPaintingByRequest;
+use App\Request\UpdatePaintingRequest;
 use App\Service\PaintingService;
 use App\Validator\PaintingValidateInterface;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,8 +38,13 @@ class PaintingController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, CreatePaintingRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, CreatePaintingRequest::class);
         $result = $this->paintingService->create($request);
-        return $this->response($result, self::CREATE,"Painting");
+        return $this->response($result, self::CREATE);
     }
 
     /**
@@ -50,8 +62,14 @@ class PaintingController extends BaseController
             return $resultResponse;
         }
         $id=$request->get('id');
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, UpdatePaintingRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, UpdatePaintingRequest::class);
+        $request->setId($id);
         $result = $this->paintingService->update($request,$id);
-        return $this->response($result, self::UPDATE,"Painting");
+        return $this->response($result, self::UPDATE);
     }
 
     /**
@@ -61,29 +79,23 @@ class PaintingController extends BaseController
      */
     public function delete(Request $request ,PaintingValidateInterface $paintingValidate)
    {
-//        $validateResult = $paintingValidate->paintingValidator($request, 'delete');
-//        if (!empty($validateResult))
-//        {
-//            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-//            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-//            return $resultResponse;
-//        }
+
+        $request=new ByIdRequest($request->get('id'));
        $result=$this->paintingService->delete($request);
-        return $this->response($result, self::DELETE,"Painting");
+        return $this->response($result, self::DELETE);
 
     }
 
     /**
      * @Route("/paintings", name="getAllPainting",methods={"GET"})
-     * @param Request $request
+     *
      * @return
      */
 
     public function getAll()
     {
-
         $result = $this->paintingService->getAll();
-        return $this->response($result,self::FETCH,"Painting");
+        return $this->response($result,self::FETCH);
     }
 
     /**
@@ -93,6 +105,7 @@ class PaintingController extends BaseController
      */
 public function getArtistPaintings(Request $request)
 {
+    $request=new ByIdRequest($request->get('id'));
     $result = $this->paintingService->getArtistPaintings($request);
     return $this->response($result,self::FETCH,"Painting");
 }
@@ -104,8 +117,9 @@ public function getArtistPaintings(Request $request)
      */
     public function getArtTypePaintings(Request $request)
     {
+        $request=new ByIdRequest($request->get('id'));
         $result = $this->paintingService->getArtTypePaintings($request);
-        return $this->response($result,self::FETCH,"Painting");
+        return $this->response($result,self::FETCH);
     }
 
     /**
@@ -115,7 +129,8 @@ public function getArtistPaintings(Request $request)
      */
     public function getPaintingById(Request $request)
     {
-        $result = $this->paintingService->getPaintingById($request->get('id'));
+        $request=new ByIdRequest($request->get('id'));
+        $result = $this->paintingService->getPaintingById($request->getId());
         return $this->response($result,self::FETCH,"Painting");
     }
     /**
@@ -125,30 +140,9 @@ public function getArtistPaintings(Request $request)
      */
     public function getBy(Request $request)
     {
+        $request=new GetPaintingByRequest($request->get('parm'),$request->get('value'));
         $result = $this->paintingService->getBy($request);
         return $this->response($result,self::FETCH,"Painting");
     }
-
-    /**
-     * @Route("/painting/getShort", name="getPaintingShort",methods={"GET"})
-     * @param Request $request
-     * @return
-     */
-    public function getPaintingShort()
-    {
-        $result = $this->paintingService->getPaintingShort();
-        return $this->response($result,self::FETCH,"Painting");
-    }
-
-    /**
-     * @Route("/paintingimages/{id}", name="getPaintingImages",methods={"GET"})
-     * @param Request $request
-     * @return
-     */
-    public function getPaintingImages(Request $request)
-    {
-        $result = $this->paintingService->getPaintingImages($request);
-        return $this->response($result,self::FETCH,"Painting");
-    }
-
+    
 }

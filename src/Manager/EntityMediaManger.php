@@ -6,20 +6,27 @@ namespace App\Manager;
 use App\Entity\Entity;
 use App\Entity\EntityMediaEntity;
 use App\Mapper\EntityMediaMapper;
+use App\Repository\EntityMediaEntityRepository;
+use App\Repository\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class EntityMediaManger
 {
     private $entityManager;
+    private $entityMediaRepository;
+    private $entityRepository;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface)
+    public function __construct(EntityManagerInterface $entityManagerInterface,
+                                EntityMediaEntityRepository $entityMediaRepository,EntityRepository $entityRepository)
     {
         $this->entityManager = $entityManagerInterface;
+        $this->entityMediaRepository=$entityMediaRepository;
+        $this->entityRepository=$entityRepository;
     }
-    public function create(Request $request,$entity,$id)
+    public function create($request,$entity,$id)
     {
-        $entityMedia= json_decode($request->getContent(),true);
+       $entityMedia= (array)$request;
         $entityMediaEntity=new EntityMediaEntity();
         $entityMediaMapper = new entityMediaMapper();
         $entityMediaData=$entityMediaMapper->MediaEntityData($entityMedia, $entityMediaEntity,$this->entityManager,$entity,$id);
@@ -28,10 +35,10 @@ class EntityMediaManger
         $this->entityManager->flush();
         return $entityMediaEntity;
     }
-    public function update(Request $request,$entity)
+    public function update($request,$entity)
     {
-        $entityMedia = json_decode($request->getContent(),true);
-        $entityMediaEntity=$this->entityManager->getRepository(EntityMediaEntity::class)->findImages($request->get('id'),$entity);
+        $entityMedia = (array)$request;
+        $entityMediaEntity=$this->entityMediaRepository->findImages($entityMedia['id'],$entity);
         if (!$entityMediaEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("entityMedia");
@@ -43,12 +50,11 @@ class EntityMediaManger
             return $entityMediaEntity;
         }
     }
-    public function delete(Request $request,$entity)
+    public function delete($request,$entity)
     {
         if(!isset($entity))
-            $entity=$request->get('entity');
-        $media=$this->entityManager->getRepository(EntityMediaEntity::class)
-            ->findImages($request->get('id'),$entity);
+            $entity=$request->getEntity();
+        $media=$this->entityMediaRepository->findImages($request->getId(),$entity);
         if (!$media) {
             $exception=new EntityException();
             $exception->entityNotFound("media");
@@ -60,19 +66,18 @@ class EntityMediaManger
     }
     public function getAll()
     {
-        $data=$this->entityManager->getRepository(EntityMediaEntity::class)->findAll();
+        $data=$this->entityMediaRepository->findAll();
 
 
         return $data;
     }
     public function getEntityItems(Request $request)
     {
-        return $this->entityManager->getRepository(Entity::class)->getEntityItems($request->get('entity'));
+        return $this->entityRepository->getEntityItems($request->get('entity'));
     }
     public function updateMediaById(Request $request)
     {
-        $entityMediaEntity=$this->entityManager->getRepository(EntityMediaEntity::class)->
-        find($request->get('id'));
+        $entityMediaEntity=$this->entityMediaRepository->find($request->get('id'));
         if (!$entityMediaEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("entityMedia");
@@ -86,8 +91,7 @@ class EntityMediaManger
     }
     public function deleteById(Request $request)
     {
-        $entityMediaEntity=$this->entityManager->getRepository(EntityMediaEntity::class)->
-        find($request->get('id'));
+        $entityMediaEntity=$this->entityMediaRepository->find($request->get('id'));
         if (!$entityMediaEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("entityMedia");

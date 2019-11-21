@@ -2,8 +2,14 @@
 
 namespace App\Controller;
 
+use App\Request\CreateInteractionRequest;
+use App\Request\GetClientRequest;
+use App\Request\GetInterctionEntityRequest;
+use App\Request\UpdateInteractionRequest;
 use App\Service\EntityInteractionService;
 use App\Validator\InteractionValidateInterface;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +43,11 @@ class EntityInteractionController extends BaseController
             return $resultResponse;
         }
         //
-
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, CreateInteractionRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, CreateInteractionRequest::class);
         $result = $this->interactionService->create($request);
         return $this->response($result, self::CREATE,"EntityInteraction");
     }
@@ -56,6 +66,13 @@ class EntityInteractionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $id=$request->get('id');
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, UpdateInteractionRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, UpdateInteractionRequest::class);
+        $request->setId($id);
         $result = $this->interactionService->update($request);
         return $this->response($result, self::UPDATE,"Interaction");
     }
@@ -97,7 +114,8 @@ class EntityInteractionController extends BaseController
      */
     public function getEntityInteraction(Request $request)
     {
-
+        $request=new GetInterctionEntityRequest($request->get('entity'),$request->get('row'),
+            $request->get('interaction'));
         $result = $this->interactionService->getEntityInteraction($request);
         return $this->response($result,self::FETCH,"Interaction");
     }
@@ -108,6 +126,7 @@ class EntityInteractionController extends BaseController
      */
     public function getClientInteractions(Request $request)
     {
+        $request=new GetClientRequest($request->get('client'));
         $result = $this->interactionService->getClientInteraction($request);
         return $this->response($result,self::FETCH,"Interaction");
     }

@@ -3,11 +3,13 @@
 
 namespace App\Manager;
 
-
-
 use App\Entity\ArtistEntity;
 use App\Mapper\ArtistMapper;
-use App\Mapper\AutoMapper;
+use App\Repository\ArtistEntityRepository;
+use App\Request\CreateArtistRequest;
+use App\Request\UpdateArtistRequest;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,43 +17,44 @@ use Symfony\Component\HttpFoundation\Request;
 class ArtistManager
 {
     private $entityManager;
+    private $artistRepository;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface)
+    public function __construct(EntityManagerInterface $entityManagerInterface,ArtistEntityRepository $artistEntityRepository)
     {
         $this->entityManager = $entityManagerInterface;
+        $this->artistRepository=$artistEntityRepository;
     }
 
-    public function create(Request $request)
+    public function create(CreateArtistRequest $request)
     {
-        $artist = json_decode($request->getContent(),true);
-        $artistEntity=new ArtistEntity();
-        $artistMapper = new ArtistMapper();
-        $artistData=$artistMapper->artistData($artist, $artistEntity);
-        $artistEntity->setCreateDate();
+        $config = new AutoMapperConfig();
+        $config->registerMapping(CreateArtistRequest::class, ArtistEntity::class);
+        $mapper = new \AutoMapperPlus\AutoMapper($config);
+        $artistData=$mapper->map($request,ArtistEntity::class);
+        $artistData->setCreateDate();
         $this->entityManager->persist($artistData);
         $this->entityManager->flush();
         return $artistData;
     }
-    public function update(Request $request)
+    public function update(UpdateArtistRequest $request)
     {
-        $artist = json_decode($request->getContent(),true);
-        $artistEntity=$this->entityManager->getRepository(ArtistEntity::class)->getArtist($request->get('id'));
-
+        $artistEntity=$this->artistRepository->getArtist($request->getId());
             if (!$artistEntity) {
                 $exception = new EntityException();
                 $exception->entityNotFound("artist");
             } else {
-                $artistMapper = new ArtistMapper();
-                $artistMapper->ArtistData($artist, $artistEntity);
-                $artistEntity->setUpdatedDate();
+                $config = new AutoMapperConfig();
+                $config->registerMapping(UpdateArtistRequest::class,ArtistEntity::class);
+                $mapper = new AutoMapper($config);
+                $artistEntity=$mapper->mapToObject($request,$artistEntity);
                 $this->entityManager->flush();
                 return $artistEntity;
             }
 
     }
-    public function delete(Request $request)
+    public function delete($request)
     {
-        $artist=$this->entityManager->getRepository(ArtistEntity::class)->getArtist($request->get('id'));
+        $artist=$this->artistRepository->getArtist($request->getId());
         if (!$artist) {
             $exception=new EntityException();
             $exception->entityNotFound("artist");
@@ -64,23 +67,23 @@ class ArtistManager
     }
     public function getAll()
     {
-        $data=$this->entityManager->getRepository(ArtistEntity::class)->getAll();
+        $data=$this->artistRepository->getAll();
 
         return $data;
     }
 
-    public function getArtistById(Request $request)
+    public function getArtistById($request)
     {
-        return $result = $this->entityManager->getRepository(ArtistEntity::class)->findById($request->get('id'));
+        return $result = $this->artistRepository->findById($request->getId());
     }
     public function search(Request $request)
     {
         $data = json_decode($request->getContent(),true);
-        return $result = $this->entityManager->getRepository(ArtistEntity::class)->search($data['keyword']);
+        return $result = $this->artistRepository->search($data['keyword']);
     }
     public function getAllDetails()
     {
-        $data=$this->entityManager->getRepository(ArtistEntity::class)->getAllDetails();
+        $data=$this->artistRepository->getAllDetails();
 
         return $data;
     }

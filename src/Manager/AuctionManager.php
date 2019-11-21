@@ -8,6 +8,7 @@ namespace App\Manager;
 use App\Entity\AuctionEntity;
 use App\Mapper\AuctionMapper;
 use App\Mapper\AutoMapper;
+use App\Repository\AuctionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,11 @@ use Symfony\Component\HttpFoundation\Request;
 class AuctionManager
 {
     private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManagerInterface)
+    private $auctionRepository;
+    public function __construct(EntityManagerInterface $entityManagerInterface,AuctionRepository $auctionRepository)
     {
         $this->entityManager = $entityManagerInterface;
+        $this->auctionRepository=$auctionRepository;
     }
 
     public function create(Request $request)
@@ -34,7 +36,7 @@ class AuctionManager
     public function update(Request $request)
     {
         $auction = json_decode($request->getContent(),true);
-        $auctionEntity=$this->entityManager->getRepository(AuctionEntity::class)->getAuction($request->get('id'));
+        $auctionEntity=$this->auctionRepository->getAuction($request->get('id'));
         if (!$auctionEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("auction");
@@ -48,7 +50,7 @@ class AuctionManager
     }
     public function delete(Request $request)
     {
-        $auction=$this->entityManager->getRepository(AuctionEntity::class)->getAuction($request->get('id'));
+        $auction=$this->auctionRepository->getAuction($request->get('id'));
         if (!$auction) {
             $exception=new EntityException();
             $exception->entityNotFound("artType");
@@ -61,23 +63,19 @@ class AuctionManager
     }
     public function getAll()
     {
-        $data=$this->entityManager->getRepository(AuctionEntity::class)->getAll();
+        $data=$this->auctionRepository->getAll();
 
         return $data;
     }
 
     public function getById(Request $request)
     {
-        return $result = $this->entityManager->getRepository(AuctionEntity::class)->findById($request->get('id'));
+        return $result = $this->auctionRepository->findById($request->get('id'));
     }
-    public function search(Request $request)
-    {
-        $data = json_decode($request->getContent(),true);
-        return $result = $this->entityManager->getRepository(AuctionEntity::class)->search($data['keyword']);
-    }
+
     public function getAllDetails()
     {
-        $data=$this->entityManager->getRepository(AuctionEntity::class)->getAllDetails();
+        $data=$this->auctionRepository->getAllDetails();
 
         return $data;
     }

@@ -5,6 +5,8 @@ namespace App\Manager;
 
 use App\Entity\ClientEntity;
 use App\Mapper\ClientMapper;
+use App\Repository\ClapEntityRepository;
+use App\Repository\ClientEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -13,11 +15,14 @@ class ClientManager
 {
     private $entityManager;
     private $encoder;
+    private $clientRepository;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface,UserPasswordEncoderInterface $encoder)
+    public function __construct(EntityManagerInterface $entityManagerInterface,UserPasswordEncoderInterface $encoder
+    ,ClientEntityRepository $clientRepository)
     {
         $this->entityManager = $entityManagerInterface;
         $this->encoder=$encoder;
+        $this->clientRepository=$clientRepository;
 
     }
 
@@ -34,7 +39,7 @@ class ClientManager
     public function update(Request $request)
     {
         $client = json_decode($request->getContent(),true);
-        $clientEntity=$this->entityManager->getRepository(ClientEntity::class)->find($request->get('id'));
+        $clientEntity=$this->clientRepository->find($request->get('id'));
         if (!$clientEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("client");
@@ -48,15 +53,15 @@ class ClientManager
     }
     public function getAll()
     {
-      return $this->entityManager->getRepository(ClientEntity::class)->findAll();
+      return $this->clientRepository->findAll();
     }
-    public function getById(Request $request)
+    public function getById($request)
     {
-        return $this->entityManager->getRepository(ClientEntity::class)->findClient($request->get('id'));
+        return $this->clientRepository->findClient($request);
     }
     public function delete(Request $request)
     {
-        $clientEntity=$this->entityManager->getRepository(ClientEntity::class)->findClient($request->get('id'));
+        $clientEntity=$this->clientRepository->findClient($request->get('id'));
         if (!$clientEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("client");

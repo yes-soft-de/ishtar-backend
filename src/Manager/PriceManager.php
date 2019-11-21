@@ -9,6 +9,8 @@ use App\Entity\Entity;
 use App\Entity\EntityArtTypeEntity;
 use App\Mapper\AutoMapper;
 use App\Mapper\PriceMapper;
+use App\Repository\EntityRepository;
+use App\Repository\PriceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,38 +21,40 @@ use Symfony\Component\Serializer\Serializer;
 class PriceManager
 {
     private $entityManager;
+    private $priceRepository;
+    private $entityRepository;
 
-
-    public function __construct(EntityManagerInterface $entityManagerInterface)
+    public function __construct(EntityManagerInterface $entityManagerInterface,PriceEntityRepository $priceRepository
+    ,EntityRepository $entityRepository)
     {
         $this->entityManager = $entityManagerInterface;
+        $this->priceRepository=$priceRepository;
+        $this->entityRepository=$entityRepository;
     }
-    public function create(Request $request,$entity,$id)
+    public function create($request,$entity,$id)
     {
-        $price= json_decode($request->getContent(),true);
         $priceEntity=new PriceEntity();
-        $priceMapper = new PriceMapper();
-        $priceData=$priceMapper->PriceData($price, $priceEntity,$this->entityManager,$entity,$id);
-        $this->entityManager->persist($priceData);
+        $priceEntity->setEntity($this->entityRepository->find($entity))
+            ->setRow($id)
+            ->setPrice($request->getPrice());
+        $this->entityManager->persist($priceEntity);
         $this->entityManager->flush();
         return $priceEntity;
     }
 
-    public function update(Request $request,$entity)
+    public function update($request,$entity)
     {
-        $id=$request->get('id');
-        $price = json_decode($request->getContent(),true);
-        $priceEntity=new PriceEntity();
-        $priceMapper = new PriceMapper();
-        $priceData=$priceMapper->PriceData($price, $priceEntity,$this->entityManager,$entity,$id);
-        $this->entityManager->persist($priceData);
+        $id=$request->getId();
+        $priceEntity=$this->priceRepository->findEntity($id,$entity);
+        $priceEntity[0]->setEntity($this->entityRepository->find($entity))
+            ->setRow($id)
+            ->setPrice($request->getPrice());
         $this->entityManager->flush();
         return $priceEntity;
     }
     public function delete(Request $request,$entity)
     {
-        $price = $this->entityManager->getRepository(PriceEntity::class)
-            ->findEntity($request->get('id'), $entity);
+        $price = $this->priceRepository->findEntity($request->get('id'), $entity);
         if (!$price) {
             $exception = new EntityException();
             $exception->entityNotFound("artType");

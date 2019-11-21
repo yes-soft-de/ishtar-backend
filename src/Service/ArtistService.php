@@ -3,20 +3,11 @@
 
 namespace App\Service;
 
-use App\Controller\Artist;
 use App\Manager\ArtistManager;
-use App\Manager\ClapManager;
-use App\Manager\CommentManager;
-use App\Manager\CreateUpdateDeleteManagerInterface;
 use App\Manager\EntityArtTypeManager;
-use App\Manager\EntityInteractionManager;
 use App\Manager\EntityMediaManger;
 use App\Manager\InteractionsManager;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class ArtistService implements ArtistServiceInterface
 {
@@ -60,9 +51,9 @@ class ArtistService implements ArtistServiceInterface
         $result=$this->artistManager->delete($request);
         $this->mediaManager->delete($request,2);
         $this->artTypeManager->delete($request,2);
-        $this->interactionManager->deleteClaps(2,$request);
-        $this->interactionManager->deleteComments(2,$request);
-        $this->interactionManager->deleteInteractions(2,$request);
+        $this->interactionManager->deleteClaps($request,2);
+        $this->interactionManager->deleteComments($request,2);
+        $this->interactionManager->deleteInteractions($request,2);
         return $result;
     }
 

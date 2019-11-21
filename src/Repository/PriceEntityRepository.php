@@ -37,14 +37,14 @@ class PriceEntityRepository extends ServiceEntityRepository
     */
 
 
-    public function findEntity($value,$entity): array
+    public function findEntity($value,$entity)
     {
         $result= $this->createQueryBuilder('pr')
             ->andWhere('pr.entity =:entity')
             ->andWhere('pr.row=:val')
             ->setParameter('val', $value)
             ->setParameter('entity',$entity)
-            ->orderBy('pr.id','DESC')
+            ->setMaxResults(1)
             ->getQuery()
             ->getResult()
         ;

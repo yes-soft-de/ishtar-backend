@@ -6,6 +6,7 @@ namespace App\Manager;
 
 use App\Entity\ArtTypeEntity;
 use App\Mapper\ArtTypeMapper;
+use App\Repository\ArtTypeRepository;
 use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -14,10 +15,12 @@ use Symfony\Component\HttpFoundation\Request;
 class ArtTypeManager
 {
     private $entityManager;
+    private $artTypeRepository;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface)
+    public function __construct(EntityManagerInterface $entityManagerInterface,ArtTypeRepository $artTypeRepository)
     {
         $this->entityManager = $entityManagerInterface;
+        $this->artTypeRepository=$artTypeRepository;
     }
 
     public function create(Request $request)
@@ -33,7 +36,7 @@ class ArtTypeManager
     public function update(Request $request)
     {
         $artType = json_decode($request->getContent(),true);
-        $artTypeEntity=$this->entityManager->getRepository(ArtTypeEntity::class)->getArtType($request->get('id'));
+        $artTypeEntity=$this->artTypeRepository->getArtType($request->get('id'));
         if (!$artTypeEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("artType");
@@ -47,7 +50,7 @@ class ArtTypeManager
     }
     public function delete(Request $request)
     {
-        $artType=$this->entityManager->getRepository(ArtTypeEntity::class)->getArtType($request->get('id'));
+        $artType=$this->artTypeRepository->getArtType($request->get('id'));
         if (!$artType) {
             $exception=new EntityException();
             $exception->entityNotFound("artType");
@@ -59,14 +62,14 @@ class ArtTypeManager
     }
     public function getAll()
     {
-        $data=$this->entityManager->getRepository(ArtTypeEntity::class)->findAll();
+        $data=$this->artTypeRepository->findAll();
 
         return $data;
     }
 
     public function getArtTypeById(Request $request)
     {
-        return $result = $this->entityManager->getRepository(ArtTypeEntity::class)->findById($request->get('id'));
+        return $result = $this->artTypeRepository->findById($request->get('id'));
     }
 
 }

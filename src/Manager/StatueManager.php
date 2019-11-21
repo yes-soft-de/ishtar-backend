@@ -11,6 +11,11 @@ use App\Entity\Entity;
 use App\Entity\EntityArtTypeEntity;
 use App\Mapper\AutoMapper;
 use App\Mapper\StatueMapper;
+use App\Repository\ArtistEntityRepository;
+use App\Repository\StatueEntityRepository;
+use App\Request\CreateStatueRequest;
+use App\Request\UpdateStatueRequest;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -21,34 +26,41 @@ use Symfony\Component\HttpFoundation\Request;
 class StatueManager
 {
     private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManagerInterface)
+    private $statueRepository;
+    private $artistRepository;
+    public function __construct(EntityManagerInterface $entityManagerInterface,StatueEntityRepository $statueRepository,
+    ArtistEntityRepository $artistRepository)
     {
         $this->entityManager = $entityManagerInterface;
+        $this->statueRepository=$statueRepository;
+        $this->artistRepository=$artistRepository;
     }
 
-    public function create(Request $request)
+    public function create($request)
     {
-        $statue = json_decode($request->getContent(),true);
-        $statueEntity=new StatueEntity();
-        $statueMapper = new StatueMapper();
-        $statueData=$statueMapper->StatueData($statue, $statueEntity,$this->entityManager);
-        $statueEntity->setCreateDate();
+        $config = new AutoMapperConfig();
+        $config->registerMapping(CreateStatueRequest::class, StatueEntity::class);
+        $mapper = new \AutoMapperPlus\AutoMapper($config);
+        $request->setArtist($this->artistRepository->getArtist($request->getArtist()));
+        $statueData=$mapper->map($request,StatueEntity::class);
+        $statueData->setCreateDate();
         $this->entityManager->persist($statueData);
         $this->entityManager->flush();
         return $statueData;
     }
-    public function update(Request $request)
+    public function update($request)
     {
-        $statue = json_decode($request->getContent(),true);
-        $statueEntity=$this->entityManager->getRepository(StatueEntity::class)->getStatue($request->get('id'));
+        $statueEntity=$this->statueRepository->getStatue($request->getId());
         if (!$statueEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("statue");
         }
         else {
-            $statueMapper = new StatueMapper();
-            $statueMapper->StatueData($statue, $statueEntity,$this->entityManager);
+            $config = new AutoMapperConfig();
+            $config->registerMapping(UpdateStatueRequest::class, StatueEntity::class);
+            $mapper = new \AutoMapperPlus\AutoMapper($config);
+            $request->setArtist($this->artistRepository->getArtist($request->getArtist()));
+            $statueEntity=$mapper->mapToObject($request,$statueEntity);
             $statueEntity->setUpdatedDate();
             $this->entityManager->flush();
             return $statueEntity;
@@ -56,8 +68,7 @@ class StatueManager
     }
     public function delete(Request $request)
     {
-        $statueEntity=$this->entityManager->getRepository(StatueEntity::class)
-            ->getStatue($request->get('id'));
+        $statueEntity=$this->statueRepository->getStatue($request->get('id'));
         if (!$statueEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("statue");
@@ -70,14 +81,14 @@ class StatueManager
     }
     public function getAll()
     {
-        $data=$this->entityManager->getRepository(StatueEntity::class)->getAll();
+        $data=$this->statueRepository->getAll();
 
         return $data;
     }
 
     public function getStatueById($request)
     {
-        return $result = $this->entityManager->getRepository(StatueEntity::class)->findOneById($request);
+        return $result = $this->statueRepository->findOneById($request);
     }
 
 }

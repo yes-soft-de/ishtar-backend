@@ -2,8 +2,16 @@
 
 namespace App\Controller;
 
+use App\Request\ByIdRequest;
+use App\Request\CreateCommentRequest;
+use App\Request\DeleteRequest;
+use App\Request\GetClientRequest;
+use App\Request\GetEntityRequest;
+use App\Request\UpdateCommentRequest;
 use App\Service\CommentService;
 use App\Validator\CommentValidateInterface;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,10 +44,14 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        //
 
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, CreateCommentRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, CreateCommentRequest::class);
         $result = $this->commentService->create($request);
-        return $this->response($result, self::CREATE, "Comment");
+        return $this->response($result, self::CREATE);
     }
 
     /**
@@ -56,8 +68,15 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $id=$request->get('id');
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, UpdateCommentRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, UpdateCommentRequest::class);
+        $request->setId($id);
         $result = $this->commentService->update($request);
-        return $this->response($result, self::UPDATE, "Comment");
+        return $this->response($result, self::UPDATE);
     }
 
     /**
@@ -74,8 +93,9 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $request=new DeleteRequest($request->get('id'));
         $result = $this->commentService->delete($request);
-        return $this->response($result, self::DELETE,"Comment");
+        return $this->response($result, self::DELETE);
 
     }
 
@@ -87,9 +107,9 @@ class CommentController extends BaseController
      */
     public function getEntityComment(Request $request)
     {
-
+        $request=new GetEntityRequest($request->get('entity'),$request->get('row'));
         $result = $this->commentService->getEntityComment($request);
-        return $this->response($result,self::FETCH,"Comment");
+        return $this->response($result,self::FETCH);
     }
 
     /**
@@ -99,8 +119,9 @@ class CommentController extends BaseController
      */
     public function getClientComment(Request $request)
     {
+        $request=new GetClientRequest($request->get('client'));
         $result = $this->commentService->getClientComment($request);
-        return $this->response($result,self::FETCH,"Comment");
+        return $this->response($result,self::FETCH);
     }
     /**
      * @Route("/comments",name="getAllComment",methods={"GET"})
@@ -109,7 +130,7 @@ class CommentController extends BaseController
     public function getAll()
     {
         $result = $this->commentService->getAll();
-        return $this->response($result,self::FETCH,"Comment");
+        return $this->response($result,self::FETCH);
     }
     /**
      * @Route("/spacialcomment/{id}",name="setSpacialComment",methods={"PUT"})
@@ -117,7 +138,8 @@ class CommentController extends BaseController
      */
     public function setSpacial(Request $request)
     {
+        $request=new ByIdRequest($request->get('id'));
         $result = $this->commentService->setSpacial($request);
-        return $this->response($result,self::UPDATE,"Comment");
+        return $this->response($result,self::UPDATE);
     }
 }

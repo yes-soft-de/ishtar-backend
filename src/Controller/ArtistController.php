@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Request\CreateArtistRequest;
+use App\Request\DeleteRequest;
+use App\Request\GetArtistRequest;
+use App\Request\UpdateArtistRequest;
 use App\Service\ArtistService;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,15 +17,17 @@ use App\Validator\ArtistValidateInterface;
 class ArtistController extends BaseController
 {
     private $artistService;
+
     /**
      * ArtistController constructor.
      */
     public function __construct(ArtistService $artistService)
     {
-        $this->artistService=$artistService;
+        $this->artistService = $artistService;
     }
+
     /**
-     *@Route("/artists", name="createArtist",methods={"POST"})
+     * @Route("/artists", name="createArtist",methods={"POST"})
      * @param Request $request
      * @return Response
      */
@@ -29,16 +35,18 @@ class ArtistController extends BaseController
     {
         //Validation
         $validateResult = $artistValidate->artistValidator($request, 'create');
-        if (!empty($validateResult))
-        {
+        if (!empty($validateResult)) {
             $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        //
-
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, CreateArtistRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, CreateArtistRequest::class);
         $result = $this->artistService->create($request);
-        return $this->response($result, self::CREATE,"Artist");
+        return $this->response($result, self::CREATE, "Artist");
     }
 
     /**
@@ -49,32 +57,38 @@ class ArtistController extends BaseController
     public function update(Request $request, ArtistValidateInterface $artistValidate)
     {
         $validateResult = $artistValidate->artistValidator($request, 'update');
-        if (!empty($validateResult))
-        {
+        if (!empty($validateResult)) {
             $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, UpdateArtistRequest::class);
+        $mapper = new AutoMapper($config);
+        $id=$request->get('id');
+        $request = $mapper->map((object)$data, UpdateArtistRequest::class);
+        $request->setId($id);
         $result = $this->artistService->update($request);
-        return $this->response($result, self::UPDATE,"Artist");
+        return $this->response($result, self::UPDATE, "Artist");
     }
 
     /**
-     *  @Route("/artist/{id}", name="deleteArtist",methods={"DELETE"})
+     * @Route("/artist/{id}", name="deleteArtist",methods={"DELETE"})
      * @param Request $request
      * @return
      */
     public function delete(Request $request, ArtistValidateInterface $artistValidate)
     {
         $validateResult = $artistValidate->artistValidator($request, 'delete');
-        if (!empty($validateResult))
-        {
+        if (!empty($validateResult)) {
             $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $request=new DeleteRequest($request->get('id'));
         $result = $this->artistService->delete($request);
-        return $this->response($result, self::DELETE,"Artist");
+        return $this->response($result, self::DELETE);
 
     }
 
@@ -82,12 +96,10 @@ class ArtistController extends BaseController
      * @Route("/artists", name="getAllArtist",methods={"GET"})
      * @return
      */
-    public function getAll(Request $request)
+    public function getAll()
     {
-        //ToDo Call Validator
-
-        $result = $this->artistService->getAll($request);
-        return $this->response($result,self::FETCH,"Artist");
+        $result = $this->artistService->getAll();
+        return $this->response($result, self::FETCH);
     }
 
     /**
@@ -97,12 +109,13 @@ class ArtistController extends BaseController
      */
     public function getArtistById(Request $request)
     {
+        $request=new GetArtistRequest($request->get('id'));
         $result = $this->artistService->getArtistById($request);
-        return $this->response($result,self::FETCH,"Artist");
+        return $this->response($result, self::FETCH);
     }
 
     /**
-     * @Route("/search", name="search")
+     * @Route("/search)
      * @param Request $request
      * @return Response
      * @throws \Exception
@@ -110,17 +123,17 @@ class ArtistController extends BaseController
     public function search(Request $request)
     {
         $result = $this->artistService->search($request);
-        return $this->response($result,self::FETCH,"Artist");
+        return $this->response($result, self::FETCH, "Artist");
     }
 
     /**
      * @Route("/artistsdetails", name="getAllArtistData",methods={"GET"})
-     * @param Request $request
+     *
      * @return
      */
     public function getAllDetails()
     {
         $result = $this->artistService->getAllDetails();
-        return $this->response($result,self::FETCH,"Artist");
+        return $this->response($result, self::FETCH, "Artist");
     }
 }

@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Request\CreateStatueRequest;
+use App\Request\UpdateStatueRequest;
 use App\Service\StatueService;
 use App\Validator\StatueValidateInterface;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,8 +42,12 @@ class StatueController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, CreateStatueRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, CreateStatueRequest::class);
         $result = $this->statueService->create($request);
-       // $this->CUDService->create($request,"StatuePrice");
         return $this->response($result, self::CREATE,"Statue");
     }
 
@@ -57,6 +65,13 @@ class StatueController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $id=$request->get('id');
+        $data = json_decode($request->getContent(), true);
+        $config = new AutoMapperConfig();
+        $config->registerMapping(\stdClass::class, UpdateStatueRequest::class);
+        $mapper = new AutoMapper($config);
+        $request = $mapper->map((object)$data, UpdateStatueRequest::class);
+        $request->setId($id);
         $result = $this->statueService->update($request);
         return $this->response($result, self::UPDATE,"Statue");
     }

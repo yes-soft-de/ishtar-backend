@@ -101,7 +101,7 @@ class PaintingEntityRepository extends ServiceEntityRepository
     public function getPaintingShort():?array
     {
         return $this->createQueryBuilder('p')
-            ->select('p.id','p.name','p.image','p.height','p.width','a.name as artist','at.name as artType')
+            ->select('p.id','p.name','p.image','p.height','p.width','a.id as artistId','a.name as artist','at.name as artType')
             ->from('App:ArtistEntity','a')
             ->from('App:EntityArtTypeEntity','eat')
             ->from('App:ArtTypeEntity','at')

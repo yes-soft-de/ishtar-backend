@@ -41,10 +41,10 @@ class ArtistValidate implements ArtistValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'birthDate' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
+//            'birthDate' => [
+//                new Required(),
+//                new Assert\NotBlank(),
+//            ],
             'story' => [
                 new Required(),
                 new Assert\NotBlank(),
