@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\ArtTypeService;
 use App\Validator\ArtTypeValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,15 +14,18 @@ class ArtTypeController extends BaseController
     private $artTypeService;
     /**
      * ArtistController constructor.
+     * @param ArtTypeService $artTypeService
      */
     public function __construct(ArtTypeService $artTypeService)
     {
         $this->artTypeService=$artTypeService;
     }
+
     /**
      * @Route("/arttypes", name="createArtType",methods={"POST"})
      * @param Request $request
-     * @return
+     * @param ArtTypeValidateInterface $artTypeValidate
+     * @return JsonResponse|Response
      */
     public function create(Request $request, ArtTypeValidateInterface $artTypeValidate)
     {
@@ -33,16 +37,15 @@ class ArtTypeController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        //
-
         $result = $this->artTypeService->create($request);
-        return $this->response($result, self::CREATE,"ArtType");
+        return $this->response($result, self::CREATE);
     }
 
     /**
      * @Route("/arttype/{id}", name="updateArttype",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param ArtTypeValidateInterface $artTypeValidate
+     * @return JsonResponse|Response
      */
     public function update(Request $request, ArtTypeValidateInterface $artTypeValidate)
     {
@@ -54,13 +57,14 @@ class ArtTypeController extends BaseController
             return $resultResponse;
         }
         $result = $this->artTypeService->update($request);
-        return $this->response($result, self::UPDATE, "ArtType");
+        return $this->response($result, self::UPDATE);
     }
 
     /**
-     *  @Route("/arttype/{id}", name="deleteArtType",methods={"DELETE"})
+     * @Route("/arttype/{id}", name="deleteArtType",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @param ArtTypeValidateInterface $artTypeValidate
+     * @return JsonResponse|Response
      */
     public function delete(Request $request, ArtTypeValidateInterface $artTypeValidate)
     {
@@ -72,28 +76,28 @@ class ArtTypeController extends BaseController
             return $resultResponse;
         }
         $result = $this->artTypeService->delete($request);
-        return $this->response($result, self::DELETE, "ArtType");
-
+        return $this->response($result, self::DELETE);
     }
+
     /**
      * @Route("/arttypes", name="getAllArtTYpe",methods={"GET"})
-     * @return
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getAll(Request $request)
     {
         $result = $this->artTypeService->getAll();
-        return $this->response($result,self::FETCH,"ArtType");
+        return $this->response($result,self::FETCH);
     }
 
     /**
      * @Route("/arttype/{id}", name="getArtTypeById",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getArtTypeById(Request $request)
     {
         $result = $this->artTypeService->getArtTypeById($request);
-        return $this->response($result,self::FETCH,"ArtType");
+        return $this->response($result,self::FETCH);
     }
-
-    }
+}

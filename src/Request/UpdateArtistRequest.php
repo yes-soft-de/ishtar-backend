@@ -4,6 +4,9 @@
 namespace App\Request;
 
 
+use DateTime;
+use Symfony\Component\Validator\Constraints\Date;
+
 class UpdateArtistRequest
 {
     public $id;
@@ -41,8 +44,6 @@ class UpdateArtistRequest
     public $story;
     public $details;
     public $gallery;
-    public $createdBy;
-    public $createDate;
     public $updatedBy;
     public $updateDate;
     public $Facebook;
@@ -51,6 +52,25 @@ class UpdateArtistRequest
     public $Instagram;
     public $artType;
     public $image;
+    /**
+     * @Assert\DateTime
+     */
+    public  $birthDate ;
+
+    public function getBirthDate():?\DateTimeInterface
+    {
+        return new DateTime((string)$this->birthDate);
+    }
+    public function setBirthDate(Date $birthDate): self
+    {
+        try {
+            $this->birthDate = new Date((string)$birthDate);
+        } catch (\Exception $e) {
+        }
+
+        return $this;
+    }
+
 
     /**
      * @return mixed
@@ -87,7 +107,6 @@ class UpdateArtistRequest
      * @Assert\NotBlank
      * @Assert\Date
      */
-    public $birthDate;
 
 
 }

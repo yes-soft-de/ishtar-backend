@@ -11,6 +11,8 @@ use App\Service\ClapService;
 use App\Validator\ClapValidateInterface;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
+use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +33,9 @@ class ClapController extends BaseController
     /**
      * @Route("/claps", name="createClap",methods={"POST"})
      * @param Request $request
-     * @return
+     * @param ClapValidateInterface $clapValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function create(Request $request, ClapValidateInterface $clapValidate)
     {
@@ -43,7 +47,6 @@ class ClapController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        //
         $data = json_decode($request->getContent(), true);
         $config = new AutoMapperConfig();
         $config->registerMapping(\stdClass::class, CreateClapRequest::class);
@@ -56,7 +59,9 @@ class ClapController extends BaseController
     /**
      * @Route("/clap/{id}", name="updateClap",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param ClapValidateInterface $clapValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function update(Request $request, ClapValidateInterface $clapValidate)
     {
@@ -79,9 +84,9 @@ class ClapController extends BaseController
     }
 
     /**
-     *  @Route("/clap/{id}", name="deleteClap",methods={"DELETE"})
+     * @Route("/clap/{id}", name="deleteClap",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function delete(Request $request)
     {
@@ -93,9 +98,9 @@ class ClapController extends BaseController
     /**
      * @Route("/clapsentity/{entity}/{row}",name="getEntityClap",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
-    public function getEntityclap(Request $request)
+    public function getEntityClap(Request $request)
     {
         $request=new GetEntityRequest($request->get('entity'),$request->get('row'));
         $result = $this->clapService->getEntityClap($request);
@@ -105,7 +110,7 @@ class ClapController extends BaseController
     /**
      * @Route("/clapsclient/{client}", name="getClientClaps",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getClientClap(Request $request)
     {
@@ -113,9 +118,10 @@ class ClapController extends BaseController
         $result = $this->clapService->getClientClap($request);
         return $this->response($result,self::FETCH);
     }
+
     /**
      * @Route("/claps",name="getAllClap",methods={"GET"})
-     * @return
+     * @return JsonResponse
      */
     public function getAll()
     {

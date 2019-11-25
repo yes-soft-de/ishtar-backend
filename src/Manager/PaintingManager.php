@@ -107,7 +107,7 @@ class PaintingManager
     {
         return $result = $this->paintingRepository->getPaintingImages($request->getId());
     }
-    public function getBy(getPaintingByRequest $request)
+    public function getBy(GetPaintingByRequest $request)
     {
          $result = $this->paintingRepository->getBy($request->getParm(),$request->getValue());
          return $result;

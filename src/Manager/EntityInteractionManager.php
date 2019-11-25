@@ -5,7 +5,6 @@ namespace App\Manager;
 
 
 use App\Entity\EntityInteractionEntity;
-use App\Mapper\EntityInteractionMapper;
 use App\Repository\ClientEntityRepository;
 use App\Repository\EntityInteractionEntityRepository;
 use App\Repository\EntityRepository;
@@ -14,12 +13,10 @@ use App\Request\CreateInteractionRequest;
 use App\Request\DeleteRequest;
 use App\Request\GetClientRequest;
 use App\Request\GetInterctionEntityRequest;
-use App\Request\UpdateClapRequest;
 use App\Request\UpdateInteractionRequest;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class EntityInteractionManager
 {

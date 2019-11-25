@@ -11,6 +11,7 @@ use App\Mapper\CommentMapper;
 use App\Repository\ClapEntityRepository;
 use App\Repository\CommentEntityRepository;
 use App\Repository\EntityInteractionEntityRepository;
+use App\Request\DeleteRequest;
 use App\Request\GetArtistRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,7 @@ class InteractionsManager
         $this->commentRepository=$commentRepository;
     }
 
-    public function deleteInteractions($request,$entity)
+    public function deleteInteractions(DeleteRequest $request,$entity)
     {
         $id = $request->getId();
         $interactions = $this->entityInteractionRepository->getEntityInteraction($entity, $id);
@@ -47,7 +48,7 @@ class InteractionsManager
         }
 
     }
-    public function deleteComments($request,$entity)
+    public function deleteComments(DeleteRequest $request,$entity)
     {
         $id=$request->getId();
         $Comments = $this->commentRepository->getEntity($entity, $id);
@@ -56,7 +57,7 @@ class InteractionsManager
         $this->entityManager->flush();
 
     }
-    public function deleteClaps(GetArtistRequest $request,$entity)
+    public function deleteClaps(DeleteRequest $request,$entity)
     {
         $id=$request->getId();
         $Claps = $this->clapRepository->getEntity($entity, $id);

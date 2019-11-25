@@ -119,9 +119,9 @@ class PaintingEntity
         return $this;
     }
 
-    public function getArtist(): ?ArtistEntity
+    public function getArtist(): ?int
     {
-        return $this->artist;
+        return $this->artist->getId();
     }
 
     public function setArtist(?ArtistEntity $artist): self
@@ -228,9 +228,9 @@ class PaintingEntity
         return $this;
     }
 
-    public function getCreateDate(): ?\DateTimeInterface
+    public function getCreateDate(): ?string
     {
-        return $this->createDate;
+        return $this->createDate->format('Y-m-d H:i:s');
     }
 
     public function setCreateDate(): self
@@ -264,9 +264,9 @@ class PaintingEntity
         return $this;
     }
 
-    public function getGallery(): ?GalleryEntity
+    public function getGallery(): ?int
     {
-        return $this->gallery;
+        return $this->gallery->getId();
     }
 
     public function setGallery(?GalleryEntity $gallery): self

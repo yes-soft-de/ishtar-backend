@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Entity;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -156,7 +153,7 @@ class ArtistEntity
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
+    public function getBirthDate()
     {
         return $this->birthDate;
     }
@@ -205,7 +202,7 @@ class ArtistEntity
         return $this;
     }
 
-    public function getCreateDate(): ?\DateTimeInterface
+    public function getCreateDate()
     {
         return $this->createDate;
     }
@@ -229,7 +226,7 @@ class ArtistEntity
         return $this;
     }
 
-    public function getUpdateDate(): ?\DateTimeInterface
+    public function getUpdateDate()
     {
         return $this->updateDate;
     }

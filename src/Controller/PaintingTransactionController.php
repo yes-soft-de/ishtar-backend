@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Service\AuctionPainitngServiceInterface;
 use App\Service\AuctionPaintingService;
 use App\Validator\PaintingTransactionValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,17 +12,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class PaintingTransactionController extends BaseController
 {
     private $auctionPaintingService;
+
     /**
      * PaintingController constructor.
+     * @param AuctionPaintingService $auctionPaintingService
      */
     public function __construct(AuctionPaintingService $auctionPaintingService)
     {
         $this->auctionPaintingService=$auctionPaintingService;
     }
+
     /**
      * @Route("/paintingTransactions", name="createPaintingTransaction")
      * @param Request $request
-     * @return
+     * @param PaintingTransactionValidateInterface $paintingTransactionValidate
+     * @return JsonResponse|Response
      */
     public function create(Request $request, PaintingTransactionValidateInterface $paintingTransactionValidate)
     {
@@ -37,13 +41,14 @@ class PaintingTransactionController extends BaseController
         //
 
         $result = $this->auctionPaintingService->create($request);
-        return $this->response($result, self::CREATE,"PaintingTransaction");
+        return $this->response($result, self::CREATE);
     }
 
     /**
      * @Route("/paintingTransaction/{id}", name="updatePaintingTransaction",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param PaintingTransactionValidateInterface $paintingTransactionValidate
+     * @return JsonResponse|Response
      */
     public function update(Request $request, PaintingTransactionValidateInterface $paintingTransactionValidate)
     {
@@ -55,13 +60,14 @@ class PaintingTransactionController extends BaseController
             return $resultResponse;
         }
         $result = $this->auctionPaintingService->update($request);
-        return $this->response($result, self::UPDATE,"PaintingTransaction");
+        return $this->response($result, self::UPDATE);
     }
 
     /**
-     *  @Route("/paintingTransaction/{id}", name="deletePaintingTransaction",methods={"DELETE"})
+     * @Route("/paintingTransaction/{id}", name="deletePaintingTransaction",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @param PaintingTransactionValidateInterface $paintingTransactionValidate
+     * @return JsonResponse|Response
      */
     public function delete(Request $request, PaintingTransactionValidateInterface $paintingTransactionValidate)
     {
@@ -73,20 +79,18 @@ class PaintingTransactionController extends BaseController
             return $resultResponse;
         }
         $result = $this->auctionPaintingService->delete($request);
-        return $this->response($result, self::DELETE,"PaintingTransaction");
+        return $this->response($result, self::DELETE);
 
     }
-
 
     /**
      * @Route("/transactions",name="getAllPaintingTransaction",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getAll(Request $request)
     {
-
         $result = $this->auctionPaintingService->getAll($request);
-        return $this->response($result,self::FETCH,"PaintingTransaction");
+        return $this->response($result,self::FETCH);
     }
 }

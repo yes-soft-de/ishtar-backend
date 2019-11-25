@@ -10,7 +10,7 @@ public $entity;
 public $row;
 public $name;
 public $path;
-public $media=1;
+public $media;
 public $createDate;
 
 
@@ -87,15 +87,15 @@ public $createDate;
     /**
      * @return int
      */
-    public function getMedia(): int
+    public function getMedia()
     {
         return $this->media;
     }
 
     /**
-     * @param int $media
+     * @param mixed $media
      */
-    public function setMedia(int $media): void
+    public function setMedia($media): void
     {
         $this->media = $media;
     }

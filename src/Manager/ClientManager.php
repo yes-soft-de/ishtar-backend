@@ -38,6 +38,7 @@ class ClientManager
         $config->registerMapping(RegisterRequest::class, ClientEntity::class);
         $mapper = new AutoMapper($config);
         $client=$mapper->mapToObject($request,$client);
+        $client->setPassword($this->encoder->encodePassword($client,$request->getPassword()));
         $client->setCreateDate();
         $this->entityManager->persist($client);
         $this->entityManager->flush();
@@ -52,10 +53,11 @@ class ClientManager
         }
         else {
             $config = new AutoMapperConfig();
-            $config->registerMapping(RegisterRequest::class, ClientEntity::class);
+            $config->registerMapping(UpdateClientRequest::class, ClientEntity::class);
             $mapper = new AutoMapper($config);
             $client=$mapper->mapToObject($request,$clientEntity);
             $client->setCreateDate();
+            $client->setPassword($this->encoder->encodePassword($client,$request->getPassword()));
             $this->entityManager->flush();
             return $clientEntity;
         }
@@ -66,11 +68,11 @@ class ClientManager
     }
     public function getById($request)
     {
-        return $this->clientRepository->findClient($request);
+        return $this->clientRepository->findClient($request->getId());
     }
     public function delete(DeleteRequest $request)
     {
-        $clientEntity=$this->clientRepository->findClient($request->getId());
+        $clientEntity=$this->clientRepository->find($request->getId());
         if (!$clientEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("client");

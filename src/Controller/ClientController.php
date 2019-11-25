@@ -9,6 +9,8 @@ use App\Request\UpdateClientRequest;
 use App\Service\ClientService;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
+use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,10 +25,13 @@ private $clientService;
 {
     $this->clientService=$clientService;
 }
+
     /**
      * @Route("/client/{id}", name="updateClient",methods={"PUT"})
      * @param Request $request
+     * @param ClientValidateInterface $clientValidate
      * @return Response
+     * @throws UnregisteredMappingException
      */
     public function update(Request $request,ClientValidateInterface $clientValidate)
     {
@@ -49,8 +54,9 @@ private $clientService;
     }
 
     /**
-     *  @Route("/client/{id}", name="deleteClient",methods={"DELETE"})
+     * @Route("/client/{id}", name="deleteClient",methods={"DELETE"})
      * @param Request $request
+     * @return JsonResponse
      */
     public function delete(Request $request)
     {

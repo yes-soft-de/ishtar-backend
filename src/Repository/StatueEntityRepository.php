@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\EntityMediaEntity;
 use App\Entity\StatueEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -54,15 +55,16 @@ class StatueEntityRepository extends ServiceEntityRepository
      * @return StatueEntity
      *
      */
-    public function getStatue($id):StatueEntity
+    public function getStatue($id)
     {
         try {
-            return $this->createQueryBuilder('s')
+            $result= $this->createQueryBuilder('s')
                 ->andWhere('s.id=:id')
                 ->groupBy('s.id')
                 ->getQuery()
                 ->setParameter('id',$id)
-                ->getOneOrNullResult();
+                ->getResult();
+        return $result;
         } catch (NonUniqueResultException $e) {
         }
     }

@@ -49,9 +49,9 @@ class ClapEntity
         return $this->id;
     }
 
-    public function getClient(): ?ClientEntity
+    public function getClient()
     {
-        return $this->client;
+        return $this->client->getId();
     }
 
     public function setClient(?ClientEntity $client): self
@@ -86,9 +86,9 @@ class ClapEntity
         return $this;
     }
 
-    public function getEntity(): ?Entity
+    public function getEntity()
     {
-        return $this->entity;
+        return $this->entity->getId();
     }
 
     public function setEntity(?Entity $entity): self
@@ -100,7 +100,7 @@ class ClapEntity
 
     public function getDate(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->date->format('Y-m-d H:i:s');
     }
 
     public function setDate(): self

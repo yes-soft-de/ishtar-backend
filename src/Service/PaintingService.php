@@ -65,22 +65,14 @@ class PaintingService implements PaintingServiceInterface
          return $result;
 
     }
-    public function getArtistPaintings(Request $request)
-    {
-        return $result = $this->PaintingManager->getArtistPaintings($request);
-    }
 
     public function getPaintingById($id)
     {
         return $result = $this->PaintingManager->getPaintingById($id);
     }
+    
 
-    public function getPaintingImages(Request $request)
-    {
-        return $result = $this->PaintingManager->getPaintingImages($request);
-    }
-
-    public function getBy(Request $request)
+    public function getBy($request)
     {
 
         return $result = $this->PaintingManager->getBy($request);

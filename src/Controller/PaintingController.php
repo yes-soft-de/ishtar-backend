@@ -11,6 +11,8 @@ use App\Service\PaintingService;
 use App\Validator\PaintingValidateInterface;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
+use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,17 +20,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class PaintingController extends BaseController
 {
     private $paintingService;
+
     /**
      * PaintingController constructor.
+     * @param PaintingService $paintingService
      */
     public function __construct(PaintingService $paintingService)
     {
         $this->paintingService=$paintingService;
     }
+
     /**
-     *  @Route("/paintings", name="createPainting",methods={"POST"})
+     * @Route("/paintings", name="createPainting",methods={"POST"})
      * @param Request $request
-     * @return
+     * @param PaintingValidateInterface $paintingValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function create(Request $request, PaintingValidateInterface $paintingValidate)
     {
@@ -51,7 +58,9 @@ class PaintingController extends BaseController
     /**
      * @Route("/painting/{id}", name="updatePainting",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param PaintingValidateInterface $paintingValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function update(Request $request, PaintingValidateInterface $paintingValidate)
     {
@@ -76,7 +85,7 @@ class PaintingController extends BaseController
     /**
      * @Route("/painting/{id}", name="deletePainting",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function delete(Request $request)
    {
@@ -87,10 +96,8 @@ class PaintingController extends BaseController
 
     /**
      * @Route("/paintings", name="getAllPainting",methods={"GET"})
-     *
-     * @return
+     * @return JsonResponse
      */
-
     public function getAll()
     {
         $result = $this->paintingService->getAll();
@@ -98,33 +105,9 @@ class PaintingController extends BaseController
     }
 
     /**
-     * @Route("/painting/getArtistPaintings", name="getArtistPaintings",methods={"GET"})
-     * @param Request $request
-     * @return
-     */
-public function getArtistPaintings(Request $request)
-{
-    $request=new ByIdRequest($request->get('id'));
-    $result = $this->paintingService->getArtistPaintings($request);
-    return $this->response($result,self::FETCH);
-}
-
-    /**
-     * @Route("/painting/getArtTypePaintings", name="getArtTypePaintings",methods={"GET"})
-     * @param Request $request
-     * @return
-     */
-    public function getArtTypePaintings(Request $request)
-    {
-        $request=new ByIdRequest($request->get('id'));
-        $result = $this->paintingService->getArtTypePaintings($request);
-        return $this->response($result,self::FETCH);
-    }
-
-    /**
      * @Route("/painting/{id}", name="getPaintingById",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getPaintingById(Request $request)
     {
@@ -132,10 +115,11 @@ public function getArtistPaintings(Request $request)
         $result = $this->paintingService->getPaintingById($request->getId());
         return $this->response($result,self::FETCH);
     }
+
     /**
-     *  @Route("/paintingby/{parm}/{value}", name="getPaintingBy",methods={"GET"})
+     * @Route("/paintingby/{parm}/{value}", name="getPaintingBy",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getBy(Request $request)
     {

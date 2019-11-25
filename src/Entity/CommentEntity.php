@@ -61,9 +61,9 @@ class CommentEntity
         return $this->id;
     }
 
-    public function getClient(): ?ClientEntity
+    public function getClient():int
     {
-        return $this->client;
+        return $this->client->getId();
     }
 
     public function setClient(?ClientEntity $client): self
@@ -98,9 +98,9 @@ class CommentEntity
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): string
     {
-        return $this->date;
+        return $this->date->format('Y-m-d H:i:s');
     }
 
     public function setDate(): self
@@ -110,7 +110,7 @@ class CommentEntity
         return $this;
     }
 
-    public function getLastEdit(): ?\DateTimeInterface
+    public function getLastEdit(): ?string
     {
         return $this->lastEdit;
     }
@@ -122,9 +122,9 @@ class CommentEntity
         return $this;
     }
 
-    public function getEntity(): ?Entity
+    public function getEntity(): ?int
     {
-        return $this->entity;
+        return $this->entity->getId();
     }
 
     public function setEntity(Entity $entity): self

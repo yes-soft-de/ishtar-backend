@@ -27,14 +27,16 @@ class ArtistManager
 
     public function create(CreateArtistRequest $request)
     {
+        $artistEntity=new ArtistEntity();
         $config = new AutoMapperConfig();
         $config->registerMapping(CreateArtistRequest::class, ArtistEntity::class);
-        $mapper = new \AutoMapperPlus\AutoMapper($config);
-        $artistData=$mapper->map($request,ArtistEntity::class);
-        $artistData->setCreateDate();
-        $this->entityManager->persist($artistData);
+        $mapper = new AutoMapper($config);
+        $artistEntity=$mapper->mapToObject($request,$artistEntity);
+        $artistEntity->setCreateDate();
+        $artistEntity->setBirthDate($request->getBirthDate());
+        $this->entityManager->persist($artistEntity);
         $this->entityManager->flush();
-        return $artistData;
+        return $artistEntity;
     }
     public function update(UpdateArtistRequest $request)
     {
@@ -46,7 +48,9 @@ class ArtistManager
                 $config = new AutoMapperConfig();
                 $config->registerMapping(UpdateArtistRequest::class,ArtistEntity::class);
                 $mapper = new AutoMapper($config);
-                $artistEntity=$mapper->mapToObject($request,$artistEntity);
+                $artistEntity=$mapper->map($request,ArtistEntity::class);
+                $artistEntity->setBirthDate($request->getBirthDate());
+                $artistEntity->setUpdateDate();
                 $this->entityManager->flush();
                 return $artistEntity;
             }

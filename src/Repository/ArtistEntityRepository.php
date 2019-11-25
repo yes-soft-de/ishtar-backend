@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ArtistEntity;
 use App\Entity\EntityArtTypeEntity;
+use App\Response\GetArtistByIdResponse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr\Join;
@@ -51,13 +52,13 @@ au:auctionEntity
             ->groupBy('a.id')
             ->getQuery()
             ->getResult();
-        $result=array_merge($result,$this->getEntityManager()->getRepository
+       $result=array_merge($result,$this->getEntityManager()->getRepository
         (EntityArtTypeEntity::class)->getArtistArtTypes($value));
         return $result;
     }
 
     /**
-     * @return ArtistEntity[] Returns an array of ArtistEntity objects
+     *
      * @throws NonUniqueResultException
      */
     public function findOneById($value): ?ArtistEntity
@@ -70,6 +71,7 @@ au:auctionEntity
     }
     public function getAll()
     {
+
         return $this->createQueryBuilder('a')
             ->select('a.id','a.name','m.path','at.name as artType','count(p.id) as painting')
             ->from('App:EntityMediaEntity','m')

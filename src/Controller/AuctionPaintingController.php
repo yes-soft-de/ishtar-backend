@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Validator\AuctionPaintingValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +13,8 @@ class AuctionPaintingController extends BaseController
     /**
      * @Route("/auctionPaintings", name="createAuctionPainting",methods={"POST"})
      * @param Request $request
-     * @return
+     * @param AuctionPaintingValidateInterface $auctionPaintingValidate
+     * @return JsonResponse|Response
      */
     public function create(Request $request, AuctionPaintingValidateInterface $auctionPaintingValidate)
     {
@@ -27,13 +29,14 @@ class AuctionPaintingController extends BaseController
         //
 
         $result = $this->CUDService->create($request, "AuctionPainting");
-        return $this->response($result, self::CREATE, "AuctionPainting");
+        return $this->response($result, self::CREATE);
     }
 
     /**
      * @Route("/auctionPainting/{id}", name="updateAuctionPainting",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param AuctionPaintingValidateInterface $auctionPaintingValidate
+     * @return JsonResponse|Response
      */
     public function update(Request $request, AuctionPaintingValidateInterface $auctionPaintingValidate)
     {
@@ -45,13 +48,14 @@ class AuctionPaintingController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->update($request, "AuctionPainting");
-        return $this->response($result, self::UPDATE, "AuctionPainting");
+        return $this->response($result, self::UPDATE);
     }
 
     /**
-     *  @Route("/auctionPainting/{id}", name="deleteAuctionPainting",methods={"DELETE"})
+     * @Route("/auctionPainting/{id}", name="deleteAuctionPainting",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @param AuctionPaintingValidateInterface $auctionPaintingValidate
+     * @return JsonResponse|Response
      */
     public function delete(Request $request, AuctionPaintingValidateInterface $auctionPaintingValidate)
     {
@@ -63,20 +67,20 @@ class AuctionPaintingController extends BaseController
             return $resultResponse;
         }
         $result = $this->CUDService->delete($request, "AuctionPainting");
-        return $this->response($result, self::DELETE, "AuctionPainting");
+        return $this->response($result, self::DELETE);
 
     }
 
     /**
      * @Route("/auctionPainting/getAll", name="getAllAuctionPainting",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getAll(Request $request)
     {
         //ToDo Call Validator
 
         $result = $this->FDService->fetchData($request,"AuctionPainting");
-        return $this->response($result,self::FETCH,"AuctionPainting");
+        return $this->response($result,self::FETCH);
     }
 }

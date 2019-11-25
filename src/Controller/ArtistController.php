@@ -9,6 +9,8 @@ use App\Request\UpdateArtistRequest;
 use App\Service\ArtistService;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
+use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,6 +22,7 @@ class ArtistController extends BaseController
 
     /**
      * ArtistController constructor.
+     * @param ArtistService $artistService
      */
     public function __construct(ArtistService $artistService)
     {
@@ -27,9 +30,11 @@ class ArtistController extends BaseController
     }
 
     /**
-     * @Route("/artists", name="createArtist",methods={"POST"})
+     * @Route("/artists",name="createArtist",methods={"POST"})
      * @param Request $request
+     * @param ArtistValidateInterface $artistValidate
      * @return Response
+     * @throws UnregisteredMappingException
      */
     public function create(Request $request, ArtistValidateInterface $artistValidate)
     {
@@ -52,7 +57,9 @@ class ArtistController extends BaseController
     /**
      * @Route("/artist/{id}", name="updateArtist",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param ArtistValidateInterface $artistValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function update(Request $request, ArtistValidateInterface $artistValidate)
     {
@@ -76,7 +83,7 @@ class ArtistController extends BaseController
     /**
      * @Route("/artist/{id}", name="deleteArtist",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function delete(Request $request)
     {
@@ -87,7 +94,7 @@ class ArtistController extends BaseController
 
     /**
      * @Route("/artists", name="getAllArtist",methods={"GET"})
-     * @return
+     * @return JsonResponse
      */
     public function getAll()
     {
@@ -98,7 +105,7 @@ class ArtistController extends BaseController
     /**
      * @Route("/artist/{id}", name="getArtistById",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getArtistById(Request $request)
     {
@@ -108,9 +115,10 @@ class ArtistController extends BaseController
     }
 
     /**
-     * @Route("/search)
+     * @Route("/search", name="search")
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function search(Request $request)
     {

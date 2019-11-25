@@ -52,10 +52,7 @@ class ClientValidate implements ClientValidateInterface
                  new Required(),
                 new Assert\NotBlank(),
             ],
-            'birthDate' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
+
             'image' => [
                 new Required(),
                 new Assert\NotBlank(),

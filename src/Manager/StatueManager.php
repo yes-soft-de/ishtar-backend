@@ -90,7 +90,7 @@ class StatueManager
 
     public function getStatueById(ByIdRequest $request)
     {
-        return $result = $this->statueRepository->findOneById($request->getId());
+        return $result = $this->statueRepository->getStatue($request->getId());
     }
 
 }

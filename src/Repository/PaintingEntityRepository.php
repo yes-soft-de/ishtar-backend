@@ -73,7 +73,7 @@ class PaintingEntityRepository extends ServiceEntityRepository
     public function getBy($parm,$value):?array
     {
         if($parm=='artType')
-            $parm='ea.artType='.$value;
+            $parm='eat.artType='.$value;
         else
         $parm = "p." . $parm . "='" . $value . "'";
 
@@ -94,24 +94,6 @@ class PaintingEntityRepository extends ServiceEntityRepository
             ->andWhere('p.active=1')
             ->orderBy('p.id', 'ASC')
             ->groupBy('p.name')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function getPaintingShort():?array
-    {
-        return $this->createQueryBuilder('p')
-            ->select('p.id','p.name','p.image','p.height','p.width','a.id as artistId','a.name as artist','at.name as artType')
-            ->from('App:ArtistEntity','a')
-            ->from('App:EntityArtTypeEntity','eat')
-            ->from('App:ArtTypeEntity','at')
-            ->andWhere('p.artist=a.id')
-            ->andWhere('p.id=eat.row')
-            ->andWhere('eat.entity=1')
-            ->andWhere('eat.artType=at.id')
-            ->andWhere('p.active=1')
-            ->groupBy('p.id')
-           // ->setMaxResults(100)
             ->getQuery()
             ->getResult();
     }

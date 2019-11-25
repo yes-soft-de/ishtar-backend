@@ -32,7 +32,7 @@ class ClientService implements ClientServiceInterface
 
     public function update($request)
     {
-        // TODO: Implement update() method.
+        // Implement update() method.
         $this->mediaManager->update($request,5);
         return $this->clientManager->update($request);
     }
@@ -49,6 +49,8 @@ class ClientService implements ClientServiceInterface
 
     public function delete($request)
     {
-        return $this->clientManager->delete($request);
+        $result=$this->clientManager->delete($request);
+        $this->mediaManager->delete($request,5);
+        return $result;
     }
 }

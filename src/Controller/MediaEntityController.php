@@ -6,13 +6,12 @@ use App\Request\ByIdRequest;
 use App\Request\CreateMediaRequest;
 use App\Request\DeleteRequest;
 use App\Request\UpdateMediaRequest;
-use App\Request\UpdatePaintingRequest;
 use App\Service\EntityMediaService;
-use App\Validator\CommentValidateInterface;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
+use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MediaEntityController extends BaseController
@@ -31,7 +30,8 @@ class MediaEntityController extends BaseController
     /**
      * @Route("/medias", name="createMedia",methods={"POST"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
+     * @throws UnregisteredMappingException
      */
     public function create(Request $request)
     {
@@ -45,9 +45,10 @@ class MediaEntityController extends BaseController
     }
 
     /**
-     *@Route("/media/{id}", name="updateMedia",methods={"PUT"})
+     * @Route("/media/{id}", name="updateMedia",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
+     * @throws UnregisteredMappingException
      */
     public function update(Request $request)
     {
@@ -63,9 +64,9 @@ class MediaEntityController extends BaseController
     }
 
     /**
-     *  @Route("/media/{id}", name="deleteMedia",methods={"DELETE"})
+     * @Route("/media/{id}", name="deleteMedia",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function delete(Request $request)
     {
@@ -74,19 +75,21 @@ class MediaEntityController extends BaseController
         return $this->response($result, self::DELETE);
 
     }
+
     /**
      * @Route("/medias", name="getAllMedia",methods={"GET"})
-     * @return
+     * @return JsonResponse
      */
     public function getAll()
     {
         $result = $this->mediaService->getAll();
         return $this->response($result,self::FETCH);
     }
+
     /**
      * @Route("entityitems/{entity}", name="getEntityItems",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getEntityItem(Request $request)
     {

@@ -23,12 +23,9 @@ class EntityMediaService implements EntityMediaServiceInterface
         $this->entityMediaManager=$entityMediaManager;
     }
 
-    public function create(Request $request)
+    public function create($request)
     {
-        $entityMedia= json_decode($request->getContent(),true);
-        $entity=$entityMedia['entity'];
-        $row=$entityMedia['row'];
-        $entityMediaResult =$this->entityMediaManager->create($request,$entity,$row);
+        $entityMediaResult =$this->entityMediaManager->create($request,null,null);
         return $entityMediaResult;
     }
     //ToDO mapping painting entity and response

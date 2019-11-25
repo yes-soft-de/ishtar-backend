@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface EntityMediaServiceInterface
 {
-    public function create (Request $request);
+    public function create ($request);
 
     public function update( $request);
 

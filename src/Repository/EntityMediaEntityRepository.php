@@ -73,7 +73,7 @@ EntityMediaEntityRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-    public function findImages($id,$entity):EntityMediaEntity
+    public function findImages($id,$entity)
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.row = :val')

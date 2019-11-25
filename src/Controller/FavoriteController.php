@@ -17,10 +17,12 @@ class FavoriteController extends BaseController
     {
         $this->favoriteService=$favoriteService;
     }
+
     /**
      * @Route("/favorites", name="createFavorite",methods={"POST"})
      * @param Request $request
-     * @return
+     * @param FavoriteValidateInterface $favoriteValidate
+     * @return JsonResponse|Response
      */
     public function create(Request $request, FavoriteValidateInterface $favoriteValidate)
     {
@@ -32,15 +34,14 @@ class FavoriteController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        //
-
         $result = $this->favoriteService->create($request);
-        return $this->response($result, self::CREATE, "Favorite");
+        return $this->response($result, self::CREATE);
     }
 
     /**@Route("/favorite/{id}", name="updateFavorite",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param FavoriteValidateInterface $favoriteValidate
+     * @return JsonResponse|Response
      */
     public function update(Request $request, FavoriteValidateInterface $favoriteValidate)
     {
@@ -52,13 +53,14 @@ class FavoriteController extends BaseController
             return $resultResponse;
         }
         $result = $this->favoriteService->update($request);
-        return $this->response($result, self::UPDATE, "Favorite");
+        return $this->response($result, self::UPDATE);
     }
 
     /**
-     *  @Route("/favorite/{id}", name="deleteFavorite",methods={"DELETE"})
+     * @Route("/favorite/{id}", name="deleteFavorite",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @param FavoriteValidateInterface $favoriteValidate
+     * @return JsonResponse|Response
      */
     public function delete(Request $request, FavoriteValidateInterface $favoriteValidate)
     {
@@ -70,30 +72,29 @@ class FavoriteController extends BaseController
             return $resultResponse;
         }
         $result = $this->favoriteService->delete($request);
-        return $this->response($result, self::DELETE,"Favorite");
+        return $this->response($result, self::DELETE);
 
     }
-
 
     /**
      * @Route("/favoritesClient",name="getClientFavorite",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getClientFavorite(Request $request)
     {
         $result = $this->favoriteService->getClientFavorite($request);
-        return $this->response($result,self::FETCH,"Favorite");
+        return $this->response($result,self::FETCH);
     }
 
     /**
      * @Route("/favorites",name="getAllFavorite",methods={"GET"})
-     * @return
+     * @return JsonResponse
      */
     public function getAll()
     {
         $result = $this->favoriteService->getAll();
-        return $this->response($result,self::FETCH,"Favorite");
+        return $this->response($result,self::FETCH);
     }
 
 }

@@ -12,6 +12,8 @@ use App\Service\CommentService;
 use App\Validator\CommentValidateInterface;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
+use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,7 +34,9 @@ class CommentController extends BaseController
     /**
      * @Route("/comments", name="createComment",methods={"POST"})
      * @param Request $request
-     * @return
+     * @param CommentValidateInterface $commentValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function create(Request $request, CommentValidateInterface $commentValidate)
     {
@@ -57,7 +61,9 @@ class CommentController extends BaseController
     /**
      * @Route("/comment/{id}", name="updateComment",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param CommentValidateInterface $commentValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function update(Request $request, CommentValidateInterface $commentValidate)
     {
@@ -80,9 +86,10 @@ class CommentController extends BaseController
     }
 
     /**
-     *  @Route("/comment/{id}", name="deleteComment",methods={"DELETE"})
+     * @Route("/comment/{id}", name="deleteComment",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @param CommentValidateInterface $commentValidate
+     * @return JsonResponse|Response
      */
     public function delete(Request $request, CommentValidateInterface $commentValidate)
     {
