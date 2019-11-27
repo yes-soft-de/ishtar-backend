@@ -4,9 +4,11 @@
 namespace App\Manager;
 
 
+use App\AutoMapping;
 use App\Entity\ArtTypeEntity;
 use App\Mapper\ArtTypeMapper;
 use App\Repository\ArtTypeRepository;
+use App\Request\CreateArtTypeRequest;
 use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -16,19 +18,20 @@ class ArtTypeManager
 {
     private $entityManager;
     private $artTypeRepository;
+    private $autoMapping;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface,ArtTypeRepository $artTypeRepository)
+    public function __construct(EntityManagerInterface $entityManagerInterface,ArtTypeRepository $artTypeRepository
+    ,AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->artTypeRepository=$artTypeRepository;
+        $this->autoMapping=$autoMapping;
     }
 
-    public function create(Request $request)
+    public function create($request)
     {
-        $artType = json_decode($request->getContent(),true);
         $artTypeEntity=new ArtTypeEntity();
-        $artTypeMapper = new ArtTypeMapper();
-        $artTypeData=$artTypeMapper->artTypeData($artType, $artTypeEntity);
+        $artTypeData=$this->autoMapping->map(CreateArtTypeRequest::class,ArtTypeEntity::class,$request);
         $this->entityManager->persist($artTypeData);
         $this->entityManager->flush();
         return $artTypeData;

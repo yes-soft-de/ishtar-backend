@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
+use App\Request\CreateArtTypeRequest;
 use App\Service\ArtTypeService;
 use App\Validator\ArtTypeValidateInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,13 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArtTypeController extends BaseController
 {
     private $artTypeService;
+    private $autoMapping;
     /**
      * ArtistController constructor.
      * @param ArtTypeService $artTypeService
      */
-    public function __construct(ArtTypeService $artTypeService)
+    public function __construct(ArtTypeService $artTypeService,AutoMapping $autoMapping)
     {
         $this->artTypeService=$artTypeService;
+        $this->autoMapping=$autoMapping;
     }
 
     /**
@@ -37,6 +41,8 @@ class ArtTypeController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,CreateArtTypeRequest::class,(object)$data);
         $result = $this->artTypeService->create($request);
         return $this->response($result, self::CREATE);
     }

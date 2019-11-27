@@ -121,7 +121,7 @@ class PaintingEntity
 
     public function getArtist(): ?int
     {
-        return $this->artist->getId();
+        return $this->artist;
     }
 
     public function setArtist(?ArtistEntity $artist): self
@@ -230,7 +230,7 @@ class PaintingEntity
 
     public function getCreateDate(): ?string
     {
-        return $this->createDate->format('Y-m-d H:i:s');
+        return $this->createDate;
     }
 
     public function setCreateDate(): self
@@ -266,7 +266,7 @@ class PaintingEntity
 
     public function getGallery(): ?int
     {
-        return $this->gallery->getId();
+        return $this->gallery;
     }
 
     public function setGallery(?GalleryEntity $gallery): self
