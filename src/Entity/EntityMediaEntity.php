@@ -140,9 +140,9 @@ class EntityMediaEntity
         return $this;
     }
 
-    public function getCreatedDate(): ?string
+    public function getCreatedDate()
     {
-        return $this->createdDate->format('Y-m-d H:i:s');
+        return $this->createdDate;
     }
 
     public function setCreatedDate(): self

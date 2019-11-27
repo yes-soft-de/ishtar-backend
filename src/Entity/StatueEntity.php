@@ -302,9 +302,9 @@ class StatueEntity
         return $this;
     }
 
-    public function getCreateDate(): ?string
+    public function getCreateDate()
     {
-        return $this->createDate->format('Y-m-d H:i:s');
+        return $this->createDate;
     }
 
     public function setCreateDate(): self

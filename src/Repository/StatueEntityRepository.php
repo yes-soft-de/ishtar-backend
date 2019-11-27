@@ -58,8 +58,16 @@ class StatueEntityRepository extends ServiceEntityRepository
     public function getStatue($id)
     {
         try {
-            $result= $this->createQueryBuilder('s')
-                ->andWhere('s.id=:id')
+            $result=$this->createQueryBuilder('s')
+                ->select('s.id','s.name','a.name as artist','s.state','s.height','s.width','s.image','s.keyWord'
+                    ,'s.material','s.description','s.style','s.mediums','s.features',
+                    's.period','s.weight','s.length','s.active','pr.price')
+                ->from('App:PriceEntity','pr')
+                ->from('App:ArtistEntity','a')
+                ->andWhere('pr.row=s.id')
+                ->andWhere('pr.entity=6')
+                ->andWhere('a.id=s.artist')
+                ->andWhere('s.id= :id')
                 ->groupBy('s.id')
                 ->getQuery()
                 ->setParameter('id',$id)
@@ -77,10 +85,14 @@ class StatueEntityRepository extends ServiceEntityRepository
     public function getAll():?array
     {
         return $this->createQueryBuilder('s')
-            ->select('s','pr.price')
+            ->select('s.id','s.name','a.name as artist','s.state','s.height','s.width','s.image','s.keyWord'
+                ,'s.material','s.description','s.style','s.mediums','s.features',
+                's.period','s.weight','s.length','s.active','pr.price')
             ->from('App:PriceEntity','pr')
+            ->from('App:ArtistEntity','a')
             ->andWhere('pr.row=s.id')
             ->andWhere('pr.entity=6')
+            ->andWhere('a.id=s.artist')
             ->groupBy('s.id')
             ->getQuery()
             ->getResult();

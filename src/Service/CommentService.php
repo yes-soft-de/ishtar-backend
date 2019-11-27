@@ -3,8 +3,15 @@
 
 namespace App\Service;
 
+use App\Entity\CommentEntity;
 use App\Manager\CommentManager;
 
+use App\Response\DeleteResponse;
+use App\Response\GetCommentsClientResponse;
+use App\Response\GetCommentsEntityResponse;
+use App\Response\GetCommentsResponse;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,26 +42,53 @@ class CommentService implements CommentServiceInterface
     public function delete($request)
     {
         $commentResult =$this->commentManager->delete($request);
-        return $commentResult;
+        $config = new AutoMapperConfig();
+        $config->registerMapping( 'array', DeleteResponse::class);
+        $mapper = new AutoMapper($config);
+        $response=$mapper->map($commentResult,DeleteResponse::class);
+        return $response;
     }
 
 
     public function getEntityComment($request)
     {
-        return $commentResult =$this->commentManager->getEntityComment($request);
+        $commentResult =$this->commentManager->getEntityComment($request);
+        $config = new AutoMapperConfig();
+        $config->registerMapping( 'array', GetCommentsEntityResponse::class);
+        $mapper = new AutoMapper($config);
+        foreach ($commentResult as $row)
+            $response[]=$mapper->map($row,GetCommentsEntityResponse::class);
+        return $response;
     }
 
     public function getClientComment($request)
     {
-        return $commentResult =$this->commentManager->getClientComment($request);
+        $commentResult =$this->commentManager->getClientComment($request);
+        $config = new AutoMapperConfig();
+        $config->registerMapping( 'array', GetCommentsClientResponse::class);
+        $mapper = new AutoMapper($config);
+        foreach ($commentResult as $row)
+            $response[]=$mapper->map($row,GetCommentsClientResponse::class);
+        return $response;
     }
 
     public function getAll()
     {
-        return $commentResult =$this->commentManager->getAll();
+        $commentResult =$this->commentManager->getAll();
+        $config = new AutoMapperConfig();
+        $config->registerMapping( 'array', GetCommentsResponse::class);
+        $mapper = new AutoMapper($config);
+        foreach ($commentResult as $row)
+            $response[]=$mapper->map($row,GetCommentsResponse::class);
+        return $response;
     }
     public function setSpacial($request)
     {
-        return $commentResult =$this->commentManager->setSpacial($request);
+         $commentResult =$this->commentManager->setSpacial($request);
+        $config = new AutoMapperConfig();
+        $config->registerMapping( CommentEntity::class, GetCommentsResponse::class);
+        $mapper = new AutoMapper($config);
+            $response=$mapper->map($commentResult,GetCommentsResponse::class);
+        return $response;
     }
 }

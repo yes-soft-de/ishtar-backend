@@ -5,6 +5,11 @@ namespace App\Service;
 
 use App\Manager\EntityInteractionManager;
 
+use App\Response\GetInteractionsClientResponse;
+use App\Response\GetInteractionsEntityResponse;
+use App\Response\GetInteractionsResponse;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,17 +45,35 @@ class EntityInteractionService implements EntityInteractionServiceInterface
 
     public function getEntityInteraction($request)
     {
-        return $entityInteractionResult =$this->entityInteractionManager->getEntityInteraction($request);
+         $entityInteractionResult =$this->entityInteractionManager->getEntityInteraction($request);
+        $config = new AutoMapperConfig();
+        $config->registerMapping( 'array', GetInteractionsentityResponse::class);
+        $mapper = new AutoMapper($config);
+        $response=$mapper->map($entityInteractionResult,GetInteractionsentityResponse::class);
+        return $response;
     }
 
     public function getClientInteraction($request)
     {
-        return $entityInteractionResult =$this->entityInteractionManager->getClientInteraction($request);
+         $entityInteractionResult =$this->entityInteractionManager->getClientInteraction($request);
+        $config = new AutoMapperConfig();
+        $config->registerMapping( 'array', GetInteractionsClientResponse::class);
+        $mapper = new AutoMapper($config);
+        foreach ($entityInteractionResult as $row)
+            $response[]=$mapper->map($row,GetInteractionsClientResponse::class);
+        return $response;
     }
 
     public function getAll($request)
     {
-       return $entityInteractionResault=$this->entityInteractionManager->getAll();
+        $entityInteractionResault=$this->entityInteractionManager->getAll();
+        $config = new AutoMapperConfig();
+        $config->registerMapping( 'array', GetInteractionsResponse::class);
+        $mapper = new AutoMapper($config);
+        foreach ($entityInteractionResault as $row)
+            $response[]=$mapper->map($row,GetInteractionsResponse::class);
+        return $response;
+
     }
     public function getMostViews()
     {

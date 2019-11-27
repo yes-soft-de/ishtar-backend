@@ -100,7 +100,7 @@ class ClapEntity
 
     public function getDate(): ?\DateTimeInterface
     {
-        return $this->date->format('Y-m-d H:i:s');
+        return $this->date;
     }
 
     public function setDate(): self

@@ -53,7 +53,7 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
     public function getClientInteraction($client):?array
     {
         return $this->createQueryBuilder('ei')
-            ->select('e.name as entity', 'ei.row as id','i.name as interaction','ei.id as interactionID')
+            ->select('e.name as entity', 'ei.row as id','i.name as interaction','ei.id as interactionID','ei.date')
             ->from('App:Entity', 'e')
             ->from('App:InteractionEntity', 'i')
             ->andWhere('ei.client=:client')

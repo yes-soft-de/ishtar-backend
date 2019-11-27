@@ -79,11 +79,12 @@ class PaintingEntityRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('p')
             ->select('p.id', 'p.name', 'p.keyWords', 'p.state', 'p.height', 'p.width', 'p.colorsType', 'p.image',
-                'p.active', 'a.name as artist', 'at.name as artType','pr.price')
+                'p.active', 'a.name as artist', 'at.name as artType','pr.price','st.story ')
             ->from('App:ArtistEntity', 'a')
             ->from('App:ArtTypeEntity', 'at')
             ->from('App:EntityArtTypeEntity', 'eat')
             ->from('App:PriceEntity', 'pr')
+            ->from('App:StoryEntity','st')
             ->andWhere('p.artist=a.id')
             ->andWhere('p.id=eat.row')
             ->andWhere('at.id=eat.artType')
@@ -92,6 +93,8 @@ class PaintingEntityRepository extends ServiceEntityRepository
             ->andWhere('p.id=pr.row')
             ->andWhere('pr.entity=1')
             ->andWhere('p.active=1')
+            ->andWhere('st.entity=1')
+            ->andWhere('st.row=p.id')
             ->orderBy('p.id', 'ASC')
             ->groupBy('p.name')
             ->getQuery()
