@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
 use App\Request\ByIdRequest;
 use App\Request\CreateCommentRequest;
 use App\Request\DeleteRequest;
@@ -21,14 +22,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends BaseController
 {
     private $commentService;
+    private $autoMapping;
 
     /**
      * CommentController constructor.
      * @param $commentService
      */
-    public function __construct(CommentService $commentService)
+    public function __construct(CommentService $commentService ,AutoMapping $autoMapping)
     {
         $this->commentService = $commentService;
+        $this->autoMapping=$autoMapping;
     }
 
     /**
@@ -48,12 +51,8 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, CreateCommentRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, CreateCommentRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,CreateCommentRequest::class,(object)$data);
         $result = $this->commentService->create($request);
         return $this->response($result, self::CREATE);
     }
@@ -76,10 +75,8 @@ class CommentController extends BaseController
         }
         $id=$request->get('id');
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, UpdateCommentRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, UpdateCommentRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateCommentRequest::class,(object)$data);
+
         $request->setId($id);
         $result = $this->commentService->update($request);
         return $this->response($result, self::UPDATE);
@@ -105,7 +102,6 @@ class CommentController extends BaseController
         return $this->response($result, self::DELETE);
 
     }
-
 
     /**
      * @Route("/commentsentity/{entity}/{row}",name="getEntityComment")

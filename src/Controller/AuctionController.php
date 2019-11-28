@@ -2,6 +2,11 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
+use App\Request\ByIdRequest;
+use App\Request\CreateAuctionRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateAuctionRequest;
 use App\Service\AuctionService;
 use App\Validator\AuctionValidateInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,14 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuctionController extends BaseController
 {
     private $auctionService;
-
+    private $autoMapping;
     /**
      * ArtistController constructor.
      * @param AuctionService $auctionService
      */
-    public function __construct(AuctionService $auctionService)
+    public function __construct(AuctionService $auctionService,AutoMapping $autoMapping)
     {
         $this->auctionService=$auctionService;
+        $this->autoMapping=$autoMapping;
     }
 
     /**
@@ -38,6 +44,8 @@ class AuctionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,CreateAuctionRequest::class,(object)$data);
         $result = $this->auctionService->create($request);
         return $this->response($result, self::CREATE);
     }
@@ -57,6 +65,8 @@ class AuctionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateAuctionRequest::class,(object)$data);
         $result = $this->auctionService->update($request);
         return $this->response($result, self::UPDATE);
     }
@@ -69,23 +79,16 @@ class AuctionController extends BaseController
      */
     public function delete(Request $request, AuctionValidateInterface $auctionValidate)
     {
-        $validateResult = $auctionValidate->auctionValidator($request, 'delete');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
+        $request=new DeleteRequest($request->get('id'));
         $result = $this->auctionService->delete($request);
         return $this->response($result, self::DELETE);
     }
 
     /**
      * @Route("/auctions", name="getAllAuction",methods={"GET"})
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getAll(Request $request)
+    public function getAll()
     {
         $result = $this->auctionService->getAll();
         return $this->response($result,self::FETCH);
@@ -98,6 +101,7 @@ class AuctionController extends BaseController
      */
     public function getAuctionById(Request $request)
     {
+        $request=new ByIdRequest($request->get('id'));
         $result = $this->auctionService->getById($request);
         return $this->response($result,self::FETCH);
     }

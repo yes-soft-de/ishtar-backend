@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
 use App\Request\CreateInteractionRequest;
 use App\Request\DeleteRequest;
 use App\Request\GetClientRequest;
@@ -20,14 +21,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class EntityInteractionController extends BaseController
 {
     private $interactionService;
+    private  $autoMapping;
 
     /**
      * EntityInteractionController constructor.
      * @param $interactionService
      */
-    public function __construct(EntityInteractionService $interactionService)
+    public function __construct(EntityInteractionService $interactionService,AutoMapping $autoMapping)
     {
         $this->interactionService = $interactionService;
+        $this->autoMapping=$autoMapping;
     }
 
     /**
@@ -48,10 +51,7 @@ class EntityInteractionController extends BaseController
             return $resultResponse;
         }
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, CreateInteractionRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, CreateInteractionRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,CreateInteractionRequest::class,(object)$data);
         $result = $this->interactionService->create($request);
         return $this->response($result, self::CREATE);
     }
@@ -74,10 +74,7 @@ class EntityInteractionController extends BaseController
         }
         $id=$request->get('id');
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, UpdateInteractionRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, UpdateInteractionRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateInteractionRequest::class,(object)$data);
         $request->setId($id);
         $result = $this->interactionService->update($request);
         return $this->response($result, self::UPDATE);

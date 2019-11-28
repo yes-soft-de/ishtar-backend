@@ -37,26 +37,5 @@ class Controller extends AbstractController
         $resultResponse->headers->set('Content-Type', 'text/plain; charset=utf-8');
         return $resultResponse;
     }
-
-//    /**
-//     * @Route("maps")
-//     */
-//    public function maps(Request $request)
-//    {
-//        $mapper = new AutoMapper();
-//        $artist=new Artist();
-//        $artist->name=$request->get('name');
-//        try {
-//            $artist = $mapper->map($artist, new CreateArtistRequest());
-//        }catch (\Exception $e){}
-//
-//        dump($artist);
-//        die();}
-
 }
-    class Artist
-{
-    public $name;
-}
-
 

@@ -2,6 +2,11 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
+use App\Request\CreateAuctionPaintingRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateAuctionPaintingRequest;
+use App\Service\AuctionPaintingService;
 use App\Validator\AuctionPaintingValidateInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +15,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AuctionPaintingController extends BaseController
 {
+    private $auctionPaintingService;
+    private $autoMapping;
+
+    /**
+     * AuctionPaintingController constructor.
+     * @param $auctionPaintingService
+     */
+    public function __construct(AuctionPaintingService $auctionPaintingService,AutoMapping $autoMapping)
+    {
+        $this->auctionPaintingService = $auctionPaintingService;
+        $this->autoMapping=$autoMapping;
+    }
+
     /**
      * @Route("/auctionPaintings", name="createAuctionPainting",methods={"POST"})
      * @param Request $request
@@ -27,8 +45,9 @@ class AuctionPaintingController extends BaseController
             return $resultResponse;
         }
         //
-
-        $result = $this->CUDService->create($request, "AuctionPainting");
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,CreateAuctionPaintingRequest::class,(object)$data);
+        $result = $this->auctionPaintingService->create($request);
         return $this->response($result, self::CREATE);
     }
 
@@ -47,40 +66,34 @@ class AuctionPaintingController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "AuctionPainting");
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateAuctionPaintingRequest::class,(object)$data);
+        $result = $this->auctionPaintingService->update($request);
         return $this->response($result, self::UPDATE);
     }
 
     /**
      * @Route("/auctionPainting/{id}", name="deleteAuctionPainting",methods={"DELETE"})
      * @param Request $request
-     * @param AuctionPaintingValidateInterface $auctionPaintingValidate
      * @return JsonResponse|Response
      */
-    public function delete(Request $request, AuctionPaintingValidateInterface $auctionPaintingValidate)
+    public function delete(Request $request)
     {
-        $validateResult = $auctionPaintingValidate->auctionPaintingValidator($request, 'delete');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
-        $result = $this->CUDService->delete($request, "AuctionPainting");
+        $request=new DeleteRequest($request->get('id'));
+        $result = $this->auctionPaintingService->delete($request);
         return $this->response($result, self::DELETE);
 
     }
 
     /**
      * @Route("/auctionPainting/getAll", name="getAllAuctionPainting",methods={"GET"})
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getAll(Request $request)
+    public function getAll()
     {
         //ToDo Call Validator
 
-        $result = $this->FDService->fetchData($request,"AuctionPainting");
+        $result = $this->auctionPaintingService->getAll();
         return $this->response($result,self::FETCH);
     }
 }

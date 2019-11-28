@@ -24,4 +24,13 @@ class AutoMapping
         }
         return $response;
     }
+    public function mapToObject($source,$target,$sourceObject,$targetObject)
+    {
+        $mapper=$this->config($source,$target);
+        try {
+            $response = $mapper->mapToObject($sourceObject, $targetObject);
+        } catch (UnregisteredMappingException $e) {
+        }
+        return $response;
+    }
 }

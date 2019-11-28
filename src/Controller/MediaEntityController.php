@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
 use App\Request\ByIdRequest;
 use App\Request\CreateMediaRequest;
 use App\Request\DeleteRequest;
@@ -17,14 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class MediaEntityController extends BaseController
 {
     private $mediaService;
+    private $autoMapping;
 
     /**
      * MediaEntityController constructor.
      * @param $mediaService
      */
-    public function __construct(EntityMediaService $mediaService)
+    public function __construct(EntityMediaService $mediaService,AutoMapping $autoMapping)
     {
         $this->mediaService = $mediaService;
+        $this->autoMapping=$autoMapping;
     }
 
     /**
@@ -36,10 +39,7 @@ class MediaEntityController extends BaseController
     public function create(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, CreateMediaRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, CreateMediaRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,CreateMediaRequest::class,(object)$data);
         $result = $this->mediaService->create($request);
         return $this->response($result, self::CREATE);
     }
@@ -54,10 +54,7 @@ class MediaEntityController extends BaseController
     {
         $id=$request->get('id');
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, UpdateMediaRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, UpdateMediaRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateMediaRequest::class,(object)$data);
         $request->setId($id);
         $result = $this->mediaService->update($request);
         return $this->response($result, self::UPDATE);

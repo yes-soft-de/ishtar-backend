@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
 use App\Request\CreateClapRequest;
 use App\Request\DeleteRequest;
 use App\Request\GetClientRequest;
@@ -20,14 +21,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClapController extends BaseController
 {
     private $clapService;
+    private $autoMapping;
 
     /**
      * ClapController constructor.
      * @param $clapService
      */
-    public function __construct(ClapService $clapService)
+    public function __construct(ClapService $clapService,AutoMapping $autoMapping)
     {
         $this->clapService = $clapService;
+        $this->autoMapping=$autoMapping;
     }
 
     /**
@@ -48,10 +51,7 @@ class ClapController extends BaseController
             return $resultResponse;
         }
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, CreateClapRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, CreateClapRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,CreateClapRequest::class,(object)$data);
         $result = $this->clapService->create($request);
         return $this->response($result, self::CREATE);
     }
@@ -74,10 +74,7 @@ class ClapController extends BaseController
         }
         $id=$request->get('id');
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, UpdateClapRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, UpdateClapRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateClapRequest::class,(object)$data);
         $request->setId($id);
         $result = $this->clapService->update($request);
         return $this->response($result, self::UPDATE);

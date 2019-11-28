@@ -3,16 +3,8 @@
 
 namespace App\Service;
 
-use App\Controller\ArtType;
 use App\Manager\ArtTypeManager;
-use App\Manager\CreateUpdateDeleteManagerInterface;
-use App\Manager\EntityArtTypeManager;
 use App\Manager\EntityMediaManger;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class ArtTypeService implements ArtTypeServiceInterface
 {

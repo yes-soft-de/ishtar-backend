@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\AutoMapping;
+use App\Request\ByIdRequest;
 use App\Request\CreateArtTypeRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateArtTypeRequest;
 use App\Service\ArtTypeService;
 use App\Validator\ArtTypeValidateInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -62,6 +65,10 @@ class ArtTypeController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+        $data = json_decode($request->getContent(), true);
+        $id=$request->get('id');
+        $request=$this->autoMapping->map(\stdClass::class,UpdateArtTypeRequest::class,(object)$data);
+        $request->setId($id);
         $result = $this->artTypeService->update($request);
         return $this->response($result, self::UPDATE);
     }
@@ -74,13 +81,7 @@ class ArtTypeController extends BaseController
      */
     public function delete(Request $request, ArtTypeValidateInterface $artTypeValidate)
     {
-        $validateResult = $artTypeValidate->artTypeValidator($request, 'delete');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
+        $request=new DeleteRequest($request->get('id'));
         $result = $this->artTypeService->delete($request);
         return $this->response($result, self::DELETE);
     }
@@ -103,6 +104,7 @@ class ArtTypeController extends BaseController
      */
     public function getArtTypeById(Request $request)
     {
+        $request=new ByIdRequest($request->get('id'));
         $result = $this->artTypeService->getArtTypeById($request);
         return $this->response($result,self::FETCH);
     }

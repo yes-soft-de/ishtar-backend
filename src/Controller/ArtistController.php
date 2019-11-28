@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
 use App\Request\CreateArtistRequest;
 use App\Request\DeleteRequest;
 use App\Request\GetArtistRequest;
@@ -19,14 +20,15 @@ use App\Validator\ArtistValidateInterface;
 class ArtistController extends BaseController
 {
     private $artistService;
-
+    private $autoMapping;
     /**
      * ArtistController constructor.
      * @param ArtistService $artistService
      */
-    public function __construct(ArtistService $artistService)
+    public function __construct(ArtistService $artistService,AutoMapping $autoMapping)
     {
         $this->artistService = $artistService;
+        $this->autoMapping=$autoMapping;
     }
 
     /**
@@ -46,10 +48,7 @@ class ArtistController extends BaseController
             return $resultResponse;
         }
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, CreateArtistRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, CreateArtistRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,CreateArtistRequest::class,(object)$data);
         $result = $this->artistService->create($request);
         return $this->response($result, self::CREATE);
     }
@@ -70,11 +69,8 @@ class ArtistController extends BaseController
             return $resultResponse;
         }
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, UpdateArtistRequest::class);
-        $mapper = new AutoMapper($config);
         $id=$request->get('id');
-        $request = $mapper->map((object)$data, UpdateArtistRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateArtistRequest::class,(object)$data);
         $request->setId($id);
         $result = $this->artistService->update($request);
         return $this->response($result, self::UPDATE);

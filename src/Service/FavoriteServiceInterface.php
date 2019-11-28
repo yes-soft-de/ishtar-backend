@@ -14,6 +14,6 @@ interface FavoriteServiceInterface
 
     public function delete( $request);
     public function getAll();
-    public function getById($request);
+    public function getClientFavorite($request);
 
 }

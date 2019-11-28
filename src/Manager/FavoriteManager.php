@@ -3,6 +3,7 @@
 
 namespace App\Manager;
 
+use App\AutoMapping;
 use App\Entity\ArtistEntity;
 use App\Entity\EntityMediaEntity;
 use App\Entity\FavoriteEntity;
@@ -11,7 +12,13 @@ use App\Entity\Entity;
 use App\Entity\EntityArtTypeEntity;
 use App\Mapper\AutoMapper;
 use App\Mapper\FavoriteMapper;
+use App\Repository\ClientEntityRepository;
 use App\Repository\FavoriteEntityRepository;
+use App\Repository\PaintingEntityRepository;
+use App\Request\ByIdRequest;
+use App\Request\CreateFavoriteRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateFavoriteRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -23,48 +30,53 @@ class FavoriteManager
 {
     private $entityManager;
     private $favoriteRepository;
+    private $clientRepository;
+    private $paintingRepository;
+    private $autoMapping;
 
     public function __construct(EntityManagerInterface $entityManagerInterface,
-                                FavoriteEntityRepository $favoriteRepository)
+                                FavoriteEntityRepository $favoriteRepository,AutoMapping $autoMapping,
+        ClientEntityRepository $clientRepository,PaintingEntityRepository $paintingRepository)
     {
         $this->entityManager = $entityManagerInterface;
         $this->favoriteRepository=$favoriteRepository;
+        $this->autoMapping=$autoMapping;
+        $this->clientRepository=$clientRepository;
+        $this->paintingRepository=$paintingRepository;
     }
 
-    public function create(Request $request)
+    public function create(CreateFavoriteRequest $request)
     {
-        $favorite = json_decode($request->getContent(),true);
-        $favoriteEntity=new FavoriteEntity();
-        $favoriteMapper = new FavoriteMapper();
-        $favoriteData=$favoriteMapper->FavoriteData($favorite, $favoriteEntity,$this->entityManager);
-        $this->entityManager->persist($favoriteData);
+        $request->setClient($this->clientRepository->find($request->getClient()));
+        $request->setPainting($this->paintingRepository->getPainting($request->getPainting()));
+        $favorite=$this->autoMapping->map(CreateFavoriteRequest::class,FavoriteEntity::class,$request);
+        $this->entityManager->persist($favorite);
         $this->entityManager->flush();
-        return $favoriteData;
+        return $favorite;
     }
-    public function update(Request $request)
+    public function update(UpdateFavoriteRequest $request)
     {
-        $favorite = json_decode($request->getContent(),true);
-        $favoriteEntity=$this->favoriteRepository->getClientFavorite($request->get('id'));
+        $favoriteEntity=$this->favoriteRepository->getClientFavorite($request->getId());
         if (!$favoriteEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("favorite");
         }
         else {
-            $favoriteMapper = new FavoriteMapper();
-            $favoriteMapper->FavoriteData($favorite, $favoriteEntity,$this->entityManager);
+            $favoriteEntity=$this->autoMapping->mapToObject(UpdateFavoriteRequest::class
+            ,FavoriteEntity::class,$request,$favoriteEntity);
             $this->entityManager->flush();
             return $favoriteEntity;
         }
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $favoriteEntity=$this->favoriteRepository->getClientFavorite($request->get('id'));
+        $favoriteEntity=$this->favoriteRepository->find($request->getId());
         if (!$favoriteEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("favorite");
         }
         else {
-            $favoriteEntity->setActive(0);
+            $this->entityManager->remove($favoriteEntity);
             $this->entityManager->flush();
             return $favoriteEntity;
         }
@@ -76,9 +88,9 @@ class FavoriteManager
         return $data;
     }
 
-    public function getFavoriteById($request)
+    public function getClientFavorite(ByIdRequest $request)
     {
-        return $result = $this->favoriteRepository->find($request);
+        return $result = $this->favoriteRepository->getClientFavorite($request->getId());
     }
 
 }

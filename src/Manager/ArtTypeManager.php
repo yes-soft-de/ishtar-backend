@@ -8,7 +8,10 @@ use App\AutoMapping;
 use App\Entity\ArtTypeEntity;
 use App\Mapper\ArtTypeMapper;
 use App\Repository\ArtTypeRepository;
+use App\Request\ByIdRequest;
 use App\Request\CreateArtTypeRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateArtTypeRequest;
 use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -30,30 +33,28 @@ class ArtTypeManager
 
     public function create($request)
     {
-        $artTypeEntity=new ArtTypeEntity();
         $artTypeData=$this->autoMapping->map(CreateArtTypeRequest::class,ArtTypeEntity::class,$request);
         $this->entityManager->persist($artTypeData);
         $this->entityManager->flush();
         return $artTypeData;
     }
-    public function update(Request $request)
+    public function update(UpdateArtTypeRequest $request)
     {
-        $artType = json_decode($request->getContent(),true);
-        $artTypeEntity=$this->artTypeRepository->getArtType($request->get('id'));
+        $artTypeEntity=$this->artTypeRepository->getArtType($request->getId());
         if (!$artTypeEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("artType");
         }
         else {
-            $artTypeMapper = new ArtTypeMapper();
-            $artTypeMapper->artTypeData($artType, $artTypeEntity);
+        $artTypeEntity=$this->autoMapping->mapToObject(UpdateArtTypeRequest::class,ArtTypeEntity::class
+            ,$request,$artTypeEntity);
             $this->entityManager->flush();
             return $artTypeEntity;
         }
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $artType=$this->artTypeRepository->getArtType($request->get('id'));
+        $artType=$this->artTypeRepository->getArtType($request->getId());
         if (!$artType) {
             $exception=new EntityException();
             $exception->entityNotFound("artType");
@@ -70,9 +71,9 @@ class ArtTypeManager
         return $data;
     }
 
-    public function getArtTypeById(Request $request)
+    public function getArtTypeById(ByIdRequest $request)
     {
-        return $result = $this->artTypeRepository->findById($request->get('id'));
+        return $result = $this->artTypeRepository->find($request->getId());
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
 use App\Request\ByIdRequest;
 use App\Request\CreateStatueRequest;
 use App\Request\DeleteRequest;
@@ -19,14 +20,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class StatueController extends BaseController
 {
     private $statueService;
+    private $autoMapping;
 
     /**
      * StatueController constructor.
      * @param $statueService
      */
-    public function __construct(StatueService $statueService)
+    public function __construct(StatueService $statueService,AutoMapping $autoMapping)
     {
         $this->statueService = $statueService;
+        $this->autoMapping=$autoMapping;
     }
 
     /**
@@ -47,10 +50,7 @@ class StatueController extends BaseController
             return $resultResponse;
         }
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, CreateStatueRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, CreateStatueRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,CreateStatueRequest::class,(object)$data);
         $result = $this->statueService->create($request);
         return $this->response($result, self::CREATE);
     }
@@ -73,10 +73,7 @@ class StatueController extends BaseController
         }
         $id=$request->get('id');
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, UpdateStatueRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, UpdateStatueRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,CreateStatueRequest::class,(object)$data);
         $request->setId($id);
         $result = $this->statueService->update($request);
         return $this->response($result, self::UPDATE);

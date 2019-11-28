@@ -100,6 +100,11 @@ class PaintingEntity
      */
     private $gallery;
 
+    /**
+     * @ORM\Column(type="string", length=65, nullable=true)
+     */
+    private $signed;
+
 
 
     public function getId(): ?int
@@ -119,7 +124,7 @@ class PaintingEntity
         return $this;
     }
 
-    public function getArtist(): ?int
+    public function getArtist(): ?ArtistEntity
     {
         return $this->artist;
     }
@@ -228,7 +233,7 @@ class PaintingEntity
         return $this;
     }
 
-    public function getCreateDate(): ?string
+    public function getCreateDate(): ?\DateTimeInterface
     {
         return $this->createDate;
     }
@@ -272,6 +277,18 @@ class PaintingEntity
     public function setGallery(?GalleryEntity $gallery): self
     {
         $this->gallery = $gallery;
+
+        return $this;
+    }
+
+    public function getSigned(): ?string
+    {
+        return $this->signed;
+    }
+
+    public function setSigned(?string $signed): self
+    {
+        $this->signed = $signed;
 
         return $this;
     }

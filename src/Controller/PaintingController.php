@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\AutoMapping;
 use App\Request\ByIdRequest;
 use App\Request\CreateArtistRequest;
 use App\Request\CreatePaintingRequest;
@@ -20,14 +21,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class PaintingController extends BaseController
 {
     private $paintingService;
-
+    private $autoMapping;
     /**
      * PaintingController constructor.
      * @param PaintingService $paintingService
      */
-    public function __construct(PaintingService $paintingService)
+    public function __construct(PaintingService $paintingService,AutoMapping $autoMapping)
     {
         $this->paintingService=$paintingService;
+        $this->autoMapping=$autoMapping;
     }
 
     /**
@@ -47,10 +49,7 @@ class PaintingController extends BaseController
             return $resultResponse;
         }
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, CreatePaintingRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, CreatePaintingRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,CreatePaintingRequest::class,(object)$data);
         $result = $this->paintingService->create($request);
         return $this->response($result, self::CREATE);
     }
@@ -73,10 +72,7 @@ class PaintingController extends BaseController
         }
         $id=$request->get('id');
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, UpdatePaintingRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, UpdatePaintingRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,UpdatePaintingRequest::class,(object)$data);
         $request->setId($id);
         $result = $this->paintingService->update($request,$id);
         return $this->response($result, self::UPDATE);

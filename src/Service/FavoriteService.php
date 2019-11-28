@@ -25,14 +25,11 @@ class FavoriteService implements FavoriteServiceInterface
     public function create($request)
     {
         $favoriteResult =$this->FavoriteManager->create($request);
-        $priceData=$this->priceManager->create($request,6);
         return $favoriteResult;
     }
-    //ToDO mapping favorite entity and response
     public function update($request)
     {
         $favoriteResult =$this->FavoriteManager->update($request);
-        $priceData=$this->priceManager->update($request,6);
         return $favoriteResult;
     }
     public function getAll()
@@ -43,13 +40,12 @@ class FavoriteService implements FavoriteServiceInterface
     public function delete($request)
     {
         $result=$this->FavoriteManager->delete($request);
-        $this->priceManager->delete($request,6);
         return $result;
     }
 
-    public function getById($request)
+    public function getClientFavorite($request)
     {
-        return $result = $this->FavoriteManager->getFavoriteById($request);
+        return $result = $this->FavoriteManager->getClientFavorite($request);
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
 use App\Request\ByIdRequest;
 use App\Request\DeleteRequest;
 use App\Request\RegisterRequest;
@@ -20,10 +21,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ClientController extends BaseController{
 private $clientService;
+private $autoMapping;
 
-    public function __construct(ClientService $clientService)
+    public function __construct(ClientService $clientService,AutoMapping $autoMapping)
 {
     $this->clientService=$clientService;
+    $this->autoMapping=$autoMapping;
 }
 
     /**
@@ -44,10 +47,7 @@ private $clientService;
         }
         $id=$request->get('id');
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, UpdateClientRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, UpdateClientRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateClientRequest::class,(object)$data);
         $request->setId($id);
         $result = $this->clientService->update($request);
         return $this->response($result,self::UPDATE);
@@ -96,10 +96,7 @@ private $clientService;
             return $this->respondUnauthorized($errorsString) ;
         }
         $data = json_decode($request->getContent(), true);
-        $config = new AutoMapperConfig();
-        $config->registerMapping(\stdClass::class, RegisterRequest::class);
-        $mapper = new AutoMapper($config);
-        $request = $mapper->map((object)$data, RegisterRequest::class);
+        $request=$this->autoMapping->map(\stdClass::class,RegisterRequest::class,(object)$data);
         $client= $this->clientService->register($request);
         return $this->response(sprintf('User %s successfully created', $client->getEmail()),self::CREATE);
     }
