@@ -4,6 +4,7 @@
 namespace App\Manager;
 
 
+use App\AutoMapping;
 use App\Entity\ClapEntity;
 use App\Mapper\ClapMapper;
 use App\Repository\ClapEntityRepository;
@@ -25,25 +26,23 @@ class ClapManager
     private $clapRepository;
     private $entityRepository;
     private $clientRepository;
+    private $autoMapping;
 
     public function __construct(EntityManagerInterface $entityManagerInterface,ClapEntityRepository $clapRepository,
-                                EntityRepository $entityRepository,ClientEntityRepository $clientRepository)
+                                EntityRepository $entityRepository,ClientEntityRepository $clientRepository,
+                                    AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->clapRepository=$clapRepository;
         $this->entityRepository=$entityRepository;
         $this->clientRepository=$clientRepository;
+        $this->autoMapping=$autoMapping;
     }
 
     public function create(CreateClapRequest $request)
     {
 
-        $config = new AutoMapperConfig();
-        $config->registerMapping(CreateClapRequest::class, ClapEntity::class);
-        $mapper = new AutoMapper($config);
-        $request->setClient($this->clientRepository->find($request->getClient()));
-        $request->setEntity($this->entityRepository->find($request->getEntity()));
-        $clapData= $mapper->map($request, ClapEntity::class);
+        $clapData=$this->autoMapping->map(CreateClapRequest::class,ClapEntity::class,$request);
         $this->entityManager->persist($clapData);
         $this->entityManager->flush();
         return $clapData;
@@ -56,12 +55,8 @@ class ClapManager
             $exception->entityNotFound("clap");
         }
         else {
-            $config = new AutoMapperConfig();
-            $config->registerMapping(UpdateClapRequest::class, ClapEntity::class);
-            $mapper = new AutoMapper($config);
-            $request->setClient($this->clientRepository->find($request->getClient()));
-            $request->setEntity($this->entityRepository->find($request->getEntity()));
-            $clapEntity = $mapper->mapToObject($request, $clapEntity);
+            $clapEntity = $this->autoMapping->mapToObject(UpdateClapRequest::class,ClapEntity::class,
+                $request,$clapEntity);
             $this->entityManager->flush();
             return $clapEntity;
         }

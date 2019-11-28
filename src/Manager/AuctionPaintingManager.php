@@ -5,10 +5,15 @@ namespace App\Manager;
 
 
 
+use App\AutoMapping;
 use App\Entity\AuctionPaintingEntity;
 use App\Mapper\AuctionPaintingMapper;
 use App\Mapper\AutoMapper;
 use App\Repository\AuctionPaintingEntityRepository;
+use App\Request\ByIdRequest;
+use App\Request\CreateAuctionPaintingRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateAuctionPaintingRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,62 +22,53 @@ class AuctionPaintingManager
 {
     private $entityManager;
     private $auctionPaintingRepository;
+    private $autoMapping;
     public function __construct(EntityManagerInterface $entityManagerInterface,
-                                AuctionPaintingEntityRepository $auctionPaintingRepository)
+                                AuctionPaintingEntityRepository $auctionPaintingRepository,AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->auctionPaintingRepository=$auctionPaintingRepository;
+        $this->autoMapping=$autoMapping;
     }
 
-    public function create(Request $request)
+    public function create(CreateAuctionPaintingRequest $request)
     {
-        $auctionPainting = json_decode($request->getContent(),true);
-        $auctionPaintingEntity=new AuctionPaintingEntity();
-        $auctionPaintingMapper = new AuctionPaintingMapper();
-        $auctionPaintingData=$auctionPaintingMapper->auctionPaintingData($auctionPainting, $auctionPaintingEntity,
-            $this->entityManager);
+        $auctionPaintingData=$this->autoMapping->map(CreateAuctionPaintingRequest::class,
+            AuctionPaintingEntity::class,$request);
         $this->entityManager->persist($auctionPaintingData);
         $this->entityManager->flush();
         return $auctionPaintingData;
     }
-    public function update(Request $request)
+    public function update(UpdateAuctionPaintingRequest $request)
     {
-        $auctionPainting = json_decode($request->getContent(),true);
-        $auctionPaintingEntity=$this->auctionPaintingRepository->getAuctionPainting($request->get('id'));
+        $auctionPaintingEntity=$this->auctionPaintingRepository->find($request->getId());
         if (!$auctionPaintingEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("auctionPainting");
         }
         else {
-            $auctionPaintingMapper = new AuctionPaintingMapper();
-            $auctionPaintingMapper->AuctionPaintingData($auctionPainting, $auctionPaintingEntity);
+            $auctionPaintingEntity=$this->autoMapping->mapToObject(UpdateAuctionPaintingRequest::class,
+                AuctionPaintingEntity::class,$request,$auctionPaintingEntity);;
             $this->entityManager->flush();
             return $auctionPaintingEntity;
         }
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $auctionPainting=$this->auctionPaintingRepository->getAuctionPainting($request->get('id'));
+        $auctionPainting=$this->auctionPaintingRepository->find($request->getId());
         $this->entityManager->remove($auctionPainting);
         $this->entityManager->flush();
         return $auctionPainting;
     }
     public function getAll()
     {
-        $data=$this->auctionPaintingRepository->getAll();
+        $data=$this->auctionPaintingRepository->findAll();
 
         return $data;
     }
 
-    public function getAuctionPaintingById(Request $request)
+    public function getAuctionPaintingById(ByIdRequest $request)
     {
-        return $result = $this->auctionPaintingRepository->findById($request->get('id'));
-    }
-
-    public function getAllDetails()
-    {
-        $data=$this->auctionPaintingRepository->getAllDetails();
-
-        return $data;
+        return $result = $this->auctionPaintingRepository->find($request->getId());
     }
 }

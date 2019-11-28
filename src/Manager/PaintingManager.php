@@ -3,6 +3,7 @@
 
 namespace App\Manager;
 
+use App\AutoMapping;
 use App\Entity\ArtistEntity;
 use App\Entity\ClapEntity;
 use App\Entity\EntityInteractionEntity;
@@ -33,26 +34,26 @@ class PaintingManager
     private $entityManager;
     private $paintingRepository;
     private $artistRepository;
+    private $autoMapping;
 
     public function __construct(EntityManagerInterface $entityManagerInterface,
-                                PaintingEntityRepository $paintingRepository,ArtistEntityRepository $artistEntityRepository)
+                                PaintingEntityRepository $paintingRepository,
+                                ArtistEntityRepository $artistEntityRepository,AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->paintingRepository=$paintingRepository;
         $this->artistRepository=$artistEntityRepository;
+        $this->autoMapping=$autoMapping;
     }
 
     public function create(CreatePaintingRequest $request)
     {
-        $config = new AutoMapperConfig();
-        $config->registerMapping(CreatePaintingRequest::class, PaintingEntity::class);
-        $mapper = new \AutoMapperPlus\AutoMapper($config);
         $request->setArtist($this->artistRepository->getArtist($request->getArtist()));
-        $paintingData=$mapper->map($request,PaintingEntity::class);
-        $paintingData->setCreateDate();
-        $this->entityManager->persist($paintingData);
+        $painting=$this->autoMapping->map(CreatePaintingRequest::class,PaintingEntity::class,$request);
+        $painting->setCreateDate();
+        $this->entityManager->persist($painting);
         $this->entityManager->flush();
-        return $paintingData;
+        return $painting;
     }
     public function update(UpdatePaintingRequest $request)
     {
@@ -62,11 +63,9 @@ class PaintingManager
             $exception->entityNotFound("painting");
         }
         else {
-            $config = new AutoMapperConfig();
-            $config->registerMapping(UpdatePaintingRequest::class, PaintingEntity::class);
-            $mapper = new \AutoMapperPlus\AutoMapper($config);
             $request->setArtist($this->artistRepository->getArtist($request->getArtist()));
-            $paintingEntity=$mapper->mapToObject($request,$paintingEntity);
+            $paintingEntity=$this->autoMapping->mapToObject(UpdatePaintingRequest::class,
+                PaintingEntity::class,$request,$paintingEntity);
             $paintingEntity->setUpdateDate();
             $this->entityManager->flush();
             return $paintingEntity;
@@ -92,21 +91,12 @@ class PaintingManager
 
         return $data;
     }
-    public function getArtistPaintings(ByIdRequest $request)
-    {
-         $result = $this->paintingRepository->getArtistPaintings($request->getId());
-    return $result;
-    }
 
     public function getPaintingById($id)
     {
         return $result = $this->paintingRepository->findOneById($id);
     }
 
-    public function getPaintingImages(ByIdRequest $request)
-    {
-        return $result = $this->paintingRepository->getPaintingImages($request->getId());
-    }
     public function getBy(GetPaintingByRequest $request)
     {
          $result = $this->paintingRepository->getBy($request->getParm(),$request->getValue());

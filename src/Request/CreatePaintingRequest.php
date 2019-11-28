@@ -5,9 +5,19 @@ namespace App\Request;
 
 class CreatePaintingRequest
 {
-public $name;
-
-private $artist;
+    public $name;
+    public $artist;
+    public $state;
+    public $height;
+    public $width;
+    public $colorsType;
+    public $price;
+    public $story;
+    public $image;
+    public $active;
+    public $keyWords;
+    public $artType;
+    public $createDate;
 
     /**
      * @return mixed
@@ -24,12 +34,6 @@ private $artist;
     {
         $this->artist = $artist;
     }
-public $state;
-public $height;
-public $width;
-public $colorsType;
-public $price;
-public $story;
 
     /**
      * @return mixed
@@ -62,11 +66,7 @@ public $story;
     {
         $this->story = $story;
     }
-public $image;
-public $active;
-public $keyWords;
-public $artType;
-    public $createDate;
+
 
 
     public function __construct()
@@ -90,8 +90,5 @@ public $artType;
     {
         $this->artType = $artType;
     }
-
-
-
 
 }

@@ -4,6 +4,7 @@
 namespace App\Manager;
 
 
+use App\AutoMapping;
 use App\Entity\EntityInteractionEntity;
 use App\Repository\ClientEntityRepository;
 use App\Repository\EntityInteractionEntityRepository;
@@ -25,27 +26,28 @@ class EntityInteractionManager
     private $entityRepository;
     private $clientRepository;
     private $interactionRepository;
+    public $autoMapping;
 
     public function __construct(EntityManagerInterface $entityManagerInterface,InteractionEntityRepository $interactionRepository,
                                 EntityInteractionEntityRepository $entityInteractionEntityRepository,
-                                EntityRepository $entityRepository,ClientEntityRepository $clientRepository)
+                                EntityRepository $entityRepository,ClientEntityRepository $clientRepository,
+                                AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->entityInteractionRepository=$entityInteractionEntityRepository;
         $this->entityRepository=$entityRepository;
         $this->clientRepository=$clientRepository;
         $this->interactionRepository=$interactionRepository;
+        $this->autoMapping=$autoMapping;
     }
 
     public function create(CreateInteractionRequest$request)
-    {$config = new AutoMapperConfig();
-        $config->registerMapping(CreateInteractionRequest::class,
-            EntityInteractionEntity::class);
-        $mapper = new AutoMapper($config);
+    {
         $request->setClient($this->clientRepository->find($request->getClient()));
         $request->setEntity($this->entityRepository->find($request->getEntity()));
         $request->setInteraction($this->interactionRepository->find($request->getInteraction()));
-        $entityInteractionData = $mapper->map($request, EntityInteractionEntity::class);
+        $entityInteractionData = $this->autoMapping->map(CreateInteractionRequest::class,
+            EntityInteractionEntity::class,$request);
         $this->entityManager->persist($entityInteractionData);
         $this->entityManager->flush();
         return $entityInteractionData;
@@ -58,14 +60,11 @@ class EntityInteractionManager
             $exception->entityNotFound("entityInteraction");
         }
         else {
-            $config = new AutoMapperConfig();
-            $config->registerMapping(UpdateInteractionRequest::class,
-                EntityInteractionEntity::class);
-            $mapper = new AutoMapper($config);
             $request->setClient($this->clientRepository->find($request->getClient()));
             $request->setEntity($this->entityRepository->find($request->getEntity()));
             $request->setInteraction($this->interactionRepository->find($request->getInteraction()));
-            $entityInteractionEntity = $mapper->mapToObject($request, $entityInteractionEntity);
+            $entityInteractionEntity = $this->autoMapping->mapToObject(UpdateInteractionRequest::class,
+                EntityInteractionEntity::class,$request,$entityInteractionEntity);
             $this->entityManager->flush();
             return $entityInteractionEntity;
         }

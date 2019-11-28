@@ -3,35 +3,33 @@
 
 namespace App\Manager;
 
+use App\AutoMapping;
 use App\Entity\ArtistEntity;
-use App\Mapper\ArtistMapper;
 use App\Repository\ArtistEntityRepository;
+use App\Request\ByIdRequest;
 use App\Request\CreateArtistRequest;
+use App\Request\DeleteRequest;
 use App\Request\UpdateArtistRequest;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 class ArtistManager
 {
     private $entityManager;
     private $artistRepository;
+    private $autoMapping;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface,ArtistEntityRepository $artistEntityRepository)
+    public function __construct(EntityManagerInterface $entityManagerInterface,
+                                ArtistEntityRepository $artistEntityRepository,AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->artistRepository=$artistEntityRepository;
+        $this->autoMapping=$autoMapping;
     }
 
     public function create(CreateArtistRequest $request)
     {
-        $artistEntity=new ArtistEntity();
-        $config = new AutoMapperConfig();
-        $config->registerMapping(CreateArtistRequest::class, ArtistEntity::class);
-        $mapper = new AutoMapper($config);
-        $artistEntity=$mapper->mapToObject($request,$artistEntity);
+        $artistEntity=$this->autoMapping->map(CreateArtistRequest::class,ArtistEntity::class,$request);
         $artistEntity->setCreateDate();
         $artistEntity->setBirthDate($request->getBirthDate());
         $this->entityManager->persist($artistEntity);
@@ -45,18 +43,15 @@ class ArtistManager
                 $exception = new EntityException();
                 $exception->entityNotFound("artist");
             } else {
-                $config = new AutoMapperConfig();
-                $config->registerMapping(UpdateArtistRequest::class,ArtistEntity::class);
-                $mapper = new AutoMapper($config);
-                $artistEntity=$mapper->map($request,ArtistEntity::class);
+                $artistEntity=$artistEntity=$this->autoMapping->mapToObject(UpdateArtistRequest::class,
+                    ArtistEntity::class,$request,$artistEntity);
                 $artistEntity->setBirthDate($request->getBirthDate());
                 $artistEntity->setUpdateDate();
                 $this->entityManager->flush();
                 return $artistEntity;
             }
-
     }
-    public function delete($request)
+    public function delete(DeleteRequest $request)
     {
         $artist=$this->artistRepository->getArtist($request->getId());
         if (!$artist) {
@@ -76,7 +71,7 @@ class ArtistManager
         return $data;
     }
 
-    public function getArtistById($request)
+    public function getArtistById(ByIdRequest $request)
     {
         return $result = $this->artistRepository->findById($request->getId());
     }

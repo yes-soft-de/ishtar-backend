@@ -3,6 +3,7 @@
 
 namespace App\Manager;
 
+use App\AutoMapping;
 use App\Entity\ArtistEntity;
 use App\Entity\EntityMediaEntity;
 use App\Entity\StatueEntity;
@@ -30,21 +31,21 @@ class StatueManager
     private $entityManager;
     private $statueRepository;
     private $artistRepository;
+    private $autoMapping;
+
     public function __construct(EntityManagerInterface $entityManagerInterface,StatueEntityRepository $statueRepository,
-    ArtistEntityRepository $artistRepository)
+    ArtistEntityRepository $artistRepository,AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->statueRepository=$statueRepository;
         $this->artistRepository=$artistRepository;
+        $this->autoMapping=$autoMapping;
     }
 
     public function create(CreateStatueRequest $request)
     {
-        $config = new AutoMapperConfig();
-        $config->registerMapping(CreateStatueRequest::class, StatueEntity::class);
-        $mapper = new \AutoMapperPlus\AutoMapper($config);
         $request->setArtist($this->artistRepository->getArtist($request->getArtist()));
-        $statueData=$mapper->map($request,StatueEntity::class);
+        $statueData=$this->autoMapping->map(CreateStatueRequest::class,StatueEntity::class,$request);
         $statueData->setCreateDate();
         $this->entityManager->persist($statueData);
         $this->entityManager->flush();
@@ -58,11 +59,9 @@ class StatueManager
             $exception->entityNotFound("statue");
         }
         else {
-            $config = new AutoMapperConfig();
-            $config->registerMapping(UpdateStatueRequest::class, StatueEntity::class);
-            $mapper = new \AutoMapperPlus\AutoMapper($config);
             $request->setArtist($this->artistRepository->getArtist($request->getArtist()));
-            $statueEntity=$mapper->mapToObject($request,$statueEntity);
+            $statueEntity=$this->autoMapping->mapToObject(UpdateStatueRequest::class,StatueEntity::class,
+                $request,$statueEntity);
             $statueEntity->setUpdatedDate();
             $this->entityManager->flush();
             return $statueEntity;

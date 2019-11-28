@@ -3,6 +3,7 @@
 
 namespace App\Manager;
 
+use App\AutoMapping;
 use App\Entity\Entity;
 use App\Entity\EntityMediaEntity;
 use App\Mapper\EntityMediaMapper;
@@ -25,13 +26,16 @@ class EntityMediaManger
     private $entityMediaRepository;
     private $entityRepository;
     private $mediaRepository;
+    private $autoMapping;
     public function __construct(EntityManagerInterface $entityManagerInterface,MediaEntityRepository $mediaRepository,
-                                EntityMediaEntityRepository $entityMediaRepository,EntityRepository $entityRepository)
+                                EntityMediaEntityRepository $entityMediaRepository,EntityRepository $entityRepository,
+                                AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->entityMediaRepository=$entityMediaRepository;
         $this->entityRepository=$entityRepository;
         $this->mediaRepository=$mediaRepository;
+        $this->autoMapping=$autoMapping;
     }
     public function create($request,$entity,$id)
     {
@@ -44,7 +48,8 @@ class EntityMediaManger
             $mapper = new AutoMapper($config);
             $request->setEntity($this->entityRepository->find($request->getEntity()));
             $request->setMedia($this->mediaRepository->find(1));
-            $entityMediaEntity=$mapper->mapToObject($request,$entityMediaEntity);
+            $entityMediaEntity=$this->autoMapping->mapToObject(CreateMediaRequest::class,
+                EntityMediaEntity::class,$request,$entityMediaEntity);
         }
         else {
             $entityMediaEntity->setPath($request->getImage())
@@ -53,8 +58,6 @@ class EntityMediaManger
             ->setMedia($this->mediaRepository->find(1));
                 if(!$entity==5)
             $entityMediaEntity->setName($request->getName());
-
-
         }
         $entityMediaEntity->setCreatedDate();
         $this->entityManager->persist($entityMediaEntity);

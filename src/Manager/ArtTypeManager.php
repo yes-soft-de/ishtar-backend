@@ -6,16 +6,12 @@ namespace App\Manager;
 
 use App\AutoMapping;
 use App\Entity\ArtTypeEntity;
-use App\Mapper\ArtTypeMapper;
 use App\Repository\ArtTypeRepository;
 use App\Request\ByIdRequest;
 use App\Request\CreateArtTypeRequest;
 use App\Request\DeleteRequest;
 use App\Request\UpdateArtTypeRequest;
-use Doctrine\Common\Annotations\Annotation\Required;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Symfony\Component\HttpFoundation\Request;
 
 class ArtTypeManager
 {

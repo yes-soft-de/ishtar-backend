@@ -24,10 +24,10 @@ private $clientService;
 private $autoMapping;
 
     public function __construct(ClientService $clientService,AutoMapping $autoMapping)
-{
-    $this->clientService=$clientService;
-    $this->autoMapping=$autoMapping;
-}
+    {
+        $this->clientService=$clientService;
+        $this->autoMapping=$autoMapping;
+    }
 
     /**
      * @Route("/client/{id}", name="updateClient",methods={"PUT"})
@@ -74,6 +74,7 @@ private $autoMapping;
         $result = $this->clientService->getAll();
         return $this->response($result,self::FETCH);
     }
+
     /**
      * @Route("/client/{id}", name="getClientById",methods={"GET"})
      * @param Request $request
@@ -85,6 +86,7 @@ private $autoMapping;
         $result = $this->clientService->getById($request);
         return $this->response($result,self::FETCH);
     }
+
     public function register(Request $request, ValidatorInterface $validator)
     {
         //validation

@@ -3,10 +3,12 @@
 
 namespace App\Manager;
 
+use App\AutoMapping;
 use App\Entity\ClientEntity;
 use App\Mapper\ClientMapper;
 use App\Repository\ClapEntityRepository;
 use App\Repository\ClientEntityRepository;
+use App\Request\ByIdRequest;
 use App\Request\DeleteRequest;
 use App\Request\RegisterRequest;
 use App\Request\UpdateClientRequest;
@@ -21,23 +23,21 @@ class ClientManager
     private $entityManager;
     private $encoder;
     private $clientRepository;
+    private $autoMapping;
 
     public function __construct(EntityManagerInterface $entityManagerInterface,UserPasswordEncoderInterface $encoder
-    ,ClientEntityRepository $clientRepository)
+    ,ClientEntityRepository $clientRepository,AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->encoder=$encoder;
         $this->clientRepository=$clientRepository;
-
+        $this->autoMapping=$autoMapping;
     }
 
     public function register(RegisterRequest $request)
     {
         $client = new ClientEntity($request->getEmail());
-        $config = new AutoMapperConfig();
-        $config->registerMapping(RegisterRequest::class, ClientEntity::class);
-        $mapper = new AutoMapper($config);
-        $client=$mapper->mapToObject($request,$client);
+        $client=$this->autoMapping->mapToObject(RegisterRequest::class,ClientEntity::class,$request,$client);
         $client->setPassword($this->encoder->encodePassword($client,$request->getPassword()));
         $client->setCreateDate();
         $this->entityManager->persist($client);
@@ -52,10 +52,8 @@ class ClientManager
             $exception->entityNotFound("client");
         }
         else {
-            $config = new AutoMapperConfig();
-            $config->registerMapping(UpdateClientRequest::class, ClientEntity::class);
-            $mapper = new AutoMapper($config);
-            $client=$mapper->mapToObject($request,$clientEntity);
+            $client=$this->autoMapping->mapToObject(RegisterRequest::class,ClientEntity::class,$request,
+                $clientEntity);
             $client->setCreateDate();
             $client->setPassword($this->encoder->encodePassword($client,$request->getPassword()));
             $this->entityManager->flush();
@@ -66,7 +64,7 @@ class ClientManager
     {
       return $this->clientRepository->findAll();
     }
-    public function getById($request)
+    public function getById(ByIdRequest $request)
     {
         return $this->clientRepository->findClient($request->getId());
     }

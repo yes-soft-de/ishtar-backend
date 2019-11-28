@@ -3,18 +3,11 @@
 
 namespace App\Manager;
 
-
-use App\Entity\ClapEntity;
-use App\Entity\CommentEntity;
-use App\Entity\EntityInteractionEntity;
-use App\Mapper\CommentMapper;
 use App\Repository\ClapEntityRepository;
 use App\Repository\CommentEntityRepository;
 use App\Repository\EntityInteractionEntityRepository;
 use App\Request\DeleteRequest;
-use App\Request\GetArtistRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class InteractionsManager
 {
@@ -46,7 +39,6 @@ class InteractionsManager
             $exception = new EntityException();
             $exception->entityNotFound($entity);
         }
-
     }
     public function deleteComments(DeleteRequest $request,$entity)
     {

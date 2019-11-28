@@ -4,6 +4,7 @@
 namespace App\Manager;
 
 
+use App\AutoMapping;
 use App\Entity\CommentEntity;
 use App\Mapper\CommentMapper;
 use App\Repository\ClientEntityRepository;
@@ -26,24 +27,23 @@ class CommentManager
     private $commentRepository;
     private $entityRepository;
     private $clientRepository;
+    private $autoMapping;
 
     public function __construct(EntityManagerInterface $entityManagerInterface,CommentEntityRepository $commentRepository,
-                EntityRepository $entityRepository,ClientEntityRepository $clientRepository)
+                EntityRepository $entityRepository,ClientEntityRepository $clientRepository,AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->commentRepository=$commentRepository;
         $this->entityRepository=$entityRepository;
         $this->clientRepository=$clientRepository;
+        $this->autoMapping=$autoMapping;
     }
 
     public function create(CreateCommentRequest $request)
     {
-        $config = new AutoMapperConfig();
-        $config->registerMapping(CreateCommentRequest::class, CommentEntity::class);
-        $mapper = new AutoMapper($config);
         $request->setClient($this->clientRepository->find($request->getClient()));
         $request->setEntity($this->entityRepository->find($request->getEntity()));
-        $commentData = $mapper->map($request, CommentEntity::class);
+        $commentData = $this->autoMapping->map(CreateCommentRequest::class,CommentEntity::class,$request);
         $this->entityManager->persist($commentData);
         $this->entityManager->flush();
         return $commentData;
@@ -56,12 +56,10 @@ class CommentManager
             $exception->entityNotFound("comment");
         }
         else {
-            $config = new AutoMapperConfig();
-            $config->registerMapping(UpdateCommentRequest::class, CommentEntity::class);
-            $mapper = new AutoMapper($config);
             $request->setClient($this->clientRepository->find($request->getClient()));
             $request->setEntity($this->entityRepository->find($request->getEntity()));
-            $commentEntity = $mapper->mapToObject($request, $commentEntity);
+            $commentEntity = $this->autoMapping->mapToObject(UpdateCommentRequest::class,
+                CommentEntity::class,$request,$commentEntity);
             $this->entityManager->flush();
             return $commentEntity;
         }

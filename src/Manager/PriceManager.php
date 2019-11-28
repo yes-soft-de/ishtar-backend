@@ -66,16 +66,4 @@ class PriceManager
             $this->entityManager->flush();
         }
     }
-//    public function getAll()
-//    {
-//        $pricesLists[]=new PricesListResponse();
-//        $data=$this->entityManager->getRepository(PriceEntity::class)->findAll();
-//        $i=0;
-//
-//            $list = $this->autoMapper->map((object)$data[$i],$list);
-//            $i++;
-//        }
-//        return $pricesLists;
-//    }
-
 }

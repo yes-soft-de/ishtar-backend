@@ -5,9 +5,8 @@ namespace App\Response;
 
 
 use DateTime;
-use Symfony\Component\Validator\Constraints\Date;
 
-class CreateArtistResponse
+class UpdateArtistResponse
 {
     public $id;
     public $name;
@@ -257,7 +256,8 @@ class CreateArtistResponse
     {
         return $this->birthDate;
     }
-    public function setBirthDate( $birthDate): self
+
+    public function setBirthDate($birthDate): self
     {
         try {
             $this->birthDate = $birthDate;
@@ -268,13 +268,11 @@ class CreateArtistResponse
     }
 
 
-
     public function __construct()
     {
         $this->createDate = new \DateTime('Now');
 
     }
-
 
 
     /**
@@ -292,7 +290,4 @@ class CreateArtistResponse
     {
         $this->artType = $artType;
     }
-
-
-
 }

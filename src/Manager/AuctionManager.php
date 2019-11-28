@@ -5,52 +5,52 @@ namespace App\Manager;
 
 
 
+use App\AutoMapping;
 use App\Entity\AuctionEntity;
-use App\Mapper\AuctionMapper;
-use App\Mapper\AutoMapper;
 use App\Repository\AuctionRepository;
+use App\Request\ByIdRequest;
+use App\Request\CreateAuctionRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateAuctionRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Symfony\Component\HttpFoundation\Request;
 
 class AuctionManager
 {
     private $entityManager;
     private $auctionRepository;
-    public function __construct(EntityManagerInterface $entityManagerInterface,AuctionRepository $auctionRepository)
+    private $autoMapping;
+    public function __construct(EntityManagerInterface $entityManagerInterface,AuctionRepository $auctionRepository,
+AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
         $this->auctionRepository=$auctionRepository;
+        $this->autoMapping=$autoMapping;
     }
 
-    public function create(Request $request)
+    public function create(CreateAuctionRequest $request)
     {
-        $auction = json_decode($request->getContent(),true);
-        $auctionEntity=new AuctionEntity();
-        $auctionMapper = new AuctionMapper();
-        $auctionData=$auctionMapper->auctionData($auction, $auctionEntity);
+        $auctionData=$this->autoMapping->map(CreateAuctionRequest::class,AuctionEntity::class,$request);
         $this->entityManager->persist($auctionData);
         $this->entityManager->flush();
         return $auctionData;
     }
-    public function update(Request $request)
+    public function update(UpdateAuctionRequest $request)
     {
-        $auction = json_decode($request->getContent(),true);
-        $auctionEntity=$this->auctionRepository->getAuction($request->get('id'));
+        $auctionEntity=$this->auctionRepository->find($request->getId());
         if (!$auctionEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("auction");
         }
         else {
-            $auctionMapper = new AuctionMapper();
-            $auctionMapper->AuctionData($auction, $auctionEntity);
+            $auctionEntity=$auctionData=$this->autoMapping->mapToObject(UpdateAuctionRequest::class,
+                AuctionEntity::class,$request,$auctionEntity);
             $this->entityManager->flush();
             return $auctionEntity;
         }
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $auction=$this->auctionRepository->getAuction($request->get('id'));
+        $auction=$this->auctionRepository->find($request->getId());
         if (!$auction) {
             $exception=new EntityException();
             $exception->entityNotFound("artType");
@@ -63,20 +63,14 @@ class AuctionManager
     }
     public function getAll()
     {
-        $data=$this->auctionRepository->getAll();
+        $data=$this->auctionRepository->findAll();
 
         return $data;
     }
 
-    public function getById(Request $request)
+    public function getById(ByIdRequest $request)
     {
-        return $result = $this->auctionRepository->findById($request->get('id'));
+        return $result = $this->auctionRepository->find($request->getId());
     }
 
-    public function getAllDetails()
-    {
-        $data=$this->auctionRepository->getAllDetails();
-
-        return $data;
-    }
 }
