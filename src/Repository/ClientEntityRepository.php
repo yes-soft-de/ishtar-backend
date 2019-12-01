@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ClientEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -37,25 +38,30 @@ class ClientEntityRepository extends ServiceEntityRepository
     */
 
 
-    public function findOneById($value): ?ClientEntity
+    public function findClient($value)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.id = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        try {
+            return $this->createQueryBuilder('c')
+                ->select('c','m.path as image')
+                ->from('App:EntityMediaEntity','m')
+                ->andWhere('m.entity=5')
+                ->andWhere('m.row= :val')
+                ->andWhere('m.media=1')
+                ->andWhere('c.id = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
     public function findAll()
     {
-        return $this->createQueryBuilder('q')
-            ->select('c.id','c.userName','c.firstName','c.lastName','c.birthDate','c.email',
-                'c.phone','c.roll','em.path as image')
-            ->from('App:EntityMediaEntity','em')
-            ->from('App:ClientEntity','c')
-            ->andWhere('em.entity=5')
-            ->andWhere('em.row=c.id')
-            ->andWhere('em.media=1')
+        return $this->createQueryBuilder('c')
+            ->select('c','m.path as image')
+            ->from('App:EntityMediaEntity','m')
+            ->andWhere('m.entity=5')
+            ->andWhere('m.row=c.id')
+            ->andWhere('c.isActive=1')
             ->groupBy('c.id')
             ->getQuery()
             ->getResult();

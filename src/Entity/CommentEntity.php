@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentEntityRepository")
@@ -41,7 +42,6 @@ class CommentEntity
 
     /**
      * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
-     * @ORM\JoinColumn(nullable=true)
      */
     private $lastEdit;
 
@@ -103,9 +103,9 @@ class CommentEntity
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(): self
     {
-        $this->date = $date;
+        $this->date = new \DateTime('Now');
 
         return $this;
     }

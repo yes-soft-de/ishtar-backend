@@ -39,6 +39,11 @@ class ClapEntity
      */
     private $entity;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +94,18 @@ class ClapEntity
     public function setEntity(?Entity $entity): self
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(): self
+    {
+        $this->date = new \DateTime('Now');
 
         return $this;
     }

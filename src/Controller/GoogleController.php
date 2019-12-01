@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use mysql_xdevapi\Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -53,11 +54,22 @@ class GoogleController extends AbstractController
      */
     public function logout()
     {
-        throw new Exception("ex");
+        //throw new Exception("ex");
+        return new jsonResponse(["status_code" => "200"]);
+    }
+    
+    /**
+     * logoutRedirect
+     * @Route("/logoutRedirect", name="logoutRedirect")
+     */
+    public function logoutRedirect()
+    {
+        return $this->redirect('http://dev-ishtar.96.lt/');
     }
 
     /**
      * @Route("/user", name="user")
+     * 
      */
     public function getUserAccount(SerializerInterface $serializer)
     {

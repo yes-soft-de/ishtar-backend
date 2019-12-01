@@ -31,7 +31,7 @@ class PaintingMapper
         $width = $data["width"];
         $colorsType = $data["colorsType"];
         $image = $data['image'];
-        $active = $data["active"];
+       // $active = $data["active"];
         $keyWords = $data["keyWords"];
 
         $painting->setName($name)
@@ -41,8 +41,9 @@ class PaintingMapper
             ->setHeight($height)
             ->setWidth($width)
             ->setColorsType($colorsType)
-            ->setActive($active)
-            ->setImage($image);
+            ->setActive(1)
+            ->setImage($image)
+        ;
 
 
         return $painting;

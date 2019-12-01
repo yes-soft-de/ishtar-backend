@@ -25,26 +25,14 @@ class PaintingTransactionEntityRepository extends ServiceEntityRepository
 
     public function findOneById($value)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.id = :val')
+        return $this->createQueryBuilder('pt')
+            ->andWhere('pt.id = :val')
             ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('pt.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
 
-
-    /*
-    public function findOneBySomeField($value): ?PaintingTransactionEntity
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

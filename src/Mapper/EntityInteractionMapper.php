@@ -22,8 +22,8 @@ class EntityInteractionMapper
         $interactionEntity->setClient($client)
             ->setRow($row)
             ->setEntity($entity)
-            ->setInteraction($interaction);
-
+            ->setInteraction($interaction)
+            ->setDate();
         return $interactionEntity;
     }
 }
