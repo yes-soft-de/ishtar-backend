@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\ArtistEntity;
 use App\Entity\EntityArtTypeEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -20,16 +21,27 @@ class ArtistEntityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ArtistEntity::class);
     }
-
-
-
+/* Aliasis:
+    a:artist
+    m:media
+    at:artType
+    p:painting
+i:interation
+st:story
+s:statue
+    eat:entityArtType
+    ei:entityInteraction
+    e:entity
+c:client
+ap:auctionPainting
+au:auctionEntity
+*/
     public function findById($value)
     {
-        $result=$this->createQueryBuilder('c')
+        $result=$this->createQueryBuilder('a')
             ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story',
-                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','m.path')
+                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','m.path','a.details')
             ->from('App:EntityMediaEntity','m')
-            ->from('App:ArtistEntity','a')
             ->andWhere('a.id = :val')
             ->andWhere('a.id=m.row')
             ->andWhere('m.entity=2')
@@ -46,98 +58,92 @@ class ArtistEntityRepository extends ServiceEntityRepository
 
     /**
      * @return ArtistEntity[] Returns an array of ArtistEntity objects
+     * @throws NonUniqueResultException
      */
     public function findOneById($value): ?ArtistEntity
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.id =:val')
-
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();
     }
-    public function findAll()
+    public function getAll()
     {
-        return $this->createQueryBuilder('pb')
+        return $this->createQueryBuilder('a')
             ->select('a.id','a.name','m.path','at.name as artType','count(p.id) as painting')
             ->from('App:EntityMediaEntity','m')
-            ->from('App:ArtistEntity','a')
             ->from('App:PaintingEntity','p')
             ->from('App:ArtTypeEntity','at')
-            ->from('App:EntityArtTypeEntity','ea')
-            ->from('App:EntityInteractionEntity','ei')
+            ->from('App:EntityArtTypeEntity','eat')
             ->Where('a.id=m.row')
             ->andWhere('m.entity=2')
             ->andWhere('m.media=1')
-            ->andWhere('at.id=ea.artType')
+            ->andWhere('at.id=eat.artType')
             ->andWhere('p.artist=a.id')
-            ->andWhere('ea.entity=2')
-            ->andWhere('a.id=ea.row')
-            //->andWhere('ei.entity=2')
-            //->andWhere('ei.interaction=3')
-           // ->andWhere('ei.row=a.id')
-            ->groupBy('a.name')
-            ->orderBy('a.id')
+            ->andWhere('eat.entity=2')
+            ->andWhere('a.id=eat.row')
+            ->andWhere('a.isActive=1')
+            ->groupBy('a.id')
+           // ->orderBy('a.id')
             ->getQuery()
             ->getResult();
     }
 
-    public function getArtistsData($request)
+    public function getAllDetails()
     {
-        return $this->createQueryBuilder('p')
-            ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story',
-                'a.story','m.path','at.name as artType')
+        return $this->createQueryBuilder('a')
+            ->select('a','m.path','at.name as artType')
             ->from('App:EntityMediaEntity','m')
-            ->from('App:ArtistEntity','a')
             ->from('App:ArtTypeEntity','at')
-            ->from('App:EntityArtTypeEntity','ea')
+            ->from('App:EntityArtTypeEntity','eat')
             ->andWhere('a.id=m.row')
             ->andWhere('m.entity=2')
-            ->andWhere('at.id=ea.artType')
-            ->andWhere('ea.entity=2')
-            ->andWhere('a.id=ea.row')
+            ->andWhere('at.id=eat.artType')
+            ->andWhere('eat.entity=2')
+            ->andWhere('a.id=eat.row')
             ->groupBy('a.id')
             ->getQuery()
             ->getResult();
     }
     public function getArtistPaintings($request)
     {
-        $data1=$this->createQueryBuilder('p')
+        $q1=$this->createQueryBuilder('a')
             ->select('a.id as ArtistId','a.name as Artist')
-            ->from('App:ArtistEntity','a')
-            ->andWhere('a.id='.$request)
+            ->andWhere('a.id = :request')
+            ->groupBy('a.id')
+            ->setParameter('request',$request)
+            ->getQuery()
+            ->getResult();
+        $q2= $this->createQueryBuilder('a')
+            ->select('p.id','p.name','p.image')
+            ->from('App:PaintingEntity','p')
+            ->andWhere('a.artist=:request')
+            ->setParameter('request',$request)
             ->groupBy('a.id')
             ->getQuery()
             ->getResult();
-        $data= $this->createQueryBuilder('p')
-            ->select('a.id','a.name','a.image')
-            ->from('App:PaintingEntity','a')
-            ->andWhere('a.artist='.$request)
-            ->groupBy('a.id')
-            ->getQuery()
-            ->getResult();
-       return $result=array_merge($data1,$data);
+       return $result=array_merge($q1,$q2);
     }
     public function search($keyword):?array
     {
-        $q1= $this->createQueryBuilder('q')
+        $q1= $this->createQueryBuilder('a')
             ->select('a.id','a.name','m.path')
-            ->from('App:ArtistEntity','a')
             ->from('App:EntityMediaEntity','m')
             ->andWhere('a.id=m.row')
             ->andWhere('m.entity=2')
             ->andWhere('m.media=1')
             ->andWhere('a.name LIKE :keyword')
+            ->andWhere('a.isActive=1')
             ->setParameter('keyword', '%'.$keyword.'%')
             ->groupBy('a.id')
-            // ->setMaxResults(100)
             ->getQuery()
             ->getResult();
-        $q2= $this->createQueryBuilder('qb')
+        $q2= $this->createQueryBuilder('a')
                 ->select('p.id','p.name','p.image','a.name as artist')
                 ->from('App:PaintingEntity','p')
-                ->from('App:ArtistEntity','a')
                 ->andWhere('p.artist=a.id')
+            ->andWhere('p.active=1')
                 ->andWhere('p.name LIKE :keyword')
                 ->orWhere('p.keyWords LIKE :keyword')
                 ->setParameter('keyword', '%'.$keyword.'%')
@@ -147,5 +153,22 @@ class ArtistEntityRepository extends ServiceEntityRepository
                 ->getResult();
         return $result=array_merge($q1,$q2);
     }
-
+    /**
+     * @method getArtist
+     * @param $id
+     * @return ArtistEntity
+     *
+     */
+    public function getArtist($id):ArtistEntity
+    {
+        try {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.id=:id')
+                ->groupBy('a.id')
+                ->getQuery()
+                ->setParameter('id',$id)
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
+    }
 }

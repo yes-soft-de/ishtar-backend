@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\EntityMediaService;
 use App\Validator\CommentValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,65 +10,73 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MediaEntityController extends BaseController
 {
-    /**
-     * @Route("/createMedia", name="createMedia")
-     * @param Request $request
-     * @return
-     */
-    public function create(Request $request, CommentValidateInterface $commentValidate)
-    {
+    private $mediaService;
 
-        $result = $this->CUDService->create($request, "MediaEntity");
-        return $this->response($result, self::CREATE, "MediaEntity");
+    /**
+     * MediaEntityController constructor.
+     * @param $mediaService
+     */
+    public function __construct(EntityMediaService $mediaService)
+    {
+        $this->mediaService = $mediaService;
     }
 
     /**
-     * @Route("/updateMediaEntity", name="updateMediaEntity")
+     * @Route("/medias", name="createMedia",methods={"POST"})
      * @param Request $request
      * @return
      */
-    public function update(Request $request, CommentValidateInterface $commentValidate)
+    public function create(Request $request)
     {
-        $validateResult = $commentValidate->commentValidator($request, 'update');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
-        $result = $this->CUDService->update($request, "MediaEntity");
+
+        $result = $this->mediaService->create($request);
+        return $this->response($result, self::CREATE);
+    }
+
+    /**
+     *@Route("/media/{id}", name="updateMedia",methods={"PUT"})
+     * @param Request $request
+     * @return
+     */
+    public function update(Request $request)
+    {
+        $result = $this->mediaService->update($request);
         return $this->response($result, self::UPDATE, "MediaEntity");
     }
 
     /**
-     * @Route("/deleteMediaEntity", name="deleteMediaEntity")
+     *  @Route("/media/{id}", name="deleteMedia",methods={"DELETE"})
      * @param Request $request
      * @return
      */
-    public function delete(Request $request, CommentValidateInterface $commentValidate)
+    public function delete(Request $request)
     {
-//        $validateResult = $commentValidate->commentValidator($request, 'delete');
-//        if (!empty($validateResult))
-//        {
-//            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-//            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-//            return $resultResponse;
-//        }
-        $result = $this->CUDService->delete($request, "MediaEntity");
+        $result = $this->mediaService->delete($request);
         return $this->response($result, self::DELETE,"MediaEntity");
 
     }
 
 
     /**
-     * @Route("/getAllComment",name="getAllComment")
+     * @Route("/medias", name="getAllMedia",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getAll(Request $request)
     {
 
-        $result = $this->FDService->fetchData($request,"Comment");
+        $result = $this->mediaService->getAll($request);
+        return $this->response($result,self::FETCH,"Comment");
+    }
+    /**
+     * @Route("entityitems/{entity}", name="getEntityItems",methods={"GET"})
+     * @param Request $request
+     * @return
+     */
+    public function getEntityItem(Request $request)
+    {
+
+        $result = $this->mediaService->getEntityItems($request,"Comment");
         return $this->response($result,self::FETCH,"Comment");
     }
 }

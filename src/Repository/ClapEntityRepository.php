@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ClapEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,57 +20,51 @@ class ClapEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, ClapEntity::class);
     }
 
-    // /**
-    //  * @return ClapEntity[] Returns an array of ClapEntity objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
     public function findOneById($value): ?ClapEntity
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.id =:val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('cp')
+                ->andWhere('cp.id =:val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
     public function getEntityClap($entity,$id):?array
     {
-        return $this->createQueryBuilder('q')
-            ->select('c.id','c.value','cl.userName','m.path as image')
-            ->from('App:ClapEntity','c')
-            ->from('App:ClientEntity','cl')
-            ->from('App:EntityMediaEntity','m')
-            ->andWhere('c.client=cl.id')
-            ->andWhere('c.entity='.$entity)
-            ->andWhere('c.row='.$id)
-            ->andWhere('m.entity=5')
-            ->andWhere('m.media=1')
-            ->andWhere('c.id=m.row')
-            ->groupBy('c.id')
+        return $this->createQueryBuilder('cp')
+            ->select('cp.id','cp.value','c.username','cp.date')
+            ->from('App:ClientEntity','c')
+            ->andWhere('cp.client=c.id')
+            ->andWhere('cp.entity=:entity')
+            ->andWhere('cp.row=:id')
+            ->setParameter('entity',$entity)
+            ->setParameter('id',$id)
+            ->groupBy('cp.id')
             ->getQuery()
             ->getResult();
     }
     public function getClientClap($client):?array
     {
-        return $this->createQueryBuilder('q')
-            ->select('e.name as entity','c.row as id','c.value','c.id as ClapID')
-            ->from('App:ClapEntity','c')
+        return $this->createQueryBuilder('cp')
+            ->select('e.name as entity','cp.row as id','cp.value','cp.id as ClapID','cp.date')
             ->from('App:Entity','e')
-            ->andWhere('c.entity=e.id')
-            ->andWhere('c.client='.$client)
-            ->groupBy('c.id')
+            ->andWhere('cp.entity=e.id')
+            ->andWhere('cp.client=:client')
+            ->setParameter('client',$client)
+            ->groupBy('cp.id')
+            ->getQuery()
+            ->getResult();
+    }
+    public function getEntity($entity,$id):?array
+    {
+        return $this->createQueryBuilder('cp')
+            ->andWhere('cp.entity=:entity')
+            ->andWhere('cp.row=:id')
+            ->setParameter('entity',$entity)
+            ->setParameter('id',$id)
+            ->groupBy('cp.id')
             ->getQuery()
             ->getResult();
     }

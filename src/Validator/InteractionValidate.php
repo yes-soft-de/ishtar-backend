@@ -30,11 +30,6 @@ class InteractionValidate implements InteractionValidateInterface
 
         $constraints = new Assert\Collection([
 
-            'id' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-
             'entity' => [
                 new Required(),
                 new Assert\NotBlank(),
@@ -81,11 +76,6 @@ class InteractionValidate implements InteractionValidateInterface
             return $result;
         }
 
-        if ($type != "create") {
-            if (!$this->entityManager->getRepository(EntityInteractionEntity::class)->find($input["id"])) {
-                return "No Interaction with this id!";
-            }
-        }
         return null;
     }
 }

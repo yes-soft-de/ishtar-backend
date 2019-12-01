@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Service\ArtistService;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,8 +12,16 @@ use App\Validator\ArtistValidateInterface;
 
 class ArtistController extends BaseController
 {
+    private $artistService;
     /**
-     * @Route("/createArtist", name="createArtist")
+     * ArtistController constructor.
+     */
+    public function __construct(ArtistService $artistService)
+    {
+        $this->artistService=$artistService;
+    }
+    /**
+     *@Route("/artists", name="createArtist",methods={"POST"})
      * @param Request $request
      * @return Response
      */
@@ -26,14 +37,12 @@ class ArtistController extends BaseController
         }
         //
 
-        $result = $this->CUDService->create($request, "Artist");
-        $this->CUDService->create($request,"ArtistArtType");
-        $this->CUDService->create($request,"MediaArtist");
+        $result = $this->artistService->create($request);
         return $this->response($result, self::CREATE,"Artist");
     }
 
     /**
-     * @Route("/updateArtist", name="updateArtist")
+     * @Route("/artist/{id}", name="updateArtist",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -46,12 +55,12 @@ class ArtistController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "Artist");
+        $result = $this->artistService->update($request);
         return $this->response($result, self::UPDATE,"Artist");
     }
 
     /**
-     * @Route("/deleteArtist", name="deleteArtist")
+     *  @Route("/artist/{id}", name="deleteArtist",methods={"DELETE"})
      * @param Request $request
      * @return
      */
@@ -64,60 +73,33 @@ class ArtistController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->delete($request, "Artist");
+        $result = $this->artistService->delete($request);
         return $this->response($result, self::DELETE,"Artist");
 
     }
 
-
-
     /**
-     * @Route("/getAllArtist",name="getAllArtist")
-     * @param Request $request
+     * @Route("/artists", name="getAllArtist",methods={"GET"})
      * @return
      */
     public function getAll(Request $request)
     {
         //ToDo Call Validator
 
-        $result = $this->FDService->fetchData($request,"Artist");
+        $result = $this->artistService->getAll($request);
         return $this->response($result,self::FETCH,"Artist");
     }
 
     /**
-     * @Route("/getArtistById", name="getArtistById")
+     * @Route("/artist/{id}", name="getArtistById",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getArtistById(Request $request)
     {
-        $result = $this->FDService->getArtistById($request);
+        $result = $this->artistService->getArtistById($request);
         return $this->response($result,self::FETCH,"Artist");
     }
-    /**
-     * @Route("/getArtistsData",name="getArtistsData")
-     * @param Request $request
-     * @return
-     */
-    public function getArtistsData(Request $request)
-    {
-
-        $result = $this->FDService->getArtistsData($request,"Artist");
-        return $this->response($result,self::FETCH,"Artist");
-    }
-
-//    /**
-//     * @Route("/getArtistPaintings", name="getArtistPaintings")
-//     * @param Request $request
-//     * @return Response
-//     * @throws \Exception
-//     */
-//    public function getArtistPaintings(Request $request)
-//    {
-//
-//        $result = $this->FDService->getArtistsData($request,"Artist");
-//        return $this->response($result,self::FETCH,"Artist");
-//    }
 
     /**
      * @Route("/search", name="search")
@@ -127,7 +109,18 @@ class ArtistController extends BaseController
      */
     public function search(Request $request)
     {
-        $result = $this->FDService->search($request);
+        $result = $this->artistService->search($request);
+        return $this->response($result,self::FETCH,"Artist");
+    }
+
+    /**
+     * @Route("/artistsdetails", name="getAllArtistData",methods={"GET"})
+     * @param Request $request
+     * @return
+     */
+    public function getAllDetails()
+    {
+        $result = $this->artistService->getAllDetails();
         return $this->response($result,self::FETCH,"Artist");
     }
 }

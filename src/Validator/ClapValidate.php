@@ -30,11 +30,6 @@ class ClapValidate implements ClapValidateInterface
         $input = json_decode($request->getContent(), true);
 
         $constraints = new Assert\Collection([
-
-            'id' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
             'entity' => [
                 new Required(),
                 new Assert\NotBlank(),
@@ -81,11 +76,6 @@ class ClapValidate implements ClapValidateInterface
             return $result;
         }
 
-        if ($type != "create") {
-            if (!$this->entityManager->getRepository(ClapEntity::class)->find($input["id"])) {
-                return "No Clap with this id!";
-            }
-        }
         return null;
     }
 }

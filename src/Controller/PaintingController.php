@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Service\PaintingService;
 use App\Validator\PaintingValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,16 +9,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PaintingController extends BaseController
 {
-
+    private $paintingService;
     /**
-     * @Route("/createPainting", name="createPainting")
+     * PaintingController constructor.
+     */
+    public function __construct(PaintingService $paintingService)
+    {
+        $this->paintingService=$paintingService;
+    }
+    /**
+     *  @Route("/paintings", name="createPainting",methods={"POST"})
      * @param Request $request
      * @return
      */
     public function create(Request $request, PaintingValidateInterface $paintingValidate)
     {
-
-       // Validation
         $validateResult = $paintingValidate->paintingValidator($request, 'create');
         if (!empty($validateResult))
         {
@@ -26,15 +31,12 @@ class PaintingController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->create($request, "Painting");
-        $this->CUDService->create($request,"PaintingArtType");
-        $this->CUDService->create($request,"Price");
-        $this->CUDService->create($request,"Story");
+        $result = $this->paintingService->create($request);
         return $this->response($result, self::CREATE,"Painting");
     }
 
     /**
-     * @Route("/updatePainting", name="updatePainting")
+     * @Route("/painting/{id}", name="updatePainting",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -47,19 +49,17 @@ class PaintingController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "Painting");
-        $this->CUDService->update($request,"PaintingArtType");
-        $this->CUDService->create($request,"Price");
-        $this->CUDService->update($request,"Story");
+        $id=$request->get('id');
+        $result = $this->paintingService->update($request,$id);
         return $this->response($result, self::UPDATE,"Painting");
     }
 
     /**
-     * @Route("/deletePainting", name="deletePainting")
+     * @Route("/painting/{id}", name="deletePainting",methods={"DELETE"})
      * @param Request $request
      * @return
      */
-    public function delete(Request $request, PaintingValidateInterface $paintingValidate)
+    public function delete(Request $request ,PaintingValidateInterface $paintingValidate)
    {
 //        $validateResult = $paintingValidate->paintingValidator($request, 'delete');
 //        if (!empty($validateResult))
@@ -68,88 +68,86 @@ class PaintingController extends BaseController
 //            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
 //            return $resultResponse;
 //        }
-        $this->CUDService->delete($request,"Price");
-        $result = $this->CUDService->delete($request, "Painting");
-
+       $result=$this->paintingService->delete($request);
         return $this->response($result, self::DELETE,"Painting");
 
     }
 
     /**
-     * @Route("/getAllPainting", name="getAllPainting")
+     * @Route("/paintings", name="getAllPainting",methods={"GET"})
      * @param Request $request
      * @return
      */
 
-    public function getAll(Request $request)
+    public function getAll()
     {
 
-        $result = $this->FDService->fetchData($request,"Painting");
+        $result = $this->paintingService->getAll();
         return $this->response($result,self::FETCH,"Painting");
     }
 
     /**
-     * @Route("/getArtistPaintings", name="getArtistPaintings")
+     * @Route("/painting/getArtistPaintings", name="getArtistPaintings",methods={"GET"})
      * @param Request $request
      * @return
      */
 public function getArtistPaintings(Request $request)
 {
-    $result = $this->FDService->getArtistPaintings($request);
+    $result = $this->paintingService->getArtistPaintings($request);
     return $this->response($result,self::FETCH,"Painting");
 }
 
     /**
-     * @Route("/getArtTypePaintings", name="getArtTypePaintings")
+     * @Route("/painting/getArtTypePaintings", name="getArtTypePaintings",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getArtTypePaintings(Request $request)
     {
-        $result = $this->FDService->getArtTypePaintings($request);
+        $result = $this->paintingService->getArtTypePaintings($request);
         return $this->response($result,self::FETCH,"Painting");
     }
 
     /**
-     * @Route("/getPaintingById", name="getPaintingById")
+     * @Route("/painting/{id}", name="getPaintingById",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getPaintingById(Request $request)
     {
-        $result = $this->FDService->getPaintingById($request);
+        $result = $this->paintingService->getPaintingById($request->get('id'));
         return $this->response($result,self::FETCH,"Painting");
     }
     /**
-     * @Route("/getBy", name="getBy")
+     *  @Route("/paintingby/{parm}/{value}", name="getPaintingBy",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getBy(Request $request)
     {
-        $result = $this->FDService->getBy($request);
+        $result = $this->paintingService->getBy($request);
         return $this->response($result,self::FETCH,"Painting");
     }
 
     /**
-     * @Route("/getPaintingShort", name="getPaintingShort")
+     * @Route("/painting/getShort", name="getPaintingShort",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getPaintingShort()
     {
-        $result = $this->FDService->getPaintingShort();
+        $result = $this->paintingService->getPaintingShort();
         return $this->response($result,self::FETCH,"Painting");
     }
 
     /**
-     * @Route("/getPaintingImages", name="getPaintingImages")
+     * @Route("/paintingimages/{id}", name="getPaintingImages",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getPaintingImages(Request $request)
     {
-        $result = $this->FDService->getPaintingImages($request);
+        $result = $this->paintingService->getPaintingImages($request);
         return $this->response($result,self::FETCH,"Painting");
     }
 

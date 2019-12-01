@@ -36,7 +36,8 @@ class ArtistMapper
             ->setFacebook($facebbok)
             ->setTwitter($twitter)
             ->setInstagram($instagram)
-            ->setLinkedin($linkedin);
+            ->setLinkedin($linkedin)
+            ->setIsActive(1);
 
         return $artist;
     }

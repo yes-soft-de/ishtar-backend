@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\EntityInteractionService;
 use App\Validator\InteractionValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,8 +10,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EntityInteractionController extends BaseController
 {
+    private $interactionService;
+
     /**
-     * @Route("/createInteraction", name="createInteraction")
+     * EntityInteractionController constructor.
+     * @param $interactionService
+     */
+    public function __construct(EntityInteractionService $interactionService)
+    {
+        $this->interactionService = $interactionService;
+    }
+
+    /**
+     * @Route("/interactions", name="createInteraction",methods={"POST"})
      * @param Request $request
      * @return
      */
@@ -26,12 +38,12 @@ class EntityInteractionController extends BaseController
         }
         //
 
-        $result = $this->CUDService->create($request, "EntityInteraction");
+        $result = $this->interactionService->create($request);
         return $this->response($result, self::CREATE,"EntityInteraction");
     }
 
     /**
-     * @Route("/updateInteraction", name="updateInteraction")
+     * @Route("/interaction/{id}", name="updateInteraction",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -44,12 +56,12 @@ class EntityInteractionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "Interaction");
+        $result = $this->interactionService->update($request);
         return $this->response($result, self::UPDATE,"Interaction");
     }
 
     /**
-     * @Route("/deleteInteraction", name="deleteInteraction")
+     *  @Route("/interaction/{id}", name="deleteInteraction",methods={"DELETE"})
      * @param Request $request
      * @return
      */
@@ -62,32 +74,50 @@ class EntityInteractionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->delete($request, "Interaction");
+        $result = $this->interactionService->delete($request);
         return $this->response($result, self::DELETE,"Interaction");
 
     }
 
-
     /**
-     * @Route("/getAllInteraction",name="getAllInteraction")
+     * @Route("/interactions", name="getAllInteraction",methods={"GET"})
      *@param Request $request
      * @return
      */
     public function getAll(Request $request)
     {
 
-        $result = $this->FDService->fetchData($request,"Interaction");
+        $result = $this->interactionService->getAll($request);
         return $this->response($result,self::FETCH,"Interaction");
     }
     /**
-     * @Route("/getEntityInteraction",name="getEntityInteraction")
+     *@Route("/interactionsentity/{entity}/{row}/{interaction}",name="getEntityInteraction",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getEntityInteraction(Request $request)
     {
 
-        $result = $this->FDService->getEntityInteraction($request);
-        return $this->response($result,self::FETCH,"Comment");
+        $result = $this->interactionService->getEntityInteraction($request);
+        return $this->response($result,self::FETCH,"Interaction");
+    }
+    /**
+     * @Route("/interactionsclient/{client}", name="getClientInteraction",methods={"GET"})
+     *@param Request $request
+     * @return
+     */
+    public function getClientInteractions(Request $request)
+    {
+        $result = $this->interactionService->getClientInteraction($request);
+        return $this->response($result,self::FETCH,"Interaction");
+    }
+    /**
+     * @Route("/mostviews", name="mostViews",methods={"GET"})
+     * @return
+     */
+    public function getMostViews()
+    {
+        $result = $this->interactionService->getMostViews();
+        return $this->response($result,self::FETCH,"Interaction");
     }
 }

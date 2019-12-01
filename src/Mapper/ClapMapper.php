@@ -20,7 +20,8 @@ class ClapMapper
         $clapEntity->setEntity($entity)
             ->setRow($row)
             ->setValue($value)
-            ->setClient($client);
+            ->setClient($client)
+            ->setDate();
 
         return $clapEntity;
     }

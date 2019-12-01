@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-
+use App\Service\ClapService;
 use App\Validator\ClapValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,10 +10,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ClapController extends BaseController
 {
+    private $clapService;
+
     /**
-     * @Route("/createClap", name="createClap")
+     * ClapController constructor.
+     * @param $clapService
+     */
+    public function __construct(ClapService $clapService)
+    {
+        $this->clapService = $clapService;
+    }
+
+    /**
+     * @Route("/claps", name="createClap",methods={"POST"})
      * @param Request $request
-     * @return Response
+     * @return
      */
     public function create(Request $request, ClapValidateInterface $clapValidate)
     {
@@ -27,12 +38,12 @@ class ClapController extends BaseController
         }
         //
 
-        $result = $this->CUDService->create($request, "Clap");
+        $result = $this->clapService->create($request);
         return $this->response($result, self::CREATE, "Clap");
     }
 
     /**
-     * @Route("/updateClap", name="updateClap")
+     * @Route("/clap/{id}", name="updateClap",methods={"PUT"})
      * @param Request $request
      * @return
      */
@@ -45,12 +56,12 @@ class ClapController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "Clap");
+        $result = $this->clapService->update($request);
         return $this->response($result, self::UPDATE, "Clap");
     }
 
     /**
-     * @Route("/deleteClap", name="deleteClap")
+     *  @Route("/clap/{id}", name="deleteClap",methods={"DELETE"})
      * @param Request $request
      * @return
      */
@@ -63,29 +74,41 @@ class ClapController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->delete($request, "Clap");
-        return $this->response($result, self::DELETE, "Clap");
+        $result = $this->clapService->delete($request);
+        return $this->response($result, self::DELETE,"Clap");
 
     }
 
+
     /**
-     * @Route("/getAllClap",name="getAllClap")
+     * @Route("/clapsentity/{entity}/{row}",name="getEntityClap",methods={"GET"})
+     * @param Request $request
+     * @return
+     */
+    public function getEntityclap(Request $request)
+    {
+        $result = $this->clapService->getEntityClap($request);
+        return $this->response($result,self::FETCH,"Clap");
+    }
+
+    /**
+     * @Route("/clapsclient/{client}", name="getClientClaps",methods={"GET"})
+     * @param Request $request
+     * @return
+     */
+    public function getClientClap(Request $request)
+    {
+        $result = $this->clapService->getClientClap($request);
+        return $this->response($result,self::FETCH,"Clap");
+    }
+    /**
+     * @Route("/claps",name="getAllClap",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getAll(Request $request)
     {
-        $result = $this->FDService->fetchData($request,"Clap");
-        return $this->response($result,self::FETCH,"Clap");
-    }
-    /**
-     * @Route("/getEntityClap",name="getEntityClap")
-     * @param Request $request
-     * @return
-     */
-    public function getEntityClap(Request $request)
-    {
-        $result = $this->FDService->getEntityClap($request);
+        $result = $this->clapService->getAll($request);
         return $this->response($result,self::FETCH,"Clap");
     }
 }

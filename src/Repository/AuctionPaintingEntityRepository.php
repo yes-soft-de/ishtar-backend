@@ -38,8 +38,8 @@ class AuctionPaintingEntityRepository extends ServiceEntityRepository
 
     public function findOneById($value): ?AuctionPaintingEntity
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.id =:val')
+        return $this->createQueryBuilder('ap')
+            ->andWhere('ap.id =:val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();

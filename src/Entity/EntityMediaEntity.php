@@ -145,9 +145,9 @@ class EntityMediaEntity
         return $this->createdDate;
     }
 
-    public function setCreatedDate(\DateTimeInterface $createdDate): self
+    public function setCreatedDate(): self
     {
-        $this->createdDate = $createdDate;
+        $this->createdDate = $this->createDate = new \DateTime('Now');;
 
         return $this;
     }
@@ -169,9 +169,9 @@ class EntityMediaEntity
         return $this->updateDate;
     }
 
-    public function setUpdateDate(?\DateTimeInterface $updateDate): self
+    public function setUpdateDate(): self
     {
-        $this->updateDate = $updateDate;
+        $this->updateDate =$this->createDate = new \DateTime('Now');;
 
         return $this;
     }
