@@ -6,8 +6,11 @@ use App\AutoMapping;
 use App\Request\CreateArtistRequest;
 use App\Request\DeleteRequest;
 use App\Request\GetArtistRequest;
+use App\Request\SaveReportRequest;
 use App\Request\UpdateArtistRequest;
+use App\Response\ArtistReport;
 use App\Service\ArtistService;
+use App\Service\ReportService;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use AutoMapperPlus\Exception\UnregisteredMappingException;
@@ -20,15 +23,17 @@ use App\Validator\ArtistValidateInterface;
 class ArtistController extends BaseController
 {
     private $artistService;
+    private $reportService;
     private $autoMapping;
     /**
      * ArtistController constructor.
      * @param ArtistService $artistService
      */
-    public function __construct(ArtistService $artistService,AutoMapping $autoMapping)
+    public function __construct(ArtistService $artistService,AutoMapping $autoMapping,ReportService $reportService)
     {
         $this->artistService = $artistService;
         $this->autoMapping=$autoMapping;
+        $this->reportService=$reportService;
     }
 
     /**
@@ -130,6 +135,28 @@ class ArtistController extends BaseController
     public function getAllDetails()
     {
         $result = $this->artistService->getAllDetails();
+        return $this->response($result, self::FETCH);
+    }
+    /**
+     * @Route("/sendreport", name="sendReport",methods={"POST"})
+     *
+     * @return
+     */
+    public function sendReport()
+    {
+        $result = $this->reportService->sendReports();
+        return $this->response($result, self::FETCH);
+    }
+    /**
+     * @Route("/savereport", name="saveReport",methods={"POST"})
+     *
+     * @return
+     */
+    public function saveReport(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,SaveReportRequest::class,(object)$data);
+        $result = $this->reportService->saveReports($request);
         return $this->response($result, self::FETCH);
     }
 }

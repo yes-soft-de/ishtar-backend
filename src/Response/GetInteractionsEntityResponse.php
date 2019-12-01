@@ -6,22 +6,23 @@ namespace App\Response;
 
 class GetInteractionsEntityResponse
 {
-    public $inteactions;
+    public $interactions;
 
     /**
      * @return mixed
      */
-    public function getInteactions()
+    public function getInteractions()
     {
-        return $this->inteactions;
+        return $this->interactions;
     }
 
     /**
-     * @param mixed $inteactions
+     * @param mixed $interactions
      */
-    public function setInteactions($inteactions): void
+    public function setInteractions($interactions): void
     {
-        $this->inteactions = $inteactions;
+        $this->interactions = $interactions;
     }
+
 
 }

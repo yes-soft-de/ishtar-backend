@@ -6,17 +6,19 @@ namespace App\Service;
 use App\AutoMapping;
 use App\Entity\ArtistEntity;
 use App\Manager\ArtistManager;
+use App\Manager\ClapManager;
+use App\Manager\CommentManager;
 use App\Manager\EntityArtTypeManager;
+use App\Manager\EntityInteractionManager;
 use App\Manager\EntityMediaManger;
 use App\Manager\InteractionsManager;
+use App\Request\GetInterctionEntityRequest;
 use App\Response\CreateArtistResponse;
 use App\Response\DeleteResponse;
 use App\Response\GetAllArtistResponse;
 use App\Response\GetArtistByIdResponse;
 use App\Response\GetArtistsDetailsResponse;
 use App\Response\UpdateArtistResponse;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Symfony\Component\HttpFoundation\Request;
 
 class ArtistService implements ArtistServiceInterface
@@ -26,6 +28,7 @@ class ArtistService implements ArtistServiceInterface
     private $mediaManager;
     private $interactionManager;
     private $autoMapping;
+
 
     public function __construct(ArtistManager $artistManager,EntityArtTypeManager $artTypeManager,EntityMediaManger
     $entityMediaManager,InteractionsManager $interactionManager,AutoMapping $autoMapping)
@@ -82,6 +85,7 @@ class ArtistService implements ArtistServiceInterface
     {
         $result = $this->artistManager->getArtistById($request);
         $response=$this->autoMapping->map('array',GetArtistByIdResponse::class,$result[0]);
+        if(isset($result[1]['artType']))
         $response->setArtType($result[1]['artType']);
         return $response;
     }
@@ -98,4 +102,5 @@ class ArtistService implements ArtistServiceInterface
             $response[]=$this->autoMapping->map('array',GetArtistsDetailsResponse::class,$row);
         return $response;
     }
+
 }

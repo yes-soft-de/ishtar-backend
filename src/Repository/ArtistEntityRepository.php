@@ -95,7 +95,8 @@ au:auctionEntity
     public function getAllDetails()
     {
         return $this->createQueryBuilder('a')
-            ->select('a','m.path','at.name as artType')
+            ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story',
+                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','a.details','a.email','m.path','at.name as artType')
             ->from('App:EntityMediaEntity','m')
             ->from('App:ArtTypeEntity','at')
             ->from('App:EntityArtTypeEntity','eat')
@@ -110,22 +111,15 @@ au:auctionEntity
     }
     public function getArtistPaintings($request)
     {
-        $q1=$this->createQueryBuilder('a')
-            ->select('a.id as ArtistId','a.name as Artist')
-            ->andWhere('a.id = :request')
-            ->groupBy('a.id')
-            ->setParameter('request',$request)
-            ->getQuery()
-            ->getResult();
-        $q2= $this->createQueryBuilder('a')
+        $result= $this->createQueryBuilder('a')
             ->select('p.id','p.name','p.image')
             ->from('App:PaintingEntity','p')
-            ->andWhere('a.artist=:request')
+            ->andWhere('p.artist=:request')
             ->setParameter('request',$request)
-            ->groupBy('a.id')
+            ->groupBy('p.id')
             ->getQuery()
             ->getResult();
-       return $result=array_merge($q1,$q2);
+       return $result;
     }
     public function search($keyword):?array
     {

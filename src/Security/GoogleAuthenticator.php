@@ -67,7 +67,6 @@ class GoogleAuthenticator extends SocialAuthenticator
             $this->em->persist($user);
             $this->em->flush();
         }
-
         return $user;
     }
 
@@ -117,5 +116,4 @@ class GoogleAuthenticator extends SocialAuthenticator
         //return new RedirectResponse('http://ishtar-art.de/');
         return new RedirectResponse('http://127.0.0.1:8000/');
     }
-
 }

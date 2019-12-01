@@ -53,7 +53,7 @@ class StatueManager
     }
     public function update(UpdateStatueRequest $request)
     {
-        $statueEntity=$this->statueRepository->getStatue($request->getId());
+        $statueEntity=$this->statueRepository->find($request->getId());
         if (!$statueEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("statue");
@@ -69,7 +69,7 @@ class StatueManager
     }
     public function delete(DeleteRequest $request)
     {
-        $statueEntity=$this->statueRepository->getStatue($request->getId());
+        $statueEntity=$this->statueRepository->find($request->getId());
         if (!$statueEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("statue");

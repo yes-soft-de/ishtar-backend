@@ -40,6 +40,4 @@ class CreateFavoriteRequest
     {
         $this->client = $client;
     }
-
-
 }

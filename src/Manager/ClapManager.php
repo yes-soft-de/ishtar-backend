@@ -41,7 +41,8 @@ class ClapManager
 
     public function create(CreateClapRequest $request)
     {
-
+        $request->setClient($this->clientRepository->find($request->getClient()));
+        $request->setEntity($this->entityRepository->find($request->getEntity()));
         $clapData=$this->autoMapping->map(CreateClapRequest::class,ClapEntity::class,$request);
         $this->entityManager->persist($clapData);
         $this->entityManager->flush();
@@ -55,6 +56,8 @@ class ClapManager
             $exception->entityNotFound("clap");
         }
         else {
+            $request->setClient($this->clientRepository->find($request->getClient()));
+            $request->setEntity($this->entityRepository->find($request->getEntity()));
             $clapEntity = $this->autoMapping->mapToObject(UpdateClapRequest::class,ClapEntity::class,
                 $request,$clapEntity);
             $this->entityManager->flush();

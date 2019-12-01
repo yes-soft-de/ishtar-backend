@@ -23,6 +23,24 @@ class GetPaintingByIdResponse
     public $createdDate;
     public $createdBy;
     public $updatedBy;
+    public $images=[];
+
+    /**
+     * @return array
+     */
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param array $images
+     */
+    public function setImages(array $images): void
+    {
+        $this->images = $images;
+    }
+
 
     /**
      * @return mixed

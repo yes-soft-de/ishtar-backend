@@ -42,10 +42,6 @@ class EntityMediaManger
         $entityMediaEntity=new EntityMediaEntity();
         If(!isset($entity)&&!isset($id))
         {
-            $config = new AutoMapperConfig();
-            $config->registerMapping(CreateMediaRequest::class,
-                EntityMediaEntity::class);
-            $mapper = new AutoMapper($config);
             $request->setEntity($this->entityRepository->find($request->getEntity()));
             $request->setMedia($this->mediaRepository->find(1));
             $entityMediaEntity=$this->autoMapping->mapToObject(CreateMediaRequest::class,
@@ -92,6 +88,8 @@ class EntityMediaManger
             $this->entityManager->remove($media);
             $this->entityManager->flush();
         }
+
+        return $media;
     }
     public function getAll()
     {
@@ -128,8 +126,8 @@ class EntityMediaManger
         else {
             $this->entityManager->remove($entityMediaEntity);
             $this->entityManager->flush();
-            return $entityMediaEntity;
         }
+        return $entityMediaEntity;
     }
 
 }

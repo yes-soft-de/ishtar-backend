@@ -6,6 +6,8 @@ namespace App\Service;
 use App\AutoMapping;
 use App\Entity\ClapEntity;
 use App\Manager\ClapManager;
+use App\Response\CreateClapResponse;
+use App\Response\DeleteResponse;
 use App\Response\GetClapsClientResponse;
 use App\Response\GetClapsEntityResponse;
 use App\Response\GetClapsResponse;
@@ -26,16 +28,20 @@ class ClapService implements ClapServiceInterface
     public function create($request)
     {
         $clapResult =$this->clapManager->create($request);
-        return $clapResult;
+        $response=$this->autoMapping->map(ClapEntity::class,CreateClapResponse::class,$clapResult);
+        return $response;
     }
     public function update($request)
     {
         $clapResult =$this->clapManager->update($request);
-        return $clapResult;
+        $response=$this->autoMapping->map(ClapEntity::class,CreateClapResponse::class,$clapResult);
+        return $response;
     }
     public function delete($request)
     {
-        return $clapResult =$this->clapManager->delete($request);
+        $result =$this->clapManager->delete($request);
+        $response=new DeleteResponse($result->getId());
+        return $response;
     }
 
 

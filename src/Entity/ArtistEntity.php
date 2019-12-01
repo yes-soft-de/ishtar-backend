@@ -101,6 +101,11 @@ class ArtistEntity
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email;
+
 
 
 //    public function __construct()
@@ -300,6 +305,18 @@ class ArtistEntity
     public function setIsActive($isActive): void
     {
         $this->isActive = $isActive;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 
 

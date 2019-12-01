@@ -6,10 +6,10 @@ namespace App\Request;
 
 class CreateInteractionRequest
 {
-public $entity;
-public $row;
-public $interaction;
-public $client;
+    public $entity;
+    public $row;
+    public $interaction;
+    public $client;
     public $date;
 
     /**

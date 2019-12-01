@@ -42,7 +42,7 @@ class ClientEntityRepository extends ServiceEntityRepository
     {
         try {
             return $this->createQueryBuilder('c')
-                ->select('c','m.path as image')
+                ->select('c.id','c.username','c.fullName','c.phone','c.email','c.birthDate','m.path as image')
                 ->from('App:EntityMediaEntity','m')
                 ->andWhere('m.entity=5')
                 ->andWhere('m.row= :val')
@@ -57,7 +57,7 @@ class ClientEntityRepository extends ServiceEntityRepository
     public function findAll()
     {
         return $this->createQueryBuilder('c')
-            ->select('c','m.path as image')
+            ->select('c.id','c.username','c.fullName','c.phone','c.email','c.birthDate','m.path as image')
             ->from('App:EntityMediaEntity','m')
             ->andWhere('m.entity=5')
             ->andWhere('m.row=c.id')

@@ -101,4 +101,9 @@ class EntityInteractionManager
     {
         return $MostViews =$this->entityInteractionRepository->getMostViews();
     }
+    public function getInteractions(GetInterctionEntityRequest $request)
+    {
+        return $interaction=$this->entityInteractionRepository->getInteraction($request->getEntity(),
+            $request->getRow(),$request->getInteraction());
+    }
 }

@@ -51,7 +51,7 @@ class PriceManager
             ->setRow($id)
             ->setPrice($request->getPrice());
         $this->entityManager->flush();
-        return $priceEntity;
+        return $priceEntity[0];
     }
     public function delete(DeleteRequest $request,$entity)
     {

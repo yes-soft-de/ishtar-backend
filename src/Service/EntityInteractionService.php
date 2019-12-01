@@ -3,80 +3,83 @@
 
 namespace App\Service;
 
+use App\AutoMapping;
+use App\Entity\EntityInteractionEntity;
 use App\Manager\EntityInteractionManager;
 
+use App\Response\CreateInteractionResponse;
+use App\Response\DeleteResponse;
 use App\Response\GetInteractionsClientResponse;
 use App\Response\GetInteractionsEntityResponse;
 use App\Response\GetInteractionsResponse;
+use App\Response\GetMostViewsResponse;
+use App\Response\UpdateInteractionResponse;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class EntityInteractionService implements EntityInteractionServiceInterface
 {
 
     private $entityInteractionManager;
+    private $autoMapping;
 
-
-    public function __construct(EntityInteractionManager $entityInteractionManager)
+    public function __construct(EntityInteractionManager $entityInteractionManager,AutoMapping $autoMapping)
     {
         $this->entityInteractionManager=$entityInteractionManager;
+        $this->autoMapping=$autoMapping;
     }
 
     public function create($request)
     {
         $entityInteractionResult =$this->entityInteractionManager->create($request);
-        return $entityInteractionResult;
+        $response=$this->autoMapping->map(EntityInteractionEntity::class,CreateInteractionResponse::class,
+            $entityInteractionResult);
+        return $response;
     }
     public function update($request)
     {
         $entityInteractionResult =$this->entityInteractionManager->update($request);
-        return $entityInteractionResult;
+        $response=$this->autoMapping->map(EntityInteractionEntity::class,UpdateInteractionResponse::class,
+            $entityInteractionResult);
+        return $response;
     }
     public function delete($request)
     {
-        $entityInteractionResult =$this->entityInteractionManager->delete($request);
-        return $entityInteractionResult;
+        $result =$this->entityInteractionManager->delete($request);
+        $response=new DeleteResponse($result->getId());
+        return $response;
+
     }
 
     public function getEntityInteraction($request)
     {
          $entityInteractionResult =$this->entityInteractionManager->getEntityInteraction($request);
-        $config = new AutoMapperConfig();
-        $config->registerMapping( 'array', GetInteractionsentityResponse::class);
-        $mapper = new AutoMapper($config);
-        $response=$mapper->map($entityInteractionResult,GetInteractionsentityResponse::class);
+            $response=$this->autoMapping->map('array',GetInteractionsEntityResponse::class
+            ,$entityInteractionResult);
         return $response;
     }
 
     public function getClientInteraction($request)
     {
          $entityInteractionResult =$this->entityInteractionManager->getClientInteraction($request);
-        $config = new AutoMapperConfig();
-        $config->registerMapping( 'array', GetInteractionsClientResponse::class);
-        $mapper = new AutoMapper($config);
         foreach ($entityInteractionResult as $row)
-            $response[]=$mapper->map($row,GetInteractionsClientResponse::class);
+            $response[]=$this->autoMapping->map('array',GetInteractionsClientResponse::class,$row);
         return $response;
     }
 
     public function getAll($request)
     {
         $entityInteractionResault=$this->entityInteractionManager->getAll();
-        $config = new AutoMapperConfig();
-        $config->registerMapping( 'array', GetInteractionsResponse::class);
-        $mapper = new AutoMapper($config);
         foreach ($entityInteractionResault as $row)
-            $response[]=$mapper->map($row,GetInteractionsResponse::class);
+            $response[]=$this->autoMapping->map('array',GetInteractionsResponse::class,$row);
         return $response;
 
     }
     public function getMostViews()
     {
-        return $entityInteractionResault=$this->entityInteractionManager->getMostViews();
+         $entityInteractionResault=$this->entityInteractionManager->getMostViews();
+         foreach ($entityInteractionResault as $row)
+             $response[]=$this->autoMapping->map('array',GetMostViewsResponse::class,$row);
+         return $response;
     }
 }

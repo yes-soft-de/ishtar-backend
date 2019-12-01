@@ -73,7 +73,7 @@ class StatueController extends BaseController
         }
         $id=$request->get('id');
         $data = json_decode($request->getContent(), true);
-        $request=$this->autoMapping->map(\stdClass::class,CreateStatueRequest::class,(object)$data);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateStatueRequest::class,(object)$data);
         $request->setId($id);
         $result = $this->statueService->update($request);
         return $this->response($result, self::UPDATE);

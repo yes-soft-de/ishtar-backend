@@ -5,24 +5,24 @@ namespace App\Request;
 
 class CreateStatueRequest
 {
-public $name;
-public $artist;
-public $state;
-public $height;
-public $width;
-public $price;
-public $active;
-public $image;
-public $keyWords;
-public $material;
-public $description;
-public $style;
-public $mediums;
-public $features;
-public $period;
-public $weight;
-public $length;
-public $createDate;
+    public $name;
+    public $artist;
+    public $state;
+    public $height;
+    public $width;
+    public $price;
+    public $active;
+    public $image;
+    public $keyWords;
+    public $material;
+    public $description;
+    public $style;
+    public $mediums;
+    public $features;
+    public $period;
+    public $weight;
+    public $length;
+    public $createDate;
 
 
     public function __construct()

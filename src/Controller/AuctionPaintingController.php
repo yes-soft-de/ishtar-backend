@@ -86,7 +86,7 @@ class AuctionPaintingController extends BaseController
     }
 
     /**
-     * @Route("/auctionPainting/getAll", name="getAllAuctionPainting",methods={"GET"})
+     * @Route("/auctionpaintings", name="getAllAuctionPainting",methods={"GET"})
      * @return JsonResponse
      */
     public function getAll()

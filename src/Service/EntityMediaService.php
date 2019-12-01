@@ -7,9 +7,11 @@ use App\AutoMapping;
 use App\Entity\EntityMediaEntity;
 use App\Manager\EntityMediaManger;
 use App\Manager\EntityArtTypeManager;
+use App\Response\CreateMediaResponse;
 use App\Response\DeleteResponse;
 use App\Response\GetAllMediaResponse;
 use App\Response\GetEntityItemsResponse;
+use App\Response\UpdateMediaResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,8 +22,6 @@ class EntityMediaService implements EntityMediaServiceInterface
 {
 
     private $entityMediaManager;
-    private $artTypeManager;
-    private $mediaManager;
     private $autoMapping;
     public function __construct(EntityMediaManger $entityMediaManager,AutoMapping $autoMapping)
     {
@@ -31,14 +31,16 @@ class EntityMediaService implements EntityMediaServiceInterface
 
     public function create($request)
     {
-        $entityMediaResult =$this->entityMediaManager->create($request,null,null);
-        return $entityMediaResult;
+        $result=$this->entityMediaManager->create($request,null,null);
+        $response=$this->autoMapping->map(EntityMediaEntity::class,CreateMediaResponse::class,$result);
+        return $response;
     }
     //ToDO mapping painting entity and response
     public function update($request)
     {
-        $entityMediaResult =$this->entityMediaManager->updateMediaByID($request);
-        return $entityMediaResult;
+        $result =$this->entityMediaManager->updateMediaByID($request);
+        $response=$this->autoMapping->map(EntityMediaEntity::class,UpdateMediaResponse::class,$result);
+        return $response;
     }
     public function getAll()
     {
@@ -52,12 +54,7 @@ class EntityMediaService implements EntityMediaServiceInterface
     {
         $result=$this->entityMediaManager->deleteById($request);
         $response=$this->autoMapping->map('array',DeleteResponse::class,$result);
-        return $result;
-    }
-
-    public function getById($request)
-    {
-        return $result = $this->entityMediaManager->getById($request);
+        return $response;
     }
 
     public function getEntityItems($request)
