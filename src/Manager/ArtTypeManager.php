@@ -66,7 +66,7 @@ class ArtTypeManager
 
     public function getArtTypeById(Request $request)
     {
-        return $result = $this->entityManager->getRepository(ArtTypeEntity::class)->findById($request->get('id'));
+        return $result = $this->entityManager->getRepository(ArtTypeEntity::class)->getById($request->get('id'));
     }
 
 }

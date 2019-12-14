@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\EntityMediaEntity;
 use App\Entity\StatueEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -54,15 +55,24 @@ class StatueEntityRepository extends ServiceEntityRepository
      * @return StatueEntity
      *
      */
-    public function getStatue($id):StatueEntity
+    public function getStatue($id)
     {
         try {
-            return $this->createQueryBuilder('s')
-                ->andWhere('s.id=:id')
+            $result=$this->createQueryBuilder('s')
+                ->select('s.id','s.name','a.name as artist','s.state','s.height','s.width','s.image','s.keyWord'
+                    ,'s.material','s.description','s.style','s.mediums','s.features',
+                    's.period','s.weight','s.length','s.active','pr.price')
+                ->from('App:PriceEntity','pr')
+                ->from('App:ArtistEntity','a')
+                ->andWhere('pr.row=s.id')
+                ->andWhere('pr.entity=6')
+                ->andWhere('a.id=s.artist')
+                ->andWhere('s.id= :id')
                 ->groupBy('s.id')
                 ->getQuery()
                 ->setParameter('id',$id)
-                ->getOneOrNullResult();
+                ->getResult();
+        return $result;
         } catch (NonUniqueResultException $e) {
         }
     }
@@ -75,10 +85,14 @@ class StatueEntityRepository extends ServiceEntityRepository
     public function getAll():?array
     {
         return $this->createQueryBuilder('s')
-            ->select('s','pr.price')
+            ->select('s.id','s.name','a.name as artist','s.state','s.height','s.width','s.image','s.keyWord'
+                ,'s.material','s.description','s.style','s.mediums','s.features',
+                's.period','s.weight','s.length','s.active','pr.price')
             ->from('App:PriceEntity','pr')
+            ->from('App:ArtistEntity','a')
             ->andWhere('pr.row=s.id')
             ->andWhere('pr.entity=6')
+            ->andWhere('a.id=s.artist')
             ->groupBy('s.id')
             ->getQuery()
             ->getResult();

@@ -143,7 +143,7 @@ au:auctionEntity
                 ->select('p.id','p.name','p.image','a.name as artist')
                 ->from('App:PaintingEntity','p')
                 ->andWhere('p.artist=a.id')
-            ->andWhere('p.active=1')
+                 ->andWhere('p.active=1')
                 ->andWhere('p.name LIKE :keyword')
                 ->orWhere('p.keyWords LIKE :keyword')
                 ->setParameter('keyword', '%'.$keyword.'%')

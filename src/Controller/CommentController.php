@@ -7,6 +7,7 @@ use App\Validator\CommentValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class CommentController extends BaseController
 {
@@ -112,6 +113,7 @@ class CommentController extends BaseController
         return $this->response($result,self::FETCH,"Comment");
     }
     /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/spacialcomment/{id}",name="setSpacialComment",methods={"PUT"})
      * @return
      */

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use mysql_xdevapi\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class GoogleController extends AbstractController
 {
@@ -47,7 +49,26 @@ class GoogleController extends AbstractController
             return $this->redirect('http://ishtar-art.de/');
         }
     }
-
+    
+     /**
+     * @Route("/googletoken", name="googletoken")
+     */
+    public function getTokenUser(JWTTokenManagerInterface $JWTManager)
+    {
+        if (!$this->getUser())
+        {
+            return new JsonResponse(["no user is log in!"]);
+        }
+        elseif ($this->getUser()->getGoogle() != 1)
+        {
+            return new JsonResponse(["this is not google user"]);
+        }
+        else
+        {
+            return new JsonResponse(['token' => $JWTManager->create($this->getUser())]);
+        }
+    }
+    
     /**
      * log out
      * @Route("/logout", name="logout")

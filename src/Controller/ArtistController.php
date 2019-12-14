@@ -21,6 +21,7 @@ class ArtistController extends BaseController
         $this->artistService=$artistService;
     }
     /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      *@Route("/artists", name="createArtist",methods={"POST"})
      * @param Request $request
      * @return Response
@@ -42,6 +43,7 @@ class ArtistController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/artist/{id}", name="updateArtist",methods={"PUT"})
      * @param Request $request
      * @return
@@ -60,6 +62,7 @@ class ArtistController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      *  @Route("/artist/{id}", name="deleteArtist",methods={"DELETE"})
      * @param Request $request
      * @return
