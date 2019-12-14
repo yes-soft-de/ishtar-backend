@@ -32,19 +32,11 @@ class ClientValidate implements ClientValidateInterface
 
         $constraints = new Assert\Collection([
 
-            'id' => [
+            'fullName' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
-            'firstName' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'lastName' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'userName' => [
+            'username' => [
                 new Required(),
                 new Assert\NotBlank(),
             ],
@@ -60,14 +52,7 @@ class ClientValidate implements ClientValidateInterface
                  new Required(),
                 new Assert\NotBlank(),
             ],
-            'roll' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
-            'birthDate' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
+
             'image' => [
                 new Required(),
                 new Assert\NotBlank(),
@@ -102,11 +87,7 @@ class ClientValidate implements ClientValidateInterface
             return $result;
         }
 
-        if ($type != "create") {
-            if (!$this->entityManager->getRepository(ClientEntity::class)->find($input["id"])) {
-                return "No Client with this id!";
-            }
-        }
+
         return null;
     }
 }

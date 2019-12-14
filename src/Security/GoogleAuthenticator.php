@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -22,12 +23,17 @@ class GoogleAuthenticator extends SocialAuthenticator
     private $clientRegistry;
     private $em;
     private $router;
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $encoder;
 
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router)
+    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router, UserPasswordEncoderInterface $encoder)
     {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;
         $this->router = $router;
+        $this->encoder = $encoder;
     }
 
     public function supports(Request $request)
@@ -52,13 +58,13 @@ class GoogleAuthenticator extends SocialAuthenticator
             ->findOneBy(['email' => $email]);
         if (!$user)
         {
-            $user = new ClientEntity();
+            $user = new ClientEntity($email);
             $user->setEmail($googleUser->getEmail());
-            $user->setfirstName($googleUser->getFirstName());
-            $user->setLastName($googleUser->getLastName());
             $user->setUserName($googleUser->getName());
-            $user->setPassword("set your pass here");
-            $user->setCreateDate(new DateTime(date('Y-m-d H:i:s')));
+            $user->setRoles(["ROLE_USER"]);
+            $user->setPassword($this->encoder->encodePassword($user, $user->getPassword()));
+            $user->setGoogle(1);
+            //$user->setCreatedAt(new DateTime(date('Y-m-d H:i:s')));
             $this->em->persist($user);
             $this->em->flush();
         }
@@ -109,9 +115,8 @@ class GoogleAuthenticator extends SocialAuthenticator
     {
         //todo return usser to the last page he visited here or in fornt?
         //return new RedirectResponse($this->router->generate('re'));
-        return new RedirectResponse('http://ishtar-art.de/');
+        //return new RedirectResponse('http://ishtar-art.de/');
+        return new RedirectResponse('http://127.0.0.1:8000/');
     }
-
-
 
 }

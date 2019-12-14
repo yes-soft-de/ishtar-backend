@@ -39,14 +39,20 @@ class ClapEntity
      */
     private $entity;
 
+    /**
+     * @ORM\Column(type="datetime",nullable=true)
+     *
+     */
+    private $date;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getClient(): ?ClientEntity
+    public function getClient()
     {
-        return $this->client;
+        return $this->client->getId();
     }
 
     public function setClient(?ClientEntity $client): self
@@ -81,14 +87,26 @@ class ClapEntity
         return $this;
     }
 
-    public function getEntity(): ?Entity
+    public function getEntity()
     {
-        return $this->entity;
+        return $this->entity->getId();
     }
 
     public function setEntity(?Entity $entity): self
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(): self
+    {
+        $this->date = new \DateTime('Now');
 
         return $this;
     }

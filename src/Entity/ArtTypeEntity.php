@@ -23,7 +23,7 @@ class ArtTypeEntity
 
     /**
      * @ORM\Column(type="string", length=45)
-     * @Groups({"default"})
+     *
      */
     private $name;
 
@@ -100,9 +100,9 @@ class ArtTypeEntity
         return $this->createDate;
     }
 
-    public function setCreateDate(?\DateTimeInterface $createDate): self
+    public function setCreateDate(): self
     {
-        $this->createDate = $createDate;
+        $this->createDate = new \DateTime('Now');;
 
         return $this;
     }

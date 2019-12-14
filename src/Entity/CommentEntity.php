@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentEntityRepository")
@@ -34,14 +35,13 @@ class CommentEntity
     private $body;
 
     /**
-     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"},nullable=true)
+     *
      */
     private $date;
 
     /**
-     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\Column(type="datetime",nullable=true,options={"default"="CURRENT_TIMESTAMP"})
      */
     private $lastEdit;
 
@@ -61,9 +61,9 @@ class CommentEntity
         return $this->id;
     }
 
-    public function getClient(): ?ClientEntity
+    public function getClient():int
     {
-        return $this->client;
+        return $this->client->getId();
     }
 
     public function setClient(?ClientEntity $client): self
@@ -98,19 +98,19 @@ class CommentEntity
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): string
     {
-        return $this->date;
+        return $this->date->format('Y-m-d H:i:s');
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(): self
     {
-        $this->date = $date;
+        $this->date = new \DateTime('Now');
 
         return $this;
     }
 
-    public function getLastEdit(): ?\DateTimeInterface
+    public function getLastEdit(): ?string
     {
         return $this->lastEdit;
     }
@@ -122,9 +122,9 @@ class CommentEntity
         return $this;
     }
 
-    public function getEntity(): ?Entity
+    public function getEntity(): ?int
     {
-        return $this->entity;
+        return $this->entity->getId();
     }
 
     public function setEntity(Entity $entity): self

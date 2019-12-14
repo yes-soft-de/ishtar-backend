@@ -49,9 +49,9 @@ class StoryEntity
         return $this;
     }
 
-    public function getEntity(): ?Entity
+    public function getEntity(): ?int
     {
-        return $this->entity;
+        return $this->entity->getId();
     }
 
     public function setEntity(?Entity $entity): self

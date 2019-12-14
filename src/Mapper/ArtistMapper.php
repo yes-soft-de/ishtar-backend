@@ -17,7 +17,7 @@ class ArtistMapper
         //this (try catch) just to make IDE happy, must use date calender in frontend
         //if date empty the date of today will be there
         try {
-            $birthDate = new DateTime((string)$data["birthDate"]);
+            $birthDate = $data["birthDate"];
         } catch (Exception $e) {
         }
         $story       = $data["story"];
@@ -36,7 +36,8 @@ class ArtistMapper
             ->setFacebook($facebbok)
             ->setTwitter($twitter)
             ->setInstagram($instagram)
-            ->setLinkedin($linkedin);
+            ->setLinkedin($linkedin)
+            ->setIsActive(1);
 
         return $artist;
     }

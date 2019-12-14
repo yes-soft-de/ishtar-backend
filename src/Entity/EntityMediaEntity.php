@@ -92,9 +92,9 @@ class EntityMediaEntity
         return $this;
     }
 
-    public function getEntity(): ?Entity
+    public function getEntity(): ?int
     {
-        return $this->entity;
+        return $this->entity->getId();;
     }
 
     public function setEntity(?Entity $entity): self
@@ -104,9 +104,9 @@ class EntityMediaEntity
         return $this;
     }
 
-    public function getMedia(): ?MediaEntity
+    public function getMedia(): ?int
     {
-        return $this->media;
+        return $this->media->getId();;
     }
 
     public function setMedia(?MediaEntity $media): self
@@ -140,14 +140,14 @@ class EntityMediaEntity
         return $this;
     }
 
-    public function getCreatedDate(): ?\DateTimeInterface
+    public function getCreatedDate()
     {
         return $this->createdDate;
     }
 
-    public function setCreatedDate(\DateTimeInterface $createdDate): self
+    public function setCreatedDate(): self
     {
-        $this->createdDate = $createdDate;
+        $this->createdDate = $this->createDate = new \DateTime('Now');;
 
         return $this;
     }
@@ -169,9 +169,9 @@ class EntityMediaEntity
         return $this->updateDate;
     }
 
-    public function setUpdateDate(?\DateTimeInterface $updateDate): self
+    public function setUpdateDate(): self
     {
-        $this->updateDate = $updateDate;
+        $this->updateDate =$this->createDate = new \DateTime('Now');;
 
         return $this;
     }

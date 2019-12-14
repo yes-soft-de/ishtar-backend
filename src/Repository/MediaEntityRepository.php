@@ -18,7 +18,6 @@ class MediaEntityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, MediaEntity::class);
     }
-
     // /**
     //  * @return MediaEntity[] Returns an array of MediaEntity objects
     //  */

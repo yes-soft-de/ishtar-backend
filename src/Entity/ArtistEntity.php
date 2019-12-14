@@ -1,13 +1,11 @@
 <?php
 
 namespace App\Entity;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+
  * @ORM\Entity(repositoryClass="App\Repository\ArtistEntityRepository")
  */
 class ArtistEntity
@@ -30,8 +28,8 @@ class ArtistEntity
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    public $nationality;
 
+    public $nationality;
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
@@ -79,24 +77,34 @@ class ArtistEntity
     private $updateDate;
 
     /**
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     public $Facebook;
 
     /**
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     public $Twitter;
 
     /**
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $Linkedin;
 
     /**
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $Instagram;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isActive;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email;
 
 
 
@@ -105,7 +113,10 @@ class ArtistEntity
 //        $this->painting = new ArrayCollection();
 //        $this->gallery = new ArrayCollection();
 //    }
-
+    public function __construct()
+    {
+        $this->isActive = true;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -147,7 +158,7 @@ class ArtistEntity
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
+    public function getBirthDate()
     {
         return $this->birthDate;
     }
@@ -184,37 +195,6 @@ class ArtistEntity
     }
 
 
-//    /**
-//     * @return Collection|GalleryEntity[]
-//     */
-//    public function getGallery(): Collection
-//    {
-//        return $this->gallery;
-//    }
-//
-//    public function addGallery(GalleryEntity $gallery): self
-//    {
-//        if (!$this->gallery->contains($gallery)) {
-//            $this->gallery[] = $gallery;
-//            $gallery->setArtist($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeGallery(GalleryEntity $gallery): self
-//    {
-//        if ($this->gallery->contains($gallery)) {
-//            $this->gallery->removeElement($gallery);
-//            // set the owning side to null (unless already changed)
-//            if ($gallery->getArtist() === $this) {
-//                $gallery->setArtist(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
-
     public function getCreatedBy(): ?string
     {
         return $this->createdBy;
@@ -227,14 +207,14 @@ class ArtistEntity
         return $this;
     }
 
-    public function getCreateDate(): ?\DateTimeInterface
+    public function getCreateDate()
     {
         return $this->createDate;
     }
 
-    public function setCreateDate(?\DateTimeInterface $createDate): self
+    public function setCreateDate(): self
     {
-        $this->createDate = $createDate;
+        $this->createDate = new \DateTime('Now');;
 
         return $this;
     }
@@ -251,14 +231,14 @@ class ArtistEntity
         return $this;
     }
 
-    public function getUpdateDate(): ?\DateTimeInterface
+    public function getUpdateDate()
     {
         return $this->updateDate;
     }
 
-    public function setUpdateDate(?\DateTimeInterface $updateDate): self
+    public function setUpdateDate(): self
     {
-        $this->updateDate = $updateDate;
+        $this->updateDate = $this->createDate = new \DateTime('Now');;
 
         return $this;
     }
@@ -310,6 +290,36 @@ class ArtistEntity
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+
 
 
 }

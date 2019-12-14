@@ -1,24 +1,46 @@
 <?php
 
 namespace App\Controller;
-
+use App\AutoMapping;
+use App\Request\ByIdRequest;
+use App\Request\CreateArtistRequest;
+use App\Request\CreatePaintingRequest;
+use App\Request\DeleteRequest;
+use App\Request\getPaintingByRequest;
+use App\Request\UpdatePaintingRequest;
+use App\Service\PaintingService;
 use App\Validator\PaintingValidateInterface;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
+use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PaintingController extends BaseController
 {
+    private $paintingService;
+    private $autoMapping;
+    /**
+     * PaintingController constructor.
+     * @param PaintingService $paintingService
+     */
+    public function __construct(PaintingService $paintingService,AutoMapping $autoMapping)
+    {
+        $this->paintingService=$paintingService;
+        $this->autoMapping=$autoMapping;
+    }
 
     /**
-     * @Route("/createPainting", name="createPainting")
+     * @Route("/paintings", name="createPainting",methods={"POST"})
      * @param Request $request
-     * @return
+     * @param PaintingValidateInterface $paintingValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function create(Request $request, PaintingValidateInterface $paintingValidate)
     {
-
-       // Validation
         $validateResult = $paintingValidate->paintingValidator($request, 'create');
         if (!empty($validateResult))
         {
@@ -26,17 +48,18 @@ class PaintingController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->create($request, "Painting");
-        $this->CUDService->create($request,"PaintingArtType");
-        $this->CUDService->create($request,"Price");
-        $this->CUDService->create($request,"Story");
-        return $this->response($result, self::CREATE,"Painting");
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,CreatePaintingRequest::class,(object)$data);
+        $result = $this->paintingService->create($request);
+        return $this->response($result, self::CREATE);
     }
 
     /**
-     * @Route("/updatePainting", name="updatePainting")
+     * @Route("/painting/{id}", name="updatePainting",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param PaintingValidateInterface $paintingValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function update(Request $request, PaintingValidateInterface $paintingValidate)
     {
@@ -47,110 +70,58 @@ class PaintingController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "Painting");
-        $this->CUDService->update($request,"PaintingArtType");
-        $this->CUDService->create($request,"Price");
-        $this->CUDService->update($request,"Story");
-        return $this->response($result, self::UPDATE,"Painting");
+        $id=$request->get('id');
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,UpdatePaintingRequest::class,(object)$data);
+        $request->setId($id);
+        $result = $this->paintingService->update($request,$id);
+        return $this->response($result, self::UPDATE);
     }
 
     /**
-     * @Route("/deletePainting", name="deletePainting")
+     * @Route("/painting/{id}", name="deletePainting",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
-    public function delete(Request $request, PaintingValidateInterface $paintingValidate)
+    public function delete(Request $request)
    {
-//        $validateResult = $paintingValidate->paintingValidator($request, 'delete');
-//        if (!empty($validateResult))
-//        {
-//            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-//            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-//            return $resultResponse;
-//        }
-        $this->CUDService->delete($request,"Price");
-        $result = $this->CUDService->delete($request, "Painting");
-
-        return $this->response($result, self::DELETE,"Painting");
-
+        $request=new DeleteRequest($request->get('id'));
+       $result=$this->paintingService->delete($request);
+        return $this->response($result, self::DELETE);
     }
 
     /**
-     * @Route("/getAllPainting", name="getAllPainting")
-     * @param Request $request
-     * @return
+     * @Route("/paintings", name="getAllPainting",methods={"GET"})
+     * @return JsonResponse
      */
-
-    public function getAll(Request $request)
+    public function getAll()
     {
-
-        $result = $this->FDService->fetchData($request,"Painting");
-        return $this->response($result,self::FETCH,"Painting");
+        $result = $this->paintingService->getAll();
+        return $this->response($result,self::FETCH);
     }
 
     /**
-     * @Route("/getArtistPaintings", name="getArtistPaintings")
+     * @Route("/painting/{id}", name="getPaintingById",methods={"GET"})
      * @param Request $request
-     * @return
-     */
-public function getArtistPaintings(Request $request)
-{
-    $result = $this->FDService->getArtistPaintings($request);
-    return $this->response($result,self::FETCH,"Painting");
-}
-
-    /**
-     * @Route("/getArtTypePaintings", name="getArtTypePaintings")
-     * @param Request $request
-     * @return
-     */
-    public function getArtTypePaintings(Request $request)
-    {
-        $result = $this->FDService->getArtTypePaintings($request);
-        return $this->response($result,self::FETCH,"Painting");
-    }
-
-    /**
-     * @Route("/getPaintingById", name="getPaintingById")
-     * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getPaintingById(Request $request)
     {
-        $result = $this->FDService->getPaintingById($request);
-        return $this->response($result,self::FETCH,"Painting");
+        $request=new ByIdRequest($request->get('id'));
+        $result = $this->paintingService->getPaintingById($request->getId());
+        return $this->response($result,self::FETCH);
     }
+
     /**
-     * @Route("/getBy", name="getBy")
+     * @Route("/paintingby/{parm}/{value}", name="getPaintingBy",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getBy(Request $request)
     {
-        $result = $this->FDService->getBy($request);
-        return $this->response($result,self::FETCH,"Painting");
-    }
-
-    /**
-     * @Route("/getPaintingShort", name="getPaintingShort")
-     * @param Request $request
-     * @return
-     */
-    public function getPaintingShort()
-    {
-        $result = $this->FDService->getPaintingShort();
-        return $this->response($result,self::FETCH,"Painting");
-    }
-
-    /**
-     * @Route("/getPaintingImages", name="getPaintingImages")
-     * @param Request $request
-     * @return
-     */
-    public function getPaintingImages(Request $request)
-    {
-        $result = $this->FDService->getPaintingImages($request);
-        return $this->response($result,self::FETCH,"Painting");
+        $request=new GetPaintingByRequest($request->get('parm'),$request->get('value'));
+        $result = $this->paintingService->getBy($request);
+        return $this->response($result,self::FETCH);
     }
 
 }

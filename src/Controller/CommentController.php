@@ -2,17 +2,44 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
+use App\Request\ByIdRequest;
+use App\Request\CreateCommentRequest;
+use App\Request\DeleteRequest;
+use App\Request\GetClientRequest;
+use App\Request\GetEntityRequest;
+use App\Request\UpdateCommentRequest;
+use App\Service\CommentService;
 use App\Validator\CommentValidateInterface;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
+use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CommentController extends BaseController
 {
+    private $commentService;
+    private $autoMapping;
+
     /**
-     * @Route("/createComment", name="createComment")
+     * CommentController constructor.
+     * @param $commentService
+     */
+    public function __construct(CommentService $commentService ,AutoMapping $autoMapping)
+    {
+        $this->commentService = $commentService;
+        $this->autoMapping=$autoMapping;
+    }
+
+    /**
+     * @Route("/comments", name="createComment",methods={"POST"})
      * @param Request $request
-     * @return
+     * @param CommentValidateInterface $commentValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function create(Request $request, CommentValidateInterface $commentValidate)
     {
@@ -24,16 +51,18 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        //
-
-        $result = $this->CUDService->create($request, "Comment");
-        return $this->response($result, self::CREATE, "Comment");
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,CreateCommentRequest::class,(object)$data);
+        $result = $this->commentService->create($request);
+        return $this->response($result, self::CREATE);
     }
 
     /**
-     * @Route("/updateComment", name="updateComment")
+     * @Route("/comment/{id}", name="updateComment",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param CommentValidateInterface $commentValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
      */
     public function update(Request $request, CommentValidateInterface $commentValidate)
     {
@@ -44,14 +73,20 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "Comment");
-        return $this->response($result, self::UPDATE, "Comment");
+        $id=$request->get('id');
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateCommentRequest::class,(object)$data);
+
+        $request->setId($id);
+        $result = $this->commentService->update($request);
+        return $this->response($result, self::UPDATE);
     }
 
     /**
-     * @Route("/deleteComment", name="deleteComment")
+     * @Route("/comment/{id}", name="deleteComment",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @param CommentValidateInterface $commentValidate
+     * @return JsonResponse|Response
      */
     public function delete(Request $request, CommentValidateInterface $commentValidate)
     {
@@ -62,45 +97,52 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->delete($request, "Comment");
-        return $this->response($result, self::DELETE,"Comment");
+        $request=new DeleteRequest($request->get('id'));
+        $result = $this->commentService->delete($request);
+        return $this->response($result, self::DELETE);
 
     }
 
-
     /**
-     * @Route("/getAllComment",name="getAllComment")
-     * @param Request $request
-     * @return
-     */
-    public function getAll(Request $request)
-    {
-
-        $result = $this->FDService->fetchData($request,"Comment");
-        return $this->response($result,self::FETCH,"Comment");
-    }
-
-    /**
-     * @Route("/getEntityComment",name="getEntityComment")
+     * @Route("/commentsentity/{entity}/{row}",name="getEntityComment")
      * @param Request $request
      * @return
      */
     public function getEntityComment(Request $request)
     {
-
-        $result = $this->FDService->getEntityComment($request);
-        return $this->response($result,self::FETCH,"Comment");
+        $request=new GetEntityRequest($request->get('entity'),$request->get('row'));
+        $result = $this->commentService->getEntityComment($request);
+        return $this->response($result,self::FETCH);
     }
 
     /**
-     * @Route("/getClientComment",name="getClientComment")
+     * @Route("/commentsclient/{client}", name="getClientComments",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getClientComment(Request $request)
     {
-
-        $result = $this->FDService->getClientComment($request);
-        return $this->response($result,self::FETCH,"Comment");
+        $request=new GetClientRequest($request->get('client'));
+        $result = $this->commentService->getClientComment($request);
+        return $this->response($result,self::FETCH);
+    }
+    /**
+     * @Route("/comments",name="getAllComment",methods={"GET"})
+     * @return
+     */
+    public function getAll()
+    {
+        $result = $this->commentService->getAll();
+        return $this->response($result,self::FETCH);
+    }
+    /**
+     * @Route("/spacialcomment/{id}",name="setSpacialComment",methods={"PUT"})
+     * @return
+     */
+    public function setSpacial(Request $request)
+    {
+        $request=new ByIdRequest($request->get('id'));
+        $result = $this->commentService->setSpacial($request);
+        return $this->response($result,self::UPDATE);
     }
 }

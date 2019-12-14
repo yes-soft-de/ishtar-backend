@@ -33,6 +33,5 @@ services:
         arguments:
             - "%kernel.project_dir%"
 
-
     #App\Validator\ArtistValidateInterface:  '@App\Validator\ArtistValidate'
     #App\Validator\ArtistValidateInterface:  '@App\Validator\ImageUploadValidate'

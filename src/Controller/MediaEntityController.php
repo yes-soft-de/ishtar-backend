@@ -2,72 +2,96 @@
 
 namespace App\Controller;
 
-use App\Validator\CommentValidateInterface;
+use App\AutoMapping;
+use App\Request\ByIdRequest;
+use App\Request\CreateMediaRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateMediaRequest;
+use App\Service\EntityMediaService;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
+use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MediaEntityController extends BaseController
 {
-    /**
-     * @Route("/createMedia", name="createMedia")
-     * @param Request $request
-     * @return
-     */
-    public function create(Request $request, CommentValidateInterface $commentValidate)
-    {
+    private $mediaService;
+    private $autoMapping;
 
-        $result = $this->CUDService->create($request, "MediaEntity");
-        return $this->response($result, self::CREATE, "MediaEntity");
+    /**
+     * MediaEntityController constructor.
+     * @param $mediaService
+     */
+    public function __construct(EntityMediaService $mediaService,AutoMapping $autoMapping)
+    {
+        $this->mediaService = $mediaService;
+        $this->autoMapping=$autoMapping;
     }
 
     /**
-     * @Route("/updateMediaEntity", name="updateMediaEntity")
+     * @Route("/medias", name="createMedia",methods={"POST"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
+     * @throws UnregisteredMappingException
      */
-    public function update(Request $request, CommentValidateInterface $commentValidate)
+    public function create(Request $request)
     {
-        $validateResult = $commentValidate->commentValidator($request, 'update');
-        if (!empty($validateResult))
-        {
-            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $resultResponse;
-        }
-        $result = $this->CUDService->update($request, "MediaEntity");
-        return $this->response($result, self::UPDATE, "MediaEntity");
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,CreateMediaRequest::class,(object)$data);
+        $result = $this->mediaService->create($request);
+        return $this->response($result, self::CREATE);
     }
 
     /**
-     * @Route("/deleteMediaEntity", name="deleteMediaEntity")
+     * @Route("/media/{id}", name="updateMedia",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
+     * @throws UnregisteredMappingException
      */
-    public function delete(Request $request, CommentValidateInterface $commentValidate)
+    public function update(Request $request)
     {
-//        $validateResult = $commentValidate->commentValidator($request, 'delete');
-//        if (!empty($validateResult))
-//        {
-//            $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
-//            $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
-//            return $resultResponse;
-//        }
-        $result = $this->CUDService->delete($request, "MediaEntity");
-        return $this->response($result, self::DELETE,"MediaEntity");
+        $id=$request->get('id');
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateMediaRequest::class,(object)$data);
+        $request->setId($id);
+        $result = $this->mediaService->update($request);
+        return $this->response($result, self::UPDATE);
+    }
+
+    /**
+     * @Route("/media/{id}", name="deleteMedia",methods={"DELETE"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function delete(Request $request)
+    {
+        $request=new DeleteRequest($request->get('id'));
+        $result = $this->mediaService->delete($request);
+        return $this->response($result, self::DELETE);
 
     }
 
+    /**
+     * @Route("/medias", name="getAllMedia",methods={"GET"})
+     * @return JsonResponse
+     */
+    public function getAll()
+    {
+        $result = $this->mediaService->getAll();
+        return $this->response($result,self::FETCH);
+    }
 
     /**
-     * @Route("/getAllComment",name="getAllComment")
+     * @Route("entityitems/{entity}", name="getEntityItems",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
-    public function getAll(Request $request)
+    public function getEntityItem(Request $request)
     {
-
-        $result = $this->FDService->fetchData($request,"Comment");
-        return $this->response($result,self::FETCH,"Comment");
+        $request=new ByIdRequest($request->get('entity'));
+        $result = $this->mediaService->getEntityItems($request);
+        return $this->response($result,self::FETCH);
     }
 }

@@ -2,17 +2,31 @@
 
 namespace App\Controller;
 
+use App\Service\AuctionPaintingService;
 use App\Validator\PaintingTransactionValidateInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PaintingTransactionController extends BaseController
 {
+    private $auctionPaintingService;
+
     /**
-     * @Route("/createPaintingTransaction", name="createPaintingTransaction")
+     * PaintingController constructor.
+     * @param AuctionPaintingService $auctionPaintingService
+     */
+    public function __construct(AuctionPaintingService $auctionPaintingService)
+    {
+        $this->auctionPaintingService=$auctionPaintingService;
+    }
+
+    /**
+     * @Route("/paintingTransactions", name="createPaintingTransaction")
      * @param Request $request
-     * @return
+     * @param PaintingTransactionValidateInterface $paintingTransactionValidate
+     * @return JsonResponse|Response
      */
     public function create(Request $request, PaintingTransactionValidateInterface $paintingTransactionValidate)
     {
@@ -26,14 +40,15 @@ class PaintingTransactionController extends BaseController
         }
         //
 
-        $result = $this->CUDService->create($request, "PaintingTransaction");
-        return $this->response($result, self::CREATE,"PaintingTransaction");
+        $result = $this->auctionPaintingService->create($request);
+        return $this->response($result, self::CREATE);
     }
 
     /**
-     * @Route("/updatePaintingTransaction", name="updatePaintingTransaction")
+     * @Route("/paintingTransaction/{id}", name="updatePaintingTransaction",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param PaintingTransactionValidateInterface $paintingTransactionValidate
+     * @return JsonResponse|Response
      */
     public function update(Request $request, PaintingTransactionValidateInterface $paintingTransactionValidate)
     {
@@ -44,14 +59,15 @@ class PaintingTransactionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->update($request, "PaintingTransaction");
-        return $this->response($result, self::UPDATE,"PaintingTransaction");
+        $result = $this->auctionPaintingService->update($request);
+        return $this->response($result, self::UPDATE);
     }
 
     /**
-     * @Route("/deletePaintingTransaction", name="deletePaintingTransaction")
+     * @Route("/paintingTransaction/{id}", name="deletePaintingTransaction",methods={"DELETE"})
      * @param Request $request
-     * @return
+     * @param PaintingTransactionValidateInterface $paintingTransactionValidate
+     * @return JsonResponse|Response
      */
     public function delete(Request $request, PaintingTransactionValidateInterface $paintingTransactionValidate)
     {
@@ -62,21 +78,19 @@ class PaintingTransactionController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $result = $this->CUDService->delete($request, "PaintingTransaction");
-        return $this->response($result, self::DELETE,"PaintingTransaction");
+        $result = $this->auctionPaintingService->delete($request);
+        return $this->response($result, self::DELETE);
 
     }
 
-
     /**
-     * @Route("/getAllPaintingTransaction",name="getAllPaintingTransaction")
+     * @Route("/transactions",name="getAllPaintingTransaction",methods={"GET"})
      * @param Request $request
-     * @return
+     * @return JsonResponse
      */
     public function getAll(Request $request)
     {
-
-        $result = $this->FDService->fetchData($request,"PaintingTransaction");
-        return $this->response($result,self::FETCH,"PaintingTransaction");
+        $result = $this->auctionPaintingService->getAll($request);
+        return $this->response($result,self::FETCH);
     }
 }

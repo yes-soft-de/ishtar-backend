@@ -17,10 +17,10 @@ class PriceEntity
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PaintingEntity")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Entity")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $painting;
+    private $entity;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=0)
@@ -32,19 +32,24 @@ class PriceEntity
      */
     private $createdDate;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $row;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPainting(): ?PaintingEntity
+    public function getEntity(): ?int
     {
-        return $this->painting;
+        return $this->entity->getId();
     }
 
-    public function setPainting(?PaintingEntity $painting): self
+    public function setEntity(?Entity $entity): self
     {
-        $this->painting = $painting;
+        $this->entity = $entity;
 
         return $this;
     }
@@ -61,14 +66,26 @@ class PriceEntity
         return $this;
     }
 
-    public function getCreatedDate(): ?\DateTimeInterface
+    public function getCreatedDate(): ?string
     {
-        return $this->createdDate;
+        return $this->createdDate->format('Y-m-d H:i:s');
     }
 
-    public function setCreatedDate(\DateTimeInterface $createdDate): self
+    public function setCreatedDate(): self
     {
-        $this->createdDate = $createdDate;
+        $this->createdDate =$this->createDate = new \DateTime('Now');;
+
+        return $this;
+    }
+
+    public function getRow(): ?int
+    {
+        return $this->row;
+    }
+
+    public function setRow(int $row): self
+    {
+        $this->row = $row;
 
         return $this;
     }

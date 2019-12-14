@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\EntityArtTypeEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method EntityArtTypeEntity|null find($id, $lockMode = null, $lockVersion = null)
@@ -49,33 +50,42 @@ class EntityArtTypeEntityRepository extends ServiceEntityRepository
     */
     public function getPaintingArtTypes($id):?array
     {
-        return $this->createQueryBuilder('q')
+        return $this->createQueryBuilder('eat')
             ->select('at.name as artType')
-            ->from('App:EntityArtTypeEntity','ea')
             ->from('App:ArtTypeEntity','at')
-            ->andWhere('ea.entity=1')
-            ->andWhere('ea.artType=at.id')
-            ->andWhere('ea.row='.$id)
+            ->andWhere('eat.entity=1')
+            ->andWhere('eat.artType=at.id')
+            ->andWhere('eat.row=:id')
+            ->setParameter('id',$id)
             ->groupBy('at.id')
-
-            // ->setMaxResults(100)
             ->getQuery()
             ->getResult();
     }
     public function getArtistArtTypes($id):?array
     {
-        return $this->createQueryBuilder('q')
+        return $this->createQueryBuilder('eat')
             ->select('at.name as artType')
-            ->from('App:EntityArtTypeEntity','ea')
             ->from('App:ArtTypeEntity','at')
-            ->andWhere('ea.entity=2')
-            ->andWhere('ea.artType=at.id')
-            ->andWhere('ea.row='.$id)
+            ->andWhere('eat.entity=2')
+            ->andWhere('eat.artType=at.id')
+            ->andWhere('eat.row=:id')
+            ->setParameter('id',$id)
             ->groupBy('at.id')
-
-            // ->setMaxResults(100)
             ->getQuery()
             ->getResult();
     }
-
+    public function findEntity($value,$entity):EntityArtTypeEntity
+    {
+        try {
+            return $this->createQueryBuilder('eat')
+                ->andWhere('eat.row =:value')
+                ->andWhere('eat.entity=:entity')
+                ->setParameter('value', $value)
+                ->setParameter('entity', $entity)
+                ->orderBy('eat.id', 'DESC')
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
+    }
 }

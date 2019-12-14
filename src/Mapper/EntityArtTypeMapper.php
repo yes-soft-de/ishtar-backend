@@ -3,7 +3,6 @@
 namespace App\Mapper;
 
 use App\Entity\ArtistEntity;
-use App\Entity\ArtType;
 use App\Entity\ArtTypeEntity;
 use App\Entity\EntityArtTypeEntity;
 use App\Entity\GalleryEntity;
@@ -17,22 +16,14 @@ use phpDocumentor\Reflection\Types\This;
 
 class EntityArtTypeMapper
 {
-    private $en;
-    public function EntityArtTypeData($data, EntityArtTypeEntity $artTypeEntity,$entityManger)
+    public function EntityArtTypeData($data, EntityArtTypeEntity $artTypeEntity,$entityManger,$entity,$ID)
     {
-        $this->en=$entityManger;
-        $entity = $this->en->getRepository(\App\Entity\Entity::class)->find(1);
-        $artType = $this->en->getRepository(ArtTypeEntity::class)->find($data['artType']);
+        $artType = $entityManger->getRepository(ArtTypeEntity::class)->find($data);
 
-            $row = $this->en->getRepository(PaintingEntity::class)->findBy(array(), array('id' => 'DESC'), 1, 1);
-        if(!isset($row[0]))
-            $row=1;
-        else
-            $row= $row[0]->getId()+1;
-
+        $entity = $entityManger->getRepository(\App\Entity\Entity::class)->find($entity);
 
         $artTypeEntity->setArtType($artType)
-            ->setRow($row)
+            ->setRow($ID)
             ->setEntity($entity)
             ->setArtType($artType);
 

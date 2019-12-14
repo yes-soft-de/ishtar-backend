@@ -6,6 +6,7 @@ namespace App\Validator;
 
 use App\Entity\ArtistEntity;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Nullable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,13 +30,10 @@ class ArtistValidate implements ArtistValidateInterface
 
         $constraints = new Assert\Collection([
 
-            'id' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ],
             'name' => [
                 new Required(),
                 new Assert\NotBlank(),
+
             ],
             'nationality' => [
                 new Required(),
@@ -58,7 +56,6 @@ class ArtistValidate implements ArtistValidateInterface
                 new Assert\NotBlank(),
             ],
             'Facebook' => [
-                new Required(),
                 new Assert\NotBlank(),
             ],
             'Instagram' => [
@@ -78,11 +75,9 @@ class ArtistValidate implements ArtistValidateInterface
                 new Assert\NotBlank(),
             ],
             'image' => [
-        new Required(),
-        new Assert\NotBlank(),
-    ]
-
-
+                 new Required(),
+                 new Assert\NotBlank(),
+                ],
         ]);
 
         if ($type == 'create') {
@@ -121,11 +116,7 @@ class ArtistValidate implements ArtistValidateInterface
             return $result;
         }
 
-        if ($type != "create") {
-            if (!$this->entityManager->getRepository(ArtistEntity::class)->find($input["id"])) {
-                return "No Artist with this id!";
-            }
-        }
+
         return null;
     }
 }

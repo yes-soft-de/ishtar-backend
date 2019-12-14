@@ -2,102 +2,109 @@
 
 namespace App\Controller;
 
+use App\AutoMapping;
+use App\Request\ByIdRequest;
+use App\Request\DeleteRequest;
+use App\Request\RegisterRequest;
+use App\Request\UpdateClientRequest;
+use App\Service\ClientService;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
+use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Validator\ClientValidateInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
+class ClientController extends BaseController{
+private $clientService;
+private $autoMapping;
 
-class ClientController extends BaseController
-{
-
+    public function __construct(ClientService $clientService,AutoMapping $autoMapping)
+    {
+        $this->clientService=$clientService;
+        $this->autoMapping=$autoMapping;
+    }
 
     /**
-     * @Route("/createClient", name="createClient")
+     * @Route("/client/{id}", name="updateClient",methods={"PUT"})
      * @param Request $request
-     * @return
+     * @param ClientValidateInterface $clientValidate
+     * @return Response
+     * @throws UnregisteredMappingException
      */
-    public function create(Request $request, ClientValidateInterface $clientValidate)
+    public function update(Request $request,ClientValidateInterface $clientValidate)
     {
-        //Validation
-        $validateResult = $clientValidate->clientValidator($request, 'create');
+        $validateResult = $clientValidate->clientValidator($request, 'update');
         if (!empty($validateResult))
         {
             $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-
-        $result = $this->CUDService->create($request, "Client");
-        $this->CUDService->create($request,"MediaClient");
-        return $this->response($result, self::CREATE, "Client");
+        $id=$request->get('id');
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,UpdateClientRequest::class,(object)$data);
+        $request->setId($id);
+        $result = $this->clientService->update($request);
+        return $this->response($result,self::UPDATE);
     }
 
     /**
-     * @Route("/updateClient", name="updateClient")
+     * @Route("/client/{id}", name="deleteClient",methods={"DELETE"})
      * @param Request $request
-     */
-    public function update(Request $request)
-    {
-        //ToDo Call Validator
-
-        $result = $this->CUDService->update($request, "Client");
-        return $result;
-    }
-
-    /**
-     * @Route("/deleteClient", name="deleteClient")
-     * @param Request $request
+     * @return JsonResponse
      */
     public function delete(Request $request)
     {
-        //ToDo Call Validator
-
-        $result = $this->CUDService->delete($request, "Client");
-        return $result;
+        $request=new DeleteRequest($request->get('id'));
+        $result = $this->clientService->delete($request);
+        return $this->response($result,self::DELETE);
     }
 
-
     /**
-     * @Route("/getAllClient",name="getAllClient")
-     * @param Request $request
+     * @Route("/clients", name="getAllClient",methods={"GET"})
      * @return
      */
-    public function getAll(Request $request)
+    public function getAll()
     {
-
-        $result = $this->FDService->fetchData($request,"Client");
-        return $this->response($result,self::FETCH,"Client");
+        $result = $this->clientService->getAll();
+        return $this->response($result,self::FETCH);
     }
+
     /**
-     * @Route("/getClientById", name="getClientById")
+     * @Route("/client/{id}", name="getClientById",methods={"GET"})
      * @param Request $request
      * @return
      */
     public function getClientById(Request $request)
     {
-        $result = $this->FDService->getClientById($request);
-        return $this->response($result,self::FETCH,"Client");
+        $request=new ByIdRequest($request->get('id'));
+        $result = $this->clientService->getById($request);
+        return $this->response($result,self::FETCH);
     }
-    /**
-     * @Route("/getClientInteraction", name="getClientInteraction")
-     * @param Request $request
-     * @return
-     */
-    public function getClientInteraction(Request $request)
+
+    public function register(Request $request, ValidatorInterface $validator)
     {
-        $result = $this->FDService->getClientInteraction($request);
-        return $this->response($result,self::FETCH,"Client");
+        //validation
+        $errors = $validator->validate($request);
+
+        if (count($errors) > 0)
+        {
+            $errorsString = (string) $errors;
+            return $this->respondUnauthorized($errorsString) ;
+        }
+        $data = json_decode($request->getContent(), true);
+        $request=$this->autoMapping->map(\stdClass::class,RegisterRequest::class,(object)$data);
+        $client= $this->clientService->register($request);
+        return $this->response(sprintf('User %s successfully created', $client->getEmail()),self::CREATE);
     }
-    /**
-     * @Route("/getClientClap", name="getClientClap")
-     * @param Request $request
-     * @return
-     */
-    public function getClientClap(Request $request)
+
+    public function api()
     {
-        $result = $this->FDService->getClientClap($request);
-        return $this->response($result,self::FETCH,"Client");
+        return $this->response(sprintf('Logged in as %s', $this->getUser()->GetEmail()),self::STATE_OK);
     }
 }
