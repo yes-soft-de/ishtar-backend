@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38224073d85f01edfe18e05a2186210a",
+    "content-hash": "e607957f760bad0299d191552774aa60",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1834,6 +1834,52 @@
                 "symfony"
             ],
             "time": "2019-07-29T10:02:31+00:00"
+        },
+        {
+            "name": "mark-gerarts/auto-mapper-plus",
+            "version": "1.3.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mark-gerarts/automapper-plus.git",
+                "reference": "88145c341c95277918636d21707626ab4f299230"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mark-gerarts/automapper-plus/zipball/88145c341c95277918636d21707626ab4f299230",
+                "reference": "88145c341c95277918636d21707626ab4f299230",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.4",
+                "symfony/debug": "^3.3",
+                "symfony/var-dumper": "^3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AutoMapperPlus\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Gerarts",
+                    "email": "mark.gerarts@gmail.com"
+                }
+            ],
+            "description": "An AutoMapper for PHP",
+            "keywords": [
+                "automapper",
+                "converter",
+                "object-to-object"
+            ],
+            "time": "2019-08-05T15:30:26+00:00"
         },
         {
             "name": "namshi/jose",

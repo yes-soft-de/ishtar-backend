@@ -51,7 +51,7 @@ class PaintingManager
         else {
             $paintingMapper = new PaintingMapper();
             $paintingMapper->PaintingData($painting, $paintingEntity,$this->entityManager);
-            $paintingEntity->setUpdatedDate();
+            $paintingEntity->setUpdateDate();
             $this->entityManager->flush();
             return $paintingEntity;
         }

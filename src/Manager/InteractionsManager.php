@@ -20,10 +20,9 @@ class InteractionsManager
         $this->entityManager = $entityManagerInterface;
     }
 
-    public function deleteInteractions(Request $request,$entity)
+    public function deleteInteractions($id,$entity)
     {
-        $id = $request->get('id');
-
+       // $id = $request->get('id');
         $interactions = $this->entityManager->getRepository(EntityInteractionEntity::class)->getEntityInteraction
         ($entity, $id);
         if ($interactions) {
@@ -38,9 +37,9 @@ class InteractionsManager
         }
 
     }
-    public function deleteComments(Request $request,$entity)
+    public function deleteComments($id,$entity)
     {
-        $id=$request->get('id');
+      //  $id=$request->get('id');
         $Comments = $this->entityManager->getRepository(CommentEntity::class)->getEntity
         ($entity, $id);
         foreach ($Comments as $comment)
@@ -48,9 +47,9 @@ class InteractionsManager
         $this->entityManager->flush();
 
     }
-    public function deleteClaps(Request $request,$entity)
+    public function deleteClaps($id,$entity)
     {
-        $id=$request->get('id');
+       // $id=$request->get('id');
         $Claps = $this->entityManager->getRepository(ClapEntity::class)->getEntity
         ($entity, $id);
         foreach ($Claps as $clap)

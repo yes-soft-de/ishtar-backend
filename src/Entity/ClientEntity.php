@@ -81,6 +81,11 @@ class ClientEntity implements UserInterface
      * @ORM\Column(type="date", nullable=true)
      */
     private $birthDate;
+    /**
+     * @ORM\Column(name="google",type="boolean")
+     */
+    private $google;
+
 
     public function __construct($email)
     {
@@ -125,7 +130,7 @@ class ClientEntity implements UserInterface
     public function getRoles()
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
+      //  $roles[] = 'ROLE_USER';
         return array_unique($roles);
     }
 
@@ -235,5 +240,20 @@ class ClientEntity implements UserInterface
         $this->birthDate = $birthDate;
 
         return $this;
+    }
+     /**
+     * @return mixed
+     */
+    public function getGoogle()
+    {
+        return $this->google;
+    }
+
+    /**
+     * @param mixed $google
+     */
+    public function setGoogle($google): void
+    {
+        $this->google = $google;
     }
 }

@@ -6,6 +6,7 @@ use App\Validator\PaintingValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class PaintingController extends BaseController
 {
@@ -18,6 +19,7 @@ class PaintingController extends BaseController
         $this->paintingService=$paintingService;
     }
     /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      *  @Route("/paintings", name="createPainting",methods={"POST"})
      * @param Request $request
      * @return
@@ -36,6 +38,7 @@ class PaintingController extends BaseController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/painting/{id}", name="updatePainting",methods={"PUT"})
      * @param Request $request
      * @return
@@ -55,6 +58,7 @@ class PaintingController extends BaseController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/painting/{id}", name="deletePainting",methods={"DELETE"})
      * @param Request $request
      * @return

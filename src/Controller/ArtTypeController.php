@@ -7,6 +7,7 @@ use App\Validator\ArtTypeValidateInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class ArtTypeController extends BaseController
 {
@@ -19,6 +20,7 @@ class ArtTypeController extends BaseController
         $this->artTypeService=$artTypeService;
     }
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/arttypes", name="createArtType",methods={"POST"})
      * @param Request $request
      * @return
@@ -40,6 +42,7 @@ class ArtTypeController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/arttype/{id}", name="updateArttype",methods={"PUT"})
      * @param Request $request
      * @return
@@ -58,6 +61,7 @@ class ArtTypeController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      *  @Route("/arttype/{id}", name="deleteArtType",methods={"DELETE"})
      * @param Request $request
      * @return

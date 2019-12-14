@@ -43,7 +43,7 @@ class ArtistManager
             } else {
                 $artistMapper = new ArtistMapper();
                 $artistMapper->ArtistData($artist, $artistEntity);
-                $artistEntity->setUpdatedDate();
+                $artistEntity->setUpdateDate();
                 $this->entityManager->flush();
                 return $artistEntity;
             }

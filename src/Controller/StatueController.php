@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class StatueController extends BaseController
 {
@@ -23,6 +24,7 @@ class StatueController extends BaseController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/statues", name="createStatue",methods={"POST"})
      * @param Request $request
      * @return
@@ -44,6 +46,7 @@ class StatueController extends BaseController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/statue/{id}", name="updateStatue",methods={"PUT"})
      * @param Request $request
      * @return
@@ -62,6 +65,7 @@ class StatueController extends BaseController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      *  @Route("/statue/{id}", name="deleteStatue",methods={"DELETE"})
      * @param Request $request
      * @return
