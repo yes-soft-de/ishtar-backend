@@ -40,7 +40,7 @@ class EntityInteractionEntity
     private $client;
 
     /**
-     * @ORM\Column(type="datetime",nullable=true)
+     * @ORM\Column(type="datetime")
      */
     private $date;
 
@@ -49,9 +49,9 @@ class EntityInteractionEntity
         return $this->id;
     }
 
-    public function getInteraction()
+    public function getInteraction(): ?InteractionEntity
     {
-        return $this->interaction->getId();
+        return $this->interaction;
     }
 
     public function setInteraction(?InteractionEntity $interaction): self
@@ -61,9 +61,9 @@ class EntityInteractionEntity
         return $this;
     }
 
-    public function getEntity()
+    public function getEntity(): ?Entity
     {
-        return $this->entity->getId();
+        return $this->entity;
     }
 
     public function setEntity(?Entity $entity): self
@@ -85,9 +85,9 @@ class EntityInteractionEntity
         return $this;
     }
 
-    public function getClient():int
+    public function getClient(): ?ClientEntity
     {
-        return $this->client->getId();
+        return $this->client;
     }
 
     public function setClient(?ClientEntity $client): self
@@ -97,9 +97,9 @@ class EntityInteractionEntity
         return $this;
     }
 
-    public function getDate(): ?string
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->date->format('Y-m-d H:i:s');
+        return $this->date;
     }
 
     public function setDate(): self

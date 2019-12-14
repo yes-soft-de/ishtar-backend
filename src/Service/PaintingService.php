@@ -4,23 +4,12 @@
 namespace App\Service;
 
 
-use App\AutoMapping;
-use App\Entity\PaintingEntity;
 use App\Manager\EntityArtTypeManager;
 use App\Manager\InteractionsManager;
 use App\Manager\PaintingManager;
 use App\Manager\PriceManager;
 use App\Manager\StoryManager;
-use App\Response\CreatePaintingResponse;
-use App\Response\DeleteResponse;
-use App\Response\GetPaintingsResponse;
-use App\Response\GetPaintingByIdResponse;
-use App\Response\GetPaintingByResponse;
-use App\Response\UpdatePaintingResponse;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpParser\Node\Stmt\If_;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaintingService implements PaintingServiceInterface
@@ -30,17 +19,15 @@ class PaintingService implements PaintingServiceInterface
     private $priceManager;
     private $storyManager;
     private $interasctionsManager;
-    private $autoMapping;
 
     public function __construct(PaintingManager $manager,EntityArtTypeManager $artTypeManager,PriceManager $priceManager
-    ,StoryManager $storyManager,InteractionsManager $interactionsManager,AutoMapping $autoMapping)
+    ,StoryManager $storyManager,InteractionsManager $interactionsManager)
     {
         $this->PaintingManager=$manager;
         $this->artTypeManager=$artTypeManager;
         $this->priceManager=$priceManager;
         $this->storyManager=$storyManager;
         $this->interasctionsManager=$interactionsManager;
-        $this->autoMapping=$autoMapping;
     }
 
     public function create($request)
@@ -50,13 +37,7 @@ class PaintingService implements PaintingServiceInterface
         $artTypeResult=$this->artTypeManager->create($request,1,$paintingId);
         $priceData=$this->priceManager->create($request,1,$paintingId);
         $storyData=$this->storyManager->create($request,1,$paintingId);
-        $response=$this->autoMapping->map(PaintingEntity::class,CreatePaintingResponse::class,
-            $paintingResult);
-        $response->setArtType($artTypeResult->getArtType());
-                  $response->setPrice($priceData->getPrice());
-           $response ->setStory($storyData->getStory());
-        return $response;
-
+        return $paintingResult;
     }
     //ToDO mapping painting entity and response
     public function update($request,$id)
@@ -65,19 +46,12 @@ class PaintingService implements PaintingServiceInterface
         $artTypeResult=$this->artTypeManager->update($request,1);
         $priceData=$this->priceManager->update($request,1);
         $storyData=$this->storyManager->update($request,1);
-        $response=$this->autoMapping->map(PaintingEntity::class,UpdatePaintingResponse::class,
-            $paintingResult);
-        $response->setArtType($artTypeResult->getArtType());
-        $response->setPrice($priceData->getPrice());
-        $response ->setStory($storyData->getStory());
-        return $response;
+        return $paintingResult;
     }
     public function getAll()
     {
         $result=$this->PaintingManager->getAll();
-        foreach ($result as $row)
-            $response[]=$this->autoMapping->map('array',GetPaintingsResponse::class,$row);
-        return $response;
+        return $result;
     }
     public function delete($id)
     {
@@ -88,30 +62,29 @@ class PaintingService implements PaintingServiceInterface
          $this->interasctionsManager->deleteInteractions($id,1);
          $this->interasctionsManager->deleteComments($id,1);
          $this->interasctionsManager->deleteClaps($id,1);
-        $response=new DeleteResponse($result->getId());
-         return $response;
+         return $result;
+
+    }
+    public function getArtistPaintings(Request $request)
+    {
+        return $result = $this->PaintingManager->getArtistPaintings($request);
     }
 
     public function getPaintingById($id)
     {
-        $result = $this->PaintingManager->getPaintingById($id);
-        $response = $this->autoMapping->map('array', GetPaintingByIdResponse::class, $result[0]);
-        $response->setArtType($result[1]['artType']);
-        $i=2;
-        if (isset($result[$i]))
-        {
-            for($i=2 ;$i<sizeof($result);$i++)
-                $paintingImages[]=$result[$i];
-                $response->setImages($paintingImages);
-        }
-        return $response;
+        return $result = $this->PaintingManager->getPaintingById($id);
     }
 
-    public function getBy($request)
+    public function getPaintingImages(Request $request)
     {
-        $result = $this->PaintingManager->getBy($request);
-        foreach ($result as $row)
-            $response[]=$this->autoMapping->map('array',GetPaintingByResponse::class,$row);
-        return $response;
+        return $result = $this->PaintingManager->getPaintingImages($request);
     }
+
+    public function getBy(Request $request)
+    {
+
+        return $result = $this->PaintingManager->getBy($request);
+    }
+
+
 }

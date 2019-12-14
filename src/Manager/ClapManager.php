@@ -4,86 +4,67 @@
 namespace App\Manager;
 
 
-use App\AutoMapping;
 use App\Entity\ClapEntity;
 use App\Mapper\ClapMapper;
-use App\Repository\ClapEntityRepository;
-use App\Repository\ClientEntityRepository;
-use App\Repository\EntityRepository;
-use App\Request\CreateClapRequest;
-use App\Request\DeleteRequest;
-use App\Request\GetClientRequest;
-use App\Request\GetEntityRequest;
-use App\Request\UpdateClapRequest;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ClapManager
 {
     private $entityManager;
-    private $clapRepository;
-    private $entityRepository;
-    private $clientRepository;
-    private $autoMapping;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface,ClapEntityRepository $clapRepository,
-                                EntityRepository $entityRepository,ClientEntityRepository $clientRepository,
-                                    AutoMapping $autoMapping)
+    public function __construct(EntityManagerInterface $entityManagerInterface)
     {
         $this->entityManager = $entityManagerInterface;
-        $this->clapRepository=$clapRepository;
-        $this->entityRepository=$entityRepository;
-        $this->clientRepository=$clientRepository;
-        $this->autoMapping=$autoMapping;
     }
 
-    public function create(CreateClapRequest $request)
+    public function create(Request $request)
     {
-        $request->setClient($this->clientRepository->find($request->getClient()));
-        $request->setEntity($this->entityRepository->find($request->getEntity()));
-        $clapData=$this->autoMapping->map(CreateClapRequest::class,ClapEntity::class,$request);
+        $clap = json_decode($request->getContent(),true);
+        $clapEntity=new ClapEntity();
+        $clapMapper = new ClapMapper();
+        $clapData=$clapMapper->clapData($clap,$clapEntity,$this->entityManager);
         $this->entityManager->persist($clapData);
         $this->entityManager->flush();
         return $clapData;
     }
-    public function update(UpdateClapRequest$request)
+    public function update(Request $request)
     {
-        $clapEntity=$this->clapRepository->find($request->getId());
+        $clap = json_decode($request->getContent(),true);
+        $clapEntity=$this->entityManager->getRepository(ClapEntity::class)->find($request->get('id'));
         if (!$clapEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("clap");
         }
         else {
-            $request->setClient($this->clientRepository->find($request->getClient()));
-            $request->setEntity($this->entityRepository->find($request->getEntity()));
-            $clapEntity = $this->autoMapping->mapToObject(UpdateClapRequest::class,ClapEntity::class,
-                $request,$clapEntity);
+            $clapMapper = new clapMapper();
+            $clapMapper->clapData($clap,$clapEntity,$this->entityManager);
             $this->entityManager->flush();
             return $clapEntity;
         }
     }
-    public function getEntityclap(GetEntityRequest $request)
+    public function getEntityclap(Request $request)
     {
-        return $clapResult =$this->clapRepository
-            ->getEntityClap($request->getEntity(),$request->getRow());
+        return $clapResult =$this->entityManager->getRepository(ClapEntity::class)
+            ->getEntityClap($request->get('entity'),$request->get('row'));
     }
 
-    public function getClientClap(GetClientRequest $request)
+    public function getClientClap(Request $request)
     {
-        return $clapResult =$this->clapRepository->getClientClap($request->getClient());
+        return $clapResult =$this->entityManager->getRepository(ClapEntity::class)
+            ->getClientClap($request->get('client'));
     }
     public function getAll()
     {
-        return $clapResult =$this->clapRepository->findAll();
+        return $clapResult =$this->entityManager->getRepository(ClapEntity::class)
+            ->findAll();
     }
-    public function delete(DeleteRequest $request)
+    public function delete(Request $request)
     {
-        $clapEntity=$this->clapRepository->find($request->getId());
+        $clapEntity=$this->entityManager->getRepository(ClapEntity::class)->find($request->get('id'));
         if (!$clapEntity) {
             $exception=new EntityException();
-            $exception->entityNotFound("clap");
+            $exception->entityNotFound("artType");
         }
         else {
             $this->entityManager->remove($clapEntity);
@@ -91,5 +72,4 @@ class ClapManager
         }
         return $clapEntity;
     }
-
 }

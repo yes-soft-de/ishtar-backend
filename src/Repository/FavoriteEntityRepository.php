@@ -19,6 +19,34 @@ class FavoriteEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, FavoriteEntity::class);
     }
 
+    // /**
+    //  * @return FavoriteEntity[] Returns an array of FavoriteEntity objects
+    //  */
+    /*
+    public function findByExampleField($value)
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('f.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    */
+
+    /*
+    public function findOneBySomeField($value): ?FavoriteEntity
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    */
     public function getClientFavorite($client)
     {
         return $this->createQueryBuilder('f')

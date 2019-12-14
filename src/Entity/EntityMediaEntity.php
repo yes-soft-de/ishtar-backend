@@ -92,9 +92,9 @@ class EntityMediaEntity
         return $this;
     }
 
-    public function getEntity(): ?int
+    public function getEntity(): ?Entity
     {
-        return $this->entity->getId();;
+        return $this->entity;
     }
 
     public function setEntity(?Entity $entity): self
@@ -104,9 +104,9 @@ class EntityMediaEntity
         return $this;
     }
 
-    public function getMedia(): ?int
+    public function getMedia(): ?MediaEntity
     {
-        return $this->media->getId();;
+        return $this->media;
     }
 
     public function setMedia(?MediaEntity $media): self
@@ -140,7 +140,7 @@ class EntityMediaEntity
         return $this;
     }
 
-    public function getCreatedDate()
+    public function getCreatedDate(): ?\DateTimeInterface
     {
         return $this->createdDate;
     }

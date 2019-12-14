@@ -8,7 +8,6 @@ namespace App\Manager;
 use App\Entity\PaintingTransactionEntity;
 use App\Mapper\PaintingTransactionMapper;
 use App\Mapper\AutoMapper;
-use App\Repository\PaintingTransactionEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 class PaintingTransactionManager
 {
     private $entityManager;
-    private $paintingTransactionRepository;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface,
-                                PaintingTransactionEntityRepository $paintingTransactionRepository)
+    public function __construct(EntityManagerInterface $entityManagerInterface)
     {
         $this->entityManager = $entityManagerInterface;
-        $this->paintingTransactionRepository=$paintingTransactionRepository;
     }
 
     public function create(Request $request)
@@ -38,7 +34,7 @@ class PaintingTransactionManager
     public function update(Request $request)
     {
         $paintingTransaction = json_decode($request->getContent(),true);
-        $paintingTransactionEntity=$this->paintingTransactionRepository->getPaintingTransaction($request->get('id'));
+        $paintingTransactionEntity=$this->entityManager->getRepository(PaintingTransactionEntity::class)->getPaintingTransaction($request->get('id'));
         if (!$paintingTransactionEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("paintingTransaction");
@@ -52,25 +48,30 @@ class PaintingTransactionManager
     }
     public function delete(Request $request)
     {
-        $paintingTransaction=$this->paintingTransactionRepository->getPaintingTransaction($request->get('id'));
+        $paintingTransaction=$this->entityManager->getRepository(PaintingTransactionEntity::class)->getPaintingTransaction($request->get('id'));
         $this->entityManager->remove($paintingTransaction);
         $this->entityManager->flush();
         return $paintingTransaction;
     }
     public function getAll()
     {
-        $data=$this->paintingTransactionRepository->getAll();
+        $data=$this->entityManager->getRepository(PaintingTransactionEntity::class)->getAll();
 
         return $data;
     }
 
     public function getById(Request $request)
     {
-        return $result = $this->paintingTransactionRepository->find($request->get('id'));
+        return $result = $this->entityManager->getRepository(PaintingTransactionEntity::class)->findById($request->get('id'));
+    }
+    public function search(Request $request)
+    {
+        $data = json_decode($request->getContent(),true);
+        return $result = $this->entityManager->getRepository(PaintingTransactionEntity::class)->search($data['keyword']);
     }
     public function getAllDetails()
     {
-        $data=$this->paintingTransactionRepository->getAllDetails();
+        $data=$this->entityManager->getRepository(PaintingTransactionEntity::class)->getAllDetails();
 
         return $data;
     }

@@ -3,75 +3,58 @@
 
 namespace App\Service;
 
-use App\AutoMapping;
-use App\Entity\CommentEntity;
 use App\Manager\CommentManager;
-use App\Response\CreateCommentResponse;
-use App\Response\DeleteResponse;
-use App\Response\GetCommentsClientResponse;
-use App\Response\GetCommentsEntityResponse;
-use App\Response\GetCommentsResponse;
-use App\Response\UpdateCommentResponse;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CommentService implements CommentServiceInterface
 {
 
     private $commentManager;
-    private $autoMapping;
 
-    public function __construct(CommentManager $commentManager,AutoMapping $autoMapping)
+
+    public function __construct(CommentManager $commentManager)
     {
         $this->commentManager=$commentManager;
-        $this->autoMapping=$autoMapping;
     }
 
     public function create($request)
     {
         $commentResult =$this->commentManager->create($request);
-        $response=$this->autoMapping->map(CommentEntity::class,CreateCommentResponse::class,$commentResult);
-        return $response;
+        return $commentResult;
     }
     public function update($request)
     {
         $commentResult =$this->commentManager->update($request);
-        $response=$this->autoMapping->map(CommentEntity::class,UpdateCommentResponse::class,$commentResult);
-        return $response;
+        return $commentResult;
     }
     public function delete($request)
     {
         $commentResult =$this->commentManager->delete($request);
-        $response=New DeleteResponse($commentResult->getId());
-        return $response;
+        return $commentResult;
     }
 
 
     public function getEntityComment($request)
     {
-        $commentResult =$this->commentManager->getEntityComment($request);
-        foreach ($commentResult as $row)
-            $response[]=$this->autoMapping->map('array',GetCommentsEntityResponse::class,$row);
-        return $response;
+        return $commentResult =$this->commentManager->getEntityComment($request);
     }
 
     public function getClientComment($request)
     {
-        $commentResult =$this->commentManager->getClientComment($request);
-        foreach ($commentResult as $row)
-            $response[]=$this->autoMapping->map('array',GetCommentsClientResponse::class,$row);
-        return $response;
+        return $commentResult =$this->commentManager->getClientComment($request);
     }
 
     public function getAll()
     {
-        $commentResult =$this->commentManager->getAll();
-        foreach ($commentResult as $row)
-            $response[]=$this->autoMapping->map('array',GetCommentsResponse::class,$row);
-        return $response;
+        return $commentResult =$this->commentManager->getAll();
     }
     public function setSpacial($request)
     {
-         $commentResult =$this->commentManager->setSpacial($request);
-         $response=$this->autoMapping->map(CommentEntity::class,GetCommentsResponse::class,$commentResult);
-        return $response;
+        return $commentResult =$this->commentManager->setSpacial($request);
     }
 }

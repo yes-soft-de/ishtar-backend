@@ -42,9 +42,9 @@ class PriceEntity
         return $this->id;
     }
 
-    public function getEntity(): ?int
+    public function getEntity(): ?Entity
     {
-        return $this->entity->getId();
+        return $this->entity;
     }
 
     public function setEntity(?Entity $entity): self
@@ -66,9 +66,9 @@ class PriceEntity
         return $this;
     }
 
-    public function getCreatedDate(): ?string
+    public function getCreatedDate(): ?\DateTimeInterface
     {
-        return $this->createdDate->format('Y-m-d H:i:s');
+        return $this->createdDate;
     }
 
     public function setCreatedDate(): self

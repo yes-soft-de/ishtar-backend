@@ -3,27 +3,27 @@
 
 namespace App\Service;
 
-use App\AutoMapping;
-use App\Entity\ArtTypeEntity;
+use App\Controller\ArtType;
 use App\Manager\ArtTypeManager;
+use App\Manager\CreateUpdateDeleteManagerInterface;
+use App\Manager\EntityArtTypeManager;
 use App\Manager\EntityMediaManger;
-use App\Response\CreateArtTypeResponse;
-use App\Response\DeleteResponse;
-use App\Response\UpdateArtTypeResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ArtTypeService implements ArtTypeServiceInterface
 {
 
     private $artTypeManager;
     private $mediaManager;
-    private $autoMapping;
 
-    public function __construct(ArtTypeManager $artTypeManager,EntityMediaManger $entityMediaManager,
-                                AutoMapping $autoMapping)
+    public function __construct(ArtTypeManager $artTypeManager,EntityMediaManger $entityMediaManager)
     {
         $this->artTypeManager=$artTypeManager;
         $this->mediaManager=$entityMediaManager;
-        $this->autoMapping=$autoMapping;
     }
 
     public function create($request)
@@ -31,17 +31,13 @@ class ArtTypeService implements ArtTypeServiceInterface
         $artTypeResult =$this->artTypeManager->create($request);
         $artTypeId=$artTypeResult->getId();
         $mediaResault=$this->mediaManager->create($request,3,$artTypeId);
-        $response=$this->autoMapping->map(ArtTypeEntity::class,CreateArtTypeResponse::class,$artTypeResult);
-        $response->setImage($mediaResault->getPath());
-        return $response;
+        return $artTypeResult;
     }
     public function update($request)
     {
         $artTypeResult =$this->artTypeManager->update($request);
         $mediaResault=$this->mediaManager->update($request,3);
-        $response=$this->autoMapping->map(ArtTypeEntity::class,UpdateArtTypeResponse::class,$artTypeResult);
-        $response->setImage($mediaResault->getPath());
-        return $response;
+        return $artTypeResult;
     }
     public function getAll()
     {
@@ -52,8 +48,7 @@ class ArtTypeService implements ArtTypeServiceInterface
     {
         $result=$this->artTypeManager->delete($request);
         $this->mediaManager->delete($request,3);
-        $response=new DeleteResponse($result->getId());
-        return $response;
+        return $result;
     }
 
     public function getArtTypeById($request)

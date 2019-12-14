@@ -40,8 +40,7 @@ class ClapEntity
     private $entity;
 
     /**
-     * @ORM\Column(type="datetime",nullable=true)
-     *
+     * @ORM\Column(type="datetime")
      */
     private $date;
 
@@ -50,9 +49,9 @@ class ClapEntity
         return $this->id;
     }
 
-    public function getClient()
+    public function getClient(): ?ClientEntity
     {
-        return $this->client->getId();
+        return $this->client;
     }
 
     public function setClient(?ClientEntity $client): self
@@ -87,9 +86,9 @@ class ClapEntity
         return $this;
     }
 
-    public function getEntity()
+    public function getEntity(): ?Entity
     {
-        return $this->entity->getId();
+        return $this->entity;
     }
 
     public function setEntity(?Entity $entity): self

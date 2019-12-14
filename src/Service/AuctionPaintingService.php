@@ -3,17 +3,11 @@
 
 namespace App\Service;
 
-use App\AutoMapping;
 use App\Controller\AuctionPainting;
-use App\Entity\AuctionPaintingEntity;
 use App\Manager\AuctionPaintingManager;
 use App\Manager\CreateUpdateDeleteManagerInterface;
 use App\Manager\EntityArtTypeManager;
 use App\Manager\EntityMediaManger;
-use App\Request\CreateAuctionPaintingRequest;
-use App\Response\CreateAuctionPaintingResponse;
-use App\Response\DeleteResponse;
-use App\Response\GetPaintingsResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,37 +20,32 @@ class AuctionPaintingService implements AuctionPaintingServiceInterface
     private $auctionPaintingManager;
     private $artTypeManager;
     private $mediaManager;
-    private $autoMapping;
 
-    public function __construct(AuctionPaintingManager $auctionPaintingManager,EntityArtTypeManager $artTypeManager
-        ,EntityMediaManger $entityMediaManager,AutoMapping $autoMapping)
+    public function __construct(AuctionPaintingManager $auctionPaintingManager,EntityArtTypeManager $artTypeManager,EntityMediaManger $entityMediaManager)
     {
         $this->auctionPaintingManager=$auctionPaintingManager;
         $this->artTypeManager=$artTypeManager;
         $this->mediaManager=$entityMediaManager;
-        $this->autoMapping=$autoMapping;
     }
 
     public function create($request)
     {
         $auctionPaintingResult =$this->auctionPaintingManager->create($request);
-        $response=$this->autoMapping->map(AuctionPaintingEntity::class,CreateAuctionPaintingResponse::class
-        ,$auctionPaintingResult);
-        return $response;
+        $artTypeResult=$this->artTypeManager->create($request,2);
+        $mediaResault=$this->mediaManager->create($request,2);
+        return $auctionPaintingResult;
     }
     //ToDO mapping painting entity and response
     public function update($request)
     {
         $auctionPaintingResult =$this->auctionPaintingManager->update($request);
-        $response=$this->autoMapping->map(AuctionPaintingEntity::class,CreateAuctionPaintingResponse::class
-            ,$auctionPaintingResult);
-        return $response;
+        $artTypeResult=$this->artTypeManager->update($request,2);
+        $mediaResault=$this->mediaManager->update($request,2);
+        return $auctionPaintingResult;
     }
     public function getAll()
     {
         $result=$this->auctionPaintingManager->getAll();
-        foreach ($result as $row)
-            $response[]=$this->autoMapping->map('array',GetPaintingsResponse::class,$row);
         return $result;
     }
     public function delete($request)
@@ -64,8 +53,7 @@ class AuctionPaintingService implements AuctionPaintingServiceInterface
         $result=$this->auctionPaintingManager->delete($request);
         $this->mediaManager->delete($request,2);
         $this->artTypeManager->delete($request,2);
-        $response=new DeleteResponse($result->getId());
-        return $response;
+        return $result;
     }
 
     public function getById($request)
@@ -73,4 +61,14 @@ class AuctionPaintingService implements AuctionPaintingServiceInterface
         return $result = $this->auctionPaintingManager->getAuctionPaintingById($request);
     }
 
+    public function search(Request $request)
+    {
+        return $result=$this->auctionPaintingManager->search($request);
+    }
+
+    public function getAllDetails()
+    {
+        $result=$this->auctionPaintingManager->getAllDetails();
+        return $result;
+    }
 }

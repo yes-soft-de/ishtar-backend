@@ -72,6 +72,10 @@ class PaintingValidate implements PaintingValidateInterface
                 new Required(),
                 new Assert\NotBlank(),
             ],
+            'gallery'=>[
+                new Required(),
+                new Assert\NotBlank(),
+            ],
             'keyWords'=>[
                 new Required(),
                 new Assert\NotBlank(),

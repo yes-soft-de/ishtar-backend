@@ -9,9 +9,6 @@ use App\Entity\Entity;
 use App\Entity\EntityArtTypeEntity;
 use App\Mapper\AutoMapper;
 use App\Mapper\StoryMapper;
-use App\Repository\EntityRepository;
-use App\Repository\StoryEntityRepository;
-use App\Request\DeleteRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,49 +19,46 @@ use Symfony\Component\Serializer\Serializer;
 class StoryManager
 {
     private $entityManager;
-    private $storyRepository;
-    private $entityRepository;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface,StoryEntityRepository $storyRepository
-        ,EntityRepository $entityRepository)
+
+    public function __construct(EntityManagerInterface $entityManagerInterface)
     {
         $this->entityManager = $entityManagerInterface;
-        $this->storyRepository=$storyRepository;
-        $this->entityRepository=$entityRepository;
-
     }
 
-    public function create($request,$entity,$id)
+    public function create(Request $request,$entity,$id)
     {
+        $story= json_decode($request->getContent(),true);
         $storyEntity=new StoryEntity();
-        $storyEntity->setEntity($this->entityRepository->find($entity))
-            ->setRow($id)
-            ->setStory($request->getStory());
-        $this->entityManager->persist($storyEntity);
+        $storyMapper = new StoryMapper();
+        $storyData=$storyMapper->StoryData($story, $storyEntity,$this->entityManager,$id);
+        $this->entityManager->persist($storyData);
         $this->entityManager->flush();
         return $storyEntity;
     }
 
-        public function update($request,$entity)
+        public function update(Request $request,$entity)
     {
-
-        $storyEntity=$this->storyRepository->findEntity($request->getId(),$entity);
+        $story = json_decode($request->getContent(),true);
+        $storyEntity=$this->entityManager->getRepository(StoryEntity::class)
+            ->findEntity($request->get('id'),$entity);
         if (!$storyEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("story");
         }
         else {
 
-            $storyEntity->setStory($request->getStory());
+            $storyEntity->setStory($story['story']);
             $this->entityManager->flush();
             return $storyEntity;
         }
     }
 
-    public function delete(DeleteRequest $request,$entity)
+    public function delete(Request $request,$entity)
     {
 
-        $story=$this->storyRepository->findEntity($request->getId(),$entity);
+        $story=$this->entityManager->getRepository(StoryEntity::class)
+            ->findEntity($request->get('id'),$entity);
         if (!$story) {
             $exception=new EntityException();
             $exception->entityNotFound("artType");

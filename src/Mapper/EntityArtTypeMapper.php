@@ -18,7 +18,7 @@ class EntityArtTypeMapper
 {
     public function EntityArtTypeData($data, EntityArtTypeEntity $artTypeEntity,$entityManger,$entity,$ID)
     {
-        $artType = $entityManger->getRepository(ArtTypeEntity::class)->find($data);
+        $artType = $entityManger->getRepository(ArtTypeEntity::class)->find($data['artType']);
 
         $entity = $entityManger->getRepository(\App\Entity\Entity::class)->find($entity);
 

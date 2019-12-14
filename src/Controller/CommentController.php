@@ -2,44 +2,30 @@
 
 namespace App\Controller;
 
-use App\AutoMapping;
-use App\Request\ByIdRequest;
-use App\Request\CreateCommentRequest;
-use App\Request\DeleteRequest;
-use App\Request\GetClientRequest;
-use App\Request\GetEntityRequest;
-use App\Request\UpdateCommentRequest;
 use App\Service\CommentService;
 use App\Validator\CommentValidateInterface;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
-use AutoMapperPlus\Exception\UnregisteredMappingException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class CommentController extends BaseController
 {
     private $commentService;
-    private $autoMapping;
 
     /**
      * CommentController constructor.
      * @param $commentService
      */
-    public function __construct(CommentService $commentService ,AutoMapping $autoMapping)
+    public function __construct(CommentService $commentService)
     {
         $this->commentService = $commentService;
-        $this->autoMapping=$autoMapping;
     }
 
     /**
      * @Route("/comments", name="createComment",methods={"POST"})
      * @param Request $request
-     * @param CommentValidateInterface $commentValidate
-     * @return JsonResponse|Response
-     * @throws UnregisteredMappingException
+     * @return
      */
     public function create(Request $request, CommentValidateInterface $commentValidate)
     {
@@ -51,18 +37,16 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $data = json_decode($request->getContent(), true);
-        $request=$this->autoMapping->map(\stdClass::class,CreateCommentRequest::class,(object)$data);
+        //
+
         $result = $this->commentService->create($request);
-        return $this->response($result, self::CREATE);
+        return $this->response($result, self::CREATE, "Comment");
     }
 
     /**
      * @Route("/comment/{id}", name="updateComment",methods={"PUT"})
      * @param Request $request
-     * @param CommentValidateInterface $commentValidate
-     * @return JsonResponse|Response
-     * @throws UnregisteredMappingException
+     * @return
      */
     public function update(Request $request, CommentValidateInterface $commentValidate)
     {
@@ -73,20 +57,14 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $id=$request->get('id');
-        $data = json_decode($request->getContent(), true);
-        $request=$this->autoMapping->map(\stdClass::class,UpdateCommentRequest::class,(object)$data);
-
-        $request->setId($id);
         $result = $this->commentService->update($request);
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::UPDATE, "Comment");
     }
 
     /**
-     * @Route("/comment/{id}", name="deleteComment",methods={"DELETE"})
+     *  @Route("/comment/{id}", name="deleteComment",methods={"DELETE"})
      * @param Request $request
-     * @param CommentValidateInterface $commentValidate
-     * @return JsonResponse|Response
+     * @return
      */
     public function delete(Request $request, CommentValidateInterface $commentValidate)
     {
@@ -97,11 +75,11 @@ class CommentController extends BaseController
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
-        $request=new DeleteRequest($request->get('id'));
         $result = $this->commentService->delete($request);
-        return $this->response($result, self::DELETE);
+        return $this->response($result, self::DELETE,"Comment");
 
     }
+
 
     /**
      * @Route("/commentsentity/{entity}/{row}",name="getEntityComment")
@@ -110,9 +88,9 @@ class CommentController extends BaseController
      */
     public function getEntityComment(Request $request)
     {
-        $request=new GetEntityRequest($request->get('entity'),$request->get('row'));
+
         $result = $this->commentService->getEntityComment($request);
-        return $this->response($result,self::FETCH);
+        return $this->response($result,self::FETCH,"Comment");
     }
 
     /**
@@ -122,9 +100,8 @@ class CommentController extends BaseController
      */
     public function getClientComment(Request $request)
     {
-        $request=new GetClientRequest($request->get('client'));
         $result = $this->commentService->getClientComment($request);
-        return $this->response($result,self::FETCH);
+        return $this->response($result,self::FETCH,"Comment");
     }
     /**
      * @Route("/comments",name="getAllComment",methods={"GET"})
@@ -133,16 +110,16 @@ class CommentController extends BaseController
     public function getAll()
     {
         $result = $this->commentService->getAll();
-        return $this->response($result,self::FETCH);
+        return $this->response($result,self::FETCH,"Comment");
     }
     /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/spacialcomment/{id}",name="setSpacialComment",methods={"PUT"})
      * @return
      */
     public function setSpacial(Request $request)
     {
-        $request=new ByIdRequest($request->get('id'));
         $result = $this->commentService->setSpacial($request);
-        return $this->response($result,self::UPDATE);
+        return $this->response($result,self::UPDATE,"Comment");
     }
 }

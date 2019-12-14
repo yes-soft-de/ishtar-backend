@@ -3,67 +3,35 @@
 
 namespace App\Manager;
 
-use App\AutoMapping;
 use App\Entity\Entity;
 use App\Entity\EntityMediaEntity;
 use App\Mapper\EntityMediaMapper;
-use App\Repository\EntityMediaEntityRepository;
-use App\Repository\EntityRepository;
-use App\Repository\MediaEntityRepository;
-use App\Request\ByIdRequest;
-use App\Request\CreateMediaRequest;
-use App\Request\DeleteRequest;
-use App\Request\UpdateMediaRequest;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\HttpFoundation\Request;
 
 class EntityMediaManger
 {
     private $entityManager;
-    private $entityMediaRepository;
-    private $entityRepository;
-    private $mediaRepository;
-    private $autoMapping;
-    public function __construct(EntityManagerInterface $entityManagerInterface,MediaEntityRepository $mediaRepository,
-                                EntityMediaEntityRepository $entityMediaRepository,EntityRepository $entityRepository,
-                                AutoMapping $autoMapping)
+
+    public function __construct(EntityManagerInterface $entityManagerInterface)
     {
         $this->entityManager = $entityManagerInterface;
-        $this->entityMediaRepository=$entityMediaRepository;
-        $this->entityRepository=$entityRepository;
-        $this->mediaRepository=$mediaRepository;
-        $this->autoMapping=$autoMapping;
     }
-    public function create($request,$entity,$id)
+    public function create(Request $request,$entity,$id)
     {
+        $entityMedia= json_decode($request->getContent(),true);
         $entityMediaEntity=new EntityMediaEntity();
-        If(!isset($entity)&&!isset($id))
-        {
-            $request->setEntity($this->entityRepository->find($request->getEntity()));
-            $request->setMedia($this->mediaRepository->find(1));
-            $entityMediaEntity=$this->autoMapping->mapToObject(CreateMediaRequest::class,
-                EntityMediaEntity::class,$request,$entityMediaEntity);
-        }
-        else {
-            $entityMediaEntity->setPath($request->getImage())
-            ->setRow($id)
-            ->setEntity($this->entityRepository->find($entity))
-            ->setMedia($this->mediaRepository->find(1));
-                if(!$entity==5)
-            $entityMediaEntity->setName($request->getName());
-        }
+        $entityMediaMapper = new entityMediaMapper();
+        $entityMediaData=$entityMediaMapper->MediaEntityData($entityMedia, $entityMediaEntity,$this->entityManager,$entity,$id);
         $entityMediaEntity->setCreatedDate();
-        $this->entityManager->persist($entityMediaEntity);
+        $this->entityManager->persist($entityMediaData);
         $this->entityManager->flush();
         return $entityMediaEntity;
     }
-    public function update($request,$entity)
+    public function update(Request $request,$entity)
     {
-        $entityMedia = (array)$request;
-        $entityMediaEntity=$this->entityMediaRepository->findImages($entityMedia['id'],$entity);
+        $entityMedia = json_decode($request->getContent(),true);
+        $entityMediaEntity=$this->entityManager->getRepository(EntityMediaEntity::class)->findImages($request->get('id'),$entity);
         if (!$entityMediaEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("entityMedia");
@@ -75,11 +43,12 @@ class EntityMediaManger
             return $entityMediaEntity;
         }
     }
-    public function delete($request,$entity)
+    public function delete(Request $request,$entity)
     {
         if(!isset($entity))
-            $entity=$request->getEntity();
-        $media=$this->entityMediaRepository->findImages($request->getId(),$entity);
+            $entity=$request->get('entity');
+        $media=$this->entityManager->getRepository(EntityMediaEntity::class)
+            ->findImages($request->get('id'),$entity);
         if (!$media) {
             $exception=new EntityException();
             $exception->entityNotFound("media");
@@ -88,37 +57,37 @@ class EntityMediaManger
             $this->entityManager->remove($media);
             $this->entityManager->flush();
         }
-
-        return $media;
     }
     public function getAll()
     {
-        $data=$this->entityMediaRepository->findAll();
+        $data=$this->entityManager->getRepository(EntityMediaEntity::class)->findAll();
 
 
         return $data;
     }
-    public function getEntityItems(ByIdRequest $request)
+    public function getEntityItems(Request $request)
     {
-        return $this->entityRepository->getEntityItems($request->getId());
+        return $this->entityManager->getRepository(Entity::class)->getEntityItems($request->get('entity'));
     }
-    public function updateMediaById(UpdateMediaRequest $request)
+    public function updateMediaById(Request $request)
     {
-        $entityMediaEntity=$this->entityMediaRepository->find($request->getId());
+        $entityMediaEntity=$this->entityManager->getRepository(EntityMediaEntity::class)->
+        find($request->get('id'));
         if (!$entityMediaEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("entityMedia");
         }
         else {
-            $entityMediaEntity->setPath($request->getPath())
-                ->setName($request->getName());
+            $entityMedia = json_decode($request->getContent(),true);
+            $entityMediaEntity->setPath($entityMedia['image']);
             $this->entityManager->flush();
             return $entityMediaEntity;
         }
     }
-    public function deleteById(DeleteRequest $request)
+    public function deleteById(Request $request)
     {
-        $entityMediaEntity=$this->entityMediaRepository->find($request->getId());
+        $entityMediaEntity=$this->entityManager->getRepository(EntityMediaEntity::class)->
+        find($request->get('id'));
         if (!$entityMediaEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("entityMedia");
@@ -126,8 +95,8 @@ class EntityMediaManger
         else {
             $this->entityManager->remove($entityMediaEntity);
             $this->entityManager->flush();
+            return $entityMediaEntity;
         }
-        return $entityMediaEntity;
     }
 
 }

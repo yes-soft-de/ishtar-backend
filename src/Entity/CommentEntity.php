@@ -35,13 +35,13 @@ class CommentEntity
     private $body;
 
     /**
-     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"},nullable=true)
-     *
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $date;
 
     /**
-     * @ORM\Column(type="datetime",nullable=true,options={"default"="CURRENT_TIMESTAMP"})
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
     private $lastEdit;
 
@@ -61,9 +61,9 @@ class CommentEntity
         return $this->id;
     }
 
-    public function getClient():int
+    public function getClient(): ?ClientEntity
     {
-        return $this->client->getId();
+        return $this->client;
     }
 
     public function setClient(?ClientEntity $client): self
@@ -98,9 +98,9 @@ class CommentEntity
         return $this;
     }
 
-    public function getDate(): string
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->date->format('Y-m-d H:i:s');
+        return $this->date;
     }
 
     public function setDate(): self
@@ -110,7 +110,7 @@ class CommentEntity
         return $this;
     }
 
-    public function getLastEdit(): ?string
+    public function getLastEdit(): ?\DateTimeInterface
     {
         return $this->lastEdit;
     }
@@ -122,9 +122,9 @@ class CommentEntity
         return $this;
     }
 
-    public function getEntity(): ?int
+    public function getEntity(): ?Entity
     {
-        return $this->entity->getId();
+        return $this->entity;
     }
 
     public function setEntity(Entity $entity): self

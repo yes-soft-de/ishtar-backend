@@ -38,9 +38,9 @@ class EntityArtTypeEntity
         return $this->id;
     }
 
-    public function getArtType(): ?int
+    public function getArtType(): ?ArtTypeEntity
     {
-        return $this->artType->getId();
+        return $this->artType;
     }
 
     public function setArtType(?ArtTypeEntity $artType): self
@@ -50,9 +50,9 @@ class EntityArtTypeEntity
         return $this;
     }
 
-    public function getEntity(): ?int
+    public function getEntity(): ?Entity
     {
-        return $this->entity->getId();
+        return $this->entity;
     }
 
     public function setEntity(?Entity $entity): self

@@ -4,77 +4,51 @@
 namespace App\Manager;
 
 
-use App\AutoMapping;
 use App\Entity\EntityInteractionEntity;
-use App\Repository\ClientEntityRepository;
-use App\Repository\EntityInteractionEntityRepository;
-use App\Repository\EntityRepository;
-use App\Repository\InteractionEntityRepository;
-use App\Request\CreateInteractionRequest;
-use App\Request\DeleteRequest;
-use App\Request\GetClientRequest;
-use App\Request\GetInterctionEntityRequest;
-use App\Request\UpdateInteractionRequest;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
+use App\Mapper\EntityInteractionMapper;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class EntityInteractionManager
 {
     private $entityManager;
-    private $entityInteractionRepository;
-    private $entityRepository;
-    private $clientRepository;
-    private $interactionRepository;
-    public $autoMapping;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface,InteractionEntityRepository $interactionRepository,
-                                EntityInteractionEntityRepository $entityInteractionEntityRepository,
-                                EntityRepository $entityRepository,ClientEntityRepository $clientRepository,
-                                AutoMapping $autoMapping)
+    public function __construct(EntityManagerInterface $entityManagerInterface)
     {
         $this->entityManager = $entityManagerInterface;
-        $this->entityInteractionRepository=$entityInteractionEntityRepository;
-        $this->entityRepository=$entityRepository;
-        $this->clientRepository=$clientRepository;
-        $this->interactionRepository=$interactionRepository;
-        $this->autoMapping=$autoMapping;
     }
 
-    public function create(CreateInteractionRequest$request)
+    public function create(Request $request)
     {
-        $request->setClient($this->clientRepository->find($request->getClient()));
-        $request->setEntity($this->entityRepository->find($request->getEntity()));
-        $request->setInteraction($this->interactionRepository->find($request->getInteraction()));
-        $entityInteractionData = $this->autoMapping->map(CreateInteractionRequest::class,
-            EntityInteractionEntity::class,$request);
+        $entityInteraction = json_decode($request->getContent(),true);
+        $entityInteractionEntity=new EntityInteractionEntity();
+        $entityInteractionMapper = new EntityInteractionMapper();
+        $entityInteractionData=$entityInteractionMapper->entityInteractionData($entityInteraction,$entityInteractionEntity,$this->entityManager);
         $this->entityManager->persist($entityInteractionData);
         $this->entityManager->flush();
         return $entityInteractionData;
     }
-    public function update(UpdateInteractionRequest $request)
+    public function update(Request $request)
     {
-        $entityInteractionEntity=$this->entityInteractionRepository->find($request->getId());
+        $entityInteraction = json_decode($request->getContent(),true);
+        $entityInteractionEntity=$this->entityManager->getRepository(EntityInteractionEntity::class)->find($request->get('id'));
         if (!$entityInteractionEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("entityInteraction");
         }
         else {
-            $request->setClient($this->clientRepository->find($request->getClient()));
-            $request->setEntity($this->entityRepository->find($request->getEntity()));
-            $request->setInteraction($this->interactionRepository->find($request->getInteraction()));
-            $entityInteractionEntity = $this->autoMapping->mapToObject(UpdateInteractionRequest::class,
-                EntityInteractionEntity::class,$request,$entityInteractionEntity);
+            $entityInteractionMapper = new entityInteractionMapper();
+            $entityInteractionMapper->entityInteractionData($entityInteraction,$entityInteractionEntity,$this->entityManager);
             $this->entityManager->flush();
             return $entityInteractionEntity;
         }
     }
-    public function delete(DeleteRequest $request)
+    public function delete(Request $request)
     {
-        $interaction=$this->entityInteractionRepository->find($request->getId());
+        $interaction=$this->entityManager->getRepository(EntityInteractionEntity::class)->find($request->get('id'));
         if (!$interaction) {
             $exception=new EntityException();
-            $exception->entityNotFound("interaction");
+            $exception->entityNotFound("artType");
         }
         else {
             $this->entityManager->remove($interaction);
@@ -82,28 +56,23 @@ class EntityInteractionManager
         }
         return $interaction;
     }
-    public function getEntityInteraction(GetInterctionEntityRequest $request)
+    public function getEntityInteraction(Request $request)
     {
-        return $entityInteractionResult =$this->entityInteractionRepository
-            ->getInteraction($request->getEntity(),$request->getRow(),$request->getInteraction());
+        return $entityInteractionResult =$this->entityManager->getRepository(EntityInteractionEntity::class)
+            ->getInteraction($request->get('entity'),$request->get('row'),$request->get('interaction'));
     }
 
-    public function getClientInteraction(GetClientRequest $request)
+    public function getClientInteraction(Request $request)
     {
-        return $entityInteractionResult =$this->entityInteractionRepository
-            ->getClientInteraction($request->getClient());
+        return $entityInteractionResult =$this->entityManager->getRepository(EntityInteractionEntity::class)
+            ->getClientInteraction($request->get('client'));
     }
     public function getAll()
     {
-        return $entityInteractionResult =$this->entityInteractionRepository->getAll();
+        return $entityInteractionResult =$this->entityManager->getRepository(EntityInteractionEntity::class)->getAll();
     }
     public function getMostViews()
     {
-        return $MostViews =$this->entityInteractionRepository->getMostViews();
-    }
-    public function getInteractions(GetInterctionEntityRequest $request)
-    {
-        return $interaction=$this->entityInteractionRepository->getInteraction($request->getEntity(),
-            $request->getRow(),$request->getInteraction());
+        return $MostViews =$this->entityManager->getRepository(EntityInteractionEntity::class)->getMostViews();
     }
 }

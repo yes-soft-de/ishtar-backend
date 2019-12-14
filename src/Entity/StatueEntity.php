@@ -182,9 +182,9 @@ class StatueEntity
         return $this;
     }
 
-    public function getArtist(): ?int
+    public function getArtist(): ?ArtistEntity
     {
-        return $this->artist->getId();
+        return $this->artist;
     }
 
     public function setArtist(?ArtistEntity $artist): self
@@ -302,7 +302,7 @@ class StatueEntity
         return $this;
     }
 
-    public function getCreateDate()
+    public function getCreateDate(): ?\DateTimeInterface
     {
         return $this->createDate;
     }

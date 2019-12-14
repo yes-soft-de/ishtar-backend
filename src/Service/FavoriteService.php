@@ -3,38 +3,37 @@
 
 namespace App\Service;
 
-use App\AutoMapping;
-use App\Entity\FavoriteEntity;
+
+use App\Manager\EntityArtTypeManager;
 use App\Manager\FavoriteManager;
 use App\Manager\PriceManager;
-use App\Response\CreateFavoriteResponse;
-use App\Response\DeleteResponse;
-use App\Response\GetFavoriteResponse;
+use App\Manager\StoryManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class FavoriteService implements FavoriteServiceInterface
 {
     private $FavoriteManager;
     private $priceManager;
-    private $autoMapping;
 
-    public function __construct(FavoriteManager $manager,PriceManager $priceManager,AutoMapping $autoMapping)
+    public function __construct(FavoriteManager $manager,PriceManager $priceManager)
     {
         $this->FavoriteManager=$manager;
         $this->priceManager=$priceManager;
-        $this->autoMapping=$autoMapping;
     }
 
     public function create($request)
     {
-        $result =$this->FavoriteManager->create($request);
-        $response=$this->autoMapping->map(FavoriteEntity::class,CreateFavoriteResponse::class,$result);
-        return $response;
+        $favoriteResult =$this->FavoriteManager->create($request);
+        $priceData=$this->priceManager->create($request,6);
+        return $favoriteResult;
     }
+    //ToDO mapping favorite entity and response
     public function update($request)
     {
-        $result =$this->FavoriteManager->update($request);
-        $response=$this->autoMapping->map(FavoriteEntity::class,CreateFavoriteResponse::class,$result);
-        return $response;
+        $favoriteResult =$this->FavoriteManager->update($request);
+        $priceData=$this->priceManager->update($request,6);
+        return $favoriteResult;
     }
     public function getAll()
     {
@@ -44,17 +43,13 @@ class FavoriteService implements FavoriteServiceInterface
     public function delete($request)
     {
         $result=$this->FavoriteManager->delete($request);
-        $response=new DeleteResponse($result->getId());
-        return $response;
-
+        $this->priceManager->delete($request,6);
+        return $result;
     }
 
-    public function getClientFavorite($request)
+    public function getById($request)
     {
-         $result = $this->FavoriteManager->getClientFavorite($request);
-         foreach ($result as $row)
-             $response[]=$this->autoMapping->map('array',GetFavoriteResponse::class,$row);
-         return $response;
+        return $result = $this->FavoriteManager->getFavoriteById($request);
     }
 
 }

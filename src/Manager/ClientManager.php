@@ -3,17 +3,8 @@
 
 namespace App\Manager;
 
-use App\AutoMapping;
 use App\Entity\ClientEntity;
 use App\Mapper\ClientMapper;
-use App\Repository\ClapEntityRepository;
-use App\Repository\ClientEntityRepository;
-use App\Request\ByIdRequest;
-use App\Request\DeleteRequest;
-use App\Request\RegisterRequest;
-use App\Request\UpdateClientRequest;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -22,55 +13,50 @@ class ClientManager
 {
     private $entityManager;
     private $encoder;
-    private $clientRepository;
-    private $autoMapping;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface,UserPasswordEncoderInterface $encoder
-    ,ClientEntityRepository $clientRepository,AutoMapping $autoMapping)
+    public function __construct(EntityManagerInterface $entityManagerInterface,UserPasswordEncoderInterface $encoder)
     {
         $this->entityManager = $entityManagerInterface;
         $this->encoder=$encoder;
-        $this->clientRepository=$clientRepository;
-        $this->autoMapping=$autoMapping;
+
     }
 
-    public function register(RegisterRequest $request)
+    public function register(Request $request)
     {
-        $client = new ClientEntity($request->getEmail());
-        $client=$this->autoMapping->mapToObject(RegisterRequest::class,ClientEntity::class,$request,$client);
-        $client->setPassword($this->encoder->encodePassword($client,$request->getPassword()));
-        $client->setCreateDate();
+        $data = json_decode($request->getContent(),true);
+        $client = new ClientEntity($data['email']);
+        $Mapper = new ClientMapper();
+        $Mapper->ClientData($data,$client,$this->encoder);
         $this->entityManager->persist($client);
         $this->entityManager->flush();
         return $client;
     }
-    public function update(UpdateClientRequest $request)
+    public function update(Request $request)
     {
-        $clientEntity=$this->clientRepository->find($request->getId());
+        $client = json_decode($request->getContent(),true);
+        $clientEntity=$this->entityManager->getRepository(ClientEntity::class)->find($request->get('id'));
         if (!$clientEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("client");
         }
         else {
-            $client=$this->autoMapping->mapToObject(RegisterRequest::class,ClientEntity::class,$request,
-                $clientEntity);
-            $client->setCreateDate();
-            $client->setPassword($this->encoder->encodePassword($client,$request->getPassword()));
+            $clientMapper = new ClientMapper();
+            $clientMapper->ClientData($client,$clientEntity,$this->encoder);
             $this->entityManager->flush();
             return $clientEntity;
         }
     }
     public function getAll()
     {
-      return $this->clientRepository->findAll();
+      return $this->entityManager->getRepository(ClientEntity::class)->findAll();
     }
-    public function getById(ByIdRequest $request)
+    public function getById(Request $request)
     {
-        return $this->clientRepository->findClient($request->getId());
+        return $this->entityManager->getRepository(ClientEntity::class)->findClient($request->get('id'));
     }
-    public function delete(DeleteRequest $request)
+    public function delete(Request $request)
     {
-        $clientEntity=$this->clientRepository->find($request->getId());
+        $clientEntity=$this->entityManager->getRepository(ClientEntity::class)->findClient($request->get('id'));
         if (!$clientEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("client");

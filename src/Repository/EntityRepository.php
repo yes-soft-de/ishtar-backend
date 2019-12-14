@@ -21,7 +21,7 @@ class EntityRepository extends ServiceEntityRepository
     public function getEntityItems($entity)
     {
         if ($entity=='Client')
-            $name='e.username as name';
+            $name='e.username';
         else $name='e.name';
         $entity = 'App:' . $entity .'Entity';
         return $this->createQueryBuilder('p')

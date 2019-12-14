@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\ArtistEntity;
 use App\Entity\EntityArtTypeEntity;
-use App\Response\GetArtistByIdResponse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr\Join;
@@ -52,13 +51,13 @@ au:auctionEntity
             ->groupBy('a.id')
             ->getQuery()
             ->getResult();
-       $result=array_merge($result,$this->getEntityManager()->getRepository
+        $result=array_merge($result,$this->getEntityManager()->getRepository
         (EntityArtTypeEntity::class)->getArtistArtTypes($value));
         return $result;
     }
 
     /**
-     *
+     * @return ArtistEntity[] Returns an array of ArtistEntity objects
      * @throws NonUniqueResultException
      */
     public function findOneById($value): ?ArtistEntity
@@ -71,7 +70,6 @@ au:auctionEntity
     }
     public function getAll()
     {
-
         return $this->createQueryBuilder('a')
             ->select('a.id','a.name','m.path','at.name as artType','count(p.id) as painting')
             ->from('App:EntityMediaEntity','m')
@@ -95,8 +93,7 @@ au:auctionEntity
     public function getAllDetails()
     {
         return $this->createQueryBuilder('a')
-            ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story',
-                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','a.details','a.email','m.path','at.name as artType')
+            ->select('a','m.path','at.name as artType')
             ->from('App:EntityMediaEntity','m')
             ->from('App:ArtTypeEntity','at')
             ->from('App:EntityArtTypeEntity','eat')
@@ -111,15 +108,22 @@ au:auctionEntity
     }
     public function getArtistPaintings($request)
     {
-        $result= $this->createQueryBuilder('a')
-            ->select('p.id','p.name','p.image')
-            ->from('App:PaintingEntity','p')
-            ->andWhere('p.artist=:request')
+        $q1=$this->createQueryBuilder('a')
+            ->select('a.id as ArtistId','a.name as Artist')
+            ->andWhere('a.id = :request')
+            ->groupBy('a.id')
             ->setParameter('request',$request)
-            ->groupBy('p.id')
             ->getQuery()
             ->getResult();
-       return $result;
+        $q2= $this->createQueryBuilder('a')
+            ->select('p.id','p.name','p.image')
+            ->from('App:PaintingEntity','p')
+            ->andWhere('a.artist=:request')
+            ->setParameter('request',$request)
+            ->groupBy('a.id')
+            ->getQuery()
+            ->getResult();
+       return $result=array_merge($q1,$q2);
     }
     public function search($keyword):?array
     {
@@ -139,7 +143,7 @@ au:auctionEntity
                 ->select('p.id','p.name','p.image','a.name as artist')
                 ->from('App:PaintingEntity','p')
                 ->andWhere('p.artist=a.id')
-            ->andWhere('p.active=1')
+                 ->andWhere('p.active=1')
                 ->andWhere('p.name LIKE :keyword')
                 ->orWhere('p.keyWords LIKE :keyword')
                 ->setParameter('keyword', '%'.$keyword.'%')

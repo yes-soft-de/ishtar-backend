@@ -17,7 +17,7 @@ class ArtistMapper
         //this (try catch) just to make IDE happy, must use date calender in frontend
         //if date empty the date of today will be there
         try {
-            $birthDate = $data["birthDate"];
+            $birthDate = new DateTime((string)$data["birthDate"]);
         } catch (Exception $e) {
         }
         $story       = $data["story"];

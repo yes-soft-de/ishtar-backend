@@ -13,12 +13,25 @@ class EntityArtTypeService
 
     public function __construct(PaintingManager $manager)
     {
-        $this->Manager = $manager;
+        $this->Manager=$manager;
     }
 
-    public function create($painting, $entity)
+    public function create($painting,$entity)
     {
-        $result = $this->Manager->create($painting, $entity);
+        $result =$this->Manager->create($painting,$entity);
         return $result;
     }
+//    //ToDO mapping painting entity and response
+//    public function update($painting):UpdatePaintingResponse
+//    {
+//        $updatePaintingResponse =new UpdatePaintingResponse();
+//        $result =$this->Paintingmanager->update($painting);
+//        $result=$this->autoMapper->Map($result,$updatePaintingResponse);
+//        return $result;
+//    }
+//    public function getAll()
+//    {
+//        $result=$this->Paintingmanager->getAll();
+//        return $result;
+//    }
 }

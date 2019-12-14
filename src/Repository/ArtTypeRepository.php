@@ -25,7 +25,7 @@ class ArtTypeRepository extends ServiceEntityRepository
     {
         try {
             return $this->createQueryBuilder('at')
-                ->select('at.id', 'at.name', 'm.path')
+                ->select('at.id', 'at.name','at.history', 'm.path')
                 ->from('App:EntityMediaEntity', 'm')
                 ->andWhere('at.id=m.row')
                 ->andWhere('m.entity=3')
