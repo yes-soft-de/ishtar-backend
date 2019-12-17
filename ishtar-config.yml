@@ -23,3 +23,8 @@ default:
       paths:
         - "%paths.base%/features/create"
       contexts: [CreateContext]
+
+    protected_links:
+      paths:
+        - "%paths.base%/features/protected"
+      contexts: [ProtectedContext]

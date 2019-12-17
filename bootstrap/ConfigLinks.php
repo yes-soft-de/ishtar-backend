@@ -2,29 +2,39 @@
 
 class ConfigLinks
 {
-    static $BASE_API = "http://localhost:9000/";
+    public static $BASE_API = 'http://localhost:8002/';
 //    static $BASE_API = "https://webhook.site/d04c9a69-0f71-48cb-8277-12a4ecc153fc";
 
-    static $DIAGNOSE_REQUEST_API = "https://webhook.site/d04c9a69-0f71-48cb-8277-12a4ecc153fc";
+    public static $DIAGNOSE_REQUEST_API = 'https://webhook.site/c61fe605-960e-4fb3-aeca-def1e949d437';
 
-    static $ARTIST_QUERY_ENDPOINT = "getAllArtist";
-    static $ARTIST_QUERY_BY_ID_ENDPOINT = "getArtistById";
+    public static $ARTIST_QUERY_ENDPOINT = 'getAllArtist';
+    public static $ARTIST_QUERY_BY_ID_ENDPOINT = 'getArtistById';
 
-    static $INTERACTION_CREATE_ENDPOINT = "createInteraction";
-    static $INTERACTION_GET_ENDPOINT = "getInteraction";
+    public static $INTERACTION_CREATE_ENDPOINT = 'createInteraction';
+    public static $INTERACTION_GET_ENDPOINT = 'interactionsentity';
 
-    static $PAINTING_QUERY_ENDPOINT = "getAllPainting";
-    static $PAINTING_QUERY_BY_ID_ENDPOINT = "getPaintingById";
+    public static $PAINTING_INTERACTION_GET_ENDPOINT = 'interactions';
+
+    public static $CREATE_PAINTING_INTERACTION = 'interactions';
+
+    public static $PAINTING_QUERY_ENDPOINT = 'getAllPainting';
+    public static $PAINTING_QUERY_BY_ID_ENDPOINT = 'getPaintingById';
+
+    public static $PAINTING_CLAP_ENDPOINT = 'getPaintingClaps';
 
 
-    static $ENTITY_TYPE_PAINTING = 1;
-    static $ENTITY_TYPE_ARTIST = 2;
-    static $ENTITY_TYPE_ART_TYPE = 3;
+    public static $ENTITY_TYPE_PAINTING = 1;
+    public static $ENTITY_TYPE_ARTIST = 2;
+    public static $ENTITY_TYPE_ART_TYPE = 3;
 
-    static $INTERACTION_TYPE_LOVE = 1;
-    static $INTERACTION_TYPE_FOLLOW = 2;
-    static $INTERACTION_TYPE_VIEW = 3;
+    public static $INTERACTION_TYPE_LOVE = 1;
+    public static $INTERACTION_TYPE_FOLLOW = 2;
+    public static $INTERACTION_TYPE_VIEW = 3;
 
-    static $CREATE_ARTIST_ENDPOINT = "createArtist";
-    static $CREATE_PAINTING_ENDPOINT = "createPainting";
+    public static $CREATE_ARTIST_ENDPOINT = 'createArtist';
+    public static $CREATE_PAINTING_ENDPOINT = 'createPainting';
+
+    public static $REGISTER_ENDPOINT = 'register';
+    public static $LOGIN_ENDPOINT = 'login_check';
+    public static $USER_ENDPOINT = 'user';
 }
