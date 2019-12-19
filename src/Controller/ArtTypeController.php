@@ -9,6 +9,7 @@ use App\Request\DeleteRequest;
 use App\Request\UpdateArtTypeRequest;
 use App\Service\ArtTypeService;
 use App\Validator\ArtTypeValidateInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,7 @@ class ArtTypeController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/arttypes", name="createArtType",methods={"POST"})
      * @param Request $request
      * @param ArtTypeValidateInterface $artTypeValidate
@@ -51,6 +53,7 @@ class ArtTypeController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/arttype/{id}", name="updateArttype",methods={"PUT"})
      * @param Request $request
      * @param ArtTypeValidateInterface $artTypeValidate
@@ -74,6 +77,7 @@ class ArtTypeController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/arttype/{id}", name="deleteArtType",methods={"DELETE"})
      * @param Request $request
      * @param ArtTypeValidateInterface $artTypeValidate

@@ -45,7 +45,7 @@ class ReportService implements ReportServiceInterface
         $this->artistManager = $artistManager;
         $this->artistService = $artistService;
         $this->autoMapping = $autoMapping;
-        $this->reportManager=$reportManager;
+        $this->reportManager = $reportManager;
     }
 
     public function saveReports($request)
@@ -54,6 +54,7 @@ class ReportService implements ReportServiceInterface
         $result=$this->autoMapping->map(ReportEntity::class,ArtistReport::class,$result);
         return $result;
     }
+
     public function sendReports()
     {
         $artists=$this->artistService->getAllDetails();
@@ -66,13 +67,14 @@ class ReportService implements ReportServiceInterface
                 {
                     $artistReports[$counter]=$this->autoMapping->map(GetArtistsDetailsResponse::class,
                         ArtistReport::class,$artist);
-                   $artistReports[$counter]->setFollowers($this->GetInteractions(2,$artist->getId(),2));
-                  $artistReports[$counter]->setEmailData($this->CreateReport($artist));
-                  $artistReports[$counter]->setEmail($artist->getEmail());
-                   $counter++;
+                    $artistReports[$counter]->setFollowers($this->GetInteractions(2,$artist->getId(),2));
+                    $artistReports[$counter]->setEmailData($this->CreateReport($artist));
+                    $artistReports[$counter]->setEmail($artist->getEmail());
+                    $counter++;
                 }
             }
         }
+
         return $artistReports;
     }
 
@@ -83,11 +85,13 @@ class ReportService implements ReportServiceInterface
             return true;
         else return false;
     }
+
     public function isReportSent($artist)
     {
         $result=$this->artistManager->IsReportSent($artist);
         return $result;
     }
+
     public function createReport($artist)
     {
         $paintings=$this->artistManager->getArtistPaintings($artist->getId());
@@ -108,6 +112,7 @@ class ReportService implements ReportServiceInterface
         }
         return $paintingResponse;
     }
+
     public function getInteractions($entity,$row,$interaction)
     {
         $request=new GetInterctionEntityRequest($entity,$row,$interaction);
@@ -115,12 +120,14 @@ class ReportService implements ReportServiceInterface
         $response=$this->autoMapping->map('array',GetInteractionsEntityResponse::class,$response[0]);
         return $response->getInteractions();
     }
+
     public function getComments($entity,$row)
     {
         $request=new GetEntityRequest($entity,$row);
         $response=$this->commentManager->getEntityComment($request);
         return count($response);
     }
+
     public function getClaps($entity,$row)
     {
         $request=new getEntityRequest($entity,$row);

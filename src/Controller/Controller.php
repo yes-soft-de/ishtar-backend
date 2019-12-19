@@ -5,9 +5,9 @@ namespace App\Controller;
 
 use App\Mapper\AutoMapper;
 use App\Request\CreateArtistRequest;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Service\HealthCheckService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,9 +16,7 @@ class Controller extends AbstractController
 {
     /**
      * @Route("/m", name="m")
-     *
      */
-    //     * @Security("is_granted('ROLE2_USwwER') or is_granted('ROLE_USER')")
     public function index()
     {
         return $this->json([
@@ -40,6 +38,25 @@ class Controller extends AbstractController
         // $resultResponse->headers->set('Content-Length', 0);
         $resultResponse->headers->set('Content-Type', 'text/plain; charset=utf-8');
         return $resultResponse;
+    }
+
+    /**
+     * @Route("/health-check", name="healthCheck", methods = "POST")
+     */
+    public function healthCheck(HealthCheckService $healthCheck)
+    {
+        try
+        {
+            $healthCheck->healthCheck();
+
+            return new JsonResponse(["status" => "ok"], Response::HTTP_OK);
+        }
+        catch (\Exception $exception)
+        {
+            return new JsonResponse(["status" => "not ok", "exception" =>$exception->getMessage()],
+                Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
     }
 }
 

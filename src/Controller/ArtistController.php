@@ -8,12 +8,10 @@ use App\Request\DeleteRequest;
 use App\Request\GetArtistRequest;
 use App\Request\SaveReportRequest;
 use App\Request\UpdateArtistRequest;
-use App\Response\ArtistReport;
 use App\Service\ArtistService;
 use App\Service\ReportService;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
 use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +35,7 @@ class ArtistController extends BaseController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/artists",name="createArtist",methods={"POST"})
      * @param Request $request
      * @param ArtistValidateInterface $artistValidate
@@ -59,6 +58,7 @@ class ArtistController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/artist/{id}", name="updateArtist",methods={"PUT"})
      * @param Request $request
      * @param ArtistValidateInterface $artistValidate
@@ -82,6 +82,7 @@ class ArtistController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/artist/{id}", name="deleteArtist",methods={"DELETE"})
      * @param Request $request
      * @return JsonResponse
@@ -145,7 +146,6 @@ class ArtistController extends BaseController
     public function sendReport()
     {
         $result = $this->reportService->sendReports();
-
         return $this->response($result, self::FETCH);
     }
     /**
