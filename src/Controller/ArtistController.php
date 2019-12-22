@@ -139,13 +139,13 @@ class ArtistController extends BaseController
         return $this->response($result, self::FETCH);
     }
     /**
-     * @Route("/sendreport", name="sendReport",methods={"POST"})
+     * @Route("/sendreportstoartist", name="sendReportsToArtist",methods={"POST"})
      *
      * @return
      */
     public function sendReport()
     {
-        $result = $this->reportService->sendReports();
+        $result = $this->reportService->sendReportsToArtists();
         return $this->response($result, self::FETCH);
     }
     /**

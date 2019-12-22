@@ -2,41 +2,67 @@
 
 namespace App\Command;
 
+use App\Response\ClientReport;
+use App\Service\ReportServiceInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 
 class WeeklyClientCommand extends Command
 {
-    protected static $defaultName = 'WeeklyClientCommand';
+    protected static $defaultName = 'weekly-client-report';
+    private $mailer;
+    private $reportService;
+    /**
+     * @var ParameterBagInterface
+     */
+    private $params;
 
-    protected function configure()
+    public function __construct(ReportServiceInterface $reportService, MailerInterface $mailer, ParameterBagInterface $params)
     {
-        $this
-            ->setDescription('Add a short description for your command')
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+        $this->mailer = $mailer;
+        $this->reportService = $reportService;
+
+        parent::__construct();
+        $this->params = $params;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+        $paintingLink = $this->params->get('CURRENT_SITE_MAILER');
+        $data = $this->reportService->sendReportsToClients();
+        $mostViews = $this->reportService->getMostViews();
+        /**
+         * @var $singleData ClientReport
+         */
+        foreach ($data as $singleData)
+        {
+            $sendTo = $singleData->getEmail();
+            $clientName = $singleData->getUsername();
+            $details = $singleData->getEmailData();
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+            if ($singleData->getEmailData() != null)
+            {
+                $email = (new TemplatedEmail())
+                    ->from(Address::fromString('Ishtar <info@ishtar-art.de>'))
+                    ->to("Kenanhussein1@gmail.com")
+                    ->subject('Ishtar weekly report')
+                    ->htmlTemplate('Emails/ClientEmail.html.twig')
+                    ->context(
+                        ['clientName' => $clientName,
+                            'details' => $details,
+                            'imageLink' => $paintingLink,
+                            'mostViews' => $mostViews
+                        ]);
+
+                $this->mailer->send($email);
+            }
         }
 
-        if ($input->getOption('option1')) {
-            // ...
-        }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
-
-        return 0;
+        return 1;
     }
 }

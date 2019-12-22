@@ -10,11 +10,15 @@ use App\Manager\ArtistManager;
 use App\Manager\ClapManager;
 use App\Manager\CommentManager;
 use App\Manager\EntityInteractionManager;
+use App\Manager\PaintingManager;
 use App\Manager\ReportManager;
 use App\Request\GetEntityRequest;
 use App\Request\GetInterctionEntityRequest;
 use App\Response\ArtistReport;
+use App\Response\ClientReport;
+use App\Response\GetArtistByIdResponse;
 use App\Response\GetArtistsDetailsResponse;
+use App\Response\GetClientsResponse;
 use App\Response\GetInteractionsEntityResponse;
 use App\Response\PaintingReportResponse;
 
@@ -27,7 +31,8 @@ class ReportService implements ReportServiceInterface
     private $artistService;
     private $autoMapping;
     private $reportManager;
-
+    private $clientService;
+    private $paintingManager;
     /**
      * ReportService constructor.
      * @param $entityInteractionManager
@@ -37,7 +42,7 @@ class ReportService implements ReportServiceInterface
      */
     public function __construct(EntityInteractionManager $entityInteractionManager, ClapManager $clapManager,
                                 CommentManager $commentManager, ArtistManager $artistManager, ArtistService $artistService
-        , AutoMapping $autoMapping,ReportManager $reportManager)
+        , AutoMapping $autoMapping,ReportManager $reportManager,ClientService $clientService,PaintingManager $paintingManager)
     {
         $this->entityInteractionManager = $entityInteractionManager;
         $this->clapManager = $clapManager;
@@ -46,6 +51,8 @@ class ReportService implements ReportServiceInterface
         $this->artistService = $artistService;
         $this->autoMapping = $autoMapping;
         $this->reportManager = $reportManager;
+        $this->clientService=$clientService;
+        $this->paintingManager=$paintingManager;
     }
 
     public function saveReports($request)
@@ -54,8 +61,23 @@ class ReportService implements ReportServiceInterface
         $result=$this->autoMapping->map(ReportEntity::class,ArtistReport::class,$result);
         return $result;
     }
+    public function sendReportsToClients()
+    {
+        $clients = $this->clientService->getAll();
+        $counter = 1;
+        foreach ($clients as $client) {
+              //  if (!$this->isReportSent($client)) {
+                    $clientReports[$counter] = $this->autoMapping->map(GetClientsResponse::class,
+                        ClientReport::class, $client);
+                    $clientReports[$counter]->setEmailData($this->CreateClientReport($client));
+                    $clientReports[$counter]->setEmail($client->getEmail());
+                    $counter++;
+               // }
+            }
+        return $clientReports;
+        }
 
-    public function sendReports()
+    public function sendReportsToArtists()
     {
         $artists=$this->artistService->getAllDetails();
         $counter=1;
@@ -68,7 +90,7 @@ class ReportService implements ReportServiceInterface
                     $artistReports[$counter]=$this->autoMapping->map(GetArtistsDetailsResponse::class,
                         ArtistReport::class,$artist);
                     $artistReports[$counter]->setFollowers($this->GetInteractions(2,$artist->getId(),2));
-                    $artistReports[$counter]->setEmailData($this->CreateReport($artist));
+                    $artistReports[$counter]->setEmailData($this->CreateArtistReport($artist));
                     $artistReports[$counter]->setEmail($artist->getEmail());
                     $counter++;
                 }
@@ -92,7 +114,7 @@ class ReportService implements ReportServiceInterface
         return $result;
     }
 
-    public function createReport($artist)
+    public function createArtistReport($artist)
     {
         $paintings=$this->artistManager->getArtistPaintings($artist->getId());
         foreach ($paintings as $painting)
@@ -111,6 +133,27 @@ class ReportService implements ReportServiceInterface
             $painting->setClaps($claps);
         }
         return $paintingResponse;
+    }
+
+    public function CreateClientReport($client)
+    {
+        $followedArtists=$this->entityInteractionManager->getClientFollows($client->getId());
+
+        if($followedArtists)
+        {
+            foreach ($followedArtists as $followedArtist)
+            {
+                $painting = $this->artistManager->getArtistPaintings($followedArtist['artist']);
+                //dd($painting);
+            }
+
+            return $painting;
+        }
+    }
+
+    public function getMostViews()
+    {
+        return $mostViews=$this->entityInteractionManager->getMostViews();
     }
 
     public function getInteractions($entity,$row,$interaction)

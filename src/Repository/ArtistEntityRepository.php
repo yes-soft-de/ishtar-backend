@@ -111,10 +111,13 @@ au:auctionEntity
     public function getArtistPaintings($request)
     {
         $result= $this->createQueryBuilder('a')
-            ->select('p.id','p.name','p.image')
+            ->select('a.name as artist','p.id','p.name','p.image')
             ->from('App:PaintingEntity','p')
             ->andWhere('p.artist=:request')
+
             ->setParameter('request',$request)
+            ->andWhere('a.id=:request1')
+            ->setParameter('request1',$request)
             ->groupBy('p.id')
             ->getQuery()
             ->getResult();

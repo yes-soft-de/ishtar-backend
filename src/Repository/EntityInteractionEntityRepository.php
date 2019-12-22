@@ -141,4 +141,18 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->getResult();
         return array_merge($q1,$q2);
     }
+    public function getClientFollows($client):array
+    {
+        return $this->createQueryBuilder('ei')
+            ->select('a.id as artist')
+            ->from('App:ArtistEntity','a')
+            ->andWhere('ei.entity=2')
+            ->andWhere('ei.row=a.id')
+            ->andWhere('ei.client=:client')
+            ->andWhere('ei.interaction=2')
+            ->setParameter('client',$client)
+            ->groupBy('ei.id')
+            ->getQuery()
+            ->getResult();
+    }
 }
