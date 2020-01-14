@@ -9,6 +9,7 @@ class GetPaintingByIdResponse
     public $id;
     public $name;
     public $artist;
+    public $artistID;
     public $state;
     public $height;
     public $width;
@@ -26,6 +27,22 @@ class GetPaintingByIdResponse
     public $images=[];
 
     /**
+     * @return mixed
+     */
+    public function getArtistID()
+    {
+        return $this->artistID;
+    }
+
+    /**
+     * @param mixed $artistID
+     */
+    public function setArtistID($artistID): void
+    {
+        $this->artistID = $artistID;
+    }
+
+    /**
      * @return array
      */
     public function getImages(): array
@@ -40,7 +57,6 @@ class GetPaintingByIdResponse
     {
         $this->images = $images;
     }
-
 
     /**
      * @return mixed
