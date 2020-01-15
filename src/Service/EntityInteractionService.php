@@ -62,25 +62,37 @@ class EntityInteractionService implements EntityInteractionServiceInterface
 
     public function getClientInteraction($request)
     {
+        $response = [];
          $entityInteractionResult =$this->entityInteractionManager->getClientInteraction($request);
         foreach ($entityInteractionResult as $row)
+        {
             $response[]=$this->autoMapping->map('array',GetInteractionsClientResponse::class,$row);
+        }
+
         return $response;
     }
 
     public function getAll($request)
     {
+        $response = [];
         $entityInteractionResault=$this->entityInteractionManager->getAll();
         foreach ($entityInteractionResault as $row)
+        {
             $response[]=$this->autoMapping->map('array',GetInteractionsResponse::class,$row);
+        }
+
         return $response;
 
     }
     public function getMostViews()
     {
-         $entityInteractionResault=$this->entityInteractionManager->getMostViews();
-         foreach ($entityInteractionResault as $row)
-             $response[]=$this->autoMapping->map('array',GetMostViewsResponse::class,$row);
-         return $response;
+        $response = [];
+        $entityInteractionResault=$this->entityInteractionManager->getMostViews();
+        foreach ($entityInteractionResault as $row)
+        {
+            $response[]=$this->autoMapping->map('array',GetMostViewsResponse::class,$row);
+        }
+
+        return $response;
     }
 }
