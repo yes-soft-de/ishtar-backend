@@ -95,7 +95,7 @@ au:auctionEntity
     {
         return $this->createQueryBuilder('a')
             ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story',
-                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','a.details','a.email','m.path','at.name as artType')
+                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','a.details','a.email','m.path as image' ,'at.name as artType')
             ->from('App:EntityMediaEntity','m')
             ->from('App:ArtTypeEntity','at')
             ->from('App:EntityArtTypeEntity','eat')
