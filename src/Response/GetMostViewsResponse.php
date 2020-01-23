@@ -10,6 +10,23 @@ class GetMostViewsResponse
     public $name;
     public $artist;
     public $entity;
+    public $artistID;
+
+    /**
+     * @return mixed
+     */
+    public function getArtistID()
+    {
+        return $this->artistID;
+    }
+
+    /**
+     * @param mixed $artistID
+     */
+    public function setArtistID($artistID): void
+    {
+        $this->artistID = $artistID;
+    }
 
     /**
      * @return mixed
