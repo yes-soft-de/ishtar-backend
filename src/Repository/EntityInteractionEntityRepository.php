@@ -106,7 +106,8 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
         $date = new \DateTime();
         $date->modify('-7 days');
         $q1= $this->createQueryBuilder('ei')
-            ->select('p.id','p.name','a.name as artist', 'a.id as artistID', 'count(p) as viewed','e.name as entity')
+            ->select('p.id','p.name','p.image','p.width',
+                'p.height','p.colorsType','a.name as artist', 'a.id as artistID', 'count(p) as viewed','e.name as entity')
             ->from('App:PaintingEntity','p')
             ->from('App:ArtistEntity','a')
             ->from('App:Entity','e')
@@ -123,7 +124,7 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
         $q2=$this->createQueryBuilder('ei')
-            ->select('s.id','s.name','a.name as artist','a.id as artistID', 'count(s) as viewed','e.name as entity')
+            ->select('s.id','s.name','a.name as artist', 'a.id as artistID', 'count(s) as viewed','e.name as entity')
             ->from('App:StatueEntity','s')
             ->from('App:ArtistEntity','a')
             ->from('App:Entity','e')
