@@ -13,6 +13,8 @@ class UploadFileController extends AbstractController
 {
     const ARTISTIMAGEPATH = '/ImageUploads/ArtistImages/';
     const PANTINGIMAGEPATH = '/ImageUploads/PaintingImages/';
+    const CLIENTIMAGEPATH = '/ImageUploads/ClientImages/';
+    const STATUEIMAGEPATH = '/ImageUploads/StatueImages/';
 
     /**
      * @Route("/uploadArtistImage", name="uploadArtistImage")
@@ -51,6 +53,54 @@ class UploadFileController extends AbstractController
         $imageFile = $request->files->get('image');
 
         $path = $uploadFile->upload($imageFile, self::PANTINGIMAGEPATH);
+
+        $response = new jsonResponse(["status_code" => "200",
+                "url" => $path
+            ]
+            , Response::HTTP_OK);
+
+        $response->headers->set('Access-Control-Allow-Headers', 'X-Header-One,X-Header-Two');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
+    }
+
+    /**
+     * @Route("/uploadClientImage", name="uploadClientImage")
+     * @param Request $request
+     * @param UploadFileService $uploadFile
+     * @return JsonResponse
+     */
+    public function uploadClientImage(Request $request, UploadFileService $uploadFile)
+    {
+        $this->validation($request);
+
+        $imageFile = $request->files->get('image');
+
+        $path = $uploadFile->upload($imageFile, self::CLIENTIMAGEPATH);
+
+        $response = new jsonResponse(["status_code" => "200",
+                "url" => $path
+            ]
+            , Response::HTTP_OK);
+
+        $response->headers->set('Access-Control-Allow-Headers', 'X-Header-One,X-Header-Two');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
+    }
+
+    /**
+     * @Route("/uploadStatueImage", name="uploadStatueImage")
+     * @param Request $request
+     * @param UploadFileService $uploadFile
+     * @return JsonResponse
+     */
+    public function uploadStatueImage(Request $request, UploadFileService $uploadFile)
+    {
+        $this->validation($request);
+
+        $imageFile = $request->files->get('image');
+
+        $path = $uploadFile->upload($imageFile, self::STATUEIMAGEPATH);
 
         $response = new jsonResponse(["status_code" => "200",
                 "url" => $path

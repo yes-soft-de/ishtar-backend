@@ -58,9 +58,13 @@ class StatueService implements StatueServiceInterface
     }
     public function getAll()
     {
+        $response = [];
         $result=$this->StatueManager->getAll();
         foreach ($result as $row)
+        {
             $response[]=$this->autoMapping->map('array',GetStatuesResponse::class,$row);
+        }
+
         return $response;
     }
     public function delete($request)

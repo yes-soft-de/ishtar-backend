@@ -47,25 +47,37 @@ class CommentService implements CommentServiceInterface
 
     public function getEntityComment($request)
     {
+        $response= [];
         $commentResult =$this->commentManager->getEntityComment($request);
         foreach ($commentResult as $row)
+        {
             $response[]=$this->autoMapping->map('array',GetCommentsEntityResponse::class,$row);
+        }
+
         return $response;
     }
 
     public function getClientComment($request)
     {
+        $response= [];
         $commentResult =$this->commentManager->getClientComment($request);
         foreach ($commentResult as $row)
+        {
             $response[]=$this->autoMapping->map('array',GetCommentsClientResponse::class,$row);
+        }
+
         return $response;
     }
 
     public function getAll()
     {
+        $response= [];
         $commentResult =$this->commentManager->getAll();
         foreach ($commentResult as $row)
+        {
             $response[]=$this->autoMapping->map('array',GetCommentsResponse::class,$row);
+        }
+
         return $response;
     }
     public function setSpacial($request)

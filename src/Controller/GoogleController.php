@@ -52,7 +52,6 @@ class GoogleController extends AbstractController
 
     }
 
-
     /**
      * @Route("/googletoken", name="googletoken")
      */

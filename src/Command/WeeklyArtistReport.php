@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Response\ArtistReport;
-use App\Service\GenerateRandomDataInterface;
 use App\Service\ReportServiceInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Console\Command\Command;
@@ -15,13 +14,11 @@ use Symfony\Component\Mime\Address;
 class WeeklyArtistReport extends Command
 {
     protected static $defaultName = 'weekly-artist-report';
-    private $generateRandomData;
     private $mailer;
     private $reportService;
 
-    public function __construct(ReportServiceInterface $reportService, MailerInterface $mailer, GenerateRandomDataInterface $generateRandomData)
+    public function __construct(ReportServiceInterface $reportService, MailerInterface $mailer)
     {
-        $this->generateRandomData = $generateRandomData;
         $this->mailer = $mailer;
         $this->reportService = $reportService;
 
@@ -37,7 +34,7 @@ class WeeklyArtistReport extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $data = $this->reportService->sendReports();
+        $data = $this->reportService->sendReportsToArtists();
         /**
          * @var $singleData ArtistReport
          */

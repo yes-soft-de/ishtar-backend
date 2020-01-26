@@ -7,7 +7,9 @@ use App\Request\ByIdRequest;
 use App\Request\DeleteRequest;
 use App\Request\RegisterRequest;
 use App\Request\UpdateClientRequest;
+use App\Response\ClientReport;
 use App\Service\ClientService;
+use App\Service\ReportService;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use AutoMapperPlus\Exception\UnregisteredMappingException;
@@ -22,11 +24,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ClientController extends BaseController{
 private $clientService;
 private $autoMapping;
+private $reportService;
 
-    public function __construct(ClientService $clientService,AutoMapping $autoMapping)
+    public function __construct(ClientService $clientService,AutoMapping $autoMapping,ReportService $reportService)
     {
         $this->clientService=$clientService;
         $this->autoMapping=$autoMapping;
+        $this->reportService=$reportService;
     }
 
     /**
@@ -106,5 +110,18 @@ private $autoMapping;
     public function api()
     {
         return $this->response(sprintf('Logged in as %s', $this->getUser()->GetEmail()),self::STATE_OK);
+    }
+    /**
+     * @Route("/sendreportstoclients", name="sendReportsToClients",methods={"POST"})
+     *
+     * @return
+     */
+    public function sendReport()
+    {
+        $result = $this->reportService->sendReportsToClients();
+
+        return $this->response($result, self::FETCH);
+
+       /* dd($this->reportService->createClientReport(16));*/
     }
 }
