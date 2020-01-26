@@ -3,39 +3,37 @@
 
 namespace App\Service;
 
-use App\Controller\Auction;
+use App\AutoMapping;
+use App\Entity\AuctionEntity;
 use App\Manager\AuctionManager;
-use App\Manager\CreateUpdateDeleteManagerInterface;
-use App\Manager\EntityArtTypeManager;
-use App\Manager\EntityMediaManger;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Response\CreateAuctionResponse;
+use App\Response\DeleteResponse;
+use App\Response\UpdateAuctionResponse;
+
 
 class AuctionService implements AuctionServiceInterface
 {
 
     private $auctionManager;
-    private $artTypeManager;
-    private $mediaManager;
+   private $autMapping;
 
-    public function __construct(AuctionManager $auctionManager)
+    public function __construct(AuctionManager $auctionManager,AutoMapping $autoMapping)
     {
         $this->auctionManager=$auctionManager;
+        $this->autMapping=$autoMapping;
     }
 
     public function create($request)
     {
         $auctionResult =$this->auctionManager->create($request);
-        return $auctionResult;
+        $response=$this->autMapping->map(AuctionEntity::class,CreateAuctionResponse::class,$auctionResult);
+        return $response;
     }
-    //ToDO mapping painting entity and response
     public function update($request)
     {
         $auctionResult =$this->auctionManager->update($request);
-        return $auctionResult;
+        $response=$this->autMapping->map(AuctionEntity::class,UpdateAuctionResponse::class,$auctionResult);
+        return $response;
     }
     public function getAll()
     {
@@ -45,7 +43,9 @@ class AuctionService implements AuctionServiceInterface
     public function delete($request)
     {
         $result=$this->auctionManager->delete($request);
-        return $result;
+        $response=new DeleteResponse($result->getId());
+        return $response;
+
     }
 
     public function getById($request)

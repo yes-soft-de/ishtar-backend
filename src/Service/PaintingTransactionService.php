@@ -3,11 +3,13 @@
 
 namespace App\Service;
 
+use App\AutoMapping;
 use App\Controller\PaintingTransaction;
 use App\Manager\PaintingTransactionManager;
 use App\Manager\CreateUpdateDeleteManagerInterface;
 use App\Manager\EntityArtTypeManager;
 use App\Manager\EntityMediaManger;
+use App\Response\DeleteResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,10 +22,12 @@ class PaintingTransactionService implements PaintingTransactionServiceInterface
     private $paintingTransactionManager;
     private $artTypeManager;
     private $mediaManager;
+    private $autoMapping;
 
-    public function __construct(PaintingTransactionManager $paintingTransactionManager)
+    public function __construct(PaintingTransactionManager $paintingTransactionManager,AutoMapping $autoMapping)
     {
         $this->paintingTransactionManager=$paintingTransactionManager;
+        $this->autoMapping=$autoMapping;
     }
 
     public function create($request)
@@ -45,7 +49,8 @@ class PaintingTransactionService implements PaintingTransactionServiceInterface
     public function delete($request)
     {
         $result=$this->paintingTransactionManager->delete($request);
-        return $result;
+        $response=new DeleteResponse($result->getId());
+        return $response;
     }
 
     public function getById($request)

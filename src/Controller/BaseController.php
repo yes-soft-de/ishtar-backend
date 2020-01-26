@@ -2,13 +2,10 @@
 
 namespace App\Controller;
 
-use App\Service\CreateUpdateDeleteServiceInterface;
-use App\Service\FetchDataServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\AutoMapping;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -18,12 +15,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 class BaseController extends AbstractController
 {
     private $serializer;
-
     public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
     }
-
     const STATE_OK = 200;
     const CREATE = ["created ","201"];
     const UPDATE=["updated","204"];
@@ -38,6 +33,7 @@ class BaseController extends AbstractController
      *
      * @return JsonResponse
      */
+
     public function respond($data, $headers = [])
     {
         return new JsonResponse($data, self::STATE_OK, $headers);

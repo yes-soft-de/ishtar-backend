@@ -6,6 +6,7 @@ use App\Entity\EntityArtTypeEntity;
 use App\Entity\EntityMediaEntity;
 use App\Entity\PaintingEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -17,7 +18,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class PaintingEntityRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, PaintingEntity::class);
     }
@@ -26,7 +27,7 @@ class PaintingEntityRepository extends ServiceEntityRepository
     {
         $result = $this->createQueryBuilder('q')
             ->select('p.id','p.name','p.keyWords','p.state','p.height','p.width','p.colorsType','p.image'
-                ,'p.active','a.id as artistId','a.name as artist','st.story','pr.price')
+                ,'p.active','a.name as artist','st.story','pr.price')
             ->from('App:PaintingEntity','p')
             ->from('App:ArtistEntity','a')
             ->from('App:StoryEntity','st')
@@ -73,17 +74,18 @@ class PaintingEntityRepository extends ServiceEntityRepository
     public function getBy($parm,$value):?array
     {
         if($parm=='artType')
-            $parm='ea.artType='.$value;
+            $parm='eat.artType='.$value;
         else
         $parm = "p." . $parm . "='" . $value . "'";
 
         return $this->createQueryBuilder('p')
             ->select('p.id', 'p.name', 'p.keyWords', 'p.state', 'p.height', 'p.width', 'p.colorsType', 'p.image',
-                'p.active', 'a.name as artist', 'at.name as artType','pr.price')
+                'p.active', 'a.name as artist', 'at.name as artType','pr.price','st.story ')
             ->from('App:ArtistEntity', 'a')
             ->from('App:ArtTypeEntity', 'at')
             ->from('App:EntityArtTypeEntity', 'eat')
             ->from('App:PriceEntity', 'pr')
+            ->from('App:StoryEntity','st')
             ->andWhere('p.artist=a.id')
             ->andWhere('p.id=eat.row')
             ->andWhere('at.id=eat.artType')
@@ -92,26 +94,10 @@ class PaintingEntityRepository extends ServiceEntityRepository
             ->andWhere('p.id=pr.row')
             ->andWhere('pr.entity=1')
             ->andWhere('p.active=1')
+            ->andWhere('st.entity=1')
+            ->andWhere('st.row=p.id')
             ->orderBy('p.id', 'ASC')
             ->groupBy('p.name')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function getPaintingShort():?array
-    {
-        return $this->createQueryBuilder('p')
-            ->select('p.id','p.name','p.image','p.height','p.width','a.id as artistId','a.name as artist','at.name as artType')
-            ->from('App:ArtistEntity','a')
-            ->from('App:EntityArtTypeEntity','eat')
-            ->from('App:ArtTypeEntity','at')
-            ->andWhere('p.artist=a.id')
-            ->andWhere('p.id=eat.row')
-            ->andWhere('eat.entity=1')
-            ->andWhere('eat.artType=at.id')
-            ->andWhere('p.active=1')
-            ->groupBy('p.id')
-           // ->setMaxResults(100)
             ->getQuery()
             ->getResult();
     }

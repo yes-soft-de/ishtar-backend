@@ -1,0 +1,27 @@
+<img src="{{ email.image('@images/ishtar-logo.png') }}" alt="Logo">
+
+<h1>Hello {{ artistName }}!</h1>
+
+<h2>This is your weekly report from Ishtar:</h2>
+
+<p>
+    <i> You have {{ artistFollowers }} followers.</i>
+</p>
+
+<h3>Here is your paintings report:</h3>
+
+    {% for detail in details %}
+        <h4><strong>Painting name: {{ detail.name }}</h4>
+        <li>views: {{ detail.viewed }}</li>
+        <li>followers: {{ detail.follower }}</li>
+        <li>likes: {{ detail.likes }}</li>
+        <li>comments: {{ detail.comments }}</li>
+        <li>claps: {{ detail.claps }}</li>
+        <br>
+    {% endfor %}
+
+<p>Please tell us if there are any updates you would like to do with your painting like sale or information update.</p>
+<p>Thank you</p>
+<p>
+    <a href="http://www.ishtar-art.de">ISHTAR</a> team.
+</p>

@@ -73,19 +73,16 @@ EntityMediaEntityRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-    public function findImages($id,$entity):EntityMediaEntity
+    public function findImages($id,$entity)
     {
-        try {
-            return $this->createQueryBuilder('m')
-                ->andWhere('m.row = :val')
-                ->andWhere('m.entity=:entity')
-                ->andWhere('m.media=1')
-                ->setParameter('val', $id)
-                ->setParameter('entity', $entity)
-                ->getQuery()
-                ->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
-        }
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.row = :val')
+            ->andWhere('m.entity=:entity')
+            ->andWhere('m.media=1')
+            ->setParameter('val', $id)
+            ->setParameter('entity', $entity)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
 }

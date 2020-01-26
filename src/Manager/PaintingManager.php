@@ -3,6 +3,7 @@
 
 namespace App\Manager;
 
+use App\AutoMapping;
 use App\Entity\ArtistEntity;
 use App\Entity\ClapEntity;
 use App\Entity\EntityInteractionEntity;
@@ -13,6 +14,14 @@ use App\Entity\Entity;
 use App\Entity\EntityArtTypeEntity;
 use App\Mapper\AutoMapper;
 use App\Mapper\PaintingMapper;
+use App\Repository\ArtistEntityRepository;
+use App\Repository\PaintingEntityRepository;
+use App\Request\ByIdRequest;
+use App\Request\CreatePaintingRequest;
+use App\Request\DeleteRequest;
+use App\Request\getPaintingByRequest;
+use App\Request\UpdatePaintingRequest;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -23,43 +32,49 @@ use Symfony\Component\HttpFoundation\Request;
 class PaintingManager
 {
     private $entityManager;
+    private $paintingRepository;
+    private $artistRepository;
+    private $autoMapping;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface)
+    public function __construct(EntityManagerInterface $entityManagerInterface,
+                                PaintingEntityRepository $paintingRepository,
+                                ArtistEntityRepository $artistEntityRepository,AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
+        $this->paintingRepository=$paintingRepository;
+        $this->artistRepository=$artistEntityRepository;
+        $this->autoMapping=$autoMapping;
     }
 
-    public function create(Request $request)
+    public function create(CreatePaintingRequest $request)
     {
-        $painting = json_decode($request->getContent(),true);
-        $paintingEntity=new PaintingEntity();
-        $paintingMapper = new PaintingMapper();
-        $paintingData=$paintingMapper->PaintingData($painting, $paintingEntity,$this->entityManager);
-        $paintingEntity->setCreateDate();
-        $this->entityManager->persist($paintingData);
+        $request->setArtist($this->artistRepository->getArtist($request->getArtist()));
+        $painting=$this->autoMapping->map(CreatePaintingRequest::class,PaintingEntity::class,$request);
+        $painting->setCreateDate();
+        $this->entityManager->persist($painting);
         $this->entityManager->flush();
-        return $paintingData;
+        return $painting;
     }
-    public function update(Request $request)
+    public function update(UpdatePaintingRequest $request)
     {
-        $painting = json_decode($request->getContent(),true);
-        $paintingEntity=$this->entityManager->getRepository(PaintingEntity::class)->getPainting($request->get('id'));
+        $paintingEntity=$this->paintingRepository->getPainting($request->getId());
         if (!$paintingEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("painting");
         }
         else {
-            $paintingMapper = new PaintingMapper();
-            $paintingMapper->PaintingData($painting, $paintingEntity,$this->entityManager);
+            $request->setArtist($this->artistRepository->getArtist($request->getArtist()));
+            $paintingEntity=$this->autoMapping->mapToObject(UpdatePaintingRequest::class,
+                PaintingEntity::class,$request,$paintingEntity);
             $paintingEntity->setUpdateDate();
             $this->entityManager->flush();
             return $paintingEntity;
         }
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $id=$request->get('id');
-        $paintingEntity=$this->entityManager->getRepository(PaintingEntity::class)->getPainting($id);
+        $id=$request->getId();
+        $paintingEntity=$this->paintingRepository->getPainting($id);
         if (!$paintingEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("painting");
@@ -72,31 +87,19 @@ class PaintingManager
     }
     public function getAll()
     {
-        $data=$this->entityManager->getRepository(PaintingEntity::class)->getAll();
+        $data=$this->paintingRepository->getAll();
 
         return $data;
-    }
-    public function getArtistPaintings(Request $request)
-    {
-        $data = json_decode($request->getContent(),true);
-         $result = $this->entityManager->getRepository(ArtistEntity::class)->getArtistPaintings($data['id']);
-    return $result;
     }
 
     public function getPaintingById($id)
     {
-        return $result = $this->entityManager->getRepository(PaintingEntity::class)->findOneById($id);
+        return $result = $this->paintingRepository->findOneById($id);
     }
 
-    public function getPaintingImages(Request $request)
+    public function getBy(GetPaintingByRequest $request)
     {
-        $data = json_decode($request->getContent(),true);
-        return $result = $this->entityManager->getRepository(EntityMediaEntity::class)->getPaintingImages($data['id']);
-    }
-    public function getBy(Request $request)
-    {
-         $result = $this->entityManager->getRepository(PaintingEntity::class)->
-        getBy($request->get('parm'),$request->get('value'));
+         $result = $this->paintingRepository->getBy($request->getParm(),$request->getValue());
          return $result;
     }
 

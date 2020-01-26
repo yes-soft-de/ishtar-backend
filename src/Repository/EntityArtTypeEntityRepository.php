@@ -71,8 +71,6 @@ class EntityArtTypeEntityRepository extends ServiceEntityRepository
             ->andWhere('eat.row=:id')
             ->setParameter('id',$id)
             ->groupBy('at.id')
-
-            // ->setMaxResults(100)
             ->getQuery()
             ->getResult();
     }

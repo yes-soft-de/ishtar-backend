@@ -13,8 +13,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class GoogleController extends AbstractController
 {
@@ -45,12 +45,15 @@ class GoogleController extends AbstractController
             return new JsonResponse(array('status' => false, 'message' => "User not found!"));
         } else
         {
+           // return new JsonResponse([$this->getTokenUser()]);
             // return $this->redirectToRoute('home_page');
-            return $this->redirect('http://ishtar-art.de/');
+            return $this->redirect('http://dev-ishtar.96.lt/');
         }
+
     }
-    
-     /**
+
+
+    /**
      * @Route("/googletoken", name="googletoken")
      */
     public function getTokenUser(JWTTokenManagerInterface $JWTManager)
@@ -68,7 +71,8 @@ class GoogleController extends AbstractController
             return new JsonResponse(['token' => $JWTManager->create($this->getUser())]);
         }
     }
-    
+
+
     /**
      * log out
      * @Route("/logout", name="logout")

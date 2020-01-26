@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Entity;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -80,22 +77,22 @@ class ArtistEntity
     private $updateDate;
 
     /**
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     public $Facebook;
 
     /**
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     public $Twitter;
 
     /**
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $Linkedin;
 
     /**
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $Instagram;
 
@@ -103,6 +100,11 @@ class ArtistEntity
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isActive;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email;
 
 
 
@@ -156,7 +158,7 @@ class ArtistEntity
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
+    public function getBirthDate()
     {
         return $this->birthDate;
     }
@@ -205,7 +207,7 @@ class ArtistEntity
         return $this;
     }
 
-    public function getCreateDate(): ?\DateTimeInterface
+    public function getCreateDate()
     {
         return $this->createDate;
     }
@@ -229,7 +231,7 @@ class ArtistEntity
         return $this;
     }
 
-    public function getUpdateDate(): ?\DateTimeInterface
+    public function getUpdateDate()
     {
         return $this->updateDate;
     }
@@ -303,6 +305,18 @@ class ArtistEntity
     public function setIsActive($isActive): void
     {
         $this->isActive = $isActive;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 
 

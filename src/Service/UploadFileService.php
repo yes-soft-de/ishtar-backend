@@ -37,7 +37,7 @@ class UploadFileService
             return $response;
         }
 
-        return self::PATH.$this->GetFilesAndFolder($mainFolder)."/".$fileName;
+        return self::PATHDEVTest.$this->GetFilesAndFolder($mainFolder)."/".$fileName;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ClientEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -15,7 +16,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ClientEntityRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ClientEntity::class);
     }
@@ -42,7 +43,7 @@ class ClientEntityRepository extends ServiceEntityRepository
     {
         try {
             return $this->createQueryBuilder('c')
-                ->select('c','m.path as image')
+                ->select('c.id','c.username','c.fullName','c.phone','c.email','c.birthDate','m.path as image')
                 ->from('App:EntityMediaEntity','m')
                 ->andWhere('m.entity=5')
                 ->andWhere('m.row= :val')
@@ -57,7 +58,7 @@ class ClientEntityRepository extends ServiceEntityRepository
     public function findAll()
     {
         return $this->createQueryBuilder('c')
-            ->select('c','m.path as image')
+            ->select('c.id','c.username','c.fullName','c.phone','c.email','c.birthDate','m.path as image')
             ->from('App:EntityMediaEntity','m')
             ->andWhere('m.entity=5')
             ->andWhere('m.row=c.id')

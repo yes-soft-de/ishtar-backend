@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ClapEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -15,7 +16,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ClapEntityRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ClapEntity::class);
     }
@@ -48,7 +49,7 @@ class ClapEntityRepository extends ServiceEntityRepository
     public function getClientClap($client):?array
     {
         return $this->createQueryBuilder('cp')
-            ->select('e.name as entity','cp.row as id','cp.value','cp.id as ClapID','cp.date')
+            ->select('e.name as entity','cp.row as id','cp.value','cp.id as ClapId','cp.date')
             ->from('App:Entity','e')
             ->andWhere('cp.entity=e.id')
             ->andWhere('cp.client=:client')

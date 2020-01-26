@@ -4,50 +4,53 @@
 namespace App\Manager;
 
 
+use App\AutoMapping;
 use App\Entity\ArtTypeEntity;
-use App\Mapper\ArtTypeMapper;
-use Doctrine\Common\Annotations\Annotation\Required;
+use App\Repository\ArtTypeRepository;
+use App\Request\ByIdRequest;
+use App\Request\CreateArtTypeRequest;
+use App\Request\DeleteRequest;
+use App\Request\UpdateArtTypeRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Symfony\Component\HttpFoundation\Request;
 
 class ArtTypeManager
 {
     private $entityManager;
+    private $artTypeRepository;
+    private $autoMapping;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface)
+    public function __construct(EntityManagerInterface $entityManagerInterface,ArtTypeRepository $artTypeRepository
+    ,AutoMapping $autoMapping)
     {
         $this->entityManager = $entityManagerInterface;
+        $this->artTypeRepository=$artTypeRepository;
+        $this->autoMapping=$autoMapping;
     }
 
-    public function create(Request $request)
+    public function create($request)
     {
-        $artType = json_decode($request->getContent(),true);
-        $artTypeEntity=new ArtTypeEntity();
-        $artTypeMapper = new ArtTypeMapper();
-        $artTypeData=$artTypeMapper->artTypeData($artType, $artTypeEntity);
+        $artTypeData=$this->autoMapping->map(CreateArtTypeRequest::class,ArtTypeEntity::class,$request);
         $this->entityManager->persist($artTypeData);
         $this->entityManager->flush();
         return $artTypeData;
     }
-    public function update(Request $request)
+    public function update(UpdateArtTypeRequest $request)
     {
-        $artType = json_decode($request->getContent(),true);
-        $artTypeEntity=$this->entityManager->getRepository(ArtTypeEntity::class)->getArtType($request->get('id'));
+        $artTypeEntity=$this->artTypeRepository->getArtType($request->getId());
         if (!$artTypeEntity) {
             $exception=new EntityException();
             $exception->entityNotFound("artType");
         }
         else {
-            $artTypeMapper = new ArtTypeMapper();
-            $artTypeMapper->artTypeData($artType, $artTypeEntity);
+        $artTypeEntity=$this->autoMapping->mapToObject(UpdateArtTypeRequest::class,ArtTypeEntity::class
+            ,$request,$artTypeEntity);
             $this->entityManager->flush();
             return $artTypeEntity;
         }
     }
-    public function delete(Request $request)
+    public function delete(DeleteRequest $request)
     {
-        $artType=$this->entityManager->getRepository(ArtTypeEntity::class)->getArtType($request->get('id'));
+        $artType=$this->artTypeRepository->getArtType($request->getId());
         if (!$artType) {
             $exception=new EntityException();
             $exception->entityNotFound("artType");
@@ -59,14 +62,14 @@ class ArtTypeManager
     }
     public function getAll()
     {
-        $data=$this->entityManager->getRepository(ArtTypeEntity::class)->findAll();
+        $data=$this->artTypeRepository->findAll();
 
         return $data;
     }
 
-    public function getArtTypeById(Request $request)
+    public function getArtTypeById(ByIdRequest $request)
     {
-        return $result = $this->entityManager->getRepository(ArtTypeEntity::class)->getById($request->get('id'));
+        return $result = $this->artTypeRepository->getById($request->getId());
     }
 
 }
