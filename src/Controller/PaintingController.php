@@ -13,6 +13,7 @@ use App\Validator\PaintingValidateInterface;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +34,7 @@ class PaintingController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/paintings", name="createPainting",methods={"POST"})
      * @param Request $request
      * @param PaintingValidateInterface $paintingValidate
@@ -55,6 +57,7 @@ class PaintingController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/painting/{id}", name="updatePainting",methods={"PUT"})
      * @param Request $request
      * @param PaintingValidateInterface $paintingValidate
@@ -79,6 +82,7 @@ class PaintingController extends BaseController
     }
 
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/painting/{id}", name="deletePainting",methods={"DELETE"})
      * @param Request $request
      * @return JsonResponse

@@ -95,7 +95,7 @@ au:auctionEntity
     {
         return $this->createQueryBuilder('a')
             ->select('a.id','a.name','a.nationality','a.residence','a.birthDate','a.story',
-                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','a.details','a.email','m.path','at.name as artType')
+                'a.Facebook','a.Twitter','a.Instagram','a.Linkedin','a.details','a.email','m.path as image' ,'at.name as artType')
             ->from('App:EntityMediaEntity','m')
             ->from('App:ArtTypeEntity','at')
             ->from('App:EntityArtTypeEntity','eat')
@@ -111,10 +111,13 @@ au:auctionEntity
     public function getArtistPaintings($request)
     {
         $result= $this->createQueryBuilder('a')
-            ->select('p.id','p.name','p.image')
+            ->select('a.name as artist','p.id','p.name','p.image')
             ->from('App:PaintingEntity','p')
             ->andWhere('p.artist=:request')
+
             ->setParameter('request',$request)
+            ->andWhere('a.id=:request1')
+            ->setParameter('request1',$request)
             ->groupBy('p.id')
             ->getQuery()
             ->getResult();

@@ -14,6 +14,7 @@ use App\Validator\CommentValidateInterface;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use AutoMapperPlus\Exception\UnregisteredMappingException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -136,6 +137,7 @@ class CommentController extends BaseController
         return $this->response($result,self::FETCH);
     }
     /**
+     *  @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/spacialcomment/{id}",name="setSpacialComment",methods={"PUT"})
      * @return
      */

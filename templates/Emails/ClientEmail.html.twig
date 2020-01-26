@@ -1,0 +1,37 @@
+{% set mainLink = imageLink  %}
+
+<img src="{{ email.image('@images/ishtar-logo.png') }}" alt="Logo">
+
+<h1>Hello {{ clientName }}!</h1>
+
+<h2>This is your weekly report from Ishtar:</h2>
+
+<p>
+    <i> The date of this report is: {{ "now"|date("m/d/Y") }} </i>
+</p>
+
+<h3>New paintings published by artists you follow:</h3>
+
+<i>Click on painting name to visit Ishtar site and watch painting details.</i>
+
+{% for detail in details %}
+    <h4><strong>Artist name: {{ detail.artist }}</h4>
+    <li>Painting name:  <a href="{{ mainLink ~ detail.id }}">{{ detail.name }}</a></li>
+    <img src="{{ detail.image|trim('http://') }}" alt="image">
+    <br>
+{% endfor %}
+
+<h3>Most view paintings on Ishtar:</h3>
+
+<i>Click on painting name to visit Ishtar site and watch painting details.</i>
+
+{% for mostView in mostViews %}
+    <li>Artist name: {{ mostView.artist }}</li>
+    <li>Painting name:  <a href="{{ mainLink ~ mostView.id }}">{{ mostView.name }}</a></li>
+    <br>
+{% endfor %}
+
+<p>Thank you</p>
+<p>
+    <a href="http://www.ishtar-art.de">ISHTAR</a> team.
+</p>

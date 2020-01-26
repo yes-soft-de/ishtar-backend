@@ -27,7 +27,7 @@ class PaintingEntityRepository extends ServiceEntityRepository
     {
         $result = $this->createQueryBuilder('q')
             ->select('p.id','p.name','p.keyWords','p.state','p.height','p.width','p.colorsType','p.image'
-                ,'p.active','a.name as artist','st.story','pr.price')
+                ,'p.active','a.name as artist', 'a.id as artistID', 'st.story','pr.price')
             ->from('App:PaintingEntity','p')
             ->from('App:ArtistEntity','a')
             ->from('App:StoryEntity','st')
