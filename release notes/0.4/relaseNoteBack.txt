@@ -1,0 +1,5 @@
+- update response in mostViews end point.
+- update response in artists respone.
+- update response in paintings response.
+- general coding fixes.
+- Fix bugs.
