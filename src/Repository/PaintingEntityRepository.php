@@ -142,4 +142,28 @@ class PaintingEntityRepository extends ServiceEntityRepository
         } catch (NonUniqueResultException $e) {
         }
     }
+
+    public function getAllFeaturedPaintings():?array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id','p.name','p.state','p.height','p.width','p.colorsType','p.image','p.active',
+                'p.keyWords', 'a.name as artist','at.name as artType','st.story','pr.price')
+            ->from('App:ArtistEntity','a')
+            ->from('App:ArtTypeEntity','at')
+            ->from('App:EntityArtTypeEntity','eat')
+            ->from('App:StoryEntity','st')
+            ->from('App:PriceEntity','pr')
+            ->andWhere('p.artist=a.id')
+            ->andWhere('p.id=eat.row')
+            ->andWhere('at.id=eat.artType')
+            ->andWhere('eat.entity=1')
+            ->andWhere('p.id=st.row')
+            ->andWhere('st.entity=1')
+            ->andWhere('p.id=pr.row')
+            ->andWhere('pr.entity=1')
+            ->andWhere('p.isFeatured = 1')
+            ->groupBy('p.id')
+            ->getQuery()
+            ->getResult();
+    }
 }

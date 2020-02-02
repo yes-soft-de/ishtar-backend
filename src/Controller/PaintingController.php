@@ -128,4 +128,14 @@ class PaintingController extends BaseController
         return $this->response($result,self::FETCH);
     }
 
+    /**
+     * @Route("/featuredpaintings", name="getfeaturedpaintings",methods={"GET"})
+     * @return JsonResponse
+     */
+    public function getAllFeaturedPaintings()
+    {
+        $result = $this->paintingService->getAllFeaturedPaintings();
+        return $this->response($result,self::FETCH);
+    }
+
 }

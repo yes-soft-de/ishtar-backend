@@ -103,4 +103,11 @@ class PaintingManager
          return $result;
     }
 
+    public function getAllFeaturedPaintings()
+    {
+        $data=$this->paintingRepository->getAllFeaturedPaintings();
+
+        return $data;
+    }
+
 }

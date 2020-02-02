@@ -114,4 +114,17 @@ class PaintingService implements PaintingServiceInterface
             $response[]=$this->autoMapping->map('array',GetPaintingByResponse::class,$row);
         return $response;
     }
+
+    public function getAllFeaturedPaintings()
+    {
+        $response = [];
+        $result=$this->PaintingManager->getAllFeaturedPaintings();
+
+        foreach ($result as $row)
+        {
+            $response[]=$this->autoMapping->map('array',GetPaintingsResponse::class,$row);
+        }
+
+        return $response;
+    }
 }
