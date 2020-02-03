@@ -20,6 +20,7 @@ use App\Request\ByIdRequest;
 use App\Request\CreatePaintingRequest;
 use App\Request\DeleteRequest;
 use App\Request\getPaintingByRequest;
+use App\Request\UpdateFeaturedPaintingsRequest;
 use App\Request\UpdatePaintingRequest;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,6 +56,7 @@ class PaintingManager
         $this->entityManager->flush();
         return $painting;
     }
+
     public function update(UpdatePaintingRequest $request)
     {
         $paintingEntity=$this->paintingRepository->getPainting($request->getId());
@@ -71,6 +73,7 @@ class PaintingManager
             return $paintingEntity;
         }
     }
+
     public function delete(DeleteRequest $request)
     {
         $id=$request->getId();
@@ -108,6 +111,27 @@ class PaintingManager
         $data=$this->paintingRepository->getAllFeaturedPaintings();
 
         return $data;
+    }
+
+    public function updateFeaturedPaintings(UpdateFeaturedPaintingsRequest $request)
+    {
+        $paintingEntity = $this->paintingRepository->getPainting($request->getId());
+
+        if (!$paintingEntity)
+        {
+            $exception=new EntityException();
+            $exception->entityNotFound("painting");
+        }
+        else
+        {
+            $paintingEntity=$this->autoMapping->mapToObject(UpdateFeaturedPaintingsRequest::class,
+                PaintingEntity::class,$request,$paintingEntity);
+
+            $paintingEntity->setUpdateDate();
+            $this->entityManager->flush();
+
+            return $paintingEntity;
+        }
     }
 
 }

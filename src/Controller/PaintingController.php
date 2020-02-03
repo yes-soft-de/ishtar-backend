@@ -7,6 +7,7 @@ use App\Request\CreateArtistRequest;
 use App\Request\CreatePaintingRequest;
 use App\Request\DeleteRequest;
 use App\Request\getPaintingByRequest;
+use App\Request\UpdateFeaturedPaintingsRequest;
 use App\Request\UpdatePaintingRequest;
 use App\Service\PaintingService;
 use App\Validator\PaintingValidateInterface;
@@ -136,6 +137,30 @@ class PaintingController extends BaseController
     {
         $result = $this->paintingService->getAllFeaturedPaintings();
         return $this->response($result,self::FETCH);
+    }
+
+    /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
+     * @Route("/featuredpainting/{id}/{isFeatured}", name="featuredpainting",methods={"PUT"})
+     * @param Request $request
+     * @param PaintingValidateInterface $paintingValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
+     */
+    public function updateFeaturedPaintings(Request $request)
+    {
+        $id = $request->get('id');
+        $isFeatured =$request->get('isFeatured');
+
+        $data = json_decode($request->getContent(), true);
+
+        $request = $this->autoMapping->map(\stdClass::class,UpdateFeaturedPaintingsRequest::class,(object)$data);
+        $request->setId($id);
+        $request->setIsFeatured($isFeatured);
+
+        $result = $this->paintingService->updateFeaturedPaintings($request);
+
+        return $this->response($result, self::UPDATE);
     }
 
 }

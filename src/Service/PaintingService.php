@@ -72,6 +72,7 @@ class PaintingService implements PaintingServiceInterface
         $response ->setStory($storyData->getStory());
         return $response;
     }
+
     public function getAll()
     {
         $result=$this->PaintingManager->getAll();
@@ -124,6 +125,16 @@ class PaintingService implements PaintingServiceInterface
         {
             $response[]=$this->autoMapping->map('array',GetPaintingsResponse::class,$row);
         }
+
+        return $response;
+    }
+
+    public function updateFeaturedPaintings($request)
+    {
+        $paintingResult =$this->PaintingManager->updateFeaturedPaintings($request);
+
+        $response = $this->autoMapping->map(PaintingEntity::class,UpdatePaintingResponse::class,
+            $paintingResult);
 
         return $response;
     }
