@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Email;
 
 use App\Response\ArtistReport;
 use App\Service\ReportServiceInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 
-class WeeklyArtistReport extends Command
+class WeeklyArtistReportCommand extends Command
 {
     protected static $defaultName = 'weekly-artist-report';
     private $mailer;

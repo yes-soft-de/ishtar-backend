@@ -43,7 +43,12 @@ class EntityInteractionManager
 
     public function create(CreateInteractionRequest $request)
     {
-        $request->setClient($this->clientRepository->find($request->getClient()));
+        //we dont want client if reaction is view
+        if ($request->getInteraction() != 3)
+        {
+            $request->setClient($this->clientRepository->find($request->getClient()));
+        }
+
         $request->setEntity($this->entityRepository->find($request->getEntity()));
         $request->setInteraction($this->interactionRepository->find($request->getInteraction()));
         $entityInteractionData = $this->autoMapping->map(CreateInteractionRequest::class,
@@ -51,6 +56,7 @@ class EntityInteractionManager
         $entityInteractionData->setDate(new \DateTime('now'));
         $this->entityManager->persist($entityInteractionData);
         $this->entityManager->flush();
+
         return $entityInteractionData;
     }
 

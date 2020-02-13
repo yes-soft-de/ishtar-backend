@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\ImageResolve;
 
 use App\AutoMapping;
 use App\Request\UpdatePaintingThumbImageRequest;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ImageProcessorCommand extends Command
+class PaintingImagesProcessorCommand extends Command
 {
     protected static $defaultName = 'ImageProcessor';
 
