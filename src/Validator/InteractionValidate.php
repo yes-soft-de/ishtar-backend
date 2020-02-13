@@ -41,12 +41,17 @@ class InteractionValidate implements InteractionValidateInterface
             'interaction' => [
                 new Required(),
                 new Assert\NotBlank(),
-            ]//,
-            //'client' => [
-             //   new Required(),
-              //  new Assert\NotBlank(),
-            //]
+            ],
+            'client' => [
+               new Required(),
+               new Assert\NotBlank(),
+            ]
         ]);
+
+        if ($input["interaction"] == 3)
+        {
+            unset($constraints->fields['client']);
+        }
 
         if ($type == 'create') {
             unset($constraints->fields['id']);

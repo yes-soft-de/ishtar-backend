@@ -48,21 +48,34 @@ class EntityMediaManger
             $entityMediaEntity=$this->autoMapping->mapToObject(CreateMediaRequest::class,
                 EntityMediaEntity::class,$request,$entityMediaEntity);
         }
-        else {
+        else
+        {
             $entityMediaEntity->setPath($request->getImage())
+                ->setRow($id)
+                ->setEntity($this->entityRepository->find($entity))
+                ->setMedia($this->mediaRepository->find(1));
 
-            ->setRow($id)
-            ->setEntity($this->entityRepository->find($entity))
-            ->setMedia($this->mediaRepository->find(1));
-                if(!$entity==5)
-            $entityMediaEntity->setName($request->getName());
+            if(!$entity == 5)
+            {
+                $entityMediaEntity->setName($request->getName());
+            }
         }
-        $entityMediaEntity->setThumbImage($request->getThumbImage());
+
+        //we need to check if there is thumbImage in request, for now just artist in this scenario has resolved image  13-2-2020
+        //Todo asap: add another image for painting?!!
+        if ($entity == 2)
+        {
+            $entityMediaEntity->setThumbImage($request->getThumbImage());
+        }
+
         $entityMediaEntity->setCreatedDate();
+
         $this->entityManager->persist($entityMediaEntity);
         $this->entityManager->flush();
+
         return $entityMediaEntity;
     }
+
     public function update($request,$entity)
     {
         $entityMedia = (array)$request;
