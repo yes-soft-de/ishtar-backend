@@ -39,6 +39,7 @@ class EntityMediaManger
     }
     public function create($request,$entity,$id)
     {
+        //dd($request->getThumbImage());
         $entityMediaEntity=new EntityMediaEntity();
         If(!isset($entity)&&!isset($id))
         {
@@ -49,12 +50,14 @@ class EntityMediaManger
         }
         else {
             $entityMediaEntity->setPath($request->getImage())
+
             ->setRow($id)
             ->setEntity($this->entityRepository->find($entity))
             ->setMedia($this->mediaRepository->find(1));
                 if(!$entity==5)
             $entityMediaEntity->setName($request->getName());
         }
+        $entityMediaEntity->setThumbImage($request->getThumbImage());
         $entityMediaEntity->setCreatedDate();
         $this->entityManager->persist($entityMediaEntity);
         $this->entityManager->flush();

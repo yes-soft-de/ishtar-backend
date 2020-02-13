@@ -47,24 +47,43 @@ class ClapService implements ClapServiceInterface
 
     public function getEntityClap($request)
     {
+        $response = [];
+
         $clapResult =$this->clapManager->getEntityClap($request);
+
         foreach ($clapResult as $row)
+        {
             $response[]= $this->autoMapping->map('array',GetClapsEntityResponse::class,$row);
+        }
+
         return $response;
     }
 
     public function getClientClap($request)
     {
+        $response = [];
+
         $clapResult =$this->clapManager->getClientClap($request);
+
         foreach ($clapResult as $row)
+        {
             $response[]= $this->autoMapping->map('array',GetClapsClientResponse::class,$row);
+        }
+
         return $response;
     }
+
     public function getAll()
     {
+        $response = [];
+
         $clapResult =$this->clapManager->getAll();
+
         foreach ($clapResult as $row)
+        {
             $response[]=$this->autoMapping->map(ClapEntity::class,GetClapsResponse::class,$row);
+        }
+
         return $response;
     }
 }

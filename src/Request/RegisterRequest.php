@@ -13,6 +13,23 @@ class RegisterRequest
     public $phone;
     public $birthDate;
     public $image;
+    public $google;
+
+    /**
+     * @return mixed
+     */
+    public function getGoogle()
+    {
+        return $this->google;
+    }
+
+    /**
+     * @param mixed $google
+     */
+    public function setGoogle($google): void
+    {
+        $this->google = $google;
+    }
 
     /**
      * @return mixed

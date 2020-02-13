@@ -34,5 +34,26 @@ services:
         arguments:
             - "%kernel.project_dir%"
 
+    App\Controller\Controller:
+        arguments:
+            - "%kernel.project_dir%"
+
+    Liip\ImagineBundle\Service\FilterService:
+        alias: 'liip_imagine.service.filter'
+
+    imagine.cache.resolver.imagepathresolverservice:
+        class: App\Service\ImagePathResolverService
+        arguments:
+            #$webRootDir: "%kernel.project_dir%"
+        tags:
+            - { name: "liip_imagine.cache.resolver", resolver: ImagePathResolverService }
+
+    app.imagine.cdn_data_loader:
+        class: Liip\ImagineBundle\Binary\Loader\StreamLoader
+        arguments:
+            - '' # if you store full path in the database
+        tags:
+            - { name: 'liip_imagine.binary.loader', loader: 'data_loader' }
+
     #App\Validator\ArtistValidateInterface:  '@App\Validator\ArtistValidate'
     #App\Validator\ArtistValidateInterface:  '@App\Validator\ImageUploadValidate'

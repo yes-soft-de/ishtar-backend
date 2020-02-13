@@ -63,6 +63,11 @@ class EntityMediaEntity
      */
     private $updateDate;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $thumbImage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -172,6 +177,18 @@ class EntityMediaEntity
     public function setUpdateDate(): self
     {
         $this->updateDate =$this->createDate = new \DateTime('Now');;
+
+        return $this;
+    }
+
+    public function getThumbImage(): ?string
+    {
+        return $this->thumbImage;
+    }
+
+    public function setThumbImage(?string $thumbImage): self
+    {
+        $this->thumbImage = $thumbImage;
 
         return $this;
     }

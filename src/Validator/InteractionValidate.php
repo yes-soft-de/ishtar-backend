@@ -41,11 +41,11 @@ class InteractionValidate implements InteractionValidateInterface
             'interaction' => [
                 new Required(),
                 new Assert\NotBlank(),
-            ],
-            'client' => [
-                new Required(),
-                new Assert\NotBlank(),
-            ]
+            ]//,
+            //'client' => [
+             //   new Required(),
+              //  new Assert\NotBlank(),
+            //]
         ]);
 
         if ($type == 'create') {

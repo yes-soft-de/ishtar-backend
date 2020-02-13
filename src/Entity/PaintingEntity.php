@@ -110,6 +110,11 @@ class PaintingEntity
      */
     private $isFeatured;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $thumbImage;
+
 
 
     public function getId(): ?int
@@ -306,6 +311,18 @@ class PaintingEntity
     public function setIsFeatured(?bool $isFeatured): self
     {
         $this->isFeatured = $isFeatured;
+
+        return $this;
+    }
+
+    public function getThumbImage(): ?string
+    {
+        return $this->thumbImage;
+    }
+
+    public function setThumbImage(?string $thumbImage): self
+    {
+        $this->thumbImage = $thumbImage;
 
         return $this;
     }

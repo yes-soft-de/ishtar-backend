@@ -56,7 +56,7 @@ class EntityInteractionService implements EntityInteractionServiceInterface
         new GetInteractionsEntityResponse();
          $entityInteractionResult =$this->entityInteractionManager->getEntityInteraction($request);
             $response=$this->autoMapping->map('array',GetInteractionsEntityResponse::class
-            ,$entityInteractionResult);
+            ,$entityInteractionResult[0]);
         return $response;
     }
 

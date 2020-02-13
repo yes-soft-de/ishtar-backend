@@ -49,6 +49,7 @@ class ArtistService implements ArtistServiceInterface
         $response=$this->autoMapping->map(ArtistEntity::class,CreateArtistResponse::class,$artistResult);
         $response->setImage($mediaResault->getPath());
         $response->setArtType($artTypeResult->getArtType());
+        $response->setThumbImage($mediaResault->getThumbImage());
         return $response;
     }
     //ToDO mapping painting entity and response

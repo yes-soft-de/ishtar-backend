@@ -22,6 +22,7 @@ use App\Request\DeleteRequest;
 use App\Request\getPaintingByRequest;
 use App\Request\UpdateFeaturedPaintingsRequest;
 use App\Request\UpdatePaintingRequest;
+use App\Request\UpdatePaintingThumbImageRequest;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -50,10 +51,13 @@ class PaintingManager
     public function create(CreatePaintingRequest $request)
     {
         $request->setArtist($this->artistRepository->getArtist($request->getArtist()));
+
         $painting=$this->autoMapping->map(CreatePaintingRequest::class,PaintingEntity::class,$request);
         $painting->setCreateDate();
+
         $this->entityManager->persist($painting);
         $this->entityManager->flush();
+
         return $painting;
     }
 
@@ -125,6 +129,28 @@ class PaintingManager
         else
         {
             $paintingEntity=$this->autoMapping->mapToObject(UpdateFeaturedPaintingsRequest::class,
+                PaintingEntity::class,$request,$paintingEntity);
+
+            $paintingEntity->setUpdateDate();
+            $this->entityManager->flush();
+
+            return $paintingEntity;
+        }
+    }
+
+
+    public function updatePaintingThumbImage(UpdatePaintingThumbImageRequest $request)
+    {
+        $paintingEntity = $this->paintingRepository->getPainting($request->getId());
+
+        if (!$paintingEntity)
+        {
+            $exception=new EntityException();
+            $exception->entityNotFound("painting");
+        }
+        else
+        {
+            $paintingEntity = $this->autoMapping->mapToObject(UpdatePaintingThumbImageRequest::class,
                 PaintingEntity::class,$request,$paintingEntity);
 
             $paintingEntity->setUpdateDate();

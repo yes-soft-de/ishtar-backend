@@ -9,6 +9,7 @@ use App\Request\DeleteRequest;
 use App\Request\getPaintingByRequest;
 use App\Request\UpdateFeaturedPaintingsRequest;
 use App\Request\UpdatePaintingRequest;
+use App\Service\ImageResolveService;
 use App\Service\PaintingService;
 use App\Validator\PaintingValidateInterface;
 use AutoMapperPlus\AutoMapper;
@@ -24,14 +25,17 @@ class PaintingController extends BaseController
 {
     private $paintingService;
     private $autoMapping;
+    private $imageResolve;
+
     /**
      * PaintingController constructor.
      * @param PaintingService $paintingService
      */
-    public function __construct(PaintingService $paintingService,AutoMapping $autoMapping)
+    public function __construct(PaintingService $paintingService,AutoMapping $autoMapping, ImageResolveService $imageResolve)
     {
         $this->paintingService=$paintingService;
         $this->autoMapping=$autoMapping;
+        $this->imageResolve = $imageResolve;
     }
 
     /**
@@ -45,15 +49,23 @@ class PaintingController extends BaseController
     public function create(Request $request, PaintingValidateInterface $paintingValidate)
     {
         $validateResult = $paintingValidate->paintingValidator($request, 'create');
+
         if (!empty($validateResult))
         {
             $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+
         $data = json_decode($request->getContent(), true);
+
         $request=$this->autoMapping->map(\stdClass::class,CreatePaintingRequest::class,(object)$data);
+
+        //make thumb and add resolved image path to request
+        $request->setThumbImage($this->imageResolve->makeThumb($request->getImage()));
+
         $result = $this->paintingService->create($request);
+
         return $this->response($result, self::CREATE);
     }
 

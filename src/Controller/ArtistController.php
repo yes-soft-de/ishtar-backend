@@ -9,6 +9,7 @@ use App\Request\GetArtistRequest;
 use App\Request\SaveReportRequest;
 use App\Request\UpdateArtistRequest;
 use App\Service\ArtistService;
+use App\Service\ImageResolveService;
 use App\Service\ReportService;
 use AutoMapperPlus\Exception\UnregisteredMappingException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,15 +24,19 @@ class ArtistController extends BaseController
     private $artistService;
     private $reportService;
     private $autoMapping;
+    private $imageResolve;
+
     /**
      * ArtistController constructor.
      * @param ArtistService $artistService
      */
-    public function __construct(ArtistService $artistService,AutoMapping $autoMapping,ReportService $reportService)
+    public function __construct(ArtistService $artistService,AutoMapping $autoMapping,ReportService $reportService,
+                                ImageResolveService $imageResolve)
     {
         $this->artistService = $artistService;
         $this->autoMapping=$autoMapping;
         $this->reportService=$reportService;
+        $this->imageResolve = $imageResolve;
     }
 
     /**
@@ -46,14 +51,22 @@ class ArtistController extends BaseController
     {
         //Validation
         $validateResult = $artistValidate->artistValidator($request, 'create');
+
         if (!empty($validateResult)) {
             $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+
         $data = json_decode($request->getContent(), true);
+
         $request=$this->autoMapping->map(\stdClass::class,CreateArtistRequest::class,(object)$data);
+
+        //make thumb and add resolved image path to request
+        $request->setThumbImage($this->imageResolve->makeThumb($request->getImage()));
+
         $result = $this->artistService->create($request);
+
         return $this->response($result, self::CREATE);
     }
 
