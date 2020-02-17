@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EntityInteractionController extends BaseController
 {
     private $interactionService;
-    private  $autoMapping;
+    private $autoMapping;
 
     /**
      * EntityInteractionController constructor.
@@ -116,9 +116,11 @@ class EntityInteractionController extends BaseController
      */
     public function getEntityInteraction(Request $request)
     {
-        $request=new GetInterctionEntityRequest($request->get('entity'),$request->get('row'),
+        $request = new GetInterctionEntityRequest($request->get('entity'),$request->get('row'),
             $request->get('interaction'));
+
         $result = $this->interactionService->getEntityInteraction($request);
+
         return $this->response($result,self::FETCH);
     }
 

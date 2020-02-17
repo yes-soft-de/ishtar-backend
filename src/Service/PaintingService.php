@@ -159,7 +159,15 @@ class PaintingService implements PaintingServiceInterface
         return $response;
     }
 
+    public function updatePaintingImageLink($request)
+    {
+        $paintingResult =$this->PaintingManager->updatePaintingImageLink($request);
 
+        $response = $this->autoMapping->map(PaintingEntity::class,UpdatePaintingResponse::class,
+            $paintingResult);
+
+        return $response;
+    }
 
 
 }

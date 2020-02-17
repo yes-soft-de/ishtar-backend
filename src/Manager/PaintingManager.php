@@ -21,6 +21,7 @@ use App\Request\CreatePaintingRequest;
 use App\Request\DeleteRequest;
 use App\Request\getPaintingByRequest;
 use App\Request\UpdateFeaturedPaintingsRequest;
+use App\Request\UpdatePaintingImageLinkRequest;
 use App\Request\UpdatePaintingRequest;
 use App\Request\UpdatePaintingThumbImageRequest;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
@@ -151,6 +152,27 @@ class PaintingManager
         else
         {
             $paintingEntity = $this->autoMapping->mapToObject(UpdatePaintingThumbImageRequest::class,
+                PaintingEntity::class,$request,$paintingEntity);
+
+            $paintingEntity->setUpdateDate();
+            $this->entityManager->flush();
+
+            return $paintingEntity;
+        }
+    }
+
+    public function updatePaintingImageLink(UpdatePaintingImageLinkRequest $request)
+    {
+        $paintingEntity = $this->paintingRepository->getPainting($request->getId());
+
+        if (!$paintingEntity)
+        {
+            $exception=new EntityException();
+            $exception->entityNotFound("painting");
+        }
+        else
+        {
+            $paintingEntity = $this->autoMapping->mapToObject(UpdatePaintingImageLinkRequest::class,
                 PaintingEntity::class,$request,$paintingEntity);
 
             $paintingEntity->setUpdateDate();

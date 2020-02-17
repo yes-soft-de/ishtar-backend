@@ -38,11 +38,11 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             {
                 return $this->createQueryBuilder('ei')
                     ->select('count (ei) as interactions')
-                    ->from('App:ClientEntity','c')
+                    //->from('App:ClientEntity','c')
                     ->andWhere('ei.entity=:entity')
                     ->andWhere('ei.row=:row')
                     ->andWhere('ei.interaction=:interaction')
-                    ->andWhere('c.id=ei.client OR ei.client IS NULL')
+                    //->andWhere('c.id=ei.client OR ei.client IS NULL')
                     ->setParameter('entity',$entity)
                     ->setParameter('row',$row)
                     ->setParameter('interaction',$interaction)
@@ -50,6 +50,7 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
                     ->getResult();
         }
     }
+
     public function getClientInteraction($client):?array
     {
         return $this->createQueryBuilder('ei')
@@ -64,6 +65,7 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
     public function getAll():?array
     {
         $q1= $this->createQueryBuilder('ei')
@@ -90,6 +92,7 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->getResult();
         return array_merge($q1,$q2);
     }
+
     public function getEntityInteraction($entity,$id):?array
     {
         return $this->createQueryBuilder('ei')

@@ -2,40 +2,57 @@
 
 namespace App\Command\UpdateDB;
 
+use App\Request\UpdatePaintingImageLinkRequest;
+use App\Response\GetPaintingsResponse;
+use App\Service\PaintingService;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PaintingImagesLinksUpdateToHttpsCommand extends Command
 {
-    protected static $defaultName = 'PaintingImagesLinksUpdateToHttpsCommand';
+    protected static $defaultName = 'PaintingImagesLinksUpdateToHttps';
+    private $paintingService;
 
-    protected function configure()
+    public function __construct(PaintingService $paintingService)
     {
-        $this
-            ->setDescription('Add a short description for your command')
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+        parent::__construct();
+        $this->paintingService = $paintingService;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        $paintings = $this->paintingService->getAll();
+
+        $io->progressStart(count($paintings));
+
+        /**
+         * @var $painting GetPaintingsResponse
+         */
+        foreach ($paintings as $painting)
+        {
+            //get image path and id
+            $imagePath = $painting->getOriginalImage();
+            $imageId = $painting->getId();
+
+            //update url
+            $resolvedPath = str_replace("http", "Https", $imagePath);
+
+            //save new image path to DB
+            $request = new UpdatePaintingImageLinkRequest();
+            $request->setId($imageId);
+            $request->setImage($resolvedPath);
+
+            $this->paintingService->updatePaintingImageLink($request);
+
+            //show progress
+            $io->progressAdvance();
         }
 
-        if ($input->getOption('option1')) {
-            // ...
-        }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('Success!');
 
         return 0;
     }
