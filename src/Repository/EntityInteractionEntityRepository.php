@@ -90,6 +90,7 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->groupBy('ei.id')
             ->getQuery()
             ->getResult();
+
         return array_merge($q1,$q2);
     }
 

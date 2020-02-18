@@ -39,7 +39,7 @@ class PaintingImagesLinksUpdateToHttpsCommand extends Command
             $imageId = $painting->getId();
 
             //update url
-            $resolvedPath = str_replace("http", "Https", $imagePath);
+            $resolvedPath = str_replace("http:", "Https:", $imagePath);
 
             //save new image path to DB
             $request = new UpdatePaintingImageLinkRequest();

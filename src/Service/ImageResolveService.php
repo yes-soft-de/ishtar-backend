@@ -26,6 +26,7 @@ class ImageResolveService
         $resolvedPath = $this->filterService->getUrlOfFilteredImage($fixedPath[1], 'thumb');
 
         $result = str_replace('http://localhost/',self::EXPLODEPATHOFFLINE.self::MAINFOLDER, $resolvedPath);
+
         return $result;
     }
 

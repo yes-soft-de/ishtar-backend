@@ -14,17 +14,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PaintingImagesProcessorCommand extends Command
 {
-    protected static $defaultName = 'ImageProcessor';
+    protected static $defaultName = 'PaintingsImageProcessor';
 
     private $paintingService;
-    private $autoMapping;
     private $imageResolve;
 
-    public function __construct(PaintingService $paintingService, ImageResolveService $imageResolve, AutoMapping $autoMapping)
+    public function __construct(PaintingService $paintingService, ImageResolveService $imageResolve)
     {
         parent::__construct();
         $this->paintingService = $paintingService;
-        $this->autoMapping = $autoMapping;
         $this->imageResolve = $imageResolve;
     }
 

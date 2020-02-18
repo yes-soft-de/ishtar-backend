@@ -13,12 +13,10 @@ use App\Repository\MediaEntityRepository;
 use App\Request\ByIdRequest;
 use App\Request\CreateMediaRequest;
 use App\Request\DeleteRequest;
+use App\Request\UpdateMediaImageLinkRequest;
 use App\Request\UpdateMediaRequest;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
+use App\Request\UpdateMediaThumbImageRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\This;
-use Symfony\Component\HttpFoundation\Request;
 
 class EntityMediaManger
 {
@@ -114,24 +112,30 @@ class EntityMediaManger
 
         return $data;
     }
+
     public function getEntityItems(ByIdRequest $request)
     {
         return $this->entityRepository->getEntityItems($request->getId());
     }
+
     public function updateMediaById(UpdateMediaRequest $request)
     {
-        $entityMediaEntity=$this->entityMediaRepository->find($request->getId());
-        if (!$entityMediaEntity) {
-            $exception=new EntityException();
+        $entityMediaEntity = $this->entityMediaRepository->find($request->getId());
+
+        if (!$entityMediaEntity)
+        {
+            $exception = new EntityException();
             $exception->entityNotFound("entityMedia");
         }
-        else {
+        else
+        {
             $entityMediaEntity->setPath($request->getPath())
                 ->setName($request->getName());
             $this->entityManager->flush();
             return $entityMediaEntity;
         }
     }
+
     public function deleteById(DeleteRequest $request)
     {
         $entityMediaEntity=$this->entityMediaRepository->find($request->getId());
@@ -146,4 +150,39 @@ class EntityMediaManger
         return $entityMediaEntity;
     }
 
+    public function updateMediaThumbImageById(UpdateMediaThumbImageRequest $request)
+    {
+        $entityMediaEntity = $this->entityMediaRepository->find($request->getId());
+
+        if (!$entityMediaEntity)
+        {
+            $exception = new EntityException();
+            $exception->entityNotFound("entityMedia");
+        }
+        else
+        {
+            $entityMediaEntity->setThumbImage($request->getThumbImage());
+            $this->entityManager->flush();
+
+            return $entityMediaEntity;
+        }
+    }
+
+    public function updateMediaImageLink(UpdateMediaImageLinkRequest $request)
+    {
+        $entityMediaEntity = $this->entityMediaRepository->find($request->getId());
+
+        if (!$entityMediaEntity)
+        {
+            $exception = new EntityException();
+            $exception->entityNotFound("entityMedia");
+        }
+        else
+        {
+            $entityMediaEntity->setPath($request->getImage());
+            $this->entityManager->flush();
+
+            return $entityMediaEntity;
+        }
+    }
 }
