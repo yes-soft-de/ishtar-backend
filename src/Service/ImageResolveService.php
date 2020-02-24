@@ -12,7 +12,7 @@ class ImageResolveService
     const MAINFOLDER = 'ImageUploads/';
     const EXPLODEPATHOFFLINE = 'F:/YesSoft/';
     const EXPLODEPATHDEV = 'http://dev-ishtar.96.lt/';
-    const EXPLODEPATHPROD = 'https://ishtar-art.de/';
+    const EXPLODEPATHPROD = 'Https://ishtar-art.de/';
 
     public function __construct(FilterService $filterService)
     {
