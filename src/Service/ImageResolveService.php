@@ -13,6 +13,7 @@ class ImageResolveService
     const EXPLODEPATHOFFLINE = 'F:/YesSoft/';
     const EXPLODEPATHDEV = 'http://dev-ishtar.96.lt/';
     const EXPLODEPATHPROD = 'Https://ishtar-art.de/';
+    const PATHTOREMOVE = 'ishtar-backend/public/';
 
     public function __construct(FilterService $filterService)
     {
@@ -25,8 +26,10 @@ class ImageResolveService
 
         $resolvedPath = $this->filterService->getUrlOfFilteredImage($fixedPath[1], 'thumb');
 
-        $result = str_replace('http://localhost/',self::EXPLODEPATHOFFLINE.self::MAINFOLDER, $resolvedPath);
+        //for command
+        //$result = str_replace('http://localhost/',self::EXPLODEPATHOFFLINE.self::MAINFOLDER, $resolvedPath);
 
+        $result = str_replace(self::PATHTOREMOVE ,self::MAINFOLDER, $resolvedPath);
         return $result;
     }
 

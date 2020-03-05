@@ -51,8 +51,10 @@ class PaintingEntityRepository extends ServiceEntityRepository
     public function getAll():?array
     {
         return $this->createQueryBuilder('p')
+
             ->select('p.id','p.name','p.state','p.height','p.width','p.colorsType', 'p.image as originalImage', 'p.thumbImage as image','p.active',
                'p.keyWords', 'a.name as artist','at.name as artType','st.story','pr.price')
+
             ->from('App:ArtistEntity','a')
             ->from('App:ArtTypeEntity','at')
             ->from('App:EntityArtTypeEntity','eat')

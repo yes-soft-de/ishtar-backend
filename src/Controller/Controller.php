@@ -87,7 +87,7 @@ class Controller extends AbstractController
        // $resourcePath = $imagine->getUrlOfFilteredImage($path, 'my');
             $how->setNewPath('itWORK');
          $resolvedPath = $imagine->getUrlOfFilteredImage('ImageUploads/assets/images/j.jpg', 'thumb');
-        //$resolver->store($resolvedPath, "newPATH", "my");
+       // $resolver->()getBrowserPath()store($resolvedPath, "newPATH", "my");
 
         return $this->json([
             'message' => 'IS '. $resolvedPath,
