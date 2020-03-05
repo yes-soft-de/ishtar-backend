@@ -6,6 +6,7 @@ use App\AutoMapping;
 use App\Request\ByIdRequest;
 use App\Request\DeleteRequest;
 use App\Request\RegisterRequest;
+use App\Request\UpdateClientLanguageRequest;
 use App\Request\UpdateClientRequest;
 use App\Response\ClientReport;
 use App\Service\ClientService;
@@ -124,4 +125,21 @@ private $reportService;
 
        /* dd($this->reportService->createClientReport(16));*/
     }
+
+    /**
+     * @Route("/clientlanguage/{id}", name = "updateClientLanguage", methods={"PUT"})
+     */
+    public function UpdateClientLanguage(Request $request)
+    {
+        $id = $request->get('id');
+        $data = json_decode($request->getContent(), true);
+
+        $request = $this->autoMapping->map(\stdClass::class,UpdateClientLanguageRequest::class,(object)$data);
+        $request->setId($id);
+
+        $result = $this->clientService->UpdateClientLanguage($request);
+
+        return $this->response($result,self::UPDATE);
+    }
+
 }

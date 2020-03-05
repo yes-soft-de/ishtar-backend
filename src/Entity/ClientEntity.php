@@ -87,6 +87,11 @@ class ClientEntity implements UserInterface
      */
     private $google;
 
+    /**
+     * @ORM\Column(type="string", length=7, nullable=true)
+     */
+    private $language;
+
     public function __construct($email)
     {
         $this->isActive = true;
@@ -256,5 +261,17 @@ class ClientEntity implements UserInterface
     public function setGoogle($google): void
     {
         $this->google = $google;
+    }
+
+    public function getLanguage(): ?string
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?string $language): self
+    {
+        $this->language = $language;
+
+        return $this;
     }
 }
