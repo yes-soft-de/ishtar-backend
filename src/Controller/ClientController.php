@@ -22,10 +22,12 @@ use App\Validator\ClientValidateInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
-class ClientController extends BaseController{
-private $clientService;
-private $autoMapping;
-private $reportService;
+class ClientController extends BaseController
+
+{
+    private $clientService;
+    private $autoMapping;
+    private $reportService;
 
     public function __construct(ClientService $clientService,AutoMapping $autoMapping,ReportService $reportService)
     {

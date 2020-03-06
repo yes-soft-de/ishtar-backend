@@ -101,11 +101,9 @@ class CreatePaintingRequest
     }
 
 
-
     public function __construct()
     {
         $this->createDate = new \DateTime('Now');
-
     }
 
     /**
