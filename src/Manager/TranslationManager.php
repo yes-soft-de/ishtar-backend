@@ -3,7 +3,6 @@
 
 namespace App\Manager;
 
-
 use App\AutoMapping;
 use App\Entity\PaintingTranslationEntity;
 use App\Request\CreatePaintingTranslationRequest;

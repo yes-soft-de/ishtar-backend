@@ -23,7 +23,7 @@ class TranslationController extends BaseController
 
     /**
      * @Route("/pantingtranslation", name = "pantingTranslation", methods={"POST"})
-     *
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      */
     public function PaintingTranslation(Request $request)
     {
