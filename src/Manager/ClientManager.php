@@ -81,4 +81,8 @@ class ClientManager
             return $clientEntity;
         }
     }
+    public function getClient($request)
+    {
+        return $this->clientRepository->find($request);
+    }
 }
