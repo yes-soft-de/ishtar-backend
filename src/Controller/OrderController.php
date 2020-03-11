@@ -49,9 +49,9 @@ class OrderController extends BaseController
         //get paymentID and redirect to paypal using approved url
         $payment= $this->paymentController->paypal($data);
         $paymentId=$payment->getId();
-        dump($this->redirect($payment->getApprovalLink(),302));
         $request->setPaymentId($paymentId);
         $result = $this->orderService->create($request);
+        $result->setRedirectUrl($payment->getApprovalLink());
         return $this->response($result, self::CREATE);
     }
 

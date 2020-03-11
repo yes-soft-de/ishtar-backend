@@ -16,6 +16,7 @@ class CreateOrderResponse
     public $shippingState;
     public $addingDate;
     public $items;
+    public $redirectUrl;
 
     /**
      * @return mixed
@@ -177,5 +178,20 @@ class CreateOrderResponse
         $this->items = $items;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRedirectUrl()
+    {
+        return $this->redirectUrl;
+    }
+
+    /**
+     * @param mixed $redirectUrl
+     */
+    public function setRedirectUrl($redirectUrl): void
+    {
+        $this->redirectUrl = $redirectUrl;
+    }
 
 }

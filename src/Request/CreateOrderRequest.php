@@ -16,6 +16,7 @@ class CreateOrderRequest
     public $items;
     public $paymentId;
 
+
     /**
      * @return mixed
      */
@@ -160,6 +161,5 @@ class CreateOrderRequest
     {
         $this->paymentId = $paymentId;
     }
-
 
 }
