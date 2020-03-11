@@ -38,12 +38,11 @@ class ClientEntityRepository extends ServiceEntityRepository
     }
     */
 
-
     public function findClient($value)
     {
         try {
             return $this->createQueryBuilder('c')
-                ->select('c.id','c.username','c.fullName','c.phone','c.email','c.birthDate','m.path as image')
+                ->select('c.id','c.username','c.fullName','c.phone','c.email','c.birthDate','m.path as image', 'c.language')
                 ->from('App:EntityMediaEntity','m')
                 ->andWhere('m.entity=5')
                 ->andWhere('m.row= :val')
