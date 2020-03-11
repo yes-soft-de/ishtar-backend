@@ -19,6 +19,21 @@ class PaintingTranslationEntityRepository extends ServiceEntityRepository
         parent::__construct($registry, PaintingTranslationEntity::class);
     }
 
+    public function getPaintingArtTypes($id, $lang):?array
+    {
+        return $this->createQueryBuilder('eat')
+            ->select('at.artType as artType')
+            ->from('App:PaintingTranslationEntity','at')
+            ->andWhere('at.language =:locale')
+            ->setParameter('locale', $lang)
+
+            ->andWhere('at.originID=:id')
+            ->setParameter('id',$id)
+            ->groupBy('at.id')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return PaintingTranslationEntity[] Returns an array of PaintingTranslationEntity objects
     //  */

@@ -93,9 +93,10 @@ class PaintingManager
             return $paintingEntity;
         }
     }
+
     public function getAll()
     {
-        $data=$this->paintingRepository->getAll();
+        $data = $this->paintingRepository->getAll();
 
         return $data;
     }

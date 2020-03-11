@@ -124,7 +124,7 @@ class ArtistController extends BaseController
      */
     public function getArtistById(Request $request)
     {
-        $request=new GetArtistRequest($request->get('id'));
+        $request = new GetArtistRequest($request->get('id'));
         $result = $this->artistService->getArtistById($request);
         return $this->response($result, self::FETCH);
     }

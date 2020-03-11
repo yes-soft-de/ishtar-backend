@@ -52,6 +52,7 @@ class ArtistService implements ArtistServiceInterface
         $response->setThumbImage($mediaResault->getThumbImage());
         return $response;
     }
+
     //ToDO mapping painting entity and response
     public function update($request)
     {
@@ -63,11 +64,17 @@ class ArtistService implements ArtistServiceInterface
         $response->setArtType($artTypeResult->getId());
         return $response;
     }
+
     public function getAll()
     {
+        $response = [];
+
         $result=$this->artistManager->getAll();
         foreach ($result as $row)
-       $response[]=$this->autoMapping->map('array',GetAllArtistResponse::class,$row);
+        {
+            $response[]=$this->autoMapping->map('array',GetAllArtistResponse::class,$row);
+        }
+
         return $response;
     }
     public function delete($request)
@@ -98,9 +105,15 @@ class ArtistService implements ArtistServiceInterface
 
     public function getAllDetails()
     {
+        $response = [];
+
         $result=$this->artistManager->getAllDetails();
+
         foreach ($result as $row)
+        {
             $response[]=$this->autoMapping->map('array',GetArtistsDetailsResponse::class,$row);
+        }
+
         return $response;
     }
 

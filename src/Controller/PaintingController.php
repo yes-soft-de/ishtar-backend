@@ -111,8 +111,10 @@ class PaintingController extends BaseController
      * @Route("/paintings", name="getAllPainting",methods={"GET"})
      * @return JsonResponse
      */
-    public function getAll()
+    public function getAll(Request $request)
     {
+        //$request->getPreferredLanguage();
+
         $result = $this->paintingService->getAll();
         return $this->response($result,self::FETCH);
     }

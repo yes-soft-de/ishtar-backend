@@ -27,12 +27,12 @@ class Controller extends AbstractController
     /**
      *@Route("/testpath")
      */
-    public function testPath(FilterService $filterService )
+    public function testPath(FilterService $filterService, Request $request )
     {
 
-        $resolvedPath = $filterService->getUrlOfFilteredImage("http://dev-ishtar.96.lt/ImageUploads/PaintingImages/2019-11-07_15-53-27/03_Bashar_Barazi-5dc43df7c181f.jpeg",
-            'thumb');
-
+       // $resolvedPath = $filterService->getUrlOfFilteredImage("http://dev-ishtar.96.lt/ImageUploads/PaintingImages/2019-11-07_15-53-27/03_Bashar_Barazi-5dc43df7c181f.jpeg",
+        //    'thumb');
+        $resolvedPath = $request->getLocale();
         return new JsonResponse(["done: " => $resolvedPath], 200);
     }
 
@@ -43,6 +43,9 @@ class Controller extends AbstractController
      */
     public function hi(Request $request, FilterService $filterService, AutoMapping $autoMapping, PaintingService $paintingService)
     {
+        $session = $this->get('session');
+        $session->setLocale($request->getPreferredLanguage(array('de', 'en')));
+
         //$paintings = $paintingService->getPaintingById(175);
         $body = $request->getContent();
         $data = json_decode($body, true);

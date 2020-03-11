@@ -55,5 +55,12 @@ services:
         tags:
             - { name: 'liip_imagine.binary.loader', loader: 'data_loader' }
 
+    my_listener.locale:
+        class:  App\EventListener\LocaleListener
+        arguments: ['%kernel.default_locale%']
+        tags:
+            - {name: kernel.event_subscriber}
+            - {name: kernel.event_listener, event: kernel.request,  method: onKernelRequest }
+
     #App\Validator\ArtistValidateInterface:  '@App\Validator\ArtistValidate'
     #App\Validator\ArtistValidateInterface:  '@App\Validator\ImageUploadValidate'

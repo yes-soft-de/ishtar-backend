@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\AutoMapping;
+use App\Request\CreateArtistTranslationRequest;
 use App\Request\CreatePaintingTranslationRequest;
 use App\Service\TranslationService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -34,6 +35,23 @@ class TranslationController extends BaseController
         $request = $this->autoMapping->map(\stdClass::class,CreatePaintingTranslationRequest::class,(object)$data);
 
         $result = $this->translation->CreatePaintingTranslation($request);
+
+        return $this->response($result, self::CREATE);
+    }
+
+    /**
+     * @Route("/artisttranslation", name = "artisttranslation", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN", message="access denied")
+     */
+    public function ArtistTranslation(Request $request)
+    {
+        //ToDo: Validation :3
+
+        $data = json_decode($request->getContent(), true);
+
+        $request = $this->autoMapping->map(\stdClass::class,CreateArtistTranslationRequest::class,(object)$data);
+
+        $result = $this->translation->CreateArtistTranslation($request);
 
         return $this->response($result, self::CREATE);
     }
