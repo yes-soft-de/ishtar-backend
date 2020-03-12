@@ -6,7 +6,6 @@ use App\AutoMapping;
 use App\Request\ByIdRequest;
 use App\Request\CreateOrderRequest;
 use App\Request\UpdateOrderStateRequest;
-use App\Response\CreateOrderResponse;
 use App\Service\OrderService;
 use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -50,9 +49,9 @@ class OrderController extends BaseController
         //get paymentID and redirect to paypal using approved url
         $payment= $this->paymentController->paypal($data);
         $paymentId=$payment->getId();
+        dump($this->redirect($payment->getApprovalLink(),302));
         $request->setPaymentId($paymentId);
         $result = $this->orderService->create($request);
-        $result->setRedirectUrl($payment->getApprovalLink());
         return $this->response($result, self::CREATE);
     }
 
@@ -77,9 +76,11 @@ class OrderController extends BaseController
         $stateRequest=new UpdateOrderStateRequest($order->getId(),"OnProccessing");
         $stateRequest->setPayerId($payerId);
         $result=$this->orderService->setOrderState($stateRequest);
+
         //send emails to admins
         $this->sendEmail('HammamZarefa@gmail.com',$order->getId());
-        return $this->response($result, self::UPDATE);
+
+        return $this->response($result, self::CREATE);
     }
     /**
      *  @Route("/canceledorder",name="canceledOrder")
@@ -98,7 +99,7 @@ class OrderController extends BaseController
         $order=$this->orderService->getOrderByPayment($request);
         $stateRequest=new UpdateOrderStateRequest($order->getId(),"Canceled");
         $result=$this->orderService->setOrderState($stateRequest);
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::CREATE);
 
     }
     /**
@@ -140,17 +141,5 @@ class OrderController extends BaseController
         return $this->orderService->setOrderState($request);
 
     }
-    /**
-     *  @Route("/clientorders/{id}",name="getClientOrders",methods={"GET"})
-     * @param Request $request
-     * @return Response
-     * @throws \Exception
-     */
-    public function getClientOrders(Request $request)
-    {
-        $client=$request->get('id');
-        $result=$this->orderService->getClientOrders(New ByIdRequest($client));
-        return $this->response($result, self::FETCH);
 
-    }
 }

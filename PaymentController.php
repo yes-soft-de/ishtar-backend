@@ -49,10 +49,10 @@ class PaymentController extends AbstractController
         $redirectUrls=new RedirectUrls();
         $payer->setPaymentMethod('paypal');
         $details->setShipping(0.00)
-            ->setTax(2.00)
-            ->setSubtotal(20.00);
+            ->setTax($tax)
+            ->setSubtotal($subtotal);
         $amount->setCurrency('EUR')
-            ->setTotal(22.00)
+            ->setTotal($total)
             ->setDetails($details);
         $transaction->setAmount($amount)
             ->setDescription('Membership');

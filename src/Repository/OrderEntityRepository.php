@@ -55,5 +55,15 @@ class OrderEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function getClientOrders($client)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('c.id= :client')
+            ->andWhere('o.client=c.id')
+            ->from('App:ClientEntity','c')
+            ->setParameter('client',$client)
+            ->getQuery()
+            ->getResult();
+    }
 
 }

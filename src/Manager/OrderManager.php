@@ -67,5 +67,8 @@ class OrderManager
     {
         return $this->orderRepository->find($request->getId());
     }
-
+    public function getClientOtders(ByIdRequest $request)
+    {
+        return $this->orderRepository->getClientOrders($request->getId());
+    }
 }

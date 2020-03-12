@@ -112,5 +112,19 @@ class OrderService
         } catch (TransportExceptionInterface $e) {
         }
     }
-    
+    public function getClientOrders($request)
+    {
+        $orders=$this->orderManager->getClientOtders($request);
+        $counter=0;
+        $response=[];
+        foreach ($orders as $order)
+        {
+            $response[]=$this->autoMapping->map(OrderEntity::class,GetOrderResponse::class,$order);
+            $items= $this->orderDetailsManager->getOrderItems(New ByIdRequest($response[$counter]->getId()));
+            $response[$counter]->setItems($items);
+            $counter++;
+        }
+        return  $response;
+    }
+
 }
