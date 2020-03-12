@@ -13,7 +13,23 @@ class UpdateMediaRequest
     public $path;
     public $media=1;
     public $updatedDate;
+    public $thumbImage;
 
+    /**
+     * @return mixed
+     */
+    public function getThumbImage()
+    {
+        return $this->thumbImage;
+    }
+
+    /**
+     * @param mixed $thumbImage
+     */
+    public function setThumbImage($thumbImage): void
+    {
+        $this->thumbImage = $thumbImage;
+    }
 
     public function __construct()
     {

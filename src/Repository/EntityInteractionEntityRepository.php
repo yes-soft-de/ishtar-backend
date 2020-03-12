@@ -38,11 +38,11 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             {
                 return $this->createQueryBuilder('ei')
                     ->select('count (ei) as interactions')
-                    ->from('App:ClientEntity','c')
+                    //->from('App:ClientEntity','c')
                     ->andWhere('ei.entity=:entity')
                     ->andWhere('ei.row=:row')
                     ->andWhere('ei.interaction=:interaction')
-                    ->andWhere('c.id=ei.client OR ei.client IS NULL')
+                    //->andWhere('c.id=ei.client OR ei.client IS NULL')
                     ->setParameter('entity',$entity)
                     ->setParameter('row',$row)
                     ->setParameter('interaction',$interaction)
@@ -50,6 +50,7 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
                     ->getResult();
         }
     }
+
     public function getClientInteraction($client):?array
     {
         return $this->createQueryBuilder('ei')
@@ -64,6 +65,7 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
     public function getAll():?array
     {
         $q1= $this->createQueryBuilder('ei')
@@ -88,8 +90,10 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->groupBy('ei.id')
             ->getQuery()
             ->getResult();
+
         return array_merge($q1,$q2);
     }
+
     public function getEntityInteraction($entity,$id):?array
     {
         return $this->createQueryBuilder('ei')
@@ -106,7 +110,7 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
         $date = new \DateTime();
         $date->modify('-7 days');
         $q1= $this->createQueryBuilder('ei')
-            ->select('p.id','p.name','p.image','p.width',
+            ->select('p.id','p.name','p.thumbImage as image','p.width',
                 'p.height','p.colorsType','a.name as artist', 'a.id as artistID', 'count(p) as viewed','e.name as entity')
             ->from('App:PaintingEntity','p')
             ->from('App:ArtistEntity','a')

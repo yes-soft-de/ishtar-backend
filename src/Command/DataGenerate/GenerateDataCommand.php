@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\DataGenerate;
 
 use App\Request\CreateArtistRequest;
 use App\Request\CreateArtTypeRequest;

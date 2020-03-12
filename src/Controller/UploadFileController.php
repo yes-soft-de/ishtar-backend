@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\UploadFileService;
+use Liip\ImagineBundle\Service\FilterService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,7 @@ class UploadFileController extends AbstractController
     const PANTINGIMAGEPATH = '/ImageUploads/PaintingImages/';
     const CLIENTIMAGEPATH = '/ImageUploads/ClientImages/';
     const STATUEIMAGEPATH = '/ImageUploads/StatueImages/';
+
 
     /**
      * @Route("/uploadArtistImage", name="uploadArtistImage")
@@ -29,6 +31,7 @@ class UploadFileController extends AbstractController
         $imageFile = $request->files->get('image');
 
         $path = $uploadFile->upload($imageFile, self::ARTISTIMAGEPATH);
+
 
         $response = new jsonResponse(["status_code" => "200",
                 "url" => $path

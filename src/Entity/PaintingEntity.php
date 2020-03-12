@@ -105,6 +105,16 @@ class PaintingEntity
      */
     private $signed;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isFeatured;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $thumbImage;
+
 
 
     public function getId(): ?int
@@ -289,6 +299,30 @@ class PaintingEntity
     public function setSigned(?string $signed): self
     {
         $this->signed = $signed;
+
+        return $this;
+    }
+
+    public function getIsFeatured(): ?bool
+    {
+        return $this->isFeatured;
+    }
+
+    public function setIsFeatured(?bool $isFeatured): self
+    {
+        $this->isFeatured = $isFeatured;
+
+        return $this;
+    }
+
+    public function getThumbImage(): ?string
+    {
+        return $this->thumbImage;
+    }
+
+    public function setThumbImage(?string $thumbImage): self
+    {
+        $this->thumbImage = $thumbImage;
 
         return $this;
     }

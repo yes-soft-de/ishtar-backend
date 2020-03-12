@@ -19,6 +19,23 @@ public $artist;
 public $artType;
 public $story;
 public $price;
+public $originalImage;
+
+    /**
+     * @return mixed
+     */
+    public function getOriginalImage()
+    {
+        return $this->originalImage;
+    }
+
+    /**
+     * @param mixed $originalImage
+     */
+    public function setOriginalImage($originalImage): void
+    {
+        $this->originalImage = $originalImage;
+    }
 
     /**
      * @return mixed

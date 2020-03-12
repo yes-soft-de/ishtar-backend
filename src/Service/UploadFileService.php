@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadFileService
 {
-    const PATH = "http://ishtar-art.de";
+    const PATH = "Https://ishtar-art.de";
     const PATHDEVTest = "http://dev-ishtar.96.lt";
     private $rootPath;
 

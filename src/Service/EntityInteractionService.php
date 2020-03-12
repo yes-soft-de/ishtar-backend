@@ -31,11 +31,14 @@ class EntityInteractionService implements EntityInteractionServiceInterface
 
     public function create($request)
     {
-        $entityInteractionResult =$this->entityInteractionManager->create($request);
+        $entityInteractionResult = $this->entityInteractionManager->create($request);
+
         $response=$this->autoMapping->map(EntityInteractionEntity::class,CreateInteractionResponse::class,
             $entityInteractionResult);
+
         return $response;
     }
+
     public function update($request)
     {
         $entityInteractionResult =$this->entityInteractionManager->update($request);
@@ -54,9 +57,9 @@ class EntityInteractionService implements EntityInteractionServiceInterface
     public function getEntityInteraction($request)
     {
         new GetInteractionsEntityResponse();
-         $entityInteractionResult =$this->entityInteractionManager->getEntityInteraction($request);
+         $entityInteractionResult = $this->entityInteractionManager->getEntityInteraction($request);
             $response=$this->autoMapping->map('array',GetInteractionsEntityResponse::class
-            ,$entityInteractionResult);
+            ,$entityInteractionResult[0]);
         return $response;
     }
 
