@@ -177,4 +177,5 @@ class ReportService implements ReportServiceInterface
         $response=$this->clapManager->getEntityclap($request);
         return count($response);
     }
+
 }
