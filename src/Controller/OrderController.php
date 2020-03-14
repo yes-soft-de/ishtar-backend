@@ -139,7 +139,6 @@ class OrderController extends BaseController
         $orderId=$request->get('id');
         $request =new UpdateOrderStateRequest($orderId,"completed");
         return $this->orderService->setOrderState($request);
-
     }
     /**
      *  @Route("/clientorders/{id}",name="getClientOrders",methods={"GET"})
@@ -152,7 +151,5 @@ class OrderController extends BaseController
         $client=$request->get('id');
         $result=$this->orderService->getClientOrders(New ByIdRequest($client));
         return $this->response($result, self::FETCH);
-
     }
-
 }
