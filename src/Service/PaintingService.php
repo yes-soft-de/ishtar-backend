@@ -169,5 +169,9 @@ class PaintingService implements PaintingServiceInterface
         return $response;
     }
 
+   public function updatePaintingState($request)
+   {
+       return $this->PaintingManager->updatePaintingState($request);
+   }
 
 }
