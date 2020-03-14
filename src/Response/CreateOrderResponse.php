@@ -193,9 +193,5 @@ class CreateOrderResponse
     {
         $this->redirectUrl = $redirectUrl;
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> f848099f20e967b377ca9c329b2bc1b6dd991b9a
 
 }

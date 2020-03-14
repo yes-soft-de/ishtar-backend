@@ -38,11 +38,6 @@ class OrderDetailsEntity
      */
     private $price;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $addingDate;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -92,18 +87,6 @@ class OrderDetailsEntity
     public function setPrice(string $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getAddingDate(): ?\DateTimeInterface
-    {
-        return $this->addingDate;
-    }
-
-    public function setAddingDate(?\DateTimeInterface $addingDate): self
-    {
-        $this->addingDate = $addingDate;
 
         return $this;
     }

@@ -74,10 +74,18 @@ class OrderService
         $response=$this->autoMapping->map(OrderEntity::class,GetOrderResponse::class,$order);
         return $response;
     }
-    public function setItemsAsSold($request)
+    public function updateItemsState($request,$state)
     {
         $items= $this->orderDetailsManager->getOrderItems($request);
-       return  $this->orderDetailsManager->updateItemsState((array)$items,0);
+       return  $this->orderDetailsManager->updateItemsState((array)$items,$state);
+    }
+    public function setItemsAsSold($request)
+    {
+        return $this->updateItemsState($request,0);
+    }
+    public function setItemsAsInOrder($request)
+    {
+        return $this->updateItemsState($request,2);
     }
 //    public function sendSuccessOrderEmailToArtist(ByIdRequest $request)
 //    {
@@ -126,5 +134,9 @@ class OrderService
         }
         return  $response;
     }
-
+    public function getOrderByToken($request)
+    {
+        $order=$this->orderManager->getOrderByToken($request);
+        return $order;
+    }
 }

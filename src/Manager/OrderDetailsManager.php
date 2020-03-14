@@ -56,7 +56,6 @@ class OrderDetailsManager
            $this->entityManager->clear();
            $counter++;
              }
-        $this->updateItemsState($orderItems,2);
         return $itemsEntity;
     }
     public function updateItemsState($orderItems,$state)

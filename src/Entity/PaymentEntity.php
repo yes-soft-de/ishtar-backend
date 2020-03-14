@@ -22,7 +22,7 @@ class PaymentEntity
     private $paymentId;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $payerId;
 
@@ -32,7 +32,7 @@ class PaymentEntity
     private $order;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="json_array",nullable=true)
      */
     private $transaction;
 
@@ -45,11 +45,6 @@ class PaymentEntity
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $paymentState;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $invoice;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -107,12 +102,12 @@ class PaymentEntity
         return $this;
     }
 
-    public function getTransaction(): ?string
+    public function getTransaction(): ?array
     {
         return $this->transaction;
     }
 
-    public function setTransaction(?string $transaction): self
+    public function setTransaction(?array $transaction): self
     {
         $this->transaction = $transaction;
 
@@ -143,24 +138,12 @@ class PaymentEntity
         return $this;
     }
 
-    public function getInvoice(): ?string
-    {
-        return $this->invoice;
-    }
-
-    public function setInvoice(?string $invoice): self
-    {
-        $this->invoice = $invoice;
-
-        return $this;
-    }
-
     public function getCreatedDate(): ?\DateTimeInterface
     {
         return $this->createdDate;
     }
 
-    public function setCreatedDate(?\DateTimeInterface $createdDate): self
+    public function setCreatedDate(): self
     {
         $this->createdDate = new \DateTime('NOW');
 

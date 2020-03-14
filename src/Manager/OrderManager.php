@@ -22,15 +22,17 @@ class OrderManager
     private $orderRepository;
     private $autoMapping;
     private $clientManager;
+    private $paymentManager;
 
     public function __construct(EntityManagerInterface $entityManagerInterface,
                                 OrderEntityRepository $orderEntityRepository, AutoMapping $autoMapping
-        ,ClientManager $clientManager)
+        ,ClientManager $clientManager,PaymentManager $paymentManager)
     {
         $this->entityManager = $entityManagerInterface;
         $this->orderRepository = $orderEntityRepository;
         $this->autoMapping = $autoMapping;
         $this->clientManager=$clientManager;
+        $this->paymentManager=$paymentManager;
     }
 
     public function create(CreateOrderRequest $request)
@@ -38,7 +40,7 @@ class OrderManager
         $request->setClient($this->clientManager->getClient($request->getClient()));
         $orderEntity = $this->autoMapping->map(CreateOrderRequest::class, OrderEntity::class, $request);
         $orderEntity->setAddingDate()
-            ->setOrderState("created")
+            ->setOrderState("Created")
             ->setShippingState(0);
         $this->entityManager->persist($orderEntity);
         $this->entityManager->flush();
@@ -50,13 +52,14 @@ class OrderManager
     {
         $orderEntity=$this->orderRepository->find($request->getId());
         $orderEntity->setOrderState($request->getState());
-        $orderEntity->setPayerId($request->getPayerId());
         $this->entityManager->flush();
         return $orderEntity;
     }
     public function getOrderByPayment(ByIdRequest $request)
     {
-        return $this->orderRepository->findOrderByPayment($request->getId());
+        $orderId=($this->paymentManager->getByPayment($request))->getOrder()->getId();
+        $result= $this->orderRepository->find($orderId);
+        return $result;
     }
 
     public function getAll()
@@ -70,5 +73,11 @@ class OrderManager
     public function getClientOtders(ByIdRequest $request)
     {
         return $this->orderRepository->getClientOrders($request->getId());
+    }
+    public function getOrderByToken(ByIdRequest $request)
+    {
+        $orderId=($this->paymentManager->getByToken($request))->getOrder()->getId();
+        $result= $this->orderRepository->find($orderId);
+        return $result;
     }
 }

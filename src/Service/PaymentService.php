@@ -4,8 +4,14 @@
 namespace App\Service;
 
 
+use App\AutoMapping;
+use App\Entity\PaymentEntity;
+use App\Manager\PaymentManager;
 use App\Request\ByIdRequest;
 use App\Request\UpdateOrderStateRequest;
+use App\Request\UpdatePaymentRequest;
+use App\Response\GetPaymentResponse;
+use App\Response\UpdatePaymentResponse;
 use Exception;
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
@@ -21,39 +27,40 @@ use Symfony\Component\HttpFoundation\Response;
 class PaymentService
 {
     private $orderService;
-
+    private $paymentManager;
+    private $autoMapping;
     /**
      * PaymentService constructor.
      * @param $orderService
      */
-    public function __construct(OrderService $orderService)
+    public function __construct(OrderService $orderService,PaymentManager $paymentManager,AutoMapping $autoMapping)
     {
         $this->orderService = $orderService;
+        $this->paymentManager=$paymentManager;
+        $this->autoMapping=$autoMapping;
+    }
+    public function create($request)
+    {
+        $result=$this->paymentManager->create($request);
+        return $result;
     }
 
     public function executeOrder($orderId,$api)
     {
-        $order=$this->orderService->getOrderById(new ByIdRequest($orderId));
-        $paymentId =$order->getPaymentId();
-        $payerId=$order->getPayerId();
+        $result=$this->getByOrder(New ByIdRequest($orderId));
+        $paymentId =$result->getPaymentId();
+        $payerId=$result->getPayerId();
         $payment = Payment::get($paymentId, $api);
         $execution = new PaymentExecution();
         $execution->setPayerId($payerId);
-
-
+        $request=$this->autoMapping->map(GetPaymentResponse::class,UpdatePaymentRequest::class,$result);
         try {
             // Take the payment
             $payment->execute($execution, $api);
-
             try {
                 $payment = Payment::get($paymentId, $api);
-
-                $data = [
-                    'transaction_id' => $payment->getId(),
-                    'payment_amount' => $payment->transactions[0]->amount->total,
-                    'payment_status' => $payment->getState(),
-                    'invoice_id' => $payment->transactions[0]->invoice_number
-                ];
+                $request->setPaymentState($payment->getState());
+                $request->setTransaction($payment->getTransactions());
 
             } catch (Exception $e) {
                 // Failed to retrieve payment from PayPal
@@ -66,10 +73,20 @@ class PaymentService
            // throw new Exception('Failed to take Payment'. $e);
         }
         $result=$this->orderService->setItemsAsSold(new ByIdRequest($orderId));
-        $this->orderService->setOrderState(new UpdateOrderStateRequest($orderId,"completed"));
-        $this->orderService->sendSuccessOrderToClient(New ByIdRequest($orderId));
-
-        return new Response("Completed",200);
+        $this->orderService->setOrderState(new UpdateOrderStateRequest($orderId,"Completed"));
+       // $this->orderService->sendSuccessOrderToClient(New ByIdRequest($orderId));
+        $request->setUpdatedDate(new \DateTime('NOW'));
+        $response=$this->paymentManager->update($request);
+        $response=$this->autoMapping->map(PaymentEntity::class,UpdatePaymentResponse::class,$response);
+        return $response;
     }
-
+    public function getByOrder($request)
+    {
+       $result= $this->paymentManager->getByOrder($request);
+       return $this->autoMapping->map(PaymentEntity::class,GetPaymentResponse::class,$result);
+    }
+    public function setPaymentPayer($request)
+    {
+        return $this->paymentManager->setPaymentPayer($request);
+    }
 }

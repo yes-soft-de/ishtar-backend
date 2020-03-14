@@ -67,15 +67,6 @@ class OrderEntity
      */
     private $paymentMethod;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $paymentId;
-
-    /**
-     * @ORM\Column(type="string",length=255, nullable=true)
-     */
-    private $payerId;
 
     public function getId(): ?int
     {
@@ -202,27 +193,4 @@ class OrderEntity
         return $this;
     }
 
-    public function getPaymentId(): ?string
-    {
-        return $this->paymentId;
-    }
-
-    public function setPaymentId(?string $paymentId): self
-    {
-        $this->paymentId = $paymentId;
-
-        return $this;
-    }
-
-    public function getPayerId(): ?string
-    {
-        return $this->payerId;
-    }
-
-    public function setPayerId(?string $payerId): self
-    {
-        $this->payerId = $payerId;
-
-        return $this;
-    }
 }

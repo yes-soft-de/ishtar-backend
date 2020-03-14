@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Request\CreateOrderRequest;
+use App\Request\CreatePaymentRequest;
 use App\Service\OrderService;
 use App\Service\PaymentService;
 use Exception;
@@ -16,7 +18,7 @@ use PayPal\Rest\ApiContext;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-class PaymentController extends AbstractController
+class PaymentController extends BaseController
 {
     private $orderService;
     private $paymentService;
@@ -35,11 +37,11 @@ class PaymentController extends AbstractController
      * @Route("/paypal",name="paypal")
      * @throws Exception
      */
-    public function paypal($data)
+    public function paypal(CreateOrderRequest $request)
     {
-        $tax=$data['tax'];
-        $subtotal=$data['subtotal'];
-        $total=$data['total'];
+        $tax=$request->getTax();
+        $subtotal=$request->getSubtotal();
+        $total=$request->getTotal();
         $api=$this->config();
         $payer=new Payer();
         $details=new Details();
@@ -49,10 +51,10 @@ class PaymentController extends AbstractController
         $redirectUrls=new RedirectUrls();
         $payer->setPaymentMethod('paypal');
         $details->setShipping(0.00)
-            ->setTax(2.00)
-            ->setSubtotal(20.00);
+            ->setTax($tax)
+            ->setSubtotal($subtotal);
         $amount->setCurrency('EUR')
-            ->setTotal(22.00)
+            ->setTotal($total)
             ->setDetails($details);
         $transaction->setAmount($amount)
             ->setDescription('Membership');
@@ -71,6 +73,14 @@ class PaymentController extends AbstractController
         {
             throw new Exception('unable to create payment link.'. $exception);
         }
+        $paymentRequest=new CreatePaymentRequest();
+        $paymentRequest->setOrder($request->getId());
+        $paymentRequest->setToken($payment->getToken());
+        $paymentRequest->setPayment($payment->getId());
+        $paymentRequest->setPaymentState($payment->getState());
+        $paymentRequest->setPaymentAmount($total);
+        $result=$this->paymentService->create($paymentRequest);
+
     return $payment;
        // return $this->redirect($redirectUrl,302);
     }
@@ -84,7 +94,7 @@ class PaymentController extends AbstractController
         $orderId=$request->get('id');
         $api=$this->config();
        $result=$this->paymentService->executeOrder($orderId,$api);
-       return $result;
+       return $this->response($result,self::UPDATE);
     }
     public function cancelled()
     {

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\PaymentEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method PaymentEntity|null find($id, $lockMode = null, $lockVersion = null)
@@ -36,15 +37,40 @@ class PaymentEntityRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?PaymentEntity
+
+    public function getByPaymentId($value): ?PaymentEntity
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        try {
+            return $this->createQueryBuilder('p')
+                ->andWhere('p.paymentId = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
-    */
+
+    public function getByOrder($value): ?PaymentEntity
+    {
+        try {
+            return $this->createQueryBuilder('p')
+                ->andWhere('p.order = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
+    }
+    public function getByToken($value): ?PaymentEntity
+    {
+        try {
+            return $this->createQueryBuilder('p')
+                ->andWhere('p.token = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
+    }
+
 }

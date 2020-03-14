@@ -6,8 +6,10 @@ use App\AutoMapping;
 use App\Request\ByIdRequest;
 use App\Request\CreateOrderRequest;
 use App\Request\UpdateOrderStateRequest;
+use App\Request\UpdatePaymentPayerRequest;
 use App\Response\CreateOrderResponse;
 use App\Service\OrderService;
+use App\Service\PaymentService;
 use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,18 +25,20 @@ class OrderController extends BaseController
     private $autoMapping;
     private $paymentController;
     private $mailer;
+    private $paymentService;
 
     /**
      * OrderController constructor.
      * @param OrderService $orderService
      */
     public function __construct(OrderService $orderService, AutoMapping $autoMapping,PaymentController $paymentController
-    ,MailerInterface $mailer)
+    ,MailerInterface $mailer,PaymentService $paymentService)
     {
         $this->orderService = $orderService;
         $this->autoMapping = $autoMapping;
         $this->paymentController=$paymentController;
         $this->mailer=$mailer;
+        $this->paymentService=$paymentService;
     }
 
     /**
@@ -47,11 +51,9 @@ class OrderController extends BaseController
     {
         $data = json_decode($request->getContent(), true);
         $request = $this->autoMapping->map(\stdClass::class, CreateOrderRequest::class, (object)$data);
-        //get paymentID and redirect to paypal using approved url
-        $payment= $this->paymentController->paypal($data);
-        $paymentId=$payment->getId();
-        $request->setPaymentId($paymentId);
         $result = $this->orderService->create($request);
+        $request->setId($result->getId());
+        $payment= $this->paymentController->paypal($request);
         $result->setRedirectUrl($payment->getApprovalLink());
         return $this->response($result, self::CREATE);
     }
@@ -70,16 +72,17 @@ class OrderController extends BaseController
         if (empty($paymentId) || empty($payerId)) {
             throw new Exception('The response is missing the paymentId or PayerID');
         }
-        $request=new ByIdRequest($paymentId);
-        //paymentID used to know which order is confirmed;
-        $order=$this->orderService->getOrderByPayment($request);
+        $request=new UpdatePaymentPayerRequest($paymentId,$payerId);
+        $payment=$this->paymentService->setPaymentPayer($request);
+        //use paymentId to know which order is confirmed;
+        $order=$this->orderService->getOrderByPayment(new ByIdRequest($paymentId));
         //change order state to (onProccessing)
         $stateRequest=new UpdateOrderStateRequest($order->getId(),"OnProccessing");
-        $stateRequest->setPayerId($payerId);
+        $state=$this->orderService->setItemsAsInOrder(new ByIdRequest($order->getId()));
         $result=$this->orderService->setOrderState($stateRequest);
         //send emails to admins
         $this->sendEmail('HammamZarefa@gmail.com',$order->getId());
-        return $this->response($result, self::UPDATE);
+        return $this->response($result, self::CREATE);
     }
     /**
      *  @Route("/canceledorder",name="canceledOrder")
@@ -89,23 +92,21 @@ class OrderController extends BaseController
      */
     public function canceledOrder(Request $request)
     {
-        $paymentId = $request->get('paymentId');
-        if (empty($paymentId))
+        $token = $request->get('token');
+        if (empty($token))
             {
-            throw new Exception('The response is missing the paymentId');
+            throw new Exception('The response is missing the token');
             }
-        $request = new ByIdRequest($paymentId);
-        $order=$this->orderService->getOrderByPayment($request);
+        $request = new ByIdRequest($token);
+        $order=$this->orderService->getOrderByToken($request);
         $stateRequest=new UpdateOrderStateRequest($order->getId(),"Canceled");
         $result=$this->orderService->setOrderState($stateRequest);
         return $this->response($result, self::UPDATE);
-
     }
+
     /**
-     *  @Route("/orders",name="getAllOrders",methods={"GET"})
-     * @param Request $request
+     * @Route("/orders",name="getAllOrders",methods={"GET"})
      * @return Response
-     * @throws \Exception
      */
     public function getAll()
     {
@@ -153,4 +154,5 @@ class OrderController extends BaseController
         return $this->response($result, self::FETCH);
 
     }
+
 }
