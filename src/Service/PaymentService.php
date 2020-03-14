@@ -13,16 +13,8 @@ use App\Request\UpdatePaymentRequest;
 use App\Response\GetPaymentResponse;
 use App\Response\UpdatePaymentResponse;
 use Exception;
-use PayPal\Api\Amount;
-use PayPal\Api\Details;
-use PayPal\Api\Payer;
 use PayPal\Api\Payment;
 use PayPal\Api\PaymentExecution;
-use PayPal\Api\RedirectUrls;
-use PayPal\Api\Transaction;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Rest\ApiContext;
-use Symfony\Component\HttpFoundation\Response;
 
 class PaymentService
 {
@@ -61,13 +53,10 @@ class PaymentService
                 $payment = Payment::get($paymentId, $api);
                 $request->setPaymentState($payment->getState());
                 $request->setTransaction($payment->getTransactions());
-
             } catch (Exception $e) {
                 // Failed to retrieve payment from PayPal
                 throw new Exception('Failed to retrieve payment from PayPal'. $e);
-
             }
-
         } catch (Exception $e) {
             // Failed to take payment
            // throw new Exception('Failed to take Payment'. $e);

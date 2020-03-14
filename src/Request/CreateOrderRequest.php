@@ -14,7 +14,6 @@ class CreateOrderRequest
     public $total;
     public $paymentMethod;
     public $items;
-    public $paymentId;
 
 
     /**
@@ -144,22 +143,6 @@ class CreateOrderRequest
     public function setTax($tax): void
     {
         $this->tax = $tax;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPaymentId()
-    {
-        return $this->paymentId;
-    }
-
-    /**
-     * @param mixed $paymentId
-     */
-    public function setPaymentId($paymentId): void
-    {
-        $this->paymentId = $paymentId;
     }
 
 }

@@ -16,8 +16,6 @@ class GetOrderResponse
     public $shippingState;
     public $addingDate;
     public $items;
-    public $paymentId;
-    public $payerId;
 
     /**
      * @return mixed
@@ -179,37 +177,4 @@ class GetOrderResponse
     {
         $this->items = $items;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getPaymentId()
-    {
-        return $this->paymentId;
-    }
-
-    /**
-     * @param mixed $paymentId
-     */
-    public function setPaymentId($paymentId): void
-    {
-        $this->paymentId = $paymentId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPayerId()
-    {
-        return $this->payerId;
-    }
-
-    /**
-     * @param mixed $payerId
-     */
-    public function setPayerId($payerId): void
-    {
-        $this->payerId = $payerId;
-    }
-
 }

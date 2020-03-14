@@ -8,7 +8,6 @@ class UpdateOrderStateRequest
 {
     public $id;
     public $state;
-    public $payerId;
 
     /**
      * UpdateStateRequest constructor.
@@ -52,23 +51,5 @@ class UpdateOrderStateRequest
     {
         $this->state = $state;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getPayerId()
-    {
-        return $this->payerId;
-    }
-
-    /**
-     * @param mixed $payerId
-     */
-    public function setPayerId($payerId): void
-    {
-        $this->payerId = $payerId;
-    }
-
-
 
 }
