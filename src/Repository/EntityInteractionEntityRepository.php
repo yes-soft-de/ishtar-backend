@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\EntityInteractionEntity;
+use App\EventListener\LocaleListener;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -14,9 +15,20 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class EntityInteractionEntityRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $locale;
+
+    public function __construct(ManagerRegistry $registry, LocaleListener $localeListener)
     {
         parent::__construct($registry, EntityInteractionEntity::class);
+
+        if (null == $localeListener->getLocale())
+        {
+            $this->locale = "en";
+        }
+        else
+        {
+            $this->locale = $localeListener->getLocale();
+        }
     }
 
     public function getInteraction($entity,$row,$interaction)
@@ -105,11 +117,13 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    public function getMostViews()
+
+    private function getMostViewPaintings():? array
     {
         $date = new \DateTime();
         $date->modify('-7 days');
-        $q1= $this->createQueryBuilder('ei')
+
+        $q1 = $this->createQueryBuilder('ei')
             ->select('p.id','p.name','p.thumbImage as image','p.width',
                 'p.height','p.colorsType','a.name as artist', 'a.id as artistID', 'count(p) as viewed','e.name as entity')
             ->from('App:PaintingEntity','p')
@@ -127,7 +141,16 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->setMaxResults(7)
             ->getQuery()
             ->getResult();
-        $q2=$this->createQueryBuilder('ei')
+
+        return $q1;
+    }
+
+    private function getMostViewStatues():? array
+    {
+        $date = new \DateTime();
+        $date->modify('-7 days');
+
+        return $this->createQueryBuilder('ei')
             ->select('s.id','s.name','a.name as artist', 'a.id as artistID', 'count(s) as viewed','e.name as entity')
             ->from('App:StatueEntity','s')
             ->from('App:ArtistEntity','a')
@@ -144,8 +167,56 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->setMaxResults(7)
             ->getQuery()
             ->getResult();
-        return array_merge($q1,$q2);
     }
+
+    public function getMostViews()
+    {
+        $date = new \DateTime();
+        $date->modify('-7 days');
+
+        if ($this->locale == "en")
+        {
+            $q1 = $this->getMostViewPaintings();
+            $q2 = $this->getMostViewStatues();
+
+            return array_merge($q1, $q2);
+        }
+        else
+        {
+            $q1 = $this->getMostViewPaintings();
+
+            $languageResultMostViewPaintings = $this->createQueryBuilder('ei')
+                ->select('p.id','paintingTranslation.name','p.thumbImage as image','p.width',
+                    'p.height','paintingTranslation.colorsType','paintingTranslation.artist as artist', 'a.id as artistID', 'count(p) as viewed','e.name as entity')
+                ->from('App:PaintingEntity','p')
+                ->from('App:ArtistEntity','a')
+                ->from('App:Entity','e')
+                //
+                ->from('App:PaintingTranslationEntity', 'paintingTranslation')
+                ->andWhere('paintingTranslation.originID = p.id')
+                ->andWhere('paintingTranslation.language =:locale')
+                ->setParameter('locale', $this->locale)
+                //
+                ->andWhere('e.id=1')
+                ->andWhere('a.id=p.artist')
+                ->andWhere('ei.entity=1')
+                ->andWhere('ei.row=p.id')
+                ->andWhere('ei.interaction=3')
+                ->andWhere('ei.date > :date')
+                ->setParameter(':date', $date)
+                ->groupBy('p.id')
+                ->orderBy('count(p)','DESC')
+                ->setMaxResults(7)
+                ->getQuery()
+                ->getResult();
+
+            $finalQ1 = $this->finalTranslationResult($languageResultMostViewPaintings, $q1);
+            $q2 = $this->getMostViewStatues();
+
+            return array_merge($finalQ1, $q2);
+        }
+    }
+
     public function getClientFollows($client):array
     {
         return $this->createQueryBuilder('ei')
@@ -159,5 +230,26 @@ class EntityInteractionEntityRepository extends ServiceEntityRepository
             ->groupBy('ei.id')
             ->getQuery()
             ->getResult();
+    }
+
+    private function finalTranslationResult($languageResult, $result):?array
+    {
+        foreach ($languageResult as $singleLanguageResult)
+        {
+            foreach ($result as $index => $singleResult)
+            {
+                if ($singleResult['id'] == $singleLanguageResult['id'])
+                {
+                    unset($result[$index]);
+                }
+            }
+        }
+
+        foreach ($languageResult as $singleLanguageResult)
+        {
+            $result[] = $singleLanguageResult;
+        }
+
+        return $result;
     }
 }

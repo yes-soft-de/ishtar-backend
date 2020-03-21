@@ -73,4 +73,12 @@ class ClientService implements ClientServiceInterface
         return $response;
 
     }
+
+    public function UpdateClientLanguage($request)
+    {
+        $result = $this->clientManager->UpdateClientLanguage($request);
+        $response = $this->autoMapping->map(ClientEntity::class,UpdateClientResponse::class,$result);
+
+        return $response;
+    }
 }

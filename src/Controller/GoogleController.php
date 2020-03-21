@@ -47,7 +47,7 @@ class GoogleController extends AbstractController
         {
            // return new JsonResponse([$this->getTokenUser()]);
             // return $this->redirectToRoute('home_page');
-            return $this->redirect('http://dev-ishtar.96.lt/');
+            return $this->redirect('127.0.0.1:8000');
         }
 
     }

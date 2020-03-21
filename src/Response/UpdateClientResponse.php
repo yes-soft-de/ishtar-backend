@@ -13,6 +13,24 @@ class UpdateClientResponse
     public $phone;
     public $birthDate;
     public $image;
+    public $language;
+
+    /**
+     *
+     * @return mixed
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param mixed $language
+     */
+    public function setLanguage($language): void
+    {
+        $this->language = $language;
+    }
 
     /**
      * @return mixed

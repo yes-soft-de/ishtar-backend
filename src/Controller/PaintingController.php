@@ -31,7 +31,7 @@ class PaintingController extends BaseController
      * PaintingController constructor.
      * @param PaintingService $paintingService
      */
-    public function __construct(PaintingService $paintingService,AutoMapping $autoMapping, ImageResolveService $imageResolve)
+    public function __construct(PaintingService $paintingService, AutoMapping $autoMapping, ImageResolveService $imageResolve)
     {
         $this->paintingService=$paintingService;
         $this->autoMapping=$autoMapping;
@@ -70,7 +70,7 @@ class PaintingController extends BaseController
     }
 
     /**
-     *  @IsGranted("ROLE_ADMIN", message="access denied")
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/painting/{id}", name="updatePainting",methods={"PUT"})
      * @param Request $request
      * @param PaintingValidateInterface $paintingValidate
@@ -111,8 +111,10 @@ class PaintingController extends BaseController
      * @Route("/paintings", name="getAllPainting",methods={"GET"})
      * @return JsonResponse
      */
-    public function getAll()
+    public function getAll(Request $request)
     {
+        //$request->getPreferredLanguage();
+
         $result = $this->paintingService->getAll();
         return $this->response($result,self::FETCH);
     }
