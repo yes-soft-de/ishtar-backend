@@ -18,6 +18,7 @@ class ClientService implements ClientServiceInterface
     private $clientManager;
     private $mediaManager;
     private $autoMapping;
+
     public function __construct(ClientManager $clientManager,EntityMediaManger $mediaManager,AutoMapping $autoMapping)
     {
         $this->clientManager=$clientManager;
@@ -31,7 +32,8 @@ class ClientService implements ClientServiceInterface
         $clientID=$result->getId();
         $this->mediaManager->create($request,5,$clientID);
         $response=$this->autoMapping->map(ClientEntity::class,RegisterResponse::class,$result);
-      return $response;
+
+        return $response;
     }
 
     public function login($request)
@@ -70,5 +72,13 @@ class ClientService implements ClientServiceInterface
         $response=new DeleteResponse($result->getId());
         return $response;
 
+    }
+
+    public function UpdateClientLanguage($request)
+    {
+        $result = $this->clientManager->UpdateClientLanguage($request);
+        $response = $this->autoMapping->map(ClientEntity::class,UpdateClientResponse::class,$result);
+
+        return $response;
     }
 }

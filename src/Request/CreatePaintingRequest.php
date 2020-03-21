@@ -14,10 +14,43 @@ class CreatePaintingRequest
     public $price;
     public $story;
     public $image;
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
+    {
+        $this->image = $image;
+    }
     public $active;
     public $keyWords;
     public $artType;
     public $createDate;
+    public $thumbImage;
+
+    /**
+     * @return mixed
+     */
+    public function getThumbImage()
+    {
+        return $this->thumbImage;
+    }
+
+    /**
+     * @param mixed $thumbImage
+     */
+    public function setThumbImage($thumbImage): void
+    {
+        $this->thumbImage = $thumbImage;
+    }
 
     /**
      * @return mixed
@@ -68,11 +101,9 @@ class CreatePaintingRequest
     }
 
 
-
     public function __construct()
     {
         $this->createDate = new \DateTime('Now');
-
     }
 
     /**

@@ -113,10 +113,11 @@ class GoogleAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        //todo return usser to the last page he visited here or in fornt?
+
         //return new RedirectResponse($this->router->generate('re'));
         //return new RedirectResponse('http://ishtar-art.de/');
-        return new RedirectResponse('http://127.0.0.1:8000/');
+        //http://dev-ishtar.96.lt/, http://dev-ishtar.96.lt/
+        return new RedirectResponse('127.0.0.1:8000');
     }
 
 }

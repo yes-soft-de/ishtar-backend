@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Email;
 
 use App\Response\ClientReport;
 use App\Service\ReportServiceInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 
-class WeeklyClientCommand extends Command
+class WeeklyClientReportCommand extends Command
 {
     protected static $defaultName = 'weekly-client-report';
     private $mailer;

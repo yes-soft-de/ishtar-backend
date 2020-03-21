@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EntityInteractionController extends BaseController
 {
     private $interactionService;
-    private  $autoMapping;
+    private $autoMapping;
 
     /**
      * EntityInteractionController constructor.
@@ -44,15 +44,18 @@ class EntityInteractionController extends BaseController
     {
         //Validation
         $validateResult = $interactionValidate->interactionValidator($request, 'create');
+
         if (!empty($validateResult))
         {
             $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+
         $data = json_decode($request->getContent(), true);
         $request=$this->autoMapping->map(\stdClass::class,CreateInteractionRequest::class,(object)$data);
         $result = $this->interactionService->create($request);
+
         return $this->response($result, self::CREATE);
     }
 
@@ -113,9 +116,11 @@ class EntityInteractionController extends BaseController
      */
     public function getEntityInteraction(Request $request)
     {
-        $request=new GetInterctionEntityRequest($request->get('entity'),$request->get('row'),
+        $request = new GetInterctionEntityRequest($request->get('entity'),$request->get('row'),
             $request->get('interaction'));
+
         $result = $this->interactionService->getEntityInteraction($request);
+
         return $this->response($result,self::FETCH);
     }
 

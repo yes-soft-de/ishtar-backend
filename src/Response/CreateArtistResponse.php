@@ -24,6 +24,24 @@ class CreateArtistResponse
     public $artType;
     public $image;
     public $createDate;
+    public $thumbImage;
+
+    /**
+     * @return mixed
+     */
+    public function getThumbImage()
+    {
+        return $this->thumbImage;
+    }
+
+    /**
+     * @param mixed $thumbImage
+     */
+    public function setThumbImage($thumbImage): void
+    {
+        $this->thumbImage = $thumbImage;
+    }
+
     /**
      * @Assert\DateTime
      */

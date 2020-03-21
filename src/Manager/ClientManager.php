@@ -11,6 +11,7 @@ use App\Repository\ClientEntityRepository;
 use App\Request\ByIdRequest;
 use App\Request\DeleteRequest;
 use App\Request\RegisterRequest;
+use App\Request\UpdateClientLanguageRequest;
 use App\Request\UpdateClientRequest;
 use AutoMapperPlus\AutoMapper;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
@@ -78,6 +79,27 @@ class ClientManager
         else {
             $clientEntity->setIsActive(0);
             $this->entityManager->flush();
+            return $clientEntity;
+        }
+    }
+
+    public function UpdateClientLanguage(UpdateClientLanguageRequest $request)
+    {
+        $clientEntity = $this->clientRepository->find($request->getId());
+
+        if (!$clientEntity)
+        {
+            $exception=new EntityException();
+            $exception->entityNotFound("client");
+        }
+        else
+        {
+            $client = $this->autoMapping->mapToObject(UpdateClientLanguageRequest::class,ClientEntity::class,$request,
+                $clientEntity);
+            $client->setCreateDate();
+
+            $this->entityManager->flush();
+
             return $clientEntity;
         }
     }

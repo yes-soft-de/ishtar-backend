@@ -44,9 +44,15 @@ class EntityMediaService implements EntityMediaServiceInterface
     }
     public function getAll()
     {
+        $response =[];
+
         $result=$this->entityMediaManager->getAll();
+
         foreach ($result as $row)
-        $response[]=$this->autoMapping->map(EntityMediaEntity::class,GetAllMediaResponse::class,$row);
+        {
+            $response[]=$this->autoMapping->map(EntityMediaEntity::class,GetAllMediaResponse::class,$row);
+        }
+
         return $response;
 
     }
@@ -59,9 +65,33 @@ class EntityMediaService implements EntityMediaServiceInterface
 
     public function getEntityItems($request)
     {
+        $response = [];
+
         $result= $this->entityMediaManager->getEntityItems($request);
+
         foreach ($result as $row)
+        {
             $response[]=$this->autoMapping->map('array',GetEntityItemsResponse::class,$row);
+        }
+
+        return $response;
+    }
+
+    public function updateMediaThumbImageById($request)
+    {
+        $result =$this->entityMediaManager->updateMediaThumbImageById($request);
+
+        $response=$this->autoMapping->map(EntityMediaEntity::class,UpdateMediaResponse::class,$result);
+
+        return $response;
+    }
+
+    public function updateMediaImageLink($request)
+    {
+        $result =$this->entityMediaManager->updateMediaImageLink($request);
+
+        $response=$this->autoMapping->map(EntityMediaEntity::class,UpdateMediaResponse::class,$result);
+
         return $response;
     }
 }

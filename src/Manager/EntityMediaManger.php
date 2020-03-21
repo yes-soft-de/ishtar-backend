@@ -13,12 +13,10 @@ use App\Repository\MediaEntityRepository;
 use App\Request\ByIdRequest;
 use App\Request\CreateMediaRequest;
 use App\Request\DeleteRequest;
+use App\Request\UpdateMediaImageLinkRequest;
 use App\Request\UpdateMediaRequest;
-use AutoMapperPlus\AutoMapper;
-use AutoMapperPlus\Configuration\AutoMapperConfig;
+use App\Request\UpdateMediaThumbImageRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\This;
-use Symfony\Component\HttpFoundation\Request;
 
 class EntityMediaManger
 {
@@ -39,6 +37,7 @@ class EntityMediaManger
     }
     public function create($request,$entity,$id)
     {
+        //dd($request->getThumbImage());
         $entityMediaEntity=new EntityMediaEntity();
         If(!isset($entity)&&!isset($id))
         {
@@ -47,19 +46,34 @@ class EntityMediaManger
             $entityMediaEntity=$this->autoMapping->mapToObject(CreateMediaRequest::class,
                 EntityMediaEntity::class,$request,$entityMediaEntity);
         }
-        else {
+        else
+        {
             $entityMediaEntity->setPath($request->getImage())
-            ->setRow($id)
-            ->setEntity($this->entityRepository->find($entity))
-            ->setMedia($this->mediaRepository->find(1));
-                if(!$entity==5)
-            $entityMediaEntity->setName($request->getName());
+                ->setRow($id)
+                ->setEntity($this->entityRepository->find($entity))
+                ->setMedia($this->mediaRepository->find(1));
+
+            if(!$entity == 5)
+            {
+                $entityMediaEntity->setName($request->getName());
+            }
         }
+
+        //we need to check if there is thumbImage in request, for now just artist in this scenario has resolved image  13-2-2020
+        //Todo asap: add another image for painting?!!
+        if ($entity == 2)
+        {
+            $entityMediaEntity->setThumbImage($request->getThumbImage());
+        }
+
         $entityMediaEntity->setCreatedDate();
+
         $this->entityManager->persist($entityMediaEntity);
         $this->entityManager->flush();
+
         return $entityMediaEntity;
     }
+
     public function update($request,$entity)
     {
         $entityMedia = (array)$request;
@@ -98,24 +112,30 @@ class EntityMediaManger
 
         return $data;
     }
+
     public function getEntityItems(ByIdRequest $request)
     {
         return $this->entityRepository->getEntityItems($request->getId());
     }
+
     public function updateMediaById(UpdateMediaRequest $request)
     {
-        $entityMediaEntity=$this->entityMediaRepository->find($request->getId());
-        if (!$entityMediaEntity) {
-            $exception=new EntityException();
+        $entityMediaEntity = $this->entityMediaRepository->find($request->getId());
+
+        if (!$entityMediaEntity)
+        {
+            $exception = new EntityException();
             $exception->entityNotFound("entityMedia");
         }
-        else {
+        else
+        {
             $entityMediaEntity->setPath($request->getPath())
                 ->setName($request->getName());
             $this->entityManager->flush();
             return $entityMediaEntity;
         }
     }
+
     public function deleteById(DeleteRequest $request)
     {
         $entityMediaEntity=$this->entityMediaRepository->find($request->getId());
@@ -130,4 +150,39 @@ class EntityMediaManger
         return $entityMediaEntity;
     }
 
+    public function updateMediaThumbImageById(UpdateMediaThumbImageRequest $request)
+    {
+        $entityMediaEntity = $this->entityMediaRepository->find($request->getId());
+
+        if (!$entityMediaEntity)
+        {
+            $exception = new EntityException();
+            $exception->entityNotFound("entityMedia");
+        }
+        else
+        {
+            $entityMediaEntity->setThumbImage($request->getThumbImage());
+            $this->entityManager->flush();
+
+            return $entityMediaEntity;
+        }
+    }
+
+    public function updateMediaImageLink(UpdateMediaImageLinkRequest $request)
+    {
+        $entityMediaEntity = $this->entityMediaRepository->find($request->getId());
+
+        if (!$entityMediaEntity)
+        {
+            $exception = new EntityException();
+            $exception->entityNotFound("entityMedia");
+        }
+        else
+        {
+            $entityMediaEntity->setPath($request->getImage());
+            $this->entityManager->flush();
+
+            return $entityMediaEntity;
+        }
+    }
 }

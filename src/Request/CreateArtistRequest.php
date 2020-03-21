@@ -28,6 +28,8 @@ class CreateArtistRequest
     public $artType;
     public $image;
     public $createDate;
+    public $thumbImage;
+
     /**
      * @Assert\DateTime
      */
@@ -282,6 +284,22 @@ class CreateArtistRequest
     public function setArtType($artType): void
     {
         $this->artType = $artType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getThumbImage()
+    {
+        return $this->thumbImage;
+    }
+
+    /**
+     * @param mixed $thumbImage
+     */
+    public function setThumbImage($thumbImage): void
+    {
+        $this->thumbImage = $thumbImage;
     }
 }
 

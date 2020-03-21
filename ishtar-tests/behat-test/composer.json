@@ -1,0 +1,18 @@
+{
+    "name": "mohammad/ishtar_tests",
+    "description": "Ishatr Functions Tests",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "MickSawy3r",
+            "email": "Mohammad.al.kalaleeb@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "~6.0",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "behat/behat": "^3.5"
+    }
+}

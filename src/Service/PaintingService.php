@@ -45,19 +45,23 @@ class PaintingService implements PaintingServiceInterface
 
     public function create($request)
     {
-        $paintingResult =$this->PaintingManager->create($request);
-        $paintingId=$paintingResult->getId();
-        $artTypeResult=$this->artTypeManager->create($request,1,$paintingId);
-        $priceData=$this->priceManager->create($request,1,$paintingId);
-        $storyData=$this->storyManager->create($request,1,$paintingId);
-        $response=$this->autoMapping->map(PaintingEntity::class,CreatePaintingResponse::class,
-            $paintingResult);
-        $response->setArtType($artTypeResult->getArtType());
-                  $response->setPrice($priceData->getPrice());
-           $response ->setStory($storyData->getStory());
-        return $response;
+        $paintingResult = $this->PaintingManager->create($request);
+        $paintingId = $paintingResult->getId();
 
+        $artTypeResult = $this->artTypeManager->create($request,1,$paintingId);
+
+        $priceData = $this->priceManager->create($request,1,$paintingId);
+
+        $storyData = $this->storyManager->create($request,1,$paintingId);
+
+        $response = $this->autoMapping->map(PaintingEntity::class,CreatePaintingResponse::class, $paintingResult);
+        $response->setArtType($artTypeResult->getArtType());
+        $response->setPrice($priceData->getPrice());
+        $response ->setStory($storyData->getStory());
+
+        return $response;
     }
+
     //ToDO mapping painting entity and response
     public function update($request,$id)
     {
@@ -72,13 +76,20 @@ class PaintingService implements PaintingServiceInterface
         $response ->setStory($storyData->getStory());
         return $response;
     }
+
     public function getAll()
     {
-        $result=$this->PaintingManager->getAll();
+        $response = [];
+        $result = $this->PaintingManager->getAll();
+
         foreach ($result as $row)
+        {
             $response[]=$this->autoMapping->map('array',GetPaintingsResponse::class,$row);
+        }
+
         return $response;
     }
+
     public function delete($id)
     {
          $result=$this->PaintingManager->delete($id);
@@ -114,4 +125,49 @@ class PaintingService implements PaintingServiceInterface
             $response[]=$this->autoMapping->map('array',GetPaintingByResponse::class,$row);
         return $response;
     }
+
+    public function getAllFeaturedPaintings()
+    {
+        $response = [];
+        $result=$this->PaintingManager->getAllFeaturedPaintings();
+
+        foreach ($result as $row)
+        {
+            $response[]=$this->autoMapping->map('array',GetPaintingsResponse::class,$row);
+        }
+
+        return $response;
+    }
+
+    public function updateFeaturedPaintings($request)
+    {
+        $paintingResult =$this->PaintingManager->updateFeaturedPaintings($request);
+
+        $response = $this->autoMapping->map(PaintingEntity::class,UpdatePaintingResponse::class,
+            $paintingResult);
+
+        return $response;
+    }
+
+    public function updatePaintingThumbImage($request)
+    {
+        $paintingResult =$this->PaintingManager->updatePaintingThumbImage($request);
+
+        $response = $this->autoMapping->map(PaintingEntity::class,UpdatePaintingResponse::class,
+            $paintingResult);
+
+        return $response;
+    }
+
+    public function updatePaintingImageLink($request)
+    {
+        $paintingResult =$this->PaintingManager->updatePaintingImageLink($request);
+
+        $response = $this->autoMapping->map(PaintingEntity::class,UpdatePaintingResponse::class,
+            $paintingResult);
+
+        return $response;
+    }
+
+
 }

@@ -1,0 +1,25 @@
+# behat.yml
+
+default:
+  autoload:
+    - "%paths.base%/bootstrap/"
+
+  suites:
+    interaction:
+      paths:
+        - "%paths.base%/features/interaction"
+      contexts: [InteractionContext]
+    queries:
+      paths:
+        - "%paths.base%/features/queries"
+      contexts: [QueriesContext]
+
+    login:
+      paths:
+        - "%paths.base%/features/login"
+      contexts: [LoginContext]
+
+    create:
+      paths:
+        - "%paths.base%/features/create"
+      contexts: [CreateContext]

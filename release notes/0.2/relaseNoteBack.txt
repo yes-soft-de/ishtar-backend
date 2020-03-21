@@ -1,0 +1,9 @@
+- Add many new endpoints for the new sections and new functions.
+- Code refactoring.
+- Enable JWT system.
+- Enable Refresh token (not used).
+- Add signup functioly.
+- Add statue functioly.
+- Updates and edits in data base.
+- Update code to sute front end handling (add new headers, ..etc).
+- Fix bugs.

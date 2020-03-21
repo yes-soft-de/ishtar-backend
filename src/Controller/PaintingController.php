@@ -7,7 +7,9 @@ use App\Request\CreateArtistRequest;
 use App\Request\CreatePaintingRequest;
 use App\Request\DeleteRequest;
 use App\Request\getPaintingByRequest;
+use App\Request\UpdateFeaturedPaintingsRequest;
 use App\Request\UpdatePaintingRequest;
+use App\Service\ImageResolveService;
 use App\Service\PaintingService;
 use App\Validator\PaintingValidateInterface;
 use AutoMapperPlus\AutoMapper;
@@ -23,14 +25,17 @@ class PaintingController extends BaseController
 {
     private $paintingService;
     private $autoMapping;
+    private $imageResolve;
+
     /**
      * PaintingController constructor.
      * @param PaintingService $paintingService
      */
-    public function __construct(PaintingService $paintingService,AutoMapping $autoMapping)
+    public function __construct(PaintingService $paintingService, AutoMapping $autoMapping, ImageResolveService $imageResolve)
     {
         $this->paintingService=$paintingService;
         $this->autoMapping=$autoMapping;
+        $this->imageResolve = $imageResolve;
     }
 
     /**
@@ -44,20 +49,28 @@ class PaintingController extends BaseController
     public function create(Request $request, PaintingValidateInterface $paintingValidate)
     {
         $validateResult = $paintingValidate->paintingValidator($request, 'create');
+
         if (!empty($validateResult))
         {
             $resultResponse = new Response($validateResult, Response::HTTP_OK, ['content-type' => 'application/json']);
             $resultResponse->headers->set('Access-Control-Allow-Origin', '*');
             return $resultResponse;
         }
+
         $data = json_decode($request->getContent(), true);
+
         $request=$this->autoMapping->map(\stdClass::class,CreatePaintingRequest::class,(object)$data);
+
+        //make thumb and add resolved image path to request
+        $request->setThumbImage($this->imageResolve->makeThumb($request->getImage()));
+
         $result = $this->paintingService->create($request);
+
         return $this->response($result, self::CREATE);
     }
 
     /**
-     *  @IsGranted("ROLE_ADMIN", message="access denied")
+     * @IsGranted("ROLE_ADMIN", message="access denied")
      * @Route("/painting/{id}", name="updatePainting",methods={"PUT"})
      * @param Request $request
      * @param PaintingValidateInterface $paintingValidate
@@ -98,8 +111,10 @@ class PaintingController extends BaseController
      * @Route("/paintings", name="getAllPainting",methods={"GET"})
      * @return JsonResponse
      */
-    public function getAll()
+    public function getAll(Request $request)
     {
+        //$request->getPreferredLanguage();
+
         $result = $this->paintingService->getAll();
         return $this->response($result,self::FETCH);
     }
@@ -126,6 +141,40 @@ class PaintingController extends BaseController
         $request=new GetPaintingByRequest($request->get('parm'),$request->get('value'));
         $result = $this->paintingService->getBy($request);
         return $this->response($result,self::FETCH);
+    }
+
+    /**
+     * @Route("/featuredpaintings", name="getfeaturedpaintings",methods={"GET"})
+     * @return JsonResponse
+     */
+    public function getAllFeaturedPaintings()
+    {
+        $result = $this->paintingService->getAllFeaturedPaintings();
+        return $this->response($result,self::FETCH);
+    }
+
+    /**
+     * @IsGranted("ROLE_ADMIN", message="access denied")
+     * @Route("/featuredpainting/{id}/{isFeatured}", name="featuredpainting",methods={"PUT"})
+     * @param Request $request
+     * @param PaintingValidateInterface $paintingValidate
+     * @return JsonResponse|Response
+     * @throws UnregisteredMappingException
+     */
+    public function updateFeaturedPaintings(Request $request)
+    {
+        $id = $request->get('id');
+        $isFeatured =$request->get('isFeatured');
+
+        $data = json_decode($request->getContent(), true);
+
+        $request = $this->autoMapping->map(\stdClass::class,UpdateFeaturedPaintingsRequest::class,(object)$data);
+        $request->setId($id);
+        $request->setIsFeatured($isFeatured);
+
+        $result = $this->paintingService->updateFeaturedPaintings($request);
+
+        return $this->response($result, self::UPDATE);
     }
 
 }
