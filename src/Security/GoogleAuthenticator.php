@@ -117,7 +117,7 @@ class GoogleAuthenticator extends SocialAuthenticator
         //return new RedirectResponse($this->router->generate('re'));
         //return new RedirectResponse('http://ishtar-art.de/');
         //http://dev-ishtar.96.lt/, http://dev-ishtar.96.lt/
-        return new RedirectResponse('127.0.0.1:8000');
+        return new RedirectResponse('https://ishtar-art.de/');
     }
 
 }

@@ -23,6 +23,7 @@ use App\Request\getPaintingByRequest;
 use App\Request\UpdateFeaturedPaintingsRequest;
 use App\Request\UpdatePaintingImageLinkRequest;
 use App\Request\UpdatePaintingRequest;
+use App\Request\UpdateStateRequest;
 use App\Request\UpdatePaintingThumbImageRequest;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Doctrine\ORM\EntityManagerInterface;
@@ -103,7 +104,8 @@ class PaintingManager
 
     public function getPaintingById($id)
     {
-        return $result = $this->paintingRepository->findOneById($id);
+         $result = $this->paintingRepository->findOneById($id);
+         return $result;
     }
 
     public function getBy(GetPaintingByRequest $request)
@@ -182,5 +184,19 @@ class PaintingManager
             return $paintingEntity;
         }
     }
+    public function updatePaintingState(UpdateStateRequest $request)
+    {
+        $paintingEntity=$this->paintingRepository->getPainting($request->getId());
+        if (!$paintingEntity) {
+            $exception=new EntityException();
+            $exception->entityNotFound("painting");
+        }
+        else {
+            $state=$request->getState();
+                $paintingEntity->setState($request->getState());
+            $this->entityManager->flush();
+            return $paintingEntity;
+        }
 
+    }
 }
