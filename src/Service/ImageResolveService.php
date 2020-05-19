@@ -22,7 +22,7 @@ class ImageResolveService
 
     public function makeThumb($path): string
     {
-        $fixedPath = explode(self::EXPLODEPATHOFFLINE, $path);
+        $fixedPath = explode(self::EXPLODEPATHPROD, $path);
 
         $resolvedPath = $this->filterService->getUrlOfFilteredImage($fixedPath[1], 'thumb');
 

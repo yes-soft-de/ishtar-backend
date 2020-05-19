@@ -61,4 +61,6 @@ class WeeklyArtistReportCommand extends Command
 
         return 1;
     }
+
+
 }
