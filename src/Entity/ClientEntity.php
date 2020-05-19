@@ -122,7 +122,7 @@ class ClientEntity implements UserInterface
     {
         if ($this->password == null)
         {
-            $this->password = "password";
+            $this->password = "P1assword@";
         }
 
         return $this->password;

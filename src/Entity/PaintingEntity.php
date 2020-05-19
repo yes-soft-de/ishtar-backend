@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\SmallIntType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -34,7 +35,7 @@ class PaintingEntity
 
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="smallint")
      *   @Groups({"default"})
      */
     private $state;
@@ -146,12 +147,12 @@ class PaintingEntity
         return $this;
     }
 
-       public function getState(): ?bool
+       public function getState(): ?int
     {
         return $this->state;
     }
 
-    public function setState(bool $state): self
+    public function setState(int $state): self
     {
         $this->state = $state;
 

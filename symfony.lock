@@ -135,8 +135,8 @@
             "ref": "1d42bc3f713130582e6e0c475c49bc327ab0a2a2"
         },
         "files": [
-            "./config/packages/liip_imagine.yaml",
-            "./config/routes/liip_imagine.yaml"
+            "config/packages/liip_imagine.yaml",
+            "config/routes/liip_imagine.yaml"
         ]
     },
     "mark-gerarts/auto-mapper-plus": {
@@ -153,6 +153,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.2"
+    },
+    "paypal/rest-api-sdk-php": {
+        "version": "1.14.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -402,8 +405,8 @@
             "ref": "2ad9d2545bce8ca1a863e50e92141f0b9d87ffcd"
         },
         "files": [
-            "./config/packages/translation.yaml",
-            "./translations/.gitignore"
+            "config/packages/translation.yaml",
+            "translations/.gitignore"
         ]
     },
     "symfony/translation-contracts": {
